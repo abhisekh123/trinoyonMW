@@ -974,7 +974,7 @@ module.exports = {
     },
 
     refreshWorld: function(){
-        console.log('=========>refreshWorld');
+        // console.log('=========>refreshWorld');
         // var messageList = mainThreadStub.messagebuffer;
         if(mainThreadStub.messagebuffer.length > 0){
             this.processNewMessages();
