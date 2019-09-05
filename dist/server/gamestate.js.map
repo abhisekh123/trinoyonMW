@@ -1,0 +1,1 @@
+{"version":3,"file":"gamestate.js","sourceRoot":"","sources":["../../src/gamestate.ts"],"names":[],"mappings":";AACA,MAAM,CAAC,OAAO,GAAG;IACb,YAAY,EAAC,EAAE;IACf,qBAAqB,EAAC,EAAE;IAExB,eAAe,EAAE,UAAS,SAAa;QACnC,IAAI,CAAC,SAAS,GAAG,SAAS,CAAC;IAC/B,CAAC;IACD,wBAAwB,EAAE,UAAS,SAAa;QAC5C,IAAI,CAAC,SAAS,GAAG,SAAS,CAAC;IAC/B,CAAC;CACJ,CAAA"}

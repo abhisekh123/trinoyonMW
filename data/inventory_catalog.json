@@ -1,0 +1,18 @@
+
+
+{
+    "items": {
+        "init_key": "init.js",
+        "init_audio_key": "init_audio.js",
+        "init_video_key": "init_video.js",
+        "init_world_key": "init_world.js",
+        "world_config_key": "world_config.js",
+        "item_config_key": "item_config.js"
+    },
+    "images": {
+        "test_key": "test.jpg",
+        "bird_key": "bird.jpg",
+        "tree_key": "tree.png",
+        "soldier_key": "soldier.png"
+    }
+}
