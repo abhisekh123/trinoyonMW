@@ -41,7 +41,7 @@ export class DemoServer {
 
         //initialize a simple http server
         const server = http.createServer(app);
-        // const httpsserver = https.createServer(httpOptions, app);
+        const httpsserver = https.createServer(httpOptions, app);
 
         //initialize the WebSocket server instance
         const wss = new WebSocket.Server({ server });
@@ -95,15 +95,15 @@ export class DemoServer {
             console.log(`Server started on port ${server.address.toString} :)`);
         });
 
-        // httpsserver.listen(443, () => {
-        //     console.log(`Server started on port ${httpsserver.address.toString} :)`);
-        // });
+        httpsserver.listen(443, () => {
+            console.log(`Server started on port ${httpsserver.address.toString} :)`);
+        });
 
-        https.createServer(function (req, res) {
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.write('Hello World!');
-            res.end();
-        }).listen(443);
+        // https.createServer(function (req, res) {
+        //     res.writeHead(200, {'Content-Type': 'text/plain'});
+        //     res.write('Hello World!');
+        //     res.end();
+        // }).listen(443);
     }
 }
 
