@@ -12,13 +12,6 @@ const assetManager = require('./asset_manager/asset_manager');
 const workermanager = require('./workermanager');
 const clientregistry = require('./serverlib/clientRegistry');
 
-const https = require('https');
-const fs = require('fs');
-
-const httpOptions = {
-    key: fs.readFileSync("/home/trinoyon/ssl.key"),
-    cert: fs.readFileSync("/home/trinoyon/ssl.cert")
-}
 
 export class DemoServer {
 
@@ -41,7 +34,6 @@ export class DemoServer {
 
         //initialize a simple http server
         const server = http.createServer(app);
-        // const httpsserver = https.createServer(httpOptions, app);
 
         //initialize the WebSocket server instance
         const wss = new WebSocket.Server({ server });
@@ -94,16 +86,6 @@ export class DemoServer {
         server.listen(portParam, () => {
             console.log(`Server started on port ${server.address.toString} :)`);
         });
-
-        // httpsserver.listen(443, () => {
-        //     console.log(`Server started on port ${httpsserver.address.toString} :)`);
-        // });
-
-        https.createServer(function (req, res) {
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.write('Hello World!');
-            res.end();
-        }).listen(443);
     }
 }
 
