@@ -33,6 +33,11 @@ export class DemoServer {
             res.sendFile(path.join(__dirname + '/../../public/index.html'));
         });
 
+        app.get('/ppolicy', function(req, res) {
+            console.log(req.body);
+            res.sendFile(path.join(__dirname + '/../../public/ppolicy.html'));
+        });
+
 
         app.use('/static', express.static(path.join(__dirname + '/../../public')));
 
