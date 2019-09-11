@@ -38,6 +38,10 @@ export class DemoServer {
             res.sendFile(path.join(__dirname + '/../../public/ppolicy.html'));
         });
 
+        app.get('/termsofservice', function(req, res) {
+            console.log(req.body);
+            res.sendFile(path.join(__dirname + '/../../public/termsofservice.html'));
+        });
 
         app.use('/static', express.static(path.join(__dirname + '/../../public')));
 
@@ -103,7 +107,7 @@ export class DemoServer {
             console.log(`Server started on port ${server.address.toString} :)`);
         });
 
-        httpsserver.listen(8443, () => {
+        httpsserver.listen(443, () => {
             console.log(`Server started on port ${httpsserver.address.toString} :)`);
         });
 
@@ -113,7 +117,7 @@ export class DemoServer {
 
 
 const demoServer = new DemoServer();
-demoServer.startServer(8999);
+demoServer.startServer(80);
 
 
 

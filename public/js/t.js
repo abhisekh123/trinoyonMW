@@ -21,7 +21,7 @@ function initSystem(){
     resizeCanvas();
 
     // tg.socket = new WebSocket("ws://" + window.location.hostname + ":8999", ["protocolOne", "protocolTwo"]);
-    tg.socket = new WebSocket("wss://" + window.location.hostname + ":8443", ["protocolOne", "protocolTwo"]);
+    tg.socket = new WebSocket("wss://" + window.location.hostname + ":443", ["protocolOne", "protocolTwo"]);
     tg.socket.onopen = function (event) {
         console.log('connected to websocket server.');
         sendMessageToWS(getEmptyMessagePacket('init'));
