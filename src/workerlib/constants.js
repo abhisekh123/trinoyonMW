@@ -25,7 +25,7 @@
 
 
 var gDS = gDS || {};
-console.log("################GDS");
+// console.log("################GDS");
 gDS.seq = {};
 
 gDS.userProfile = {};
@@ -299,10 +299,10 @@ gDS.initConstDS = function(){
 	gDS.inputMap.explFlg[2] = 255 - tmp;
 	//gDS.inputMap.rgt[2] = tmp ˆ 255;
 
-	//console.log("trigoMaps:");
-	//console.log("gDS.inputMap");
+	//// console.log("trigoMaps:");
+	//// console.log("gDS.inputMap");
 
-	//console.log(gDS.inputMap);
+	//// console.log(gDS.inputMap);
 
 	for(var i = -gDS.identifier.launcherRange; i <= gDS.identifier.launcherRange; ++i){
 		gDS.rangeMap[i] = new Array();
@@ -312,7 +312,7 @@ gDS.initConstDS = function(){
 			gDS.rangeMap[i][j].angle = parseFloat((Math.atan2(i, j) * 180/Math.PI).toFixed(3));
 		}
 	}
-	//console.log(gDS.rangeMap);
+	//// console.log(gDS.rangeMap);
 };
 
 gDS.getDistfromDelta = function(deltaXParam, deltazParam) {

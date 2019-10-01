@@ -137,9 +137,9 @@ var createSceneStaticAssets = function(){
 
 
 tg.setCharacterPose = function (currentConfigParam) {
-    // console.log('set character pose.');
+    // // console.log('set character pose.');
     if(currentConfigParam == undefined || currentConfigParam == null){
-        console.log('currentConfigParam is invalid');
+        // console.log('currentConfigParam is invalid');
         return;
     }
     // var currentConfig = tg.spriteAssets[tg.currentSelectedSprite].configuration;
@@ -159,7 +159,7 @@ tg.setCharacterPose = function (currentConfigParam) {
         // );
         // tg.spriteAssets[0].configuration[(i * 3) + 6] = tg.bodyMeshArray[i].rotationQuaternion.w;
     }
-    console.log('done');
+    // console.log('done');
 };
 
 tg.getGridCoordinateFromPointerPosition = function(position) {
@@ -297,9 +297,9 @@ function initVideo(){
 // https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
 
     tg.scene.onPointerDown = function (evt) {
-        // console.log('pointer down.');
+        // // console.log('pointer down.');
         if(!tg.isGameLive){
-            console.log('game not started yet.');
+            // console.log('game not started yet.');
             return;
         }
         // We try to pick an object
@@ -310,15 +310,15 @@ function initVideo(){
             tg.clickTime = Date.now();
             var gridCoordinate = tg.getGridCoordinateFromPointerPosition(tg.pickedPosition);
             var pickedMeshID = pickResult.pickedMesh.id;
-            // console.log('grid coordinate:', gridCoordinate);
-            console.log(pickedMeshID);
+            // // console.log('grid coordinate:', gridCoordinate);
+            // console.log(pickedMeshID);
             var pickedCharacterConfig = tg.worldItems.characterMap[pickedMeshID];
             if(pickedCharacterConfig == null || pickedCharacterConfig == undefined){
-                console.log('invalid character selected. exiting. character name:' + pickedMeshID);
+                // console.log('invalid character selected. exiting. character name:' + pickedMeshID);
                 return;
             }
             if(pickedCharacterConfig.playerID != tg.userPlayerID){
-                console.log('character does not belong to user. skipping');
+                // console.log('character does not belong to user. skipping');
                 return;
             }
             // tg.selectedMarker.position.x = pickedCharacterConfig.parentMesh.position.x;
@@ -369,7 +369,7 @@ function initVideo(){
                 packet.message.target = pickedMeshID;
                 // packet.message.id = tg.meshNameToIDMap[tg.selectedMesh.name];
                 packet.message.id = tg.grandParentClick.characterID;
-                console.log(packet);
+                // console.log(packet);
                 sendJSONMessageToWS(packet);
                 tg.cloneClick(tg.grandParentClick, tg.parentClick);
                 tg.clearClick(tg.grandParentClick);

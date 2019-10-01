@@ -11,7 +11,7 @@ const bot_route_utility = require('./botRouteUtility');
 const workerstate = require('./workerstate');
 
 
-console.log('workerutil.ts::', __dirname);
+// console.log('workerutil.ts::', __dirname);
 module.exports = {
     workerRegister:{},
     tg: {
@@ -34,7 +34,7 @@ module.exports = {
                     tmpArray.push(0);
                 }
             }
-            console.log(tmpArray.join(" "));
+            // console.log(tmpArray.join(" "));
         }
     },
 
@@ -56,11 +56,11 @@ module.exports = {
     },
 
     findPath: function(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ){
-        // console.log('findPath');
-        // console.log(currentPositionX);
-        // console.log(currentPositionZ);
-        // console.log(targetPositionX);
-        // console.log(targetPositionZ);
+        // // console.log('findPath');
+        // // console.log(currentPositionX);
+        // // console.log(currentPositionZ);
+        // // console.log(targetPositionX);
+        // // console.log(targetPositionZ);
         var path = this.finder.findPath(
             Math.round((currentPositionX))// + this.tg.centreX
             , Math.round((currentPositionZ))// + this.tg.centreZ
@@ -76,19 +76,19 @@ module.exports = {
     },
 
     prepareGrid: function(){
-        console.log('prepareGrid.');
-        console.log(this.world_config);
+        // console.log('prepareGrid.');
+        // console.log(this.world_config);
         // world_config.length = Number(world_config.length);
         // world_config.breadth = Number(world_config.breadth);
 
 
-        console.log('prepare grid@bot route manager :: world_config.gridSide:' + world_config.gridSide);
+        // console.log('prepare grid@bot route manager :: world_config.gridSide:' + world_config.gridSide);
 
         this.tg.grid = new PF.Grid(world_config.gridSide, world_config.gridSide);
-        // console.log(this.tg.grid);
-        // console.log(this.tg.grid);
-        // console.log(this.tg.grid.nodes.length);
-        // console.log(this.tg.grid.nodes[0].length);
+        // // console.log(this.tg.grid);
+        // // console.log(this.tg.grid);
+        // // console.log(this.tg.grid.nodes.length);
+        // // console.log(this.tg.grid.nodes[0].length);
 
         this.tg.centreZ = (world_config.gridSide - 1)/2;
         this.tg.centreX = (world_config.gridSide - 1)/2;
@@ -170,8 +170,8 @@ module.exports = {
         this.tg.gridBackup = this.tg.grid.clone();
         // this.printGrid();
 
-        console.log('-------grid initialised');
-        // console.log(this.tg.grid);
+        // console.log('-------grid initialised');
+        // // console.log(this.tg.grid);
 
         this.finder = new PF.AStarFinder({
             allowDiagonal: true,
@@ -490,10 +490,10 @@ module.exports = {
 
     admitNewBot: function(botConfigParam, botid){
         var botConfig = this.tg.botConfig[botid];
-        // console.log('admitNewBot@bot route manager.');
-        // console.log(botConfigParam);
+        // // console.log('admitNewBot@bot route manager.');
+        // // console.log(botConfigParam);
         if(botConfig != undefined && botConfig != null){
-            console.log('Note@botroutemanger : Bot already present for the given ID. reassigning');
+            // console.log('Note@botroutemanger : Bot already present for the given ID. reassigning');
             // return;
         }
 
@@ -578,7 +578,7 @@ module.exports = {
     deActivateBot: function(botid){
         var botConfig = this.tg.botConfig[botid];
         if(botConfig == undefined || botConfig == null){
-            console.log('ERROR: Bot undefined. Skip termination process. Bot ID:' + botid);
+            // console.log('ERROR: Bot undefined. Skip termination process. Bot ID:' + botid);
             return;
         }
         var xPos = botConfigParam.position[0];

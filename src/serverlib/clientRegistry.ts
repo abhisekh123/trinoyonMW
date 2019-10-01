@@ -54,6 +54,6 @@ module.exports = {
             this.clientArrey[clientID].ws = null;
         }
         wsParam.close();
-        return;
+        return clientID;
     }
 }

@@ -8,7 +8,7 @@ function initInputListeners(){
     //         x: event.clientX,
     //         y: event.clientY
     //     };
-    //     console.log('canvas click', pos);
+    //     // console.log('canvas click', pos);
     // });
 
     sendMessageToWS(getEmptyMessagePacket('init_video'));

@@ -17,6 +17,7 @@ module.exports = {
         this.snapshot.length = 0;
     },
 
+    // populate current message with latest game snapshot. To be sent to newly admitted player.
     addSnapshot: function(currentMessage, playerConfig){
         currentMessage.bots = [];
         currentMessage.objects = [];

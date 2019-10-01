@@ -61,24 +61,24 @@ module.exports = {
         //         Math.floor(Math.random() * 100) / 100,
         //     ];
         // }
-        // console.log('tmp');
+        // // console.log('tmp');
         // var tmp = Math.random();
-        // console.log(tmp);
+        // // console.log(tmp);
         // tmp = Math.floor(tmp * 100) / 100;
-        // console.log(tmp);
+        // // console.log(tmp);
         // tmp = Math.floor(Math.random() * 100) / 100;
-        // console.log(tmp);
+        // // console.log(tmp);
         var color = [
             Math.floor(Math.random() * 100) / 100,
             Math.floor(Math.random() * 100) / 100,
             Math.floor(Math.random() * 100) / 100,
         ];
-        // console.log('generated color:' + color);
+        // // console.log('generated color:' + color);
         return color;
     },
 
     admitNewPlayer: function(clientID){
-        console.log('player manager------>try admitNewPlayer');
+        // console.log('player manager------>try admitNewPlayer');
         for(var i = 0; i < this.maxPlayerCount; ++i){
             if(this.playerArrey[i].isAIDriven){
                 this.playerArrey[i].isActive = true;
@@ -106,7 +106,13 @@ module.exports = {
         var playerID = this.getPlayerID(clientID);
         this.playerArrey[playerID].isActive = false;
         this.playerMap[clientID] = undefined;
+        this.playerMap.delete(clientID);
         --this.connectedPlayerCount;
         return;
+    },
+
+    reset: function(){
+        this.playerMap = {};
+        this.init();
     }
 }

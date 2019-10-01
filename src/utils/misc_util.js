@@ -15,7 +15,7 @@ module.exports = {
         return Date.now();
     },
     dumpJSONtoOutput:function(jsonParam){
-        console.log(JSON.stringify(jsonParam));
+        // console.log(JSON.stringify(jsonParam));
     },  
     
 };

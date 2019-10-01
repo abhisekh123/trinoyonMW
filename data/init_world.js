@@ -20,8 +20,8 @@ function createWorld() {
 function updateWorld(jsonParam) {
     
     if(!tg.isGameLive){
-        console.log('updating world', jsonParam);
-        console.log('!tg.isGameLive. skipping.');
+        // console.log('updating world', jsonParam);
+        // console.log('!tg.isGameLive. skipping.');
         return;
     }
 
@@ -37,11 +37,11 @@ function updateWorld(jsonParam) {
             characterConfig = worldItems.staticObjectMap[meshID];
         }
         if(characterConfig == null || characterConfig == undefined){
-            console.log('error. skipping update mesh');
+            // console.log('error. skipping update mesh');
             continue;
         }
 
-        // console.log('meshID:' + meshID);
+        // // console.log('meshID:' + meshID);
         var update = jsonParam.payload[meshID];
         var parentMesh = characterConfig.parentMesh;
         var posX = (update.x + 0.5) * tg.playerDimensionBaseUnit;
@@ -58,11 +58,11 @@ function updateWorld(jsonParam) {
                 // set smooth animation
                 // refresh time
                 // worldItems.characterMap[characterID].intermediatePositionArray = [];
-                // console.log('break down movement for bot:' + meshID);
-                // console.log(parentMesh.position);
-                // console.log('to new position:');
-                // console.log(update);
-                console.log('<', meshID, '>:', parentMesh.position, '->[', posX, ',', posZ, ']@', tg.currentTime);
+                // // console.log('break down movement for bot:' + meshID);
+                // // console.log(parentMesh.position);
+                // // console.log('to new position:');
+                // // console.log(update);
+                // console.log('<', meshID, '>:', parentMesh.position, '->[', posX, ',', posZ, ']@', tg.currentTime);
                 var deltaX = posX - parentMesh.position.x;
                 var deltaZ = posZ - parentMesh.position.z;
                 for(var i = 0; i < refreshWorldPerIntervalUI; ++i){
@@ -85,43 +85,49 @@ function updateWorld(jsonParam) {
                 animationPlayFlag = true;
                 break;
             case 'idle':
-                console.log('IDLE:set position for character:' + meshID + ' at time:' + tg.currentTime);
-                console.log('x:' + posX + ' z:' + posZ);
+                // console.log('IDLE:set position for character:' + meshID + ' at time:' + tg.currentTime);
+                // console.log('x:' + posX + ' z:' + posZ);
                 parentMesh.position.x = posX; // - tg.worldCenterX;
                 parentMesh.position.z = posZ; // - tg.worldCenterZ;
                 parentMesh.rotation.y = rot + characterConfig.defaultRotation;
                 animationPlayFlag = true;
                 break;
             case 'attack':
-                // console.log('set position for character:' + meshID + ' at time:' + tg.currentTime);
-                console.log('#$@[' + meshID + ']x:' + posX + ' z:' + posZ + '=@', tg.currentTime);
+                // // console.log('set position for character:' + meshID + ' at time:' + tg.currentTime);
+                // console.log('#$@[' + meshID + ']x:' + posX + ' z:' + posZ + '=@', tg.currentTime);
                 parentMesh.position.x = posX; // - tg.worldCenterX;
                 parentMesh.position.z = posZ; // - tg.worldCenterZ;
                 parentMesh.rotation.y = rot + characterConfig.defaultRotation;
                 animationPlayFlag = true;
                 break;
             case 'die':
-                // console.log('dead item:', characterConfig)
+                // // console.log('dead item:', characterConfig)
                 // alert(meshID + ' died');
-                // console.log('set position for character:' + meshID + ' at time:' + tg.currentTime);
-                // console.log('x:' + posX + ' z:' + posZ);
-                console.log('! :-(( [' + meshID + ']x:' + posX + ' z:' + posZ + '=@', tg.currentTime);
+                // // console.log('set position for character:' + meshID + ' at time:' + tg.currentTime);
+                // // console.log('x:' + posX + ' z:' + posZ);
+                // console.log('! :-(( [' + meshID + ']x:' + posX + ' z:' + posZ + '=@', tg.currentTime);
                 // parentMesh.position.x = posX; // - tg.worldCenterX;
                 // parentMesh.position.z = posZ; // - tg.worldCenterZ;
                 // parentMesh.rotation.y = rot + characterConfig.defaultRotation;
                 animationPlayFlag = false;
                 break;
             case 'spawn':
-                console.log('^^^[' + meshID + ']x:' + posX + ' z:' + posZ + '=@', tg.currentTime);
+                // console.log('^^^[' + meshID + ']x:' + posX + ' z:' + posZ + '=@', tg.currentTime);
                 parentMesh.position.x = posX; // - tg.worldCenterX;
                 parentMesh.position.z = posZ; // - tg.worldCenterZ;
                 parentMesh.rotation.y = rot + characterConfig.defaultRotation;
                 animationPlayFlag = false;
                 break;
             case 'over':
+                if(update.loosingTeam == tg.teamID){
+                    alert('You won!');
+                }else{
+                    alert('Your team was defeated');
+                }
                 alert('==========game over. loosing team is:' + update.loosingTeam);
+                location.reload();
             default:
-                console.log('ERROR:Unknown action:' + meshID + ' for character:' + characterConfig.id);
+                // console.log('ERROR:Unknown action:' + meshID + ' for character:' + characterConfig.id);
         }
         
 
@@ -208,7 +214,7 @@ tg.startCharacterAnimation = function(characterConfig, currentAction, animationP
             tg.showMeshToVisiblePlane(characterConfig.parentMesh);
             break;
         default:
-            console.log('ERROR:Unknown action:' + currentAction + ' for character:' + characterConfig.id);
+            // console.log('ERROR:Unknown action:' + currentAction + ' for character:' + characterConfig.id);
     }
     // characterConfig.animation = animationName;
     // characterConfig.isAnimated = true;
@@ -245,7 +251,7 @@ tg.updateCharacterStateBeforeRender = function () {
         }
         // check if the property/key is defined in the object itself, not in parent
         if (worldItems.characterMap.hasOwnProperty(characterID)) {           
-            // console.log(key, dictionary[key]);
+            // // console.log(key, dictionary[key]);
             var characterConfig = worldItems.characterMap[characterID];
             var parentMesh = characterConfig.parentMesh;
             switch(characterConfig.action){
@@ -260,8 +266,8 @@ tg.updateCharacterStateBeforeRender = function () {
                                 characterConfig.action = 'idle';
                             }
                         }
-                        // console.log('set position for character:' + characterID + ' at time:' + tg.currentTime);
-                        // console.log(characterConfig.intermediatePositionArray[i].position);
+                        // // console.log('set position for character:' + characterID + ' at time:' + tg.currentTime);
+                        // // console.log(characterConfig.intermediatePositionArray[i].position);
                         parentMesh.position.x = characterConfig.intermediatePositionArray[i].position.x; // - tg.worldCenterX;
                         parentMesh.position.z = characterConfig.intermediatePositionArray[i].position.z; // - tg.worldCenterZ;
                         // so that in next refresh cycle, calculation starts here.
@@ -274,7 +280,7 @@ tg.updateCharacterStateBeforeRender = function () {
                 case 'spawn':
                     break;
                 default:
-                    console.log('ERROR:Unknown action:' + characterConfig.action + ' for character:' + characterConfig.id);
+                    // console.log('ERROR:Unknown action:' + characterConfig.action + ' for character:' + characterConfig.id);
             }
         }
     }
@@ -306,6 +312,7 @@ function createAmbience() {
     playButton.background = "green";
 
     playButton.onPointerUpObservable.add(function() {
+        console.log('click play button.');
         sendMessageToWS(getEmptyMessagePacket('request_game_admit'));
     });
     tg.UIConfig.playButton = playButton;
@@ -413,7 +420,7 @@ function addStaticItems(){
 }
 
 function loadGLTFAssets() {
-    console.log('load gltf assets');
+    // console.log('load gltf assets');
     var staticItemCount = 0;
     
     loadGLTFAssetFile(
@@ -487,7 +494,7 @@ function loadCharacters(
             animationGroups,
             // animationIndexParam
         ) {
-            console.log('load character with id:' + characterItem.id);
+            // console.log('load character with id:' + characterItem.id);
             processLoadedModel(newMeshes,
                 particleSystems,
                 skeletons,
@@ -526,20 +533,20 @@ function processLoadedModel (
     team,
     playerID
 ) {
-    console.log('--------->' + characterName);
+    // console.log('--------->' + characterName);
     var characterConfig = itemConfigs.characters[characterName];
     if(characterConfig == null || characterConfig == undefined){
         console.error('character config is empty. exiting. character name:' + characterName);
         return;
     }
-    console.log('skeleton count:::' + skeletons.length);
-    console.log('newMeshes count:' + newMeshes.length);
+    // console.log('skeleton count:::' + skeletons.length);
+    // console.log('newMeshes count:' + newMeshes.length);
     
     for (var i = 0; i < newMeshes.length; ++i) {
-        // console.log(i + '->' + newMeshes[i].name);
+        // // console.log(i + '->' + newMeshes[i].name);
         newMeshes[i].isPickable = false;
     }
-    console.log('animationGroups count:' + animationGroups.length);
+    // console.log('animationGroups count:' + animationGroups.length);
     // scene.beginAnimation(skeletons[0], 0, 100, true, 1.0);
     // var skeleton = skeletons[0];
     var parentMesh = BABYLON.MeshBuilder.CreateBox(characterID, {
@@ -592,7 +599,7 @@ function processLoadedModel (
 
     animationGroups[characterConfig.idleAnimationIndex].play(true);
     // animationGroups[animationIndex].play(true);
-    // console.log('skeleton.animations:', skeleton.animations);
+    // // console.log('skeleton.animations:', skeleton.animations);
 
     //data reporter
     var outputplane = BABYLON.Mesh.CreatePlane("outputplane" + characterID, 25, tg.scene, false);
@@ -628,7 +635,7 @@ function loadGLTFAssetFile(filenameParam, positionParam, rotationParam, scalePar
           skeletons,
           animationGroups
         ) => {
-          console.log('inner function');
+          // console.log('inner function');
           this.meshes = newMeshes;
           loadStaticModel(
             newMeshes,
@@ -657,9 +664,9 @@ function loadStaticModel(
     newMeshes[0].position.z = positionParam.z;
     newMeshes[0].scaling = new BABYLON.Vector3(scale, scale, scale);
     newMeshes[0].addRotation(rotation.rx, rotation.ry, rotation.rz);
-    console.log('loadStaticModel');
+    // console.log('loadStaticModel');
     for (var i = 0; i < newMeshes.length; ++i) {
-        // console.log(i + '->' + newMeshes[i].name);
+        // // console.log(i + '->' + newMeshes[i].name);
         newMeshes[i].isPickable = false;
     }
 
@@ -712,7 +719,7 @@ function loadStaticModel(
 
 // display home page.
 function showHomePage(){
-    console.log('showHomePage');
+    // console.log('showHomePage');
     tg.UIConfig.advancedTexture.addControl(tg.UIConfig.playButton);  
 }
 
@@ -724,7 +731,7 @@ function startGamePlay(gameJSON){
     tg.teamID = playerConfig.teamID;
     tg.isGameLive = true;
 
-    console.log('startGamePlay:', gameJSON);
+    // console.log('startGamePlay:', gameJSON);
     let characters = gameJSON.bots;
     for (let i = 0; i < characters.length; ++i) {
         var characterID = characters[i].id;
@@ -748,7 +755,7 @@ function startGamePlay(gameJSON){
         characterConfig.isActive = characters[i].isActive;
         tg.startCharacterAnimation(characterConfig, characters[i].action, false);
     }
-    // console.log(gameJSON.objects);
+    // // console.log(gameJSON.objects);
     let objects = gameJSON.objects;
     for (let i = 0; i < objects.length; ++i) {
         var objectID = objects[i].id;

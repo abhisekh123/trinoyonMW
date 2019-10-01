@@ -173,7 +173,7 @@
     
     
     if(typeof tg !== 'undefined' && tg){
-        console.log(tg);
+        // console.log(tg);
         tg.itemConfigs = itemConfigs;
     }else{
         module.exports = itemConfigs;

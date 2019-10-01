@@ -28,12 +28,12 @@ module.exports = {
     },
 
     findPath: function(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ){
-        console.log('findPath:' + currentPositionX + ',' + currentPositionZ + ' to '
-            + targetPositionX + ',' + targetPositionZ);
-        // console.log(currentPositionX);
-        // console.log(currentPositionZ);
-        // console.log(targetPositionX);
-        // console.log(targetPositionZ);
+        // console.log('findPath:' + currentPositionX + ',' + currentPositionZ + ' to '
+            // + targetPositionX + ',' + targetPositionZ);
+        // // console.log(currentPositionX);
+        // // console.log(currentPositionZ);
+        // // console.log(targetPositionX);
+        // // console.log(targetPositionZ);
         var path = this.finder.findPath(
             Math.round((currentPositionX))// + this.tg.centreX
             , Math.round((currentPositionZ))// + this.tg.centreZ
@@ -54,16 +54,16 @@ module.exports = {
         this.maxBotCount = world_config.commonConfig.maxBotCount;
         this.grid = grid;
         this.gridBackup = this.grid.clone();
-        // console.log('bot_route_utility:', world_config.gridSide);
+        // // console.log('bot_route_utility:', world_config.gridSide);
         this.finder = new PF.AStarFinder({
             allowDiagonal: true,
             dontCrossCorners: true,
             heuristic: PF.Heuristic.chebyshev
         });
 
-        // console.log('((((((((((((((((((((');
+        // // console.log('((((((((((((((((((((');
         // var path = this.findPath(12, 3, 45, 70);
-        // console.log(path);
+        // // console.log(path);
 
         for(var i = 0; i < this.maxBotCount; ++i){
             this.botPositionArray[i] = {x:0, y:0, z:0};
@@ -92,8 +92,8 @@ module.exports = {
                 tmpGridMatrixToStoreLinearPaths[i][j] = {
                     linePath : this.draw_line(i, j, this.maxRange, this.maxRange)
                 };
-                // console.log('i:' + i + ' j:' + j);
-                // console.log(tmpGridMatrixToStoreLinearPaths[i][j]);
+                // // console.log('i:' + i + ' j:' + j);
+                // // console.log(tmpGridMatrixToStoreLinearPaths[i][j]);
                 // angle with positive z axis(away from camera). negetive for left side(x < 0)
                 this.distanceMatrix[i][j] = {};
                 this.distanceMatrix[i][j].anglePositiveZAxis = this.roundTo2Decimal(Math.atan2((i - this.maxRange), (j - this.maxRange))); 
@@ -101,8 +101,8 @@ module.exports = {
                 this.distanceMatrix[i][j].distance = this.roundTo2Decimal(Math.sqrt(Math.pow((i - this.maxRange), 2) + Math.pow((j - this.maxRange), 2)));
             }
         }
-        // console.log(tmpGridMatrixToStoreLinearPaths[26][26]);
-        // console.log(JSON.stringify(this.distanceMatrix));
+        // // console.log(tmpGridMatrixToStoreLinearPaths[26][26]);
+        // // console.log(JSON.stringify(this.distanceMatrix));
 
         if(this.createFreshVisibility){
             this.createVisibilityMatrix(tmpGridMatrixToStoreLinearPaths, 'visibilityMatrix.txt');
@@ -128,7 +128,7 @@ module.exports = {
     },
 
     loadVisibilityMatrixFromFile: function(fileName){
-        console.log('start loadVisibilityMatrixFromFile');
+        // console.log('start loadVisibilityMatrixFromFile');
         // create instance of readline
         // each instance is associated with single input stream
         let rl = readline.createInterface({
@@ -146,7 +146,7 @@ module.exports = {
                     console.error('breadth != this.floor.breadth');
                     return;
                 }else{
-                    console.log('breadth test passed');
+                    // console.log('breadth test passed');
                 }
             }else if(line_no == 3){
                 var length = parseInt(line);
@@ -154,21 +154,21 @@ module.exports = {
                     console.error('length != this.floor.length');
                     return;
                 }else{
-                    console.log('length test passed');
+                    // console.log('length test passed');
                 }
             }
             line_no++;
-            console.log(line);
+            // console.log(line);
         });
 
         // end
         rl.on('close', function(line) {
-            console.log('Total lines : ' + line_no);
+            // console.log('Total lines : ' + line_no);
         });
     },
 
     createVisibilityMatrix: function(tmpGridMatrixToStoreLinearPaths, fileName){
-        // console.log('start createVisibilityMatrix');
+        // // console.log('start createVisibilityMatrix');
         // var fileAppender = fs.createWriteStream(fileName, {
         //     flags: 'a' // 'a' means appending (old data will be preserved)
         // });
@@ -191,7 +191,7 @@ module.exports = {
             console.log('computing grid x:' + x);
             this.visibilityMatrix[x] = new Array();
             for(var z = 0; z < world_config.gridSide; ++z){ // scan floor along z axis
-                // console.log('z:' + z);
+                // // console.log('z:' + z);
                 // x, z are the actual grid point for which we are generating visibility graph
                 writeStream.write(x + ',' + z + '\n');
                 var neighbourhoodVisibilityGrid = new Array();
@@ -207,11 +207,11 @@ module.exports = {
                         
                         if(this.isPointInGrid(actual_x, actual_z)){ // checking if we need to test visibility
                             // testing visibility of x, z from point actual_x, actual_z
-                            // console.log('wer:', tmpGridMatrixToStoreLinearPaths.length);
-                            // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small].length);
-                            // console.log(x_small);
-                            // console.log(z_small);
-                            // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small][z_small]);
+                            // // console.log('wer:', tmpGridMatrixToStoreLinearPaths.length);
+                            // // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small].length);
+                            // // console.log(x_small);
+                            // // console.log(z_small);
+                            // // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small][z_small]);
                             // var path = this.findPath(x, z, actual_x, actual_z);
                             // neighbourPathGrid[x_small][z_small] = path;
 
@@ -230,7 +230,7 @@ module.exports = {
                                 if(!this.grid.isWalkableAt(actual_x_pathPoint, actual_z_pathPoint)){
                                     // obstacle found. Stop scan and mark : Not Visible.
                                     // neighbourhoodVisibilityGrid[x_small][z_small] = false;
-                                    // console.log('visibility false.');
+                                    // // console.log('visibility false.');
                                     binaryStringArray[z_small] = '0';
                                     break;
                                 }
@@ -244,8 +244,8 @@ module.exports = {
                     var binaryString = binaryStringArray.join('');
                     neighbourhoodVisibilityGrid[x_small] = parseInt(binaryString, 2);
                     writeStream.write(binaryString + '\n');
-                    // console.log(binaryStringArray.join(''));
-                    // console.log(neighbourhoodVisibilityGrid[x_small]);
+                    // // console.log(binaryStringArray.join(''));
+                    // // console.log(neighbourhoodVisibilityGrid[x_small]);
                 }
                 this.visibilityMatrix[x][z] = {
                     visibility : neighbourhoodVisibilityGrid,
@@ -260,7 +260,7 @@ module.exports = {
         // writeStream.close();
         writeStream.end();
         writeStream.on('finish', () => {  
-            console.log('wrote all data to file');
+            // console.log('wrote all data to file');
         });
     },
 
@@ -283,7 +283,7 @@ module.exports = {
     updateBotPosition: function(id, x, z){
         // return;
         var botIndex = 0;
-        // console.log('id23:' + id);
+        // // console.log('id23:' + id);
         var botConfig = workerstate.botMap[id];
         if(botConfig==null || botConfig==undefined){
             botIndex = id;
@@ -297,7 +297,7 @@ module.exports = {
             this.botPositionArray[botIndex].x = 0;
             this.botPositionArray[botIndex].y = 0;
             this.botPositionArray[botIndex].z = 0;
-            // console.log('ERROR++++++++++++++++++++++@@@@@@@@@@updateBotPosition');
+            // // console.log('ERROR++++++++++++++++++++++@@@@@@@@@@updateBotPosition');
         }else{
             this.visibilityMatrix[this.botPositionArray[botIndex].x][this.botPositionArray[botIndex].z].id = null;
         }
@@ -317,11 +317,11 @@ module.exports = {
     },
 
     getSuitableOtherTeamBotTarget: function(botConfigParam){
-        console.log('getSuitableOtherTeamBotTarget for:' + botConfigParam.id 
-            + ' at position:' + botConfigParam.payload.position
-            + ' team:' + botConfigParam.team
-            + ' playerID:' + botConfigParam.playerID);
-        // console.log(botConfigParam);
+        // console.log('getSuitableOtherTeamBotTarget for:' + botConfigParam.id 
+            // + ' at position:' + botConfigParam.payload.position
+            // + ' team:' + botConfigParam.team
+            // + ' playerID:' + botConfigParam.playerID);
+        // // console.log(botConfigParam);
         var x = botConfigParam.payload.position[0];
         var z = botConfigParam.payload.position[2];
         const range = botConfigParam.range;
@@ -344,19 +344,19 @@ module.exports = {
                 if(!this.isPointInGrid(i, j) || (i == x && j == z)){
                     continue;
                 }
-                // console.log('testing for bot:' + this.visibilityMatrix[i][j].id + ' at x:' + i + ' z:' + j);
+                // // console.log('testing for bot:' + this.visibilityMatrix[i][j].id + ' at x:' + i + ' z:' + j);
                 if(this.visibilityMatrix[i][j].id != null){ // if grid position occupied
-                    // console.log('testing for bot:' + this.visibilityMatrix[i][j].id + ' at x:' + i + ' z:' + j);
+                    // // console.log('testing for bot:' + this.visibilityMatrix[i][j].id + ' at x:' + i + ' z:' + j);
                     const botConfig = workerstate.botMap[this.visibilityMatrix[i][j].id];
                     if(botConfig.team != teamIDParam && botConfig.isActive){
-                        // console.log('------...........>>>>>>>>>if');
+                        // // console.log('------...........>>>>>>>>>if');
                         // var botX = botConfig.payload.position[0];
                         // var botZ = botConfig.payload.position[2];
                         var tX = i - x + this.maxRange;
                         var tZ = j - z + this.maxRange;
                         // var path = visibilityMatrixAtLocation.localPath[tX][tZ];
                         var path = this.findPath(x, z, i, j);
-                        console.log('got path:', path);
+                        // console.log('got path:', path);
                         if(minDist > path.length){
                             // selectedvisibilityMatrixObject = distMatrixObject;
                             minDist = path.length;
@@ -369,24 +369,24 @@ module.exports = {
                 }else{
                     buildingID = this.isObstacleDefenseOrBase(i, j, teamIDParam);
                     if(buildingID === null || buildingID === undefined){
-                        // console.log('skipping as buildingID === null || buildingID === undefined');
+                        // // console.log('skipping as buildingID === null || buildingID === undefined');
                     }else{
-                        console.log('testing for is buildingID: at x:' + i + ' z:' + j + ' buildingID:', buildingID);
+                        // console.log('testing for is buildingID: at x:' + i + ' z:' + j + ' buildingID:', buildingID);
                         const buildingConfig = workerstate.buildingMap[buildingID];
-                        // console.log('=============>buildingConfig:', buildingConfig);
+                        // // console.log('=============>buildingConfig:', buildingConfig);
                         if(!buildingConfig.isActive || buildingConfig.life <= 0){
                             // return null;
                             // skip inactive buildings
-                            console.log('skipping inactive building:', buildingID);
+                            // console.log('skipping inactive building:', buildingID);
                         }else{
-                            // console.log('%%%%%%%%%%%%returned building id:', buildingID);
+                            // // console.log('%%%%%%%%%%%%returned building id:', buildingID);
                             if(buildingID != null){
-                                // console.log('buildingID=', buildingID);
+                                // // console.log('buildingID=', buildingID);
                                 var tX = i - x + this.maxRange;
                                 var tZ = j - z + this.maxRange;
                                 // var path = visibilityMatrixAtLocation.localPath[tX][tZ];
                                 var path = this.findPath(x, z, i, j);
-                                console.log('got path:', path);
+                                // console.log('got path:', path);
                                 if(minDist > path.length){
                                     // selectedvisibilityMatrixObject = distMatrixObject;
                                     minDist = path.length;
@@ -401,29 +401,29 @@ module.exports = {
                 }
             }
         }
-        // console.log('returning chosen opponent.');
+        // // console.log('returning chosen opponent.');
         if(chosenEnemyID != null){
-            console.log(11111111111);
-            // console.log('getSuitableOtherTeamBotTarget returning:', {
+            // console.log(11111111111);
+            // // console.log('getSuitableOtherTeamBotTarget returning:', {
             //     chosenEnemyID,
             //     pathToEnemy,
             //     botRotation,
             //     chosenTargetType
             // });
             var returnvar = {};
-            // console.log(returnvar);
+            // // console.log(returnvar);
             returnvar.chosenEnemyID = chosenEnemyID;
-            // console.log(returnvar);
+            // // console.log(returnvar);
             returnvar.pathToEnemy = pathToEnemy;
-            // console.log(returnvar);
+            // // console.log(returnvar);
             returnvar.botRotation = botRotation;
-            // console.log(returnvar);
+            // // console.log(returnvar);
             returnvar.chosenTargetType = chosenTargetType;
-            console.log(returnvar);
+            // console.log(returnvar);
             return returnvar;
         }else{
-            console.log(2);
-            // console.log('getSuitableOtherTeamBotTarget returning null');
+            // console.log(2);
+            // // console.log('getSuitableOtherTeamBotTarget returning null');
             return null;
         }
         
@@ -438,25 +438,25 @@ module.exports = {
         if(this.grid.isWalkableAt(x, z)){
             return null;
         }
-        // console.log('teamIDParam:', teamIDParam);
+        // // console.log('teamIDParam:', teamIDParam);
         if(teamIDParam == 1){
             for (let i = 0; i < world_config.defenceTop.length; i++) {
                 if(x === world_config.defenceTop[i][0] && z === world_config.defenceTop[i][1]){
                     return world_config.defenceTop[i][2];
                 }
             }
-            // console.log('world_config.topBase:', world_config.topBase);
+            // // console.log('world_config.topBase:', world_config.topBase);
             if(x === world_config.topBase[0] && z === world_config.topBase[1]){
                 return world_config.topBase[2];
             }
         }else{
             for (let i = 0; i < world_config.defenceBottom.length; i++) {
                 if(x === world_config.defenceBottom[i][0] && z === world_config.defenceBottom[i][1]){
-                    // console.log('returning:', )
+                    // // console.log('returning:', )
                     return world_config.defenceBottom[i][2];
                 }
             }
-            // console.log('world_config.bottomBase:', world_config.bottomBase);
+            // // console.log('world_config.bottomBase:', world_config.bottomBase);
             if(x === world_config.bottomBase[0] && z === world_config.bottomBase[1]){
                 return world_config.bottomBase[2];
             }

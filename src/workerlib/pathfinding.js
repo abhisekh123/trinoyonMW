@@ -1760,7 +1760,7 @@ IDAStarFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
 
     // With an overflow protection.
     for(j = 0; true; ++j) {
-        //console.log("Iteration: " + j + ", search cut-off value: " + cutOff + ", nodes visited thus far: " + nodesVisited + ".");
+        //// console.log("Iteration: " + j + ", search cut-off value: " + cutOff + ", nodes visited thus far: " + nodesVisited + ".");
 
         route = [];
 
@@ -1775,7 +1775,7 @@ IDAStarFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
         // If t is a node, it's also the end node. Route is now
         // populated with a valid path to the end node.
         if(t instanceof Node) {
-            //console.log("Finished at iteration: " + j + ", search cut-off value: " + cutOff + ", nodes visited: " + nodesVisited + ".");
+            //// console.log("Finished at iteration: " + j + ", search cut-off value: " + cutOff + ", nodes visited: " + nodesVisited + ".");
             return route;
         }
 

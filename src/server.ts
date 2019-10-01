@@ -22,29 +22,29 @@ export class DemoServer {
 
     async startServer(portParam: number){
         clientregistry.init();
-        console.log('starting worker');
+        // console.log('starting worker');
         workermanager.startWorker();
         
-        console.log('starting init routine.');
+        // console.log('starting init routine.');
         await assetManager.init();
-        console.log('completed initialising assetmanager.');
+        // console.log('completed initialising assetmanager.');
         app.get('/', function(req, res) {
-            console.log(req.body);
+            // console.log(req.body);
             res.sendFile(path.join(__dirname + '/../../public/index.html'));
         });
 
         app.post('/', function(req, res) {
-            console.log(req.body);
+            // console.log(req.body);
             res.sendFile(path.join(__dirname + '/../../public/index.html'));
         });
 
         app.get('/ppolicy', function(req, res) {
-            console.log(req.body);
+            // console.log(req.body);
             res.sendFile(path.join(__dirname + '/../../public/ppolicy.html'));
         });
 
         app.get('/termsofservice', function(req, res) {
-            console.log(req.body);
+            // console.log(req.body);
             res.sendFile(path.join(__dirname + '/../../public/termsofservice.html'));
         });
 
@@ -53,19 +53,19 @@ export class DemoServer {
         //initialize a simple http server
         const server = http.createServer(app);
 
-        const httpOptions = {
-            key: fs.readFileSync("/home/trinoyon/ssl.key"),
-            cert: fs.readFileSync("/home/trinoyon/ssl.cert")
-        }
-        const httpsserver = https.createServer(httpOptions, app);
+        // const httpOptions = {
+        //     key: fs.readFileSync("/home/trinoyon/ssl.key"),
+        //     cert: fs.readFileSync("/home/trinoyon/ssl.cert")
+        // }
+        // const httpsserver = https.createServer(httpOptions, app);
 
         //initialize the WebSocket server instance
-        // const wss = new WebSocket.Server({ server });
-        const wss = new WebSocket.Server({ server: httpsserver});
+        const wss = new WebSocket.Server({ server });
+        // const wss = new WebSocket.Server({ server: httpsserver});
 
         wss.on('connection', (ws: WebSocket) => {
-            // console.log('got new connection:' , ws);
-            console.log('got new connection');
+            // // console.log('got new connection:' , ws);
+            // console.log('got new connection');
             let clientID = clientregistry.admitNewClient(ws);
             if(clientID < 0){
                 ws.close();
@@ -77,7 +77,7 @@ export class DemoServer {
                 //log the received message and send it back to the client
                 
                 let clientConfig = clientregistry.clientMap.get(ws);
-                console.log('received: %s', message + 'from client with ID:' , clientConfig);
+                // console.log('received: %s', message + 'from client with ID:' , clientConfig);
 
                 var messageJSON;
                 if(message) {
@@ -88,7 +88,7 @@ export class DemoServer {
                             return;
                         }
                     } catch(e) {
-                        console.log(e); // error in the above string (in this case, yes)!
+                        // console.log(e); // error in the above string (in this case, yes)!
                         return;
                     }
                 }
@@ -97,8 +97,17 @@ export class DemoServer {
                 requestProcessor.process(reqMsg, ws);
             });
             ws.on('close', (message: string) => {
-                console.log('closed connection.');
-                clientregistry.removeClient(ws);
+                // console.log('closed connection.');
+                const clientID = clientregistry.removeClient(ws);
+                if(clientID != null && clientID != undefined){
+                    requestProcessor.process({
+                        type: 'client_disconnected',
+                        clientID: clientID,
+                        teamID: 0,
+                        message:{}
+                    } as request_message, ws);
+                }
+                
             });
 
             ws.on('error', (message: string) => {
@@ -106,15 +115,15 @@ export class DemoServer {
             });
         
         });
-        
+        // console.log('-----portParam:', portParam);
         //start our server
         server.listen(portParam, () => {
-            console.log(`Server started on port ${server.address.toString} :)`);
+            // console.log(`>>>>>>>>>>>>>>>>>Server started on port ${server.address.toString} :)`);
         });
 
-        httpsserver.listen(443, () => {
-            console.log(`Server started on port ${httpsserver.address.toString} :)`);
-        });
+        // httpsserver.listen(443, () => {
+        //     // console.log(`Server started on port ${httpsserver.address.toString} :)`);
+        // });
 
     }
 }
@@ -122,7 +131,7 @@ export class DemoServer {
 
 
 const demoServer = new DemoServer();
-demoServer.startServer(80);
+demoServer.startServer(8080);
 
 
 

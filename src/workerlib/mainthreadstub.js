@@ -4,14 +4,14 @@ module.exports = {
     myname:'wer',
     messagebuffer:null,
     consumeMessage: function(data){
-        console.log('@@@WRKR@@@' + this.myname + '/t worker got message:' + data);
-        // console.log(this.messagebuffer);
+        // console.log('@@@WRKR@@@' + this.myname + '/t worker got message:' + data);
+        // // console.log(this.messagebuffer);
         this.messagebuffer.push(data);
 
-        // console.log('>>123' + this.messagebuffer.length);
+        // // console.log('>>123' + this.messagebuffer.length);
     },
     // getNewMessages: function(){
-    //     console.log('--' + this.myname + '>>getNewMessages:' + this.messagebuffer.messagecount);
+    //     // console.log('--' + this.myname + '>>getNewMessages:' + this.messagebuffer.messagecount);
     //     var messageList = null;
     //     if(this.messagebuffer.messagecount > 0){
     //         messageList = this.messagebuffer.messagelist;

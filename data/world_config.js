@@ -1,5 +1,5 @@
 
-console.log('####world_config');
+// console.log('####world_config');
 var worldItems = {
     // avg speed : 10 kmph : 2.77m/sec
     // root(2) = 1.414
@@ -333,7 +333,7 @@ var worldItems = {
 };
 
 if(typeof tg !== 'undefined' && tg){
-    console.log(tg);
+    // console.log(tg);
     tg.worldItems = worldItems;
 }else{
     module.exports = worldItems;

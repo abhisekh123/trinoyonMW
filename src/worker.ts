@@ -5,7 +5,7 @@
 const workerlogic = require(__dirname + '/src/workerlib/workerlogic');
 const mainThreadStub = require(__dirname + '/src/workerlib/mainthreadstub');
 mainThreadStub.messagebuffer = [];
-console.log('starting worker');
+// console.log('starting worker');
 
 onmessage = function(event){
     mainThreadStub.consumeMessage(event.data);

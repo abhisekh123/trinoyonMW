@@ -32,7 +32,7 @@ module.exports = {
                 return this.inventory.store.init_key;
                 break;
             case 'init_video':
-                // console.log(this.inventory.store.init_video_key);
+                // // console.log(this.inventory.store.init_video_key);
                 return this.inventory.store.init_video_key;
                 break;
             case 'init_world':
@@ -41,11 +41,11 @@ module.exports = {
                 break;
             case 'binary':
                 const actualID = this.inventory.literals[assetID];
-                console.log('actualID::' + actualID);
+                // console.log('actualID::' + actualID);
                 return this.inventory.store[actualID];
                 break;
             default:
-                console.log('default message');
+                // console.log('default message');
                 break
         }
     },
@@ -60,26 +60,26 @@ module.exports = {
 
         // for each inventory content ... read content and load in memory.
         for (var key in parentCtrl.inventory.catalog.items) {
-            // console.log("key " + key + " has value " + parentCtrl.inventory.catalog[key]);
+            // // console.log("key " + key + " has value " + parentCtrl.inventory.catalog[key]);
             const fileName: string = parentCtrl.inventory.catalog.items[key];
             // const v3 = await readFilePromise('./data/' + fileName, 'utf-8');
             const v3 = await readFilePromise('./data/' + fileName, 'utf-8');
             parentCtrl.inventory.store[key] = v3;
         }
-        console.log('-----------------------');
-        console.log(parentCtrl.inventory.catalog);
+        // console.log('-----------------------');
+        // console.log(parentCtrl.inventory.catalog);
 
         for (var key in parentCtrl.inventory.catalog.images) {
-            // console.log("key " + key + " has value " + parentCtrl.inventory.catalog.images[key]);
+            // // console.log("key " + key + " has value " + parentCtrl.inventory.catalog.images[key]);
             const fileName: string = parentCtrl.inventory.catalog.images[key];
             // const v4 = await readFilePromise('./data/images/' + fileName, 'utf-8');
             const v4 = this.base64_encode('./data/images/' + fileName, 'utf-8');
-            // console.log('================');
-            // console.log(v4);
+            // // console.log('================');
+            // // console.log(v4);
             parentCtrl.inventory.store[key] = v4;
         }
 
-        // console.log('inventory--->' , parentCtrl.inventory);
+        // // console.log('inventory--->' , parentCtrl.inventory);
     }
 }
 
