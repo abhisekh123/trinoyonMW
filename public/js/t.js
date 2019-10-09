@@ -42,8 +42,9 @@ function initSystem(){
             tg.startGamePlay(responseJSON);
         }else if(responseJSON.type == 'ack_request_game_exit'){
             // console.log('processing ack_request_game_exit.');
-            tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.exitGameButton);
-            tg.showHomePage();
+            // tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.exitGameButton);
+            // tg.showHomePage();
+            location.reload();
         }else if(responseJSON.type == 'request_game_world_reload'){
             // console.log('get request_game_world_reload from server.', responseJSON);
         }else{// message is code.

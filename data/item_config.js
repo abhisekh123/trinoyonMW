@@ -58,24 +58,24 @@
                 scale:0.04
             },
         },
-        character_old:{
-            rifleman:{
-                attachmentmesh:['rifle', 'handGun'],
-                life:10,
-                speed:1, //one tile per 1000 ms.
-                strideDistance: 0.5,
-                strideTime: 0.25,
-                sight: 11,
-            },
-            commander:{
-                attachmentmesh:['mcGun', 'handGun'],
-                life:10,
-                speed:1, //one tile per 1000 ms.
-                strideDistance: 0.5,
-                strideTime: 0.25,
-                sight: 13
-            },
-        },
+        // character_old:{
+        //     rifleman:{
+        //         attachmentmesh:['rifle', 'handGun'],
+        //         life:10,
+        //         speed:1, //one tile per 1000 ms.
+        //         strideDistance: 0.5,
+        //         strideTime: 0.25,
+        //         sight: 11,
+        //     },
+        //     commander:{
+        //         attachmentmesh:['mcGun', 'handGun'],
+        //         life:10,
+        //         speed:1, //one tile per 1000 ms.
+        //         strideDistance: 0.5,
+        //         strideTime: 0.25,
+        //         sight: 13
+        //     },
+        // },
         weapon:{ // range 0 <= 26. Time intervals in milliseconds.
             rifle:{
                 size:[2,2,2],

@@ -61,26 +61,29 @@ var createScene = function () {
     // Create the scene space
     tg.scene = new BABYLON.Scene(tg.engine);
     // alert(tg.playerDimensionBaseUnit);
-    tg.camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, 
-        new BABYLON.Vector3(44.5 * tg.playerDimensionBaseUnit, 3 * tg.playerDimensionBaseUnit, 100 * tg.playerDimensionBaseUnit), tg.scene);
+    // tg.camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, 
+    //     new BABYLON.Vector3(44.5 * tg.playerDimensionBaseUnit, 3 * tg.playerDimensionBaseUnit, 100 * tg.playerDimensionBaseUnit), tg.scene);
     
-    // tg.camera = new BABYLON.FollowCamera("Camera", new BABYLON.Vector3(0, 10, -10), tg.scene);
+    // Parameters: name, position, scene
+    tg.camera = new BABYLON.FollowCamera("Camera", new BABYLON.Vector3(0, 10, -10), tg.scene);
     // //The goal distance of camera from target
-	// tg.camera.radius = 30;
+	tg.camera.radius = 90;
 	
 	// // The goal height of camera above local origin (centre) of target
-	// tg.camera.heightOffset = 10;
+	tg.camera.heightOffset = 55;
 	
 	// // The goal rotation of camera around local origin (centre) of target in x y plane
-	// tg.camera.rotationOffset = 0;
+	tg.camera.rotationOffset = 0;
 	
 	// //Acceleration of camera in moving from current to goal position
-	// tg.camera.cameraAcceleration = 0.005
+	tg.camera.cameraAcceleration = 0.002
 	
 	// //The speed at which acceleration is halted 
-    // tg.camera.maxCameraSpeed = 10
+    tg.camera.maxCameraSpeed = 5
     
-    tg.camera.attachControl(tg.canvas, true);
+    // tg.camera.attachControl(tg.canvas, true);
+
+
     // tg.cameraSavedPosition.x = tg.camera.position.x;
     // tg.cameraSavedPosition.y = tg.camera.position.y;
     // tg.cameraSavedPosition.z = tg.camera.position.z;
@@ -98,7 +101,7 @@ var createScene = function () {
     return tg.scene;
 };
 
-var createSceneStaticAssets = function(){
+var createTextures = function(){
 
     var material_semitransparent_blue = new BABYLON.StandardMaterial('blue', tg.scene);
     material_semitransparent_blue.diffuseColor = BABYLON.Color3.Blue();
@@ -136,31 +139,31 @@ var createSceneStaticAssets = function(){
 
 
 
-tg.setCharacterPose = function (currentConfigParam) {
-    // // console.log('set character pose.');
-    if(currentConfigParam == undefined || currentConfigParam == null){
-        // console.log('currentConfigParam is invalid');
-        return;
-    }
-    // var currentConfig = tg.spriteAssets[tg.currentSelectedSprite].configuration;
-    tg.bodyMeshArray[0].position.x = currentConfigParam[0];
-    tg.bodyMeshArray[0].position.y = currentConfigParam[1];
-    tg.bodyMeshArray[0].position.z = currentConfigParam[2];
+// tg.setCharacterPose = function (currentConfigParam) {
+//     // // console.log('set character pose.');
+//     if(currentConfigParam == undefined || currentConfigParam == null){
+//         // console.log('currentConfigParam is invalid');
+//         return;
+//     }
+//     // var currentConfig = tg.spriteAssets[tg.currentSelectedSprite].configuration;
+//     tg.bodyMeshArray[0].position.x = currentConfigParam[0];
+//     tg.bodyMeshArray[0].position.y = currentConfigParam[1];
+//     tg.bodyMeshArray[0].position.z = currentConfigParam[2];
 
-    for (var i = 0; i < tg.bodyMeshArray.length; ++i) {
-    // for (var i =  tg.bodyMeshArray.length - 1; i > 0; --i) {
-        tg.bodyMeshArray[i].rotation.x = currentConfigParam[(i * 3) + 3];
-        tg.bodyMeshArray[i].rotation.y = currentConfigParam[(i * 3) + 4];
-        tg.bodyMeshArray[i].rotation.z = currentConfigParam[(i * 3) + 5];
-        // tg.bodyMeshArray[i].addRotation(
-        //     currentConfig[(i * 3) + 3],
-        //     currentConfig[(i * 3) + 4],
-        //     currentConfig[(i * 3) + 5]
-        // );
-        // tg.spriteAssets[0].configuration[(i * 3) + 6] = tg.bodyMeshArray[i].rotationQuaternion.w;
-    }
-    // console.log('done');
-};
+//     for (var i = 0; i < tg.bodyMeshArray.length; ++i) {
+//     // for (var i =  tg.bodyMeshArray.length - 1; i > 0; --i) {
+//         tg.bodyMeshArray[i].rotation.x = currentConfigParam[(i * 3) + 3];
+//         tg.bodyMeshArray[i].rotation.y = currentConfigParam[(i * 3) + 4];
+//         tg.bodyMeshArray[i].rotation.z = currentConfigParam[(i * 3) + 5];
+//         // tg.bodyMeshArray[i].addRotation(
+//         //     currentConfig[(i * 3) + 3],
+//         //     currentConfig[(i * 3) + 4],
+//         //     currentConfig[(i * 3) + 5]
+//         // );
+//         // tg.spriteAssets[0].configuration[(i * 3) + 6] = tg.bodyMeshArray[i].rotationQuaternion.w;
+//     }
+//     // console.log('done');
+// };
 
 tg.getGridCoordinateFromPointerPosition = function(position) {
     return {
@@ -286,7 +289,7 @@ tg.getFloorPositionFromGrid = function(gridPosition){
 function initVideo(){
     // alert('initVideo');
     createScene(); //Call the createScene function
-    createSceneStaticAssets();
+    createTextures();
     let picketPoint = null;
 
 //     var el = document.getElementsByTagName("canvas")[0];

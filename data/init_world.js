@@ -12,6 +12,8 @@ tg.meshNameToIDMap = {};
 tg.characterConfig = [];
 tg.UIConfig = {};
 tg.currentTime = Date.now();
+tg.totalAssetsToBeLoaded = 0;
+tg.totalAssetsLoaded_tillNow = 0;
 
 function createWorld() {
     tg.updateWorld = updateWorld;
@@ -32,56 +34,41 @@ function updateWorld(jsonParam) {
         if (meshID == null || meshID == undefined || jsonParam.payload[meshID] == undefined) {
             continue;
         }
-        var characterConfig = worldItems.characterMap[meshID];
-        if(characterConfig == null || characterConfig == undefined){
-            characterConfig = worldItems.staticObjectMap[meshID];
+        // search meshID from characterMap
+        var meshConfig = worldItems.characterMap[meshID];
+        if(meshConfig == null || meshConfig == undefined){// if not found
+            // search meshID from staticObjectMap
+            meshConfig = worldItems.staticObjectMap[meshID];
         }
-        if(characterConfig == null || characterConfig == undefined){
-            // console.log('error. skipping update mesh');
+        if(meshConfig == null || meshConfig == undefined){// if still not found.
+            console.log('error. skipping update mesh with ID:', meshID);
             continue;
         }
 
         // // console.log('meshID:' + meshID);
         var update = jsonParam.payload[meshID];
-        var parentMesh = characterConfig.parentMesh;
+        var parentMesh = meshConfig.parentMesh;
         var posX = (update.x + 0.5) * tg.playerDimensionBaseUnit;
         var posZ = (update.z + 0.5) * tg.playerDimensionBaseUnit;
         var rot = update.rot;
         if(rot == null || rot == undefined){
             rot = 0;
         }
-        if(characterConfig.defaultRotation == null || characterConfig.defaultRotation == undefined){
-            characterConfig.defaultRotation = 0;
+        if(meshConfig.defaultRotation == null || meshConfig.defaultRotation == undefined){
+            meshConfig.defaultRotation = 0;
         }
         switch(update.action){
             case'goto':
-                // set smooth animation
-                // refresh time
-                // worldItems.characterMap[characterID].intermediatePositionArray = [];
-                // // console.log('break down movement for bot:' + meshID);
-                // // console.log(parentMesh.position);
-                // // console.log('to new position:');
-                // // console.log(update);
-                // console.log('<', meshID, '>:', parentMesh.position, '->[', posX, ',', posZ, ']@', tg.currentTime);
                 var deltaX = posX - parentMesh.position.x;
                 var deltaZ = posZ - parentMesh.position.z;
                 for(var i = 0; i < refreshWorldPerIntervalUI; ++i){
-                    // characterConfig.intermediatePositionArray[i] = {
-                    //     position:{
-                    //         x:0,
-                    //         y:0,
-                    //         z:0
-                    //     },
-                    //     time:0
-                    // }
                     var fraction = (i + 1) / refreshWorldPerIntervalUI;
-
-                    characterConfig.intermediatePositionArray[i].position.x = parentMesh.position.x + (fraction * deltaX);
-                    characterConfig.intermediatePositionArray[i].position.z = parentMesh.position.z + (fraction * deltaZ);
-                    characterConfig.intermediatePositionArray[i].time = tg.currentTime + (fraction * refreshWorldInterval);
+                    meshConfig.intermediatePositionArray[i].position.x = parentMesh.position.x + (fraction * deltaX);
+                    meshConfig.intermediatePositionArray[i].position.z = parentMesh.position.z + (fraction * deltaZ);
+                    meshConfig.intermediatePositionArray[i].time = tg.currentTime + (fraction * refreshWorldInterval);
                 }
-                parentMesh.rotation.y = rot + characterConfig.defaultRotation;
-                characterConfig.intermediatePositionArrayIndex = 0;
+                parentMesh.rotation.y = rot + meshConfig.defaultRotation;
+                meshConfig.intermediatePositionArrayIndex = 0;
                 animationPlayFlag = true;
                 break;
             case 'idle':
@@ -89,7 +76,7 @@ function updateWorld(jsonParam) {
                 // console.log('x:' + posX + ' z:' + posZ);
                 parentMesh.position.x = posX; // - tg.worldCenterX;
                 parentMesh.position.z = posZ; // - tg.worldCenterZ;
-                parentMesh.rotation.y = rot + characterConfig.defaultRotation;
+                parentMesh.rotation.y = rot + meshConfig.defaultRotation;
                 animationPlayFlag = true;
                 break;
             case 'attack':
@@ -97,25 +84,18 @@ function updateWorld(jsonParam) {
                 // console.log('#$@[' + meshID + ']x:' + posX + ' z:' + posZ + '=@', tg.currentTime);
                 parentMesh.position.x = posX; // - tg.worldCenterX;
                 parentMesh.position.z = posZ; // - tg.worldCenterZ;
-                parentMesh.rotation.y = rot + characterConfig.defaultRotation;
+                parentMesh.rotation.y = rot + meshConfig.defaultRotation;
                 animationPlayFlag = true;
                 break;
             case 'die':
-                // // console.log('dead item:', characterConfig)
-                // alert(meshID + ' died');
-                // // console.log('set position for character:' + meshID + ' at time:' + tg.currentTime);
-                // // console.log('x:' + posX + ' z:' + posZ);
-                // console.log('! :-(( [' + meshID + ']x:' + posX + ' z:' + posZ + '=@', tg.currentTime);
-                // parentMesh.position.x = posX; // - tg.worldCenterX;
-                // parentMesh.position.z = posZ; // - tg.worldCenterZ;
-                // parentMesh.rotation.y = rot + characterConfig.defaultRotation;
+                // // console.log('dead item:', meshConfig);
                 animationPlayFlag = false;
                 break;
             case 'spawn':
                 // console.log('^^^[' + meshID + ']x:' + posX + ' z:' + posZ + '=@', tg.currentTime);
                 parentMesh.position.x = posX; // - tg.worldCenterX;
                 parentMesh.position.z = posZ; // - tg.worldCenterZ;
-                parentMesh.rotation.y = rot + characterConfig.defaultRotation;
+                parentMesh.rotation.y = rot + meshConfig.defaultRotation;
                 animationPlayFlag = false;
                 break;
             case 'over':
@@ -127,11 +107,11 @@ function updateWorld(jsonParam) {
                 alert('==========game over. loosing team is:' + update.loosingTeam);
                 location.reload();
             default:
-                // console.log('ERROR:Unknown action:' + meshID + ' for character:' + characterConfig.id);
+                console.log('ERROR:Unknown action:' + meshID + ' for character:' + meshConfig.id);
         }
         
 
-        tg.startCharacterAnimation(characterConfig, jsonParam.payload[meshID].action, animationPlayFlag);
+        tg.startCharacterAnimation(meshConfig, jsonParam.payload[meshID].action, animationPlayFlag);
     }
 };
 
@@ -335,7 +315,10 @@ function createAmbience() {
 
     tg.showHomePage = showHomePage;
     tg.startGamePlay = startGamePlay;
+    tg.showLandingPage = showLandingPage;
+    tg.refreshAssetLoadedAlert = refreshAssetLoadedAlert;
 }
+
 
 function addStaticItems(){
     var boxMaterial = new BABYLON.StandardMaterial("box", tg.scene);
@@ -370,6 +353,7 @@ function addStaticItems(){
     ground.material = groundMaterial;
     // ground.material = materialGround;
     tg.ground = ground;
+    tg.camera.lockedTarget = tg.ground;
 
     for(var i = 0; i < worldItems.obstacles.length; ++i){
         var box = BABYLON.MeshBuilder.CreateBox("box" + i, {
@@ -422,6 +406,9 @@ function addStaticItems(){
 function loadGLTFAssets() {
     // console.log('load gltf assets');
     var staticItemCount = 0;
+    tg.totalAssetsToBeLoaded = 2 + worldItems.defenceBottom.length 
+        + worldItems.defenceTop.length + worldItems.characters.length;
+    tg.totalAssetsLoaded_tillNow = 0;
     
     loadGLTFAssetFile(
         // 'shinto_shrine',
@@ -621,6 +608,10 @@ function processLoadedModel (
     outputplaneTexture.hasAlpha = true;
     outputplane.position.y = tg.playerDimensionBaseUnit * 1.2;
     outputplane.parent = parentMesh;
+
+
+    ++tg.totalAssetsLoaded_tillNow;
+    tg.refreshAssetLoadedAlert(tg.totalAssetsLoaded_tillNow, tg.totalAssetsToBeLoaded);
 }
 
 function loadGLTFAssetFile(filenameParam, positionParam, rotationParam, scaleParam, itemID, type) {
@@ -715,6 +706,36 @@ function loadStaticModel(
     outputplane.position.y = tg.playerDimensionBaseUnit * 4 + newMeshes[0].position.y;
     outputplane.position.z = newMeshes[0].position.z;
     // outputplane.parent = parentMesh;
+
+    ++tg.totalAssetsLoaded_tillNow;
+    tg.refreshAssetLoadedAlert(tg.totalAssetsLoaded_tillNow, tg.totalAssetsToBeLoaded);
+}
+
+
+function showLandingPage(){
+    var originalContent = "Loading assets... \n 0% loaded.";
+    var text1 = new BABYLON.GUI.TextBlock();
+    text1.textHorizontalAlignment = BABYLON.GUI.TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
+    text1.textWrapping = true;
+    text1.text = originalContent;
+    text1.color = "white";
+    text1.fontSize = 24;
+    text1.width = "30%";
+    tg.advancedTexture.addControl(text1);
+    tg.advancedTexture_text = text1;
+}
+function refreshAssetLoadedAlert(assetsAlreadyLoaded, totalAssetsToBeLoaded){
+    if(assetsAlreadyLoaded >= totalAssetsToBeLoaded){
+        // tg.advancedTexture.dispose();
+        tg.advancedTexture_text.text = "";
+        if(tg.isGameLive == false){
+            tg.showHomePage();
+        }
+    }else{
+        tg.advancedTexture_text.text = "Loading assets... \n " 
+            + Math.round((assetsAlreadyLoaded / totalAssetsToBeLoaded) * 100) 
+            + "% loaded.";
+    }
 }
 
 // display home page.
@@ -790,7 +811,11 @@ function entrypoint() {
     createAmbience();
 
     tg.updateWorld = updateWorld;
-    showHomePage();
+    // showHomePage();
+    // GUI
+    tg.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+    showLandingPage();
 
     tg.scene.registerAfterRender(function () {
         tg.updateCharacterStateBeforeRender();
