@@ -53,15 +53,15 @@ export class DemoServer {
         //initialize a simple http server
         const server = http.createServer(app);
 
-        // const httpOptions = {
-        //     key: fs.readFileSync("/home/trinoyon/ssl.key"),
-        //     cert: fs.readFileSync("/home/trinoyon/ssl.cert")
-        // }
-        // const httpsserver = https.createServer(httpOptions, app);
+        const httpOptions = {
+            key: fs.readFileSync("/home/trinoyon/ssl.key"),
+            cert: fs.readFileSync("/home/trinoyon/ssl.cert")
+        }
+        const httpsserver = https.createServer(httpOptions, app);
 
         //initialize the WebSocket server instance
-        const wss = new WebSocket.Server({ server });
-        // const wss = new WebSocket.Server({ server: httpsserver});
+        // const wss = new WebSocket.Server({ server });
+        const wss = new WebSocket.Server({ server: httpsserver});
 
         wss.on('connection', (ws: WebSocket) => {
             // // console.log('got new connection:' , ws);
@@ -121,9 +121,9 @@ export class DemoServer {
             // console.log(`>>>>>>>>>>>>>>>>>Server started on port ${server.address.toString} :)`);
         });
 
-        // httpsserver.listen(443, () => {
-        //     // console.log(`Server started on port ${httpsserver.address.toString} :)`);
-        // });
+        httpsserver.listen(443, () => {
+            // console.log(`Server started on port ${httpsserver.address.toString} :)`);
+        });
 
     }
 }
@@ -131,7 +131,7 @@ export class DemoServer {
 
 
 const demoServer = new DemoServer();
-demoServer.startServer(8080);
+demoServer.startServer(80);
 
 
 
