@@ -414,6 +414,9 @@ module.exports = {
             var playerConfig = playerManager.playerArrey[characterConfig.playerID - 1];
             // // console.log('player config:', playerConfig);
             var leaderConfig = workerstate.botMap[playerConfig.leaderBotID];
+            if(leaderConfig == null || leaderConfig == undefined){
+                return null;
+            }
             // // console.log('plaleaderConfigyer config:', leaderConfig);
             var currentPositionX = characterConfig.payload.position[0];
             var currentPositionZ = characterConfig.payload.position[2];
@@ -719,7 +722,7 @@ module.exports = {
 
 
     processNewMessages: function(){
-        // // console.log('woreker@processNewMessages');
+        console.log('woreker@processNewMessages');
         var playerID = -1;
         for(var i = 0; i < mainThreadStub.messagebuffer.length; ++i){
             // // console.log(i + '>processNewMessages::' + mainThreadStub.messagebuffer[i]);
@@ -733,23 +736,24 @@ module.exports = {
                     this.updateBotAction(currentMessage);
                     break;
                 case 'request_game_admit':
-                    // console.log('request game admit');
+                    console.log('request game admit');
                     var clientID = currentMessage.clientID;
                     var playerConfig = this.admitNewPlayer(clientID, false);
                     if(playerConfig != null){
                         currentMessage.type = 'request_game_admit_ack';
                         currentMessage = snapshotmanager.addSnapshot(currentMessage, playerConfig);
                         
-                        mainThreadStub.postMessage(currentMessage, '');
+                        // mainThreadStub.postMessage(currentMessage, '');
                         // this.refreshWorld();
                     }else{
                         currentMessage.type = 'request_game_admit_nack';
                         currentMessage.bots = [];
                         currentMessage.objects = {};
                         currentMessage.playerConfig = {};
-                        mainThreadStub.postMessage(currentMessage, '');
+                        // mainThreadStub.postMessage(currentMessage, '');
                     }
-                    
+                    console.log('---returning:', currentMessage);
+                    mainThreadStub.postMessage(currentMessage, '');
                     break;
                 case 'request_game_exit':
                 case 'client_disconnected':
@@ -993,7 +997,7 @@ module.exports = {
     },
 
     refreshWorld: function(){
-        // // console.log('=========>refreshWorld');
+        console.log('=========>refreshWorld');
         // var messageList = mainThreadStub.messagebuffer;
         if(mainThreadStub.messagebuffer.length > 0){
             this.processNewMessages();
@@ -1022,7 +1026,8 @@ module.exports = {
                     // this.instructBot(workerstate.buildingArray[i], 'die', null);
                     if(workerstate.buildingArray[i].type == 'base'){
                         this.terminateGame(workerstate.buildingArray[i]);
-                        return;
+                        this.refreshWorld();
+                        // return;
                     }
                     // console.log('building:' + workerstate.buildingArray[i].id + ' DIED.');
                     workerstate.buildingArray[i].isActive = false;

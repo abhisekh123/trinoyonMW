@@ -37,7 +37,7 @@ module.exports = {
                 break;
             case 'request_game_admit_ack': // client has been granted admission to the game.
                 var clientID = jsonData.clientID;
-                // console.log('get request_game_admit_ack from :' + clientID);
+                console.log('get request_game_admit_ack for :' + clientID);
                 let clientWS = clientregistry.clientArrey[clientID].ws;
                 clientregistry.sendMessageToClient(clientWS, ev.data);
                 break;
