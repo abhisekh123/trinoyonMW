@@ -1,11 +1,12 @@
-
 import * as WebSocket from 'ws';
-const world_config = require(__dirname + '/../../../data/world_config');
+const world_config = require(__dirname + '/../../../ui/world_config');
+
+// TODO: On client join : send status (queue status)
 
 module.exports = {
     clientArrey:[],//saves websocket objects
     clientMap:new Map<WebSocket, any>(),
-    maxClientCount:0,
+    maxClientCount:10,
     idCounter:0,
 
     init: function(){
@@ -25,6 +26,7 @@ module.exports = {
     },
 
     admitNewClient: function(wsParam: WebSocket){
+        console.log('trying to admit new client');
         for(var i = 0; i < this.maxClientCount; ++i){
             if(!this.clientArrey[i].isActive){
                 this.clientArrey[i].isActive = true;
@@ -38,6 +40,7 @@ module.exports = {
                 // clientObject.id = newID;
 
                 this.clientMap.set(wsParam, i);
+                console.log('successfully added new client:', i);
                 return i;
             }
         }

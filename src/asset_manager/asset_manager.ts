@@ -53,7 +53,7 @@ module.exports = {
     init: async function(){
         const parentCtrl = this;
 
-        const v1 = await readFilePromise('./data/inventory_catalog.json', 'utf-8');
+        const v1 = await readFilePromise(__dirname + '/../../../ui/inventory_catalog.json', 'utf-8');
         parentCtrl.inventory.catalog = JSON.parse(v1);
 
         parentCtrl.inventory.store = {};
@@ -63,7 +63,7 @@ module.exports = {
             // // console.log("key " + key + " has value " + parentCtrl.inventory.catalog[key]);
             const fileName: string = parentCtrl.inventory.catalog.items[key];
             // const v3 = await readFilePromise('./data/' + fileName, 'utf-8');
-            const v3 = await readFilePromise('./data/' + fileName, 'utf-8');
+            const v3 = await readFilePromise(__dirname + '/../../../ui/' + fileName, 'utf-8');
             parentCtrl.inventory.store[key] = v3;
         }
         // console.log('-----------------------');
@@ -73,7 +73,7 @@ module.exports = {
             // // console.log("key " + key + " has value " + parentCtrl.inventory.catalog.images[key]);
             const fileName: string = parentCtrl.inventory.catalog.images[key];
             // const v4 = await readFilePromise('./data/images/' + fileName, 'utf-8');
-            const v4 = this.base64_encode('./data/images/' + fileName, 'utf-8');
+            const v4 = this.base64_encode(__dirname + '/../../../ui/images/' + fileName, 'utf-8');
             // // console.log('================');
             // // console.log(v4);
             parentCtrl.inventory.store[key] = v4;

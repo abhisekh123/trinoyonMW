@@ -1,4 +1,3 @@
-
 module.exports = {
     gameBotState:{},
     gameStaticObjectState:{},
@@ -9,4 +8,5 @@ module.exports = {
     setGameStaticObjectState: function(dataParam:any){
         this.gameState = dataParam;
     },
+    
 }

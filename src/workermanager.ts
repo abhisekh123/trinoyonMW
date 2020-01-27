@@ -1,8 +1,8 @@
 
 const tinyworker = require("tiny-worker");
-const clientregistry = require('./serverlib/clientRegistry');
-const gameState = require('./gamestate');
-import {request_message} from './types';
+const clientregistry = require('./state/clientstate');
+const gameState = require('./state/gamestate');
+import {request_message} from './factory/types';
  
 
 /**

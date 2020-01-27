@@ -1,17 +1,17 @@
 
 // var types = require('.types');
-import {request_message} from './types';
+import {request_message} from './factory/types';
 import * as WebSocket from 'ws';
 const assetManager = require('./asset_manager/asset_manager');
 const workermanager = require('./workermanager');
-const clientregistry = require('./serverlib/clientRegistry');
+const clientregistry = require('./state/clientstate');
 
 
 export class RequestProcessor {
     process(requestJSON: request_message, ws: WebSocket) {
         const clientID = clientregistry.clientMap.get(ws);
         if(clientID == undefined || clientID == null){
-            // console.log('ERROR:Dropping request. Unknown sender.');
+            console.log('ERROR:Dropping request. Unknown sender.');
             return;
         }else{
             requestJSON.clientID = clientID;
@@ -26,7 +26,7 @@ export class RequestProcessor {
             case 'init':
             case 'init_video':
             case 'init_world':
-                // console.log('got message type:<' + requestJSON.type + '>');
+                console.log('got message type:<' + requestJSON.type + '>');
                 this.sendMessagePacket('ack1', assetManager.getAsset(requestJSON.type), ws);
                 break;
             case 'request_game_admit':

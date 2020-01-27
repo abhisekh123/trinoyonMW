@@ -1,8 +1,8 @@
 
 //top level : implements worker logic
 
-const world_config = require(__dirname + '/../../data/world_config');
-const item_config = require(__dirname + '/../../data/item_config');
+const world_config = require(__dirname + '/../../ui/world_config');
+const item_config = require(__dirname + '/../../ui/item_config');
 const math_util = require(__dirname + '/../utils/misc_util');
 const botroutemanager = require(__dirname + '/botroutemanager');
 const snapshotmanager = require(__dirname + '/snapshotmanager');
@@ -752,7 +752,8 @@ module.exports = {
                         currentMessage.playerConfig = {};
                         // mainThreadStub.postMessage(currentMessage, '');
                     }
-                    console.log('---returning:', currentMessage);
+                    // console.log('---returning:', currentMessage);
+                    console.log('player admitted successfully.');
                     mainThreadStub.postMessage(currentMessage, '');
                     break;
                 case 'request_game_exit':
@@ -997,7 +998,7 @@ module.exports = {
     },
 
     refreshWorld: function(){
-        console.log('=========>refreshWorld');
+        // console.log('=========>refreshWorld');
         // var messageList = mainThreadStub.messagebuffer;
         if(mainThreadStub.messagebuffer.length > 0){
             this.processNewMessages();

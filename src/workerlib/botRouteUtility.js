@@ -1,6 +1,6 @@
 
 const PF = require('pathfinding');
-const world_config = require(__dirname + '/../../data/world_config');
+const world_config = require(__dirname + '/../../ui/world_config');
 const workerstate = require('./workerstate');
 const botroutemanager = require(__dirname + '/botroutemanager');
 
