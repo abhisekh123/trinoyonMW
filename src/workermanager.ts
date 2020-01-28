@@ -13,7 +13,7 @@ module.exports = {
     workerRegister:{},
 
     startWorker: function(){
-        this.workerRegister.workerObject = new tinyworker(__dirname + '/worker.js');
+        this.workerRegister.workerObject = new tinyworker(__dirname + '/worker_root.js');
         // this.postMessage('hi worker!');
         this.workerRegister.workerObject.onmessage = this.processMessage;
     },
