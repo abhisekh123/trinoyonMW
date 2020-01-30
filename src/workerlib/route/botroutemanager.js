@@ -3,12 +3,12 @@
 
 const PF = require('pathfinding');
 
-const world_config = require(__dirname + '/../../ui/world_config');
-const item_config = require(__dirname + '/../../ui/item_config');
+const world_config = require(__dirname + '/../../../ui/world_config');
+const item_config = require(__dirname + '/../../../ui/item_config');
 // const math_util = require(__dirname + '/../utils/math_util');
 // const mainThreadStub = require(__dirname + '/mainthreadstub');
 const bot_route_utility = require('./botRouteUtility');
-const workerstate = require('./workerstate');
+const workerstate = require('../state/workerstate');
 
 
 // console.log('workerutil.ts::', __dirname);

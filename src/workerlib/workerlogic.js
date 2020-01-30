@@ -4,12 +4,12 @@
 const world_config = require(__dirname + '/../../ui/world_config');
 const item_config = require(__dirname + '/../../ui/item_config');
 const math_util = require(__dirname + '/../utils/misc_util');
-const botroutemanager = require(__dirname + '/botroutemanager');
-const snapshotmanager = require(__dirname + '/snapshotmanager');
+const botroutemanager = require(__dirname + '/route/botroutemanager');
+const snapshotmanager = require(__dirname + '/state/snapshotmanager');
 const mainThreadStub = require(__dirname + '/mainthreadstub');
-const playerManager = require(__dirname + '/playerManager');
-const bot_route_utility = require('./botRouteUtility');
-const workerstate = require('./workerstate');
+const playerManager = require(__dirname + '/control/playerManager');
+const bot_route_utility = require('./route/botRouteUtility');
+const workerstate = require('./state/workerstate');
 // const bot_route_utility = require('./botRouteUtility');
 
 //bots always ave instruction: guard, follow, go

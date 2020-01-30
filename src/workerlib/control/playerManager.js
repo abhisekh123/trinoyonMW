@@ -1,5 +1,5 @@
 
-const world_config = require(__dirname + '/../../ui/world_config');
+const world_config = require(__dirname + '/../../../ui/world_config');
 
 module.exports = {
     playerArrey: [],//saves websocket objects
