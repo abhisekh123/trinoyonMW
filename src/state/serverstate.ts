@@ -1,3 +1,5 @@
+const world_config = require(__dirname + '/../../../ui/world_config');
+
 module.exports = {
     clientRequest:{},
     onlinePlayers:{},
@@ -13,5 +15,9 @@ module.exports = {
             onlinePlayers: this.onlinePlayers,
             onlineClients: this.onlineClients
         }
+    },
+
+    getWorldConfig: function(){
+        return world_config;
     }
 }

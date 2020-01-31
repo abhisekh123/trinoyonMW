@@ -1,8 +1,5 @@
 
 //top level : implements worker logic
-
-const world_config = require(__dirname + '/../../ui/world_config');
-const item_config = require(__dirname + '/../../ui/item_config');
 const math_util = require(__dirname + '/../utils/misc_util');
 const botroutemanager = require(__dirname + '/route/botroutemanager');
 const snapshotmanager = require(__dirname + '/state/snapshotmanager');
@@ -16,8 +13,8 @@ const workerstate = require('./state/workerstate');
 
 module.exports = {
     lastTick: 0,
-    refreshWorldInterval: world_config.refreshWorldInterval, // refreshWorld() should run once every interval.
-    processActionResolution: world_config.processActionResolution, // for each refreshWorld() delta time will be broken into interval of this.
+    refreshWorldInterval: workerstate.getWorldConfig().refreshWorldInterval, // refreshWorld() should run once every interval.
+    processActionResolution: workerstate.getWorldConfig().processActionResolution, // for each refreshWorld() delta time will be broken into interval of this.
     simulationTicks:6,
     lastRefreshTimeStamp:0,
     deltaTimeForRefresh:0,
@@ -63,8 +60,8 @@ module.exports = {
         // // console.log(currentBot);
 
         var currentWeapon = currentBot.currentweapon;
-        // var weaponConfig = item_config.weapon[currentWeapon];
-        var weaponConfig = item_config.weapon['handGun'];
+        // var weaponConfig = workerstate.getItemConfig().weapon[currentWeapon];
+        var weaponConfig = workerstate.getItemConfig().weapon['handGun'];
 
         // if(currentBot.instruction == null)
         // {
@@ -273,7 +270,7 @@ module.exports = {
                 }
                 return timeSliceParam;
             case 'equipweapon':
-                var nextWeaponConfig = item_config.wepon[currentBot.nextweapon];
+                var nextWeaponConfig = workerstate.getItemConfig().wepon[currentBot.nextweapon];
                 //nextweapon weaponConfig
                 if(nextWeaponConfig.equipinterval > timeSliceParam){
                     currentBot.timeelapsedincurrentaction = timeSliceParam;
@@ -306,8 +303,8 @@ module.exports = {
         // reset game
         playerManager.reset();
 
-        for (let index = 0; index < world_config.characters.length; index++) {
-            const characterConfig = world_config.characters[index];
+        for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
+            const characterConfig = workerstate.getWorldConfig().characters[index];
             var botObject = workerstate.botArray[index];
             botObject.payload.position[0] = characterConfig.position.x;
             botObject.payload.position[2] = characterConfig.position.z;
@@ -316,7 +313,7 @@ module.exports = {
         
         for (let index = 0; index < workerstate.buildingArray.length; index++) {
             var buildingType = workerstate.buildingArray[index].type;
-            var buildingItemConfig = item_config.buildings[buildingType];
+            var buildingItemConfig = workerstate.getItemConfig().buildings[buildingType];
             workerstate.buildingArray[i].life = buildingItemConfig.life;;
             workerstate.buildingArray[i].isActive = true;
         }
@@ -381,7 +378,7 @@ module.exports = {
     respawn(itemConfigParam){
 
         itemConfigParam.isActive = true;
-        var itemTypeConfig = item_config.characters[itemConfigParam.botType];
+        var itemTypeConfig = workerstate.getItemConfig().characters[itemConfigParam.botType];
         itemConfigParam.life = itemTypeConfig.life;
         var spawnPosition = null;
         if(itemConfigParam.isLeader){
@@ -423,8 +420,8 @@ module.exports = {
             var leaderPositionX = leaderConfig.payload.position[0]; 
             var leaderPositionZ = leaderConfig.payload.position[2];
 
-            if(Math.abs(currentPositionX - leaderPositionX) > world_config.maxDistanceFromLeader || 
-                    Math.abs(currentPositionZ - leaderPositionZ) > world_config.maxDistanceFromLeader){
+            if(Math.abs(currentPositionX - leaderPositionX) > workerstate.getWorldConfig().maxDistanceFromLeader || 
+                    Math.abs(currentPositionZ - leaderPositionZ) > workerstate.getWorldConfig().maxDistanceFromLeader){
                 // console.log('bot away from leader.');
                 return leaderConfig;
             }else{
@@ -504,7 +501,7 @@ module.exports = {
         // var characterConfig = workerstate.botArray[botID];
         // console.log('requestAIToInstructBot:' + characterConfig.id);
         var botType = characterConfig.type;
-        // var botItemConfig = item_config.characters[botType];
+        // var botItemConfig = workerstate.getItemConfig().characters[botType];
         // var playerConfig = playerManager.playerArrey[characterConfig.team];
 
         // if(characterConfig.isLeader){
@@ -676,22 +673,22 @@ module.exports = {
         if(startPoint[0] < endPoint[0]){
             if(startPoint[1] > endPoint[1]){
                 // return 'nw';
-                startPoint.push(world_config.const.rotation['nw']);
+                startPoint.push(workerstate.getWorldConfig().const.rotation['nw']);
                 // return Math.round((1.5 * currentBot.strideTime)/currentBot.strideDistance);
                 return ((1.5 * currentBot.strideTime)/currentBot.strideDistance);
             }else if(startPoint[1] == endPoint[1]){
                 // return 'w';
-                startPoint.push(world_config.const.rotation['w']);
+                startPoint.push(workerstate.getWorldConfig().const.rotation['w']);
                 return ((1 * currentBot.strideTime)/currentBot.strideDistance);
             }else if(startPoint[1] < endPoint[1]){
                 // return 'sw';
-                startPoint.push(world_config.const.rotation['sw']);
+                startPoint.push(workerstate.getWorldConfig().const.rotation['sw']);
                 return ((1.5 * currentBot.strideTime)/currentBot.strideDistance);
             }
         }else if(startPoint[0] == endPoint[0]){
             if(startPoint[1] > endPoint[1]){
                 // return 'n';
-                startPoint.push(world_config.const.rotation['n']);
+                startPoint.push(workerstate.getWorldConfig().const.rotation['n']);
                 return ((1 * currentBot.strideTime)/currentBot.strideDistance);
             }else if(startPoint[1] == endPoint[1]){
                 // nothing to do.
@@ -700,21 +697,21 @@ module.exports = {
                 return 0;
             }else if(startPoint[1] < endPoint[1]){
                 // return 's';
-                startPoint.push(world_config.const.rotation['s']);
+                startPoint.push(workerstate.getWorldConfig().const.rotation['s']);
                 return ((1 * currentBot.strideTime)/currentBot.strideDistance);
             }
         }else if(startPoint[0] > endPoint[0]){
             if(startPoint[1] > endPoint[1]){
                 // return 'ne';
-                startPoint.push(world_config.const.rotation['ne']);
+                startPoint.push(workerstate.getWorldConfig().const.rotation['ne']);
                 return ((1.5 * currentBot.strideTime)/currentBot.strideDistance);
             }else if(startPoint[1] == endPoint[1]){
                 // return 'e';
-                startPoint.push(world_config.const.rotation['e']);
+                startPoint.push(workerstate.getWorldConfig().const.rotation['e']);
                 return ((1 * currentBot.strideTime)/currentBot.strideDistance);
             }else if(startPoint[1] < endPoint[1]){
                 // return 'se';
-                startPoint.push(world_config.const.rotation['se']);
+                startPoint.push(workerstate.getWorldConfig().const.rotation['se']);
                 return ((1.5 * currentBot.strideTime)/currentBot.strideDistance);
             }
         }
@@ -870,16 +867,16 @@ module.exports = {
 
         // console.log('leader position:', leaderPosition, ' team:' + playerTeam, ' playerid:' + playerConfigParam.playerID);
         
-        var minDistance = world_config.gridSide + 1;
+        var minDistance = workerstate.getWorldConfig().gridSide + 1;
 
         var target = null;
         var targetType = null;
         if(playerTeam == 1){// top team = 1
-            defenseList = world_config.defenceTop;
-            base = world_config.topBase
+            defenseList = workerstate.getWorldConfig().defenceTop;
+            base = workerstate.getWorldConfig().topBase
         }else{// bottom team = 2
-            defenseList = world_config.defenceBottom;
-            base = world_config.bottomBase;
+            defenseList = workerstate.getWorldConfig().defenceBottom;
+            base = workerstate.getWorldConfig().bottomBase;
         }
 
         // find closest player
@@ -1121,10 +1118,10 @@ module.exports = {
 
     initializeWorldByPopulatingWithBots: function(){
         // // console.log('playerManager.playerArrey:', playerManager.playerArrey);
-        for (let index = 0; index < world_config.characters.length; index++) {
-            const characterConfig = world_config.characters[index];
+        for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
+            const characterConfig = workerstate.getWorldConfig().characters[index];
             var botType = characterConfig.type;
-            var botItemConfig = item_config.characters[botType];
+            var botItemConfig = workerstate.getItemConfig().characters[botType];
             // // console.log('characterConfig.playerID:', characterConfig.playerID);
             var playerConfig = playerManager.playerArrey[characterConfig.playerID - 1];
 
@@ -1214,7 +1211,7 @@ module.exports = {
         // var botID = this.findEmptyBotSlot();
         var botElement = workerstate.botArray[botIndex];
         
-        var botItemProperty = item_config.characters[botElement.payload.type];
+        var botItemProperty = workerstate.getItemConfig().characters[botElement.payload.type];
 
         workerstate.botArray[botIndex].hasInstruction = false;
         workerstate.botArray[botIndex].isPerformingAction = false;
@@ -1249,13 +1246,13 @@ module.exports = {
     init: function(){
         snapshotmanager.init();
         playerManager.init();
-        this.maxPlayerCount = world_config.commonConfig.maxPlayerCount;
-        // console.log('init world @ worker logic. world_config.commonConfig.maxBotCount:' + world_config.commonConfig.maxBotCount);
+        this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
+        // console.log('init world @ worker logic. workerstate.getWorldConfig().commonConfig.maxBotCount:' + workerstate.getWorldConfig().commonConfig.maxBotCount);
         this.initialiseConstantCache();
         botroutemanager.prepareGrid();
-        this.maxBotPerPlayer = world_config.commonConfig.maxBotPerPlayer;
-        this.maxBotCount = world_config.commonConfig.maxBotCount;
-        if(this.maxBotCount != world_config.commonConfig.maxBotPerPlayer * world_config.commonConfig.maxPlayerCount){
+        this.maxBotPerPlayer = workerstate.getWorldConfig().commonConfig.maxBotPerPlayer;
+        this.maxBotCount = workerstate.getWorldConfig().commonConfig.maxBotCount;
+        if(this.maxBotCount != workerstate.getWorldConfig().commonConfig.maxBotPerPlayer * workerstate.getWorldConfig().commonConfig.maxPlayerCount){
             console.error('!!!!!!ERROR:this.maxBotCount != world_config.commonConfig.maxBotPerPlayer * world_config.commonConfig.maxPlayerCount');
         }
 

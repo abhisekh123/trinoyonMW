@@ -1,5 +1,5 @@
 import * as WebSocket from 'ws';
-const world_config = require(__dirname + '/../../../ui/world_config');
+const serverState = require('./serverstate');
 
 // TODO: On client join : send status (queue status)
 
@@ -8,9 +8,11 @@ module.exports = {
     clientMap:new Map<WebSocket, any>(),
     maxClientCount:10,
     idCounter:0,
+    world_config: {},
 
     init: function(){
-        this.maxClientCount = world_config.commonConfig.maxClientCount;
+        this.world_config = serverState.getWorldConfig();
+        this.maxClientCount = this.world_config.commonConfig.maxClientCount;
         // world_config.commonConfig.maxBotCount = world_config.commonConfig.maxClientCount * world_config.commonConfig.maxBotPerPlayer;
         for(var i = 0; i < this.maxClientCount; ++i){
             var clientObject = {

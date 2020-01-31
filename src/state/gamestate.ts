@@ -1,3 +1,4 @@
+// might not be needed.
 module.exports = {
     gameBotState:{},
     gameStaticObjectState:{},

@@ -1,10 +1,3 @@
-
-// const fs = require('fs');
-// const util = require('util');
-
-// import * as fs from 'fs';
-// import * as util from 'util';
-
 import * as fs from 'fs';
 
 // promisify is a neat tool in the util module that transforms a callback function into a promise one
