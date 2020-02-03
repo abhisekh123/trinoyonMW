@@ -15,7 +15,10 @@ module.exports = {
         return Date.now();
     },
     dumpJSONtoOutput:function(jsonParam){
-        // console.log(JSON.stringify(jsonParam));
+        console.log(JSON.stringify(jsonParam));
     },  
+    roundTo2Decimal: function (floatValue) {
+        return (Math.round(floatValue * 100) / 100);
+    },
     
 };

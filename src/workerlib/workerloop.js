@@ -1,109 +1,15 @@
 
 //top level : implements worker logic
-const math_util = require(__dirname + '/../utils/misc_util');
-const botroutemanager = require(__dirname + '/route/botroutemanager');
-const snapshotmanager = require(__dirname + '/state/snapshotmanager');
-const mainThreadStub = require(__dirname + '/mainthreadstub');
-const playerManager = require(__dirname + '/control/playerManager');
-const bot_route_utility = require('./route/botRouteUtility');
-const workerstate = require('./state/workerstate');
+const mathUtil = require('../utils/misc_util');
+const gameManager = require('./control/gamemanager');
+const messageManager = require('./message/messagemanager');
+const workerState = require('./state/workerstate');
 // const bot_route_utility = require('./botRouteUtility');
 
 //bots always ave instruction: guard, follow, go
 
 module.exports = {
-    lastTick: 0,
-    refreshWorldInterval: workerstate.getWorldConfig().refreshWorldInterval, // refreshWorld() should run once every interval.
-    processActionResolution: workerstate.getWorldConfig().processActionResolution, // for each refreshWorld() delta time will be broken into interval of this.
-    simulationTicks:6,
-    lastRefreshTimeStamp:0,
-    deltaTimeForRefresh:0,
-    maxRange:null,
-    latestSnapshot:{},
-    isStateUpdated:false,
-    isGameRunning: true,
-    
 
-    maxBotCount: 0,
-    maxBotPerPlayer: 0,
-    maxPlayerCount: 0,
-    // botArray: [],
-    // botMap: {},
-
-    initialiseConstantCache: function(){
-    },
-
-
-    sendSnapshotUpdateToMain: function(){
-        var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
-        mainThreadStub.postMessage(responseJSONString, '');
-    },
-
-
-
-
-
-
-
-    processNewMessages: function(){
-        console.log('woreker@processNewMessages');
-        var playerID = -1;
-        for(var i = 0; i < mainThreadStub.messagebuffer.length; ++i){
-            // // console.log(i + '>processNewMessages::' + mainThreadStub.messagebuffer[i]);
-            var currentMessage = mainThreadStub.messagebuffer[i];
-            if(currentMessage == null || currentMessage == undefined || currentMessage.type == undefined || currentMessage.type == null){
-                continue;
-            }
-            switch(currentMessage.type){
-                case 'action':
-                    // // console.log('process action');
-                    this.updateBotAction(currentMessage);
-                    break;
-                case 'request_game_admit':
-                    console.log('request game admit');
-                    var clientID = currentMessage.clientID;
-                    var playerConfig = this.admitNewPlayer(clientID, false);
-                    if(playerConfig != null){
-                        currentMessage.type = 'request_game_admit_ack';
-                        currentMessage = snapshotmanager.addSnapshot(currentMessage, playerConfig);
-                        
-                        // mainThreadStub.postMessage(currentMessage, '');
-                        // this.refreshWorld();
-                    }else{
-                        currentMessage.type = 'request_game_admit_nack';
-                        currentMessage.bots = [];
-                        currentMessage.objects = {};
-                        currentMessage.playerConfig = {};
-                        // mainThreadStub.postMessage(currentMessage, '');
-                    }
-                    // console.log('---returning:', currentMessage);
-                    console.log('player admitted successfully.');
-                    mainThreadStub.postMessage(currentMessage, '');
-                    break;
-                case 'request_game_exit':
-                case 'client_disconnected':
-                    // console.log('process action:', currentMessage.type);
-                    // this.updateBotAction(currentMessage);
-                    // routine to send world details to main worker.
-                    var clientID = currentMessage.clientID;
-
-                    // console.log('get exit request from client:' + clientID);
-
-                    playerID = playerManager.getPlayerID(clientID);
-                    if(playerID == null || playerID == undefined){
-                        console.error('ERROR removing player from worker with clientID:' + clientID + ' Client already not existing.');
-                        return;
-                    }
-                    this.removePlayer(clientID);
-                    playerManager.removePlayer(clientID);
-                    break;
-                default:
-                    // console.log('ERROR@WebWorker:Received message with unknown type:' + currentMessage);
-            }
-        }
-
-        mainThreadStub.messagebuffer.length = 0;
-    },
 
     processGames: function() {
         if(playerManager.connectedPlayerCount > 0 && this.isGameRunning){
@@ -202,12 +108,11 @@ module.exports = {
 
     
     init: function(){
-        snapshotmanager.init();
-        playerManager.init();
-        this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
-        // console.log('init world @ worker logic. workerstate.getWorldConfig().commonConfig.maxBotCount:' + workerstate.getWorldConfig().commonConfig.maxBotCount);
-        this.initialiseConstantCache();
-        botroutemanager.prepareGrid();
+        gameManager.init();
+        messageManager.init();
+        workerState.init();
+
+        
         this.maxBotPerPlayer = workerstate.getWorldConfig().commonConfig.maxBotPerPlayer;
         this.maxBotCount = workerstate.getWorldConfig().commonConfig.maxBotCount;
         if(this.maxBotCount != workerstate.getWorldConfig().commonConfig.maxBotPerPlayer * workerstate.getWorldConfig().commonConfig.maxPlayerCount){

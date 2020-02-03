@@ -2,14 +2,8 @@
 
 
 module.exports = {
-    botArray: [],
-    botMap: {},
-    buildingMap: {},
-    buildingArray: [],
-    // baseMap: {}
-
+    // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
     init: function(){
-        
     },
     
     terminateGame(itemConfigParam){
