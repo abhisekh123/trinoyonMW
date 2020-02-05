@@ -1,5 +1,5 @@
 module.exports = {
-    validateClientMessage:function (stringMessageParam){
+    validateIncomingMessage:function (stringMessageParam){
         var messageJSON = null;
         if(stringMessageParam != null && stringMessageParam != undefined) {
             try {

@@ -1,12 +1,12 @@
 const world_config = require(__dirname + '/../../../ui/world_config');
 
 module.exports = {
-    clientArrey:[],//saves websocket objects
-    clientMap:new Map<WebSocket, any>(),
-    
-    clientRequest:{},
+    userArrey:[],//saves websocket objects
+    userMap:new Map<WebSocket, any>(), // to get userArray index from websocket.
+
+    userRequest:{},
     onlinePlayers:{},
-    onlineClients:{},
+    onlineUsers:{},
     workerHandle: null,
 
     setServerState: function(dataParam:any){
@@ -15,9 +15,9 @@ module.exports = {
     
     getServerState: function() {
         return {
-            clientRequest: this.clientRequest,
+            userRequest: this.userRequest,
             onlinePlayers: this.onlinePlayers,
-            onlineClients: this.onlineClients
+            onlineUsers: this.onlineUsers
         }
     },
 

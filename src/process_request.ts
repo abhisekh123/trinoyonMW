@@ -4,17 +4,18 @@ import {request_message} from './factory/types';
 import * as WebSocket from 'ws';
 const assetManager = require('./asset_manager/asset_manager');
 const workermanager = require('./workermanager');
-const clientregistry = require('./state/clientstate');
-
+const userManager = require('./control/usermanager');
+// const serverstate = require('./state/serverstate');
 
 export class RequestProcessor {
+    
     process(requestJSON: request_message, ws: WebSocket) {
-        const userId = clientregistry.clientMap.get(ws);
-        if(userId == undefined || userId == null){
+        const userIndex = userManager.getUserIndexFromWebsocket(ws);
+        if(userIndex == undefined || userIndex == null){
             console.log('ERROR:Dropping request. Unknown sender.');
             return;
         }else{
-            requestJSON.userId = userId;
+            requestJSON.userId = userIndex;
         }
         switch (requestJSON.type) {
             case 'action':
@@ -39,7 +40,8 @@ export class RequestProcessor {
             case 'client_disconnected':
                 // console.log('got message with type:', requestJSON.type);
                 // this.sendMessagePacket('ack_request_game_exit', {} as any, ws);
-                
+                const userId = userManager.removeUser(ws);
+                requestJSON.userId = userId;
                 workermanager.postMessage(requestJSON);
                 break;
             default:

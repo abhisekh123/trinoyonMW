@@ -5,13 +5,13 @@ import * as path from 'path';
 
 import {request_message} from './factory/types';
 import {RequestProcessor} from './process_request';
-const clientMessageValidator = require(__dirname + '/../../src/utils/client_message_validator');
+const messageValidator = require(__dirname + '/../../src/utils/messagevalidator');
 
 const app = express();
 const requestProcessor = new RequestProcessor();
 const assetManager = require('./asset_manager/asset_manager');
-const workermanager = require('./workermanager');
-const clientregistry = require('./state/clientstate');
+const workerManager = require('./workermanager');
+const userManager = require('./control/usermanager');
 
 const https = require('https');
 const fs = require('fs');
@@ -25,9 +25,9 @@ export class DemoServer {
 
 
     async startServer(portParam: number){
-        clientregistry.init();
+        userManager.init();
         // console.log('starting worker');
-        workermanager.startWorker();
+        workerManager.startWorker();
         
         // console.log('starting init routine.');
         await assetManager.init();
@@ -86,7 +86,7 @@ export class DemoServer {
         wss.on('connection', (ws: WebSocket) => {
             // // console.log('got new connection:' , ws);
             console.log('got new connection');
-            let userId = clientregistry.admitNewClient(ws);
+            let userId = userManager.admitNewClient(ws);
             if(userId < 0){
                 console.log('error: could not connect the new client.');
                 ws.close();
@@ -96,11 +96,8 @@ export class DemoServer {
             //connection is up, let's add a simple simple event
             ws.on('message', (message: string) => {
                 //log the received message and send it back to the client
-                
-                let clientConfig = clientregistry.clientMap.get(ws);
-                console.log('received: %s', message + 'from client with ID:' , clientConfig);
 
-                var messageJSON = clientMessageValidator.validateClientMessage(message);
+                var messageJSON = messageValidator.validateIncomingMessage(message);
 
                 if(messageJSON == null || messageJSON == undefined){
                     console.log('message invalid');
@@ -112,20 +109,11 @@ export class DemoServer {
             });
             ws.on('close', (message: string) => {
                 // console.log('closed connection.');
-                const userId = clientregistry.removeClient(ws);
-                if(userId != null && userId != undefined){
-                    requestProcessor.process({
-                        type: 'client_disconnected',
-                        userId: userId,
-                        teamID: 0,
-                        message:{}
-                    } as request_message, ws);
-                }
-                
+                this.removeUser(ws);
             });
 
             ws.on('error', (message: string) => {
-                clientregistry.removeClient(ws);
+                this.removeUser(ws);
             });
         
         });
@@ -139,8 +127,15 @@ export class DemoServer {
                 // console.log(`Server started on port ${httpsserver.address.toString} :)`);
             });
         }
-        
+    }
 
+    removeUser(wsParam: WebSocket){
+        requestProcessor.process({
+            type: 'client_disconnected',
+            userId: '',
+            teamID: 0,
+            message:{}
+        } as request_message, wsParam);
     }
 }
 
