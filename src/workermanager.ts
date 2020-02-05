@@ -1,6 +1,7 @@
 
 const tinyworker = require("tiny-worker");
 const clientregistry = require('./state/clientstate');
+const serverState = require('./state/serverstate');
 const gameState = require('./state/gamestate');
 import {request_message} from './factory/types';
  
@@ -10,12 +11,11 @@ import {request_message} from './factory/types';
  */
 
 module.exports = {
-    workerRegister:{},
 
     startWorker: function(){
-        this.workerRegister.workerObject = new tinyworker(__dirname + '/worker_root.js');
+        serverState.workerHandle = new tinyworker(__dirname + '/worker_root.js');
         // this.postMessage('hi worker!');
-        this.workerRegister.workerObject.onmessage = this.processMessage;
+        serverState.workerHandle.onmessage = this.processMessage;
     },
     
     /**
@@ -25,7 +25,8 @@ module.exports = {
         // 
         let jsonData = ev.data;
         switch(jsonData.type){
-            case 'update': // relay latest snapshot to all clients.
+            case 'update': // TODO : send update to main.
+            // relay latest snapshot to all clients.
                 // // console.log('-->update from worker::' , ev.data);
                 for(var i = 0; i < clientregistry.clientArrey.length; ++i){
                     if(clientregistry.clientArrey[i].isActive){
@@ -54,7 +55,7 @@ module.exports = {
     postMessage: function(messageJSON: request_message){
         // console.log('sending message to worker::' , messageJSON);
         try {
-            this.workerRegister.workerObject.postMessage(messageJSON);    
+            serverState.workerHandle.postMessage(messageJSON);    
         } catch (error) {
             // console.log(error);
         }

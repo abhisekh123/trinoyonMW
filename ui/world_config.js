@@ -9,6 +9,8 @@ var worldItems = {
     // walk stride length : 0.75M
     // run cycle length : 1.5M
     // 2 cycles / sec
+    createFreshStrategyMatrix: true,
+    strategyMatrixFileName: 'visibilityMatrix.txt',
     playerDimensionBaseUnit: 10,
     maxRange: 10,
     neighbourhoodBoxSide: 21,

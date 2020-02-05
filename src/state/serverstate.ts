@@ -4,6 +4,7 @@ module.exports = {
     clientRequest:{},
     onlinePlayers:{},
     onlineClients:{},
+    workerHandle: null,
 
     setServerState: function(dataParam:any){
         this.gameState = dataParam;

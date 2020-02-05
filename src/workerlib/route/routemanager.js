@@ -399,8 +399,4 @@ module.exports = {
         return null;// walkable point not found. This should never happen.
     },
 
-
-    init: function(){
-        
-    },
 }

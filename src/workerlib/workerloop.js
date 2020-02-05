@@ -1,6 +1,6 @@
 
 //top level : implements worker logic
-const mathUtil = require('../utils/misc_util');
+
 const gameManager = require('./control/gamemanager');
 const messageManager = require('./message/messagemanager');
 const workerState = require('./state/workerstate');

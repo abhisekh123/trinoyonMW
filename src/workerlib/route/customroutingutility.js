@@ -1,4 +1,6 @@
 const workerState = require('../state/workerstate');
+const pathfindingWrapper = require('./pathfindingwrapper');
+const utilityFunctions = require('../../utils/utilityfunctions');
 
 module.exports = {
     worldConfig: null,
@@ -7,104 +9,211 @@ module.exports = {
 
         this.initialiseGlobalDistanceMatrix();
         this.initialiseAngleMatrix();
-        if(this.createFreshVisibility){
-            this.createVisibilityMatrix(tmpGridMatrixToStoreLinearPaths, 'visibilityMatrix.txt');
+        if(this.worldConfig.createFreshStrategyMatrix){
+            this.createStrategyMatrix();
         }else{
-            this.loadVisibilityMatrixFromFile('visibilityMatrix.txt');
+            this.loadStrategyMatrixFromFile();
         }
-    },
-
-    
-
-
-
-    isPointInGrid: function (x, z) {
-        if (x < 0 || x >= world_config.gridSide) {
-            return false;
-        }
-        if (z < 0 || z >= world_config.gridSide) {
-            return false;
-        }
-        return true;
-    },
-
-    getBotTeam: function (botID) {
-
-    },
-
-    updateBotPosition: function (id, x, z) {
-        // return;
-        var botIndex = 0;
-        // // console.log('id23:' + id);
-        var botConfig = workerstate.botMap[id];
-        if (botConfig == null || botConfig == undefined) {
-            botIndex = id;
-            botConfig = workerstate.botArray[id];
-        } else {
-            botIndex = botConfig.botIndex;
-        }
-        if (this.botPositionArray[botIndex].x < 0 ||
-            this.botPositionArray[botIndex].y < 0 ||
-            this.botPositionArray[botIndex].z < 0) {
-            this.botPositionArray[botIndex].x = 0;
-            this.botPositionArray[botIndex].y = 0;
-            this.botPositionArray[botIndex].z = 0;
-            // // console.log('ERROR++++++++++++++++++++++@@@@@@@@@@updateBotPosition');
-        } else {
-            this.visibilityMatrix[this.botPositionArray[botIndex].x][this.botPositionArray[botIndex].z].id = null;
-        }
-        // update bot to position map
-        this.botPositionArray[botIndex].x = x;
-        this.botPositionArray[botIndex].z = z;
-        // update grid map but marking grid with bot position.
-        this.visibilityMatrix[x][z].id = botConfig.id;
     },
 
     isPositionUnoccupiedByBot: function (x, z) {
-        if (this.visibilityMatrix[x][z].id == null) {
+        if (workerState.strategyMatrix[x][z].id == null) {
             return true;
         } else {
             return false;
         }
     },
-    isObstacleDefenseOrBase(x, z, teamIDParam) {
-        // topBase:[44,6], // 2
-        // bottomBase:[44,82], // 1
-        // defenceBottom:[[48,79],[40,79],[44,71],[19,73],[72,69]], // 1
-        // defenceTop:[[44,17],[40,9],[48,9],[16,19],[69,15]], // 2
 
-        if (this.grid.isWalkableAt(x, z)) {
-            return null;
-        }
-        // // console.log('teamIDParam:', teamIDParam);
-        if (teamIDParam == 1) {
-            for (let i = 0; i < world_config.defenceTop.length; i++) {
-                if (x === world_config.defenceTop[i][0] && z === world_config.defenceTop[i][1]) {
-                    return world_config.defenceTop[i][2];
+    createStrategyMatrix: function () {
+        // // console.log('start createVisibilityMatrix');
+        // var fileAppender = fs.createWriteStream(fileName, {
+        //     flags: 'a' // 'a' means appending (old data will be preserved)
+        // });
+        let writeStream = fs.createWriteStream(workerState.strategyMatrixFileName);
+
+        // fileAppender.write('this.floor.breadth\n');
+        // fileAppender.write(this.floor.breadth + '\n');
+        // fileAppender.write('this.floor.length\n');
+        // fileAppender.write(this.floor.length.toString() + '\n');
+
+        writeStream.write('this.floor.breadth\n');
+        writeStream.write(world_config.gridSide + '\n');
+        writeStream.write('this.floor.length\n');
+        writeStream.write(world_config.gridSide.toString() + '\n');
+
+        var tmpGridMatrixToStoreLinearPaths = new Array();
+        // for each point in the grid, find seq of points forming straight line from point (x,z) to (26, 26)
+        for(var i = 0; i < this.worldConfig.neighbourhoodBoxSide; ++i){ // x axis
+            tmpGridMatrixToStoreLinearPaths[i] = new Array();
+            for(var j = 0; j < this.worldConfig.neighbourhoodBoxSide; ++j){ // z axis
+                if(i==this.worldConfig.maxRange && j==this.worldConfig.maxRange){
+                    tmpGridMatrixToStoreLinearPaths[i][j] = {
+                        linePath : [{ x: i, y: 0, z: j }]
+                    };
+                    continue;
                 }
-            }
-            // // console.log('world_config.topBase:', world_config.topBase);
-            if (x === world_config.topBase[0] && z === world_config.topBase[1]) {
-                return world_config.topBase[2];
-            }
-        } else {
-            for (let i = 0; i < world_config.defenceBottom.length; i++) {
-                if (x === world_config.defenceBottom[i][0] && z === world_config.defenceBottom[i][1]) {
-                    // // console.log('returning:', )
-                    return world_config.defenceBottom[i][2];
-                }
-            }
-            // // console.log('world_config.bottomBase:', world_config.bottomBase);
-            if (x === world_config.bottomBase[0] && z === world_config.bottomBase[1]) {
-                return world_config.bottomBase[2];
+                // find path from (i, j) to (26, 26) and save in tmpGridMatrixToStoreLinearPaths(i, j)
+                tmpGridMatrixToStoreLinearPaths[i][j] = {
+                    linePath : this.draw_line(i, j, this.worldConfig.maxRange, this.worldConfig.maxRange)
+                };
             }
         }
 
-        return null;
+        // for each point in the grid : update visibility matrix.
+        var strategyMatrix = new Array();
+        var binaryStringArray = [];
+        for (var x = 0; x < this.worldConfig.gridSide; ++x) { // scan floor along x axis
+            console.log('computing grid x:' + x);
+            strategyMatrix[x] = new Array();
+            for (var z = 0; z < this.worldConfig.gridSide; ++z) { // scan floor along z axis
+                // // console.log('z:' + z);
+                // x, z are the actual grid point for which we are generating visibility graph
+                writeStream.write(x + ',' + z + '\n');
+                var neighbourhoodVisibilityGrid = new Array();
+                // preparing visibility matrix for position (x, z)
+                for (var x_small = 0; x_small < this.worldConfig.neighbourhoodBoxSide; ++x_small) { // check for neighbourhood x axis
+                    // neighbourhoodVisibilityGrid[x_small] = new Array();
+                    // neighbourPathGrid[x_small] = new Array();
+                    binaryStringArray.length = 0;
+                    for (var z_small = 0; z_small < this.worldConfig.neighbourhoodBoxSide; ++z_small) { // check for neighbourhood z axis
+                        // x_small - 26, z_small - 26 are the relative points
+                        var actual_x = x + x_small - this.worldConfig.maxRange; // actual x coordinate in grid that we want to test. can be negetive or bigger than grid size.
+                        var actual_z = z + z_small - this.worldConfig.maxRange; // actual z coordinate in grid that we want to test. can be negetive or bigger than grid size.
+                        
+                        if (utilityFunctions.isPointInRangeBox(
+                            actual_x, 
+                            actual_z, 
+                            ((this.worldConfig.gridSide - 1) / 2),
+                            ((this.worldConfig.gridSide - 1) / 2),
+                            ((this.worldConfig.gridSide - 1) / 2)
+                        )) { // checking if we need to test visibility
+                            // testing visibility of x, z from point actual_x, actual_z
+                            // // console.log('wer:', tmpGridMatrixToStoreLinearPaths.length);
+                            // // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small].length);
+                            // // console.log(x_small);
+                            // // console.log(z_small);
+                            // // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small][z_small]);
+                            // var path = this.findPath(x, z, actual_x, actual_z);
+                            // neighbourPathGrid[x_small][z_small] = path;
+
+                            if (!pathfindingWrapper.isWalkableAt(actual_x, actual_z)) {
+                                binaryStringArray[z_small] = '0';
+                                continue;
+                            }
+                            var linePath = tmpGridMatrixToStoreLinearPaths[x_small][z_small].linePath;
+                            // the visibility test is positive if all points in straight line joining the points
+                            // are un blocked by any ostacle. i.e. clear line of sight.
+                            // neighbourhoodVisibilityGrid[x_small][z_small] = true;
+                            binaryStringArray[z_small] = '1';
+                            for (var pathIndex = 0; pathIndex < linePath.length; ++pathIndex) {
+                                var actual_x_pathPoint = x + linePath[pathIndex].x - this.worldConfig.maxRange;
+                                var actual_z_pathPoint = z + linePath[pathIndex].z - this.worldConfig.maxRange;
+                                if (!pathfindingWrapper.isWalkableAt(actual_x_pathPoint, actual_z_pathPoint)) {
+                                    // obstacle found. Stop scan and mark : Not Visible.
+                                    // neighbourhoodVisibilityGrid[x_small][z_small] = false;
+                                    // // console.log('visibility false.');
+                                    binaryStringArray[z_small] = '0';
+                                    break;
+                                }
+                            }
+
+                        } else {
+                            // neighbourhoodVisibilityGrid[x_small][z_small] = false;
+                            binaryStringArray[z_small] = '0';
+                        }
+                    }
+                    var binaryString = binaryStringArray.join('');
+                    neighbourhoodVisibilityGrid[x_small] = parseInt(binaryString, 2);
+                    writeStream.write(binaryString + '\n');
+                    // // console.log(binaryStringArray.join(''));
+                    // // console.log(neighbourhoodVisibilityGrid[x_small]);
+                }
+                strategyMatrix[x][z] = {
+                    visibility: neighbourhoodVisibilityGrid,
+                    // localPath : neighbourPathGrid,
+                    id: null,
+                    influence: []
+                };
+
+            }
+        }
+        workerState.strategyMatrix = strategyMatrix;
+
+        console.log('completed creating the visibility graph.');
+        // fileAppender.close();
+        // writeStream.close();
+        writeStream.end();
+        writeStream.on('finish', () => {
+            // console.log('wrote all data to file');
+        });
     },
 
-    stitchPaths: function () {
+    loadStrategyMatrixFromFile: function(){
+        // console.log('start loadVisibilityMatrixFromFile');
+        // create instance of readline
+        // each instance is associated with single input stream
+        let rl = readline.createInterface({
+            input: fs.createReadStream(workerState.strategyMatrixFileName),
+        });
 
+        let line_no = 0;
+
+        // event is emitted after each line
+        rl.on('line', function(line) {
+            if(line_no == 1){
+                var breadth = parseInt(line);
+                if(breadth != this.worldConfig.gridSide){
+                    console.error('breadth != this.floor.breadth');
+                    return;
+                }else{
+                    // console.log('breadth test passed');
+                }
+            }else if(line_no == 3){
+                var length = parseInt(line);
+                if(length != this.worldConfig.gridSide){
+                    console.error('length != this.floor.length');
+                    return;
+                }else{
+                    // console.log('length test passed');
+                }
+            }
+            line_no++;
+            // console.log(line);
+        });
+
+        // end
+        rl.on('close', function(line) {
+            // console.log('Total lines : ' + line_no);
+        });
+    },
+
+    initialiseAngleMatrix: function() {
+        var angleMatrix = new Array();
+        // for each point in the grid, find seq of points forming straight line from point (x,z) to (26, 26)
+        for(var i = 0; i < this.worldConfig.neighbourhoodBoxSide; ++i){ // x axis
+            angleMatrix[i] = new Array();
+            for(var j = 0; j < this.neighbourhoodBoxSide; ++j){ // z axis
+                if(i==this.maxRange && j==this.maxRange){
+                    angleMatrix[i][j] = 0;
+                    continue;
+                }
+                
+                // angle with positive z axis(away from camera). negetive for left side(x < 0)
+                angleMatrix[i][j] = this.roundTo2Decimal(Math.atan2((i - this.maxRange), (j - this.maxRange))); 
+            }
+        }
+        workerState.angleMatrix = angleMatrix;
+    },
+
+    initialiseDistanceMatrix: function() {
+        var distanceMatrix = new Array(this.worldConfig.gridSide);
+        for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
+            distanceMatrix[i] = new Array(this.worldConfig.gridSide);
+            for(var k = 0; k < this.neighbourhoodBoxSide; ++k){ // z axis
+                distanceMatrix[i][k] = this.roundTo2Decimal(Math.sqrt(Math.pow(i, 2) + Math.pow(k, 2)));
+            }
+        }
+        workerState.distanceMatrix = distanceMatrix;
     },
 
     draw_line: function (x0, y0, x1, y1) { // here we assume y input is for z axis and return result accordingly.
@@ -167,230 +276,4 @@ module.exports = {
             z: z
         }
     },
-    findDIstanceBetweenTwoPoints(x1, z1, x2, z2) {
-        return this.roundTo2Decimal(Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((z1 - z2), 2)));
-    },
-
-    isPointInRange: function (x, z, targetX, targetZ, range) {
-        if (Math.abs(targetX - x) <= range && Math.abs(targetZ - z) <= range) {
-            if (range <= this.neighbourhoodBoxSide) { // get distance from distanceMatrix
-                var dist = this.distanceMatrix[Math.abs(targetX - x)][Math.abs(targetZ - z)].distance;
-                if (dist <= range) {
-                    return true;
-                }
-            } else {
-                var dist = this.roundTo2Decimal(Math.sqrt(Math.pow((targetX - x), 2) + Math.pow((targetZ - z), 2)));
-                if (dist <= range) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    },
-
-    createVisibilityMatrix: function (tmpGridMatrixToStoreLinearPaths, fileName) {
-        // // console.log('start createVisibilityMatrix');
-        // var fileAppender = fs.createWriteStream(fileName, {
-        //     flags: 'a' // 'a' means appending (old data will be preserved)
-        // });
-        let writeStream = fs.createWriteStream(fileName);
-
-        // fileAppender.write('this.floor.breadth\n');
-        // fileAppender.write(this.floor.breadth + '\n');
-        // fileAppender.write('this.floor.length\n');
-        // fileAppender.write(this.floor.length.toString() + '\n');
-
-        writeStream.write('this.floor.breadth\n');
-        writeStream.write(world_config.gridSide + '\n');
-        writeStream.write('this.floor.length\n');
-        writeStream.write(world_config.gridSide.toString() + '\n');
-
-        var tmpGridMatrixToStoreLinearPaths = new Array();
-        // for each point in the grid, find seq of points forming straight line from point (x,z) to (26, 26)
-        for(var i = 0; i < this.worldConfig.neighbourhoodBoxSide; ++i){ // x axis
-            tmpGridMatrixToStoreLinearPaths[i] = new Array();
-            for(var j = 0; j < this.neighbourhoodBoxSide; ++j){ // z axis
-                if(i==this.worldConfig.maxRange && j==this.worldConfig.maxRange){
-                    tmpGridMatrixToStoreLinearPaths[i][j] = {
-                        linePath : [{ x: i, y: 0, z: j }]
-                    };
-                    continue;
-                }
-                // find path from (i, j) to (26, 26) and save in tmpGridMatrixToStoreLinearPaths(i, j)
-                tmpGridMatrixToStoreLinearPaths[i][j] = {
-                    linePath : this.draw_line(i, j, this.maxRange, this.maxRange)
-                };
-                // // console.log('i:' + i + ' j:' + j);
-                // // console.log(tmpGridMatrixToStoreLinearPaths[i][j]);
-                // angle with positive z axis(away from camera). negetive for left side(x < 0)
-                // angleMatrix[i][j] = {};
-                // angleMatrix[i][j] = this.roundTo2Decimal(Math.atan2((i - this.maxRange), (j - this.maxRange))); 
-                // save distance from i, j to 26, 26
-                // angleMatrix[i][j].distance = this.roundTo2Decimal(Math.sqrt(Math.pow((i - this.maxRange), 2) + Math.pow((j - this.maxRange), 2)));
-            }
-        }
-
-        // for each point in the grid : update visibility matrix.
-        this.visibilityMatrix = new Array();
-        var binaryStringArray = [];
-        for (var x = 0; x < world_config.gridSide; ++x) { // scan floor along x axis
-            console.log('computing grid x:' + x);
-            this.visibilityMatrix[x] = new Array();
-            for (var z = 0; z < world_config.gridSide; ++z) { // scan floor along z axis
-                // // console.log('z:' + z);
-                // x, z are the actual grid point for which we are generating visibility graph
-                writeStream.write(x + ',' + z + '\n');
-                var neighbourhoodVisibilityGrid = new Array();
-                // var neighbourPathGrid = new Array();
-                for (var x_small = 0; x_small < this.neighbourhoodBoxSide; ++x_small) { // check for neighbourhood x axis
-                    // neighbourhoodVisibilityGrid[x_small] = new Array();
-                    // neighbourPathGrid[x_small] = new Array();
-                    binaryStringArray.length = 0;
-                    for (var z_small = 0; z_small < this.neighbourhoodBoxSide; ++z_small) { // check for neighbourhood z axis
-                        // x_small - 26, z_small - 26 are the relative points
-                        var actual_x = x + x_small - this.maxRange; // actual x coordinate in grid that we want to test.
-                        var actual_z = z + z_small - this.maxRange; // actual z coordinate in grid that we want to test.
-
-                        if (this.isPointInGrid(actual_x, actual_z)) { // checking if we need to test visibility
-                            // testing visibility of x, z from point actual_x, actual_z
-                            // // console.log('wer:', tmpGridMatrixToStoreLinearPaths.length);
-                            // // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small].length);
-                            // // console.log(x_small);
-                            // // console.log(z_small);
-                            // // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small][z_small]);
-                            // var path = this.findPath(x, z, actual_x, actual_z);
-                            // neighbourPathGrid[x_small][z_small] = path;
-
-                            if (!this.grid.isWalkableAt(actual_x, actual_z)) {
-                                binaryStringArray[z_small] = '0';
-                                continue;
-                            }
-                            var linePath = tmpGridMatrixToStoreLinearPaths[x_small][z_small].linePath;
-                            // the visibility test is positive if all points in straight line joining the points
-                            // are un blocked by any ostacle. i.e. clear line of sight.
-                            // neighbourhoodVisibilityGrid[x_small][z_small] = true;
-                            binaryStringArray[z_small] = '1';
-                            for (var pathIndex = 0; pathIndex < linePath.length; ++pathIndex) {
-                                var actual_x_pathPoint = x + linePath[pathIndex].x - this.maxRange;
-                                var actual_z_pathPoint = z + linePath[pathIndex].z - this.maxRange;
-                                if (!this.grid.isWalkableAt(actual_x_pathPoint, actual_z_pathPoint)) {
-                                    // obstacle found. Stop scan and mark : Not Visible.
-                                    // neighbourhoodVisibilityGrid[x_small][z_small] = false;
-                                    // // console.log('visibility false.');
-                                    binaryStringArray[z_small] = '0';
-                                    break;
-                                }
-                            }
-
-                        } else {
-                            // neighbourhoodVisibilityGrid[x_small][z_small] = false;
-                            binaryStringArray[z_small] = '0';
-                        }
-                    }
-                    var binaryString = binaryStringArray.join('');
-                    neighbourhoodVisibilityGrid[x_small] = parseInt(binaryString, 2);
-                    writeStream.write(binaryString + '\n');
-                    // // console.log(binaryStringArray.join(''));
-                    // // console.log(neighbourhoodVisibilityGrid[x_small]);
-                }
-                this.visibilityMatrix[x][z] = {
-                    visibility: neighbourhoodVisibilityGrid,
-                    // localPath : neighbourPathGrid,
-                    id: null,
-                };
-
-            }
-        }
-        console.log('completed creating the visibility graph.');
-        // fileAppender.close();
-        // writeStream.close();
-        writeStream.end();
-        writeStream.on('finish', () => {
-            // console.log('wrote all data to file');
-        });
-    },
-
-    loadVisibilityMatrixFromFile: function(fileName){
-        // console.log('start loadVisibilityMatrixFromFile');
-        // create instance of readline
-        // each instance is associated with single input stream
-        let rl = readline.createInterface({
-            input: fs.createReadStream(fileName),
-        });
-
-        let line_no = 0;
-        var parentCtrl = this;
-
-        // event is emitted after each line
-        rl.on('line', function(line) {
-            if(line_no == 1){
-                var breadth = parseInt(line);
-                if(breadth != world_config.gridSide){
-                    console.error('breadth != this.floor.breadth');
-                    return;
-                }else{
-                    // console.log('breadth test passed');
-                }
-            }else if(line_no == 3){
-                var length = parseInt(line);
-                if(length != world_config.gridSide){
-                    console.error('length != this.floor.length');
-                    return;
-                }else{
-                    // console.log('length test passed');
-                }
-            }
-            line_no++;
-            // console.log(line);
-        });
-
-        // end
-        rl.on('close', function(line) {
-            // console.log('Total lines : ' + line_no);
-        });
-    },
-
-    initialiseAngleMatrix: function() {
-        var tmpGridMatrixToStoreLinearPaths = new Array();
-        var angleMatrix = new Array();
-        // for each point in the grid, find seq of points forming straight line from point (x,z) to (26, 26)
-        for(var i = 0; i < this.worldConfig.neighbourhoodBoxSide; ++i){ // x axis
-            tmpGridMatrixToStoreLinearPaths[i] = new Array();
-            angleMatrix[i] = new Array();
-            for(var j = 0; j < this.neighbourhoodBoxSide; ++j){ // z axis
-                if(i==this.maxRange && j==this.maxRange){
-                    angleMatrix[i][j] = {};
-                    angleMatrix[i][j].anglePositiveZAxis = 0;
-                    // save distance from i, j to 26, 26
-                    angleMatrix[i][j].distance = 0;
-                    tmpGridMatrixToStoreLinearPaths[i][j] = {
-                        linePath : [{ x: i, y: 0, z: j }]
-                    };
-                    continue;
-                }
-                // find path from (i, j) to (26, 26) and save in tmpGridMatrixToStoreLinearPaths(i, j)
-                tmpGridMatrixToStoreLinearPaths[i][j] = {
-                    linePath : this.draw_line(i, j, this.maxRange, this.maxRange)
-                };
-                // // console.log('i:' + i + ' j:' + j);
-                // // console.log(tmpGridMatrixToStoreLinearPaths[i][j]);
-                // angle with positive z axis(away from camera). negetive for left side(x < 0)
-                // angleMatrix[i][j] = {};
-                angleMatrix[i][j] = this.roundTo2Decimal(Math.atan2((i - this.maxRange), (j - this.maxRange))); 
-                // save distance from i, j to 26, 26
-                // angleMatrix[i][j].distance = this.roundTo2Decimal(Math.sqrt(Math.pow((i - this.maxRange), 2) + Math.pow((j - this.maxRange), 2)));
-            }
-        }
-    },
-
-    initialiseGlobalDistanceMatrix: function() {
-        var globalDistanceMatrix = new Array(this.worldConfig.gridSide);
-        for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
-            globalDistanceMatrix[i] = new Array(this.worldConfig.gridSide);
-            for(var k = 0; k < this.neighbourhoodBoxSide; ++k){ // z axis
-                globalDistanceMatrix[i][k] = this.roundTo2Decimal(Math.sqrt(Math.pow(i, 2) + Math.pow(k, 2)));
-            }
-        }
-        workerState.globalDistanceMatrix = globalDistanceMatrix;
-    }
 }

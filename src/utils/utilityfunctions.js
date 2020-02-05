@@ -1,4 +1,5 @@
 
+// Contains only pure functions.
 module.exports = {
     dateObject:new Date(),
     stringArrayToNumberArray:function (stringArray){
@@ -21,4 +22,13 @@ module.exports = {
         return (Math.round(floatValue * 100) / 100);
     },
     
+    isPointInRangeBox: function (x, z, originX, originZ, rangeParam) {
+        if (x < (originX - rangeParam) || x > (originX + rangeParam)) {
+            return false;
+        }
+        if (z < (originZ - rangeParam) || z > (originZ + rangeParam)) {
+            return false;
+        }
+        return true;
+    },
 };

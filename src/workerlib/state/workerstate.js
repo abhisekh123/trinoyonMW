@@ -4,11 +4,17 @@ const item_config = require(__dirname + '/../../../ui/item_config');
 
 module.exports = {
     customConfigs: {
-        createFreshVisibility: true,
+        
     },
-    globalDistanceMatrix: null,
+    distanceMatrix: null,
+    angleMatrix: null,
+
     games: [],
-    grid: {},
+    grid: null,
+    gridBackup: null,
+    strategyMatrix: null,
+    buildingMap: {},
+    buildingArray: [],
     // baseMap: {}
 
     init: function(){

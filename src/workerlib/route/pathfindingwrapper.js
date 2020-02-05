@@ -3,32 +3,28 @@
  * this is a wrapper function containing higher level wrapper function for pathfinding library.
  */
 const PF = require('pathfinding');
-const workerstate = require('../state/workerstate');
+const workerState = require('../state/workerstate');
 
 module.exports = {
     // baseMap: {}
-    finder: null,
-
+    worldConfig: null,
+    itemConfig: null,
     init: function(){
-        this.finder = new PF.AStarFinder({
+        this.worldConfig = workerState.getWorldConfig();
+        this.itemConfig = workerState.getItemConfig();
+        workerState.finder = new PF.AStarFinder({
             allowDiagonal: true,
             dontCrossCorners: true,
             heuristic: PF.Heuristic.chebyshev
         });
     },
-    workerRegister:{},
-    tg: {
-        botConfig:{}
-    },
-    finder:null,
-
     
 
     restoreGrid: function(){
-        // let width = this.tg.grid.width;
-        // let height = this.tg.grid.height;
-        // let gridNodes = this.tg.grid.nodes;
-        // let gridBackupNodes = this.tg.gridBackup.nodes;
+        // let width = workerState.grid.width;
+        // let height = workerState.grid.height;
+        // let gridNodes = workerState.grid.nodes;
+        // let gridBackupNodes = workerState.gridBackup.nodes;
 
         // for (var i = 0; i < height; ++i) {
         //     for (var j = 0; j < width; ++j) {
@@ -38,7 +34,7 @@ module.exports = {
         // }
 
         // this.printGrid();
-        this.tg.grid = this.tg.gridBackup.clone();
+        workerState.grid = workerState.gridBackup.clone();
     },
 
     findPath: function(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ){
@@ -52,7 +48,7 @@ module.exports = {
             , Math.round((currentPositionZ))// + this.tg.centreZ
             , Math.round((targetPositionX))// + this.tg.centreX
             , Math.round((targetPositionZ))// + this.tg.centreZ
-            , this.tg.grid);
+            , workerState.grid);
         this.restoreGrid();
         // for(var i = 0; i < path.length; ++i){
         //     path[i][0] = (path[i][0] - this.tg.centreX);
@@ -63,101 +59,101 @@ module.exports = {
 
     prepareGrid: function(){
         // console.log('prepareGrid.');
-        // console.log(this.world_config);
-        // world_config.length = Number(world_config.length);
-        // world_config.breadth = Number(world_config.breadth);
+        // console.log(this.this.worldConfig);
+        // this.worldConfig.length = Number(this.worldConfig.length);
+        // this.worldConfig.breadth = Number(this.worldConfig.breadth);
 
 
-        // console.log('prepare grid@bot route manager :: world_config.gridSide:' + world_config.gridSide);
+        // console.log('prepare grid@bot route manager :: this.worldConfig.gridSide:' + this.worldConfig.gridSide);
 
-        this.tg.grid = new PF.Grid(world_config.gridSide, world_config.gridSide);
-        // // console.log(this.tg.grid);
-        // // console.log(this.tg.grid);
-        // // console.log(this.tg.grid.nodes.length);
-        // // console.log(this.tg.grid.nodes[0].length);
+        workerState.grid = new PF.Grid(this.worldConfig.gridSide, this.worldConfig.gridSide);
+        // // console.log(workerState.grid);
+        // // console.log(workerState.grid);
+        // // console.log(workerState.grid.nodes.length);
+        // // console.log(workerState.grid.nodes[0].length);
 
-        this.tg.centreZ = (world_config.gridSide - 1)/2;
-        this.tg.centreX = (world_config.gridSide - 1)/2;
+        // this.tg.centreZ = (this.worldConfig.gridSide - 1)/2;
+        // this.tg.centreX = (this.worldConfig.gridSide - 1)/2;
 
         var towerIndex = 0;
 
-        for(var i = 0; i < world_config.obstacles.length; ++i){
-            this.tg.grid.setWalkableAt(world_config.obstacles[i][0], world_config.obstacles[i][1], false);
+        for(var i = 0; i < this.worldConfig.obstacles.length; ++i){
+            workerState.grid.setWalkableAt(this.worldConfig.obstacles[i][0], this.worldConfig.obstacles[i][1], false);
         }
-        for(var i = 0; i < world_config.defenceBottom.length; ++i){
-            this.tg.grid.setWalkableAt(world_config.defenceBottom[i][0], world_config.defenceBottom[i][1], false);
+        for(var i = 0; i < this.worldConfig.defenceBottom.length; ++i){
+            workerState.grid.setWalkableAt(this.worldConfig.defenceBottom[i][0], this.worldConfig.defenceBottom[i][1], false);
             var towerID = 'tower' + towerIndex;
-            world_config.defenceBottom[i].push(towerID);
-            workerstate.buildingMap[towerID] = {
-                life:item_config.buildings.tower.life,
-                attack:item_config.buildings.tower.attack,
+            this.worldConfig.defenceBottom[i].push(towerID);
+            workerState.buildingMap[towerID] = {
+                life:this.itemConfig.buildings.tower.life,
+                attack:this.itemConfig.buildings.tower.attack,
                 isActive: true,
                 type:'tower',
                 team:1,
                 id:towerID,
                 position: {
-                    x: world_config.defenceBottom[i][0],
-                    z: world_config.defenceBottom[i][1]
+                    x: this.worldConfig.defenceBottom[i][0],
+                    z: this.worldConfig.defenceBottom[i][1]
                 }
             }
-            workerstate.buildingArray.push(workerstate.buildingMap[towerID]);
+            workerState.buildingArray.push(workerState.buildingMap[towerID]);
             ++towerIndex;
         }
-        for(var i = 0; i < world_config.defenceTop.length; ++i){
-            this.tg.grid.setWalkableAt(world_config.defenceTop[i][0], world_config.defenceTop[i][1], false);
+        for(var i = 0; i < this.worldConfig.defenceTop.length; ++i){
+            workerState.grid.setWalkableAt(this.worldConfig.defenceTop[i][0], this.worldConfig.defenceTop[i][1], false);
             var towerID = 'tower' + towerIndex;
-            world_config.defenceTop[i].push(towerID);
-            workerstate.buildingMap[towerID] = {
-                life:item_config.buildings.tower.life,
-                attack:item_config.buildings.tower.attack,
+            this.worldConfig.defenceTop[i].push(towerID);
+            workerState.buildingMap[towerID] = {
+                life:this.itemConfig.buildings.tower.life,
+                attack:this.itemConfig.buildings.tower.attack,
                 type:'tower',
                 isActive: true,
                 team:2,
                 id:towerID,
                 position: {
-                    x: world_config.defenceTop[i][0],
-                    z: world_config.defenceTop[i][1]
+                    x: this.worldConfig.defenceTop[i][0],
+                    z: this.worldConfig.defenceTop[i][1]
                 }
             }
-            workerstate.buildingArray.push(workerstate.buildingMap[towerID]);
+            workerState.buildingArray.push(workerState.buildingMap[towerID]);
             ++towerIndex;
         }
-        this.tg.grid.setWalkableAt(world_config.topBase[0], world_config.topBase[1], false);
-        world_config.topBase.push('base1');
-        workerstate.buildingMap['base1'] = {
-            life:item_config.buildings.base.life,
-            attack:item_config.buildings.base.attack,
+        workerState.grid.setWalkableAt(this.worldConfig.topBase[0], this.worldConfig.topBase[1], false);
+        this.worldConfig.topBase.push('base1');
+        workerState.buildingMap['base1'] = {
+            life:this.itemConfig.buildings.base.life,
+            attack:this.itemConfig.buildings.base.attack,
             type:'base',
             isActive: true,
             team:2,
             id:'base1',
             position: {
-                x: world_config.topBase[0],
-                z: world_config.topBase[1]
+                x: this.worldConfig.topBase[0],
+                z: this.worldConfig.topBase[1]
             }
         }
-        workerstate.buildingArray.push(workerstate.buildingMap['base1']);
-        this.tg.grid.setWalkableAt(world_config.bottomBase[0], world_config.bottomBase[1], false);
-        world_config.bottomBase.push('base2');
-        workerstate.buildingMap['base2'] = {
-            life:item_config.buildings.base.life,
-            attack:item_config.buildings.base.attack,
+        workerState.buildingArray.push(workerState.buildingMap['base1']);
+        workerState.grid.setWalkableAt(this.worldConfig.bottomBase[0], this.worldConfig.bottomBase[1], false);
+        this.worldConfig.bottomBase.push('base2');
+        workerState.buildingMap['base2'] = {
+            life:this.itemConfig.buildings.base.life,
+            attack:this.itemConfig.buildings.base.attack,
             type:'base',
             isActive: true,
             team:1,
             id:'base2',
             position: {
-                x: world_config.bottomBase[0],
-                z: world_config.bottomBase[1]
+                x: this.worldConfig.bottomBase[0],
+                z: this.worldConfig.bottomBase[1]
             }
         }
-        workerstate.buildingArray.push(workerstate.buildingMap['base2']);
+        workerState.buildingArray.push(workerState.buildingMap['base2']);
 
-        this.tg.gridBackup = this.tg.grid.clone();
+        workerState.gridBackup = workerState.grid.clone();
         // this.printGrid();
 
         // console.log('-------grid initialised');
-        // // console.log(this.tg.grid);
+        // // console.log(workerState.grid);
 
         this.finder = new PF.AStarFinder({
             allowDiagonal: true,
@@ -166,21 +162,11 @@ module.exports = {
         });
 
         this.gridBackup = this.grid.clone();
-        bot_route_utility.init(world_config, this.tg.grid.clone());
+        bot_route_utility.init(this.worldConfig, workerState.grid.clone());
         
     },
 
-
-
-    deActivateBot: function(botid){
-        var botConfig = this.tg.botConfig[botid];
-        if(botConfig == undefined || botConfig == null){
-            // console.log('ERROR: Bot undefined. Skip termination process. Bot ID:' + botid);
-            return;
-        }
-        var xPos = botConfigParam.position[0];
-        var zPos = botConfigParam.position[2];
-        // this.tg.grid.setWalkableAt(xPos + this.tg.centreX, zPos + this.tg.centreX, true);
-        this.tg.botConfig[botid] = null;
+    isWalkableAt: function(xParam, zParam){
+        return workerState.grid.isWalkableAt(xParam, zParam);
     },
 }
