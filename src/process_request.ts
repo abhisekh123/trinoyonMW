@@ -9,12 +9,12 @@ const clientregistry = require('./state/clientstate');
 
 export class RequestProcessor {
     process(requestJSON: request_message, ws: WebSocket) {
-        const clientID = clientregistry.clientMap.get(ws);
-        if(clientID == undefined || clientID == null){
+        const userId = clientregistry.clientMap.get(ws);
+        if(userId == undefined || userId == null){
             console.log('ERROR:Dropping request. Unknown sender.');
             return;
         }else{
-            requestJSON.clientID = clientID;
+            requestJSON.userId = userId;
         }
         switch (requestJSON.type) {
             case 'action':

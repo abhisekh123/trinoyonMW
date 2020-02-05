@@ -5,6 +5,69 @@ module.exports = {
     // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
     init: function(){
     },
+
+    processGames: function() {
+        if(playerManager.connectedPlayerCount > 0 && this.isGameRunning){
+            this.processPlayers();
+            
+            // console.log('=== completed processing players');
+            var timeSlice;// processActionResolution;refreshWorldInterval
+            var remainingTimeForThisRefreshCycle = this.deltaTimeForRefresh; // remainig time for current refresh cycle.
+            
+            // update building life cycle:
+            for(var i = 0; i < workerstate.buildingArray.length; ++i){
+                if(workerstate.buildingArray[i].life <= 0 && workerstate.buildingArray[i].isActive){ // bots that died in last cycle.
+                    // this.processBot(i, timeSlice);
+                    // var botConfig = this.botArray[i];
+                    // // console.log('5');
+                    // this.instructBot(workerstate.buildingArray[i], 'die', null);
+                    if(workerstate.buildingArray[i].type == 'base'){
+                        this.terminateGame(workerstate.buildingArray[i]);
+                        this.refreshWorld();
+                        // return;
+                    }
+                    // console.log('building:' + workerstate.buildingArray[i].id + ' DIED.');
+                    workerstate.buildingArray[i].isActive = false;
+                    var update = {};
+                    update.action = 'die';
+                    update.botType = workerstate.buildingArray[i].type;
+                    update.x = workerstate.buildingArray[i].position.x;
+                    update.z = workerstate.buildingArray[i].position.z;
+                    this.latestSnapshot[workerstate.buildingArray[i].id] = update;
+                    this.isStateUpdated = true;
+                }
+            }
+            // update bot life cycle
+            for(var i = 0; i < this.maxBotCount; ++i){
+                if(workerstate.botArray[i].life <= 0 && workerstate.botArray[i].isActive){ // bots that died in last cycle.
+                    // this.processBot(i, timeSlice);
+                    // var botConfig = this.botArray[i];
+                    // // console.log('6');
+                    this.instructBot(workerstate.botArray[i], 'die', null);
+                    // workerstate.botArray[i].isActive = false;
+                    // console.log('bot:' + workerstate.botArray[i].id + ' DIED.');
+                }
+            }
+            do{
+                // console.log('--))start do loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
+                if(remainingTimeForThisRefreshCycle <= this.processActionResolution){
+                    timeSlice = remainingTimeForThisRefreshCycle;
+                    remainingTimeForThisRefreshCycle = 0;
+                }else{
+                    timeSlice = this.processActionResolution;
+                    remainingTimeForThisRefreshCycle = remainingTimeForThisRefreshCycle - this.processActionResolution;
+                }
+                for(var i = 0; i < this.maxBotCount; ++i){
+                    if(workerstate.botArray[i].isActive == true){
+                        this.processBot(i, timeSlice);
+                        // var botConfig = this.botArray[i];
+                    }
+                    // this.processBot(i, timeSlice); /// process all bots : active, inactive.
+                }
+                // // console.log('end do loop');
+            }while(remainingTimeForThisRefreshCycle > 0);
+        }
+    },
     
     terminateGame(itemConfigParam){
         var loosingTeam = itemConfigParam.team;
@@ -102,9 +165,9 @@ module.exports = {
             this.admitNewBot(index);
         }
     },
-    admitNewPlayer: function(clientID, isAI){
-        // console.log('admit new player:' + clientID);
-        const playerConfig = playerManager.admitNewPlayer(clientID);
+    admitNewPlayer: function(userId, isAI){
+        // console.log('admit new player:' + userId);
+        const playerConfig = playerManager.admitNewPlayer(userId);
         
         return playerConfig;
     },

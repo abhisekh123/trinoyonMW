@@ -97,8 +97,8 @@ module.exports = {
         }
     },
 
-    removePlayer: function(clientID){
-        const playerID = playerManager.getPlayerID(clientID);
+    removePlayer: function(userId){
+        const playerID = playerManager.getPlayerID(userId);
         const playerConfig = playerManager.playerArrey[playerID];
         const botStartIndex = playerID * this.maxBotPerPlayer;
 
@@ -110,8 +110,8 @@ module.exports = {
         }
     },
 
-    getPlayerID: function(clientID){
-        return this.playerMap.get(clientID);
+    getPlayerID: function(userId){
+        return this.playerMap.get(userId);
     },
 
     getNewPlayerColor(){
@@ -141,13 +141,13 @@ module.exports = {
         return color;
     },
 
-    admitNewPlayer: function(clientID){
+    admitNewPlayer: function(userId){
         // console.log('player manager------>try admitNewPlayer');
         for(var i = 0; i < this.maxPlayerCount; ++i){
             if(this.playerArrey[i].isAIDriven){
                 this.playerArrey[i].isActive = true;
                 this.playerArrey[i].isAIDriven = false;
-                this.playerArrey[i].clientID = clientID;
+                this.playerArrey[i].userId = userId;
                 // this.playerArrey[i].teamColor = this.getNewPlayerColor();
                 // let newID = clientregistry.getNewUniqueID();
                 // let clientObject = {
@@ -157,7 +157,7 @@ module.exports = {
                 // clientObject.playerid = playerID;
                 // clientObject.id = newID;
 
-                this.playerMap[clientID] = i;
+                this.playerMap[userId] = i;
                 // return this.playerArrey[i];
                 ++this.connectedPlayerCount;
                 return this.playerArrey[i];
@@ -166,11 +166,11 @@ module.exports = {
         return null;
     },
 
-    removePlayer: function(clientID){
-        var playerID = this.getPlayerID(clientID);
+    removePlayer: function(userId){
+        var playerID = this.getPlayerID(userId);
         this.playerArrey[playerID].isActive = false;
-        this.playerMap[clientID] = undefined;
-        this.playerMap.delete(clientID);
+        this.playerMap[userId] = undefined;
+        this.playerMap.delete(userId);
         --this.connectedPlayerCount;
         return;
     },

@@ -37,9 +37,9 @@ module.exports = {
                 gameState.setGameBotState(ev.data);
                 break;
             case 'request_game_admit_ack': // client has been granted admission to the game.
-                var clientID = jsonData.clientID;
-                console.log('get request_game_admit_ack for :' + clientID);
-                let clientWS = clientregistry.clientArrey[clientID].ws;
+                var userId = jsonData.userId;
+                console.log('get request_game_admit_ack for :' + userId);
+                let clientWS = clientregistry.clientArrey[userId].ws;
                 clientregistry.sendMessageToClient(clientWS, ev.data);
                 break;
             default:

@@ -1,6 +1,9 @@
 const world_config = require(__dirname + '/../../../ui/world_config');
 
 module.exports = {
+    clientArrey:[],//saves websocket objects
+    clientMap:new Map<WebSocket, any>(),
+    
     clientRequest:{},
     onlinePlayers:{},
     onlineClients:{},

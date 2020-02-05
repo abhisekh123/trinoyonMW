@@ -2,7 +2,7 @@
 
 export interface request_message {
     type:    string;
-    clientID: number;
+    userId: string;
     teamID: number;
     message:     JSON;
 }

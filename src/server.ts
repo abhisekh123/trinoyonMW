@@ -5,10 +5,7 @@ import * as path from 'path';
 
 import {request_message} from './factory/types';
 import {RequestProcessor} from './process_request';
-// import * as clientMessageValidator from '../src/utils/client_message_validator';
-// import * as clientMessageValidator from './utils/client_message_validator';
 const clientMessageValidator = require(__dirname + '/../../src/utils/client_message_validator');
-// const clientMessageValidator = require('src/utils/client_message_validator');
 
 const app = express();
 const requestProcessor = new RequestProcessor();
@@ -89,8 +86,8 @@ export class DemoServer {
         wss.on('connection', (ws: WebSocket) => {
             // // console.log('got new connection:' , ws);
             console.log('got new connection');
-            let clientID = clientregistry.admitNewClient(ws);
-            if(clientID < 0){
+            let userId = clientregistry.admitNewClient(ws);
+            if(userId < 0){
                 console.log('error: could not connect the new client.');
                 ws.close();
                 return;
@@ -115,11 +112,11 @@ export class DemoServer {
             });
             ws.on('close', (message: string) => {
                 // console.log('closed connection.');
-                const clientID = clientregistry.removeClient(ws);
-                if(clientID != null && clientID != undefined){
+                const userId = clientregistry.removeClient(ws);
+                if(userId != null && userId != undefined){
                     requestProcessor.process({
                         type: 'client_disconnected',
-                        clientID: clientID,
+                        userId: userId,
                         teamID: 0,
                         message:{}
                     } as request_message, ws);

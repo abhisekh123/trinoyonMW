@@ -1,11 +1,10 @@
+
 import * as WebSocket from 'ws';
 const serverState = require('./serverstate');
 
 // TODO: On client join : send status (queue status)
 
 module.exports = {
-    clientArrey:[],//saves websocket objects
-    clientMap:new Map<WebSocket, any>(),
     maxClientCount:10,
     idCounter:0,
     world_config: {},
@@ -50,15 +49,15 @@ module.exports = {
     },
 
     removeClient: function(wsParam: WebSocket){
-        var clientID = this.clientMap.get(wsParam);
-        if(clientID == null || clientID == undefined){
+        var userId = this.clientMap.get(wsParam);
+        if(userId == null || userId == undefined){
             console.error('ERROR: while removing client. ClientMap does not have any such record.');
         }else{
             this.clientMap.delete(wsParam);
-            this.clientArrey[clientID].isActive = false;
-            this.clientArrey[clientID].ws = null;
+            this.clientArrey[userId].isActive = false;
+            this.clientArrey[userId].ws = null;
         }
         wsParam.close();
-        return clientID;
+        return userId;
     }
 }

@@ -3,11 +3,11 @@ const mainThreadStub = require(__dirname + '/mainthreadstub');
 const snapshotmanager = require('./state/snapshotmanager');
 
 module.exports = {
-    processNewMessages: function(){
-        console.log('woreker@processNewMessages');
+    processIncomingMessages: function(){
+        console.log('woreker@processIncomingMessages');
         var playerID = -1;
         for(var i = 0; i < mainThreadStub.messagebuffer.length; ++i){
-            // // console.log(i + '>processNewMessages::' + mainThreadStub.messagebuffer[i]);
+            // // console.log(i + '>processIncomingMessages::' + mainThreadStub.messagebuffer[i]);
             var currentMessage = mainThreadStub.messagebuffer[i];
             if(currentMessage == null || currentMessage == undefined || currentMessage.type == undefined || currentMessage.type == null){
                 continue;
@@ -19,8 +19,8 @@ module.exports = {
                     break;
                 case 'request_game_admit':
                     console.log('request game admit');
-                    var clientID = currentMessage.clientID;
-                    var playerConfig = this.admitNewPlayer(clientID, false);
+                    var userId = currentMessage.userId;
+                    var playerConfig = this.admitNewPlayer(userId, false);
                     if(playerConfig != null){
                         currentMessage.type = 'request_game_admit_ack';
                         currentMessage = snapshotmanager.addSnapshot(currentMessage, playerConfig);
@@ -43,17 +43,17 @@ module.exports = {
                     // console.log('process action:', currentMessage.type);
                     // this.updateBotAction(currentMessage);
                     // routine to send world details to main worker.
-                    var clientID = currentMessage.clientID;
+                    var userId = currentMessage.userId;
 
-                    // console.log('get exit request from client:' + clientID);
+                    // console.log('get exit request from client:' + userId);
 
-                    playerID = playerManager.getPlayerID(clientID);
+                    playerID = playerManager.getPlayerID(userId);
                     if(playerID == null || playerID == undefined){
-                        console.error('ERROR removing player from worker with clientID:' + clientID + ' Client already not existing.');
+                        console.error('ERROR removing player from worker with userId:' + userId + ' Client already not existing.');
                         return;
                     }
-                    this.removePlayer(clientID);
-                    playerManager.removePlayer(clientID);
+                    this.removePlayer(userId);
+                    playerManager.removePlayer(userId);
                     break;
                 default:
                     // console.log('ERROR@WebWorker:Received message with unknown type:' + currentMessage);
@@ -61,5 +61,9 @@ module.exports = {
         }
 
         mainThreadStub.messagebuffer.length = 0;
+    },
+    broadcastGameUpdatesToPlayers: function(){
+        var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
+        mainThreadStub.postMessage(responseJSONString, '');
     },
 }
