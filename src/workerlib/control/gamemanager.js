@@ -165,10 +165,5 @@ module.exports = {
             this.admitNewBot(index);
         }
     },
-    admitNewPlayer: function(userId, isAI){
-        // console.log('admit new player:' + userId);
-        const playerConfig = playerManager.admitNewPlayer(userId);
-        
-        return playerConfig;
-    },
+    
 }

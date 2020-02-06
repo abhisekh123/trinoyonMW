@@ -21,7 +21,15 @@ module.exports = {
     roundTo2Decimal: function (floatValue) {
         return (Math.round(floatValue * 100) / 100);
     },
+
+    getObjectKeys: function (objectParam) {
+        return Object.keys(objectParam);
+    },
     
+    getObjectValues: function (objectParam) {
+        return Object.values(objectParam);
+    },
+
     isPointInRangeBox: function (x, z, originX, originZ, rangeParam) {
         if (x < (originX - rangeParam) || x > (originX + rangeParam)) {
             return false;

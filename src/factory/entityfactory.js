@@ -10,10 +10,15 @@
 module.exports = {
     getNewGameRoom: function(){
         var gameRoom = {};
+        gameRoom.isActive = false;
         gameRoom.playersArray = [];
         gameRoom.playersMap = {};
         gameRoom.bots = {};
         gameRoom.buildings = {};
         return gameRoom;
+    },
+
+    getNewWaitingUserObject: function() {
+        // var waitingObject
     },
 }

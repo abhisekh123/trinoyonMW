@@ -1,24 +1,7 @@
 
-const world_config = require(__dirname + '/../../../ui/world_config');
 
 module.exports = {
-    playerArrey: [],//saves websocket objects
-    connectedPlayerCount: 0,
-    playerMap: {},
-    maxPlayerCount: 0,
-    // botColor: world_config.commonConfig.botColor,
-    // selfColor: world_config.commonConfig.selfColor,
-    botColor: [1, 1, 1],
-    selfColor: [1, 1, 1],
-
-    // processAIPlayers: function(){
-    //     for(var i = 0; i < this.maxPlayerCount; ++i){
-    //         var currentPlayer = this.playerArrey[i];
-    //         if(currentPlayer.isAIDriven == false && currentPlayer.isActive == true && currentPlayer.opponentAI == null){
-    //             // needs to be assigned opponentAI
-    //         }
-    //     }
-    // },
+    
     getPlayerByTeamID: function(teamID){
         for(var i = 0; i < this.maxPlayerCount; ++i){
             if(this.playerArrey[i].teamID == teamID){
@@ -173,6 +156,12 @@ module.exports = {
         this.playerMap.delete(userId);
         --this.connectedPlayerCount;
         return;
+    },
+    admitNewPlayer: function(userId, isAI){
+        // console.log('admit new player:' + userId);
+        const playerConfig = playerManager.admitNewPlayer(userId);
+        
+        return playerConfig;
     },
 
     reset: function(){

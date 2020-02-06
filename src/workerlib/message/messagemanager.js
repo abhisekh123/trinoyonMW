@@ -1,6 +1,8 @@
 
 const mainThreadStub = require(__dirname + '/mainthreadstub');
 const snapshotmanager = require('./state/snapshotmanager');
+const gameManager = require('../control/gamemanager');
+const playerManager = require('../control/playermanager');
 
 module.exports = {
     processIncomingMessages: function(){
@@ -20,7 +22,7 @@ module.exports = {
                 case 'request_game_admit':
                     console.log('request game admit');
                     var userId = currentMessage.userId;
-                    var playerConfig = this.admitNewPlayer(userId, false);
+                    var playerConfig = playerManager.processAdmitRequest(userId, false);
                     if(playerConfig != null){
                         currentMessage.type = 'request_game_admit_ack';
                         currentMessage = snapshotmanager.addSnapshot(currentMessage, playerConfig);

@@ -16,6 +16,9 @@ module.exports = {
     distanceMatrix: null,
     angleMatrix: null,
 
+    waitingUserCount: 0,
+    waitingUserMap: {},
+
     games: [],
     grid: null,
     gridBackup: null,
