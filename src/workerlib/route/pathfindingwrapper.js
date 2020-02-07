@@ -85,8 +85,8 @@ module.exports = {
             var towerID = 'tower' + towerIndex;
             this.worldConfig.defenceBottom[i].push(towerID);
             workerState.buildingMap[towerID] = {
-                life:this.itemConfig.buildings.tower.life,
-                attack:this.itemConfig.buildings.tower.attack,
+                life:this.itemConfig.items.tower.life,
+                attack:this.itemConfig.items.tower.attack,
                 isActive: true,
                 type:'tower',
                 team:1,
@@ -104,8 +104,8 @@ module.exports = {
             var towerID = 'tower' + towerIndex;
             this.worldConfig.defenceTop[i].push(towerID);
             workerState.buildingMap[towerID] = {
-                life:this.itemConfig.buildings.tower.life,
-                attack:this.itemConfig.buildings.tower.attack,
+                life:this.itemConfig.items.tower.life,
+                attack:this.itemConfig.items.tower.attack,
                 type:'tower',
                 isActive: true,
                 team:2,
@@ -121,8 +121,8 @@ module.exports = {
         workerState.grid.setWalkableAt(this.worldConfig.topBase[0], this.worldConfig.topBase[1], false);
         this.worldConfig.topBase.push('base1');
         workerState.buildingMap['base1'] = {
-            life:this.itemConfig.buildings.base.life,
-            attack:this.itemConfig.buildings.base.attack,
+            life:this.itemConfig.items.base.life,
+            attack:this.itemConfig.items.base.attack,
             type:'base',
             isActive: true,
             team:2,
@@ -136,8 +136,8 @@ module.exports = {
         workerState.grid.setWalkableAt(this.worldConfig.bottomBase[0], this.worldConfig.bottomBase[1], false);
         this.worldConfig.bottomBase.push('base2');
         workerState.buildingMap['base2'] = {
-            life:this.itemConfig.buildings.base.life,
-            attack:this.itemConfig.buildings.base.attack,
+            life:this.itemConfig.items.base.life,
+            attack:this.itemConfig.items.base.attack,
             type:'base',
             isActive: true,
             team:1,

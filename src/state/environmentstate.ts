@@ -3,5 +3,6 @@ module.exports = {
     environment: 'local',
     // environment: 'server'
 
-    maxUserCount:10,
+    maxUserCount:100,
+    maxGameCount: 10,
 }

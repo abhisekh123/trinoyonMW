@@ -8,6 +8,17 @@ module.exports = {
         }
         return [];
     },
+    getUniqueID: function(prefixParam, mapParam){
+        var newName = prefixParam + this.getCurrentTime;
+        var newNameReference = newName;
+        var index = 0;
+        while(mapParam[newName] != undefined){
+            index++;
+            newName = newNameReference + '_' + index;
+        }
+        return newName;
+    },
+
     getCurrentTime:function(){
         // const d = new Date();
         // const n = d.getTime();

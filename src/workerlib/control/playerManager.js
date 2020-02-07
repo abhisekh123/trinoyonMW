@@ -157,12 +157,7 @@ module.exports = {
         --this.connectedPlayerCount;
         return;
     },
-    admitNewPlayer: function(userId, isAI){
-        // console.log('admit new player:' + userId);
-        const playerConfig = playerManager.admitNewPlayer(userId);
-        
-        return playerConfig;
-    },
+    
 
     reset: function(){
         this.playerMap = {};

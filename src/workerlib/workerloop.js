@@ -5,6 +5,7 @@ const gameManager = require('./control/gamemanager');
 const messageManager = require('./message/messagemanager');
 const workerState = require('./state/workerstate');
 const utilityFunctions = require('../utils/utilityfunctions');
+const routeManager = require('./route/routemanager');
 // const bot_route_utility = require('./botRouteUtility');
 
 //bots always ave instruction: guard, follow, go
@@ -40,6 +41,7 @@ module.exports = {
     
     init: function(){
         workerState.init();
+        routeManager.init();
         gameManager.init();
         messageManager.init();
         

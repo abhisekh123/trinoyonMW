@@ -4,6 +4,23 @@ const item_config = require(__dirname + '/../../../ui/item_config');
 const utilityFunctions = require('../../utils/utilityfunctions');
 
 module.exports = {
+
+    // game
+    games: [],
+
+    // world
+    grid: null,
+    gridBackup: null,
+    buildingMap: {},
+    buildingArray: [],
+
+    // constants / caches
+    worldReferrenceModel: null, // this is referenced to create/reset world for new games.
+    distanceMatrix: null,
+    angleMatrix: null,
+    strategyMatrix: null,
+
+    // time
     timePreviousGameLoopStart: 0,
     timeLastGameCreationWasAttempted: 0,
     currentTime: 0,
@@ -13,18 +30,11 @@ module.exports = {
         intervalForAttemptGameStart: 30000,
     },
 
-    distanceMatrix: null,
-    angleMatrix: null,
+    
 
+    // user
     waitingUserCount: 0,
     waitingUserMap: {},
-
-    games: [],
-    grid: null,
-    gridBackup: null,
-    strategyMatrix: null,
-    buildingMap: {},
-    buildingArray: [],
 
     getWorldConfig: function() {
         return world_config;

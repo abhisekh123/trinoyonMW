@@ -1,9 +1,13 @@
 
-
+const workerState = require('../state/workerstate');
+const utilityFunctions = require('../../utils/utilityfunctions');
+const worldManager = require('./worldmanager');
 
 module.exports = {
     // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
     init: function(){
+        // create refference world
+
     },
 
     processGames: function() {
