@@ -2,6 +2,7 @@
 //top level : implements worker logic
 
 const gameManager = require('./control/gamemanager');
+const playerManager = require('./control/playermanager');
 const messageManager = require('./message/messagemanager');
 const workerState = require('./state/workerstate');
 const utilityFunctions = require('../utils/utilityfunctions');
@@ -26,7 +27,7 @@ module.exports = {
         gameManager.processGames();
         
         messageManager.broadcastGameUpdatesToPlayers();
-        
+        playerManager.processWaitingUserAdmitRequests();
 
         let timeElapsed = math_util.getCurrentTime() - this.lastLoopExecutionTimeStamp;
         // // console.log('refreshWorld time duration:' + timeElapsed);

@@ -78,6 +78,33 @@ module.exports = {
         this.tg.botConfig[botid] = null;
     },
 
+    getNewPlayerColor(){
+        // var color = this.selfColor;
+        // var color = [1,1,1];
+        // while(color == this.selfColor || color == this.botColor){
+        //     // color = '#' + Math.floor(Math.random() * 16777215).toString(16);// random color
+        //     color = [
+        //         Math.floor(Math.random() * 100) / 100,
+        //         Math.floor(Math.random() * 100) / 100,
+        //         Math.floor(Math.random() * 100) / 100,
+        //     ];
+        // }
+        // // console.log('tmp');
+        // var tmp = Math.random();
+        // // console.log(tmp);
+        // tmp = Math.floor(tmp * 100) / 100;
+        // // console.log(tmp);
+        // tmp = Math.floor(Math.random() * 100) / 100;
+        // // console.log(tmp);
+        var color = [
+            Math.floor(Math.random() * 100) / 100,
+            Math.floor(Math.random() * 100) / 100,
+            Math.floor(Math.random() * 100) / 100,
+        ];
+        // // console.log('generated color:' + color);
+        return color;
+    },
+
     updateBotPosition: function (id, x, z) {
         // return;
         var botIndex = 0;

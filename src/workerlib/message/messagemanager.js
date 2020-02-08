@@ -22,7 +22,7 @@ module.exports = {
                 case 'request_game_admit':
                     console.log('request game admit');
                     var userId = currentMessage.userId;
-                    var playerConfig = playerManager.processAdmitRequest(userId, false);
+                    var playerConfig = playerManager.addUserToWaitingList(currentMessage);
                     if(playerConfig != null){
                         currentMessage.type = 'request_game_admit_ack';
                         currentMessage = snapshotmanager.addSnapshot(currentMessage, playerConfig);

@@ -25,7 +25,27 @@
                 scale:5,
                 animationSpeed:1
             },
-            boy:{
+            swordman:{
+                bannedMeshes:[9],
+                idleAnimationIndex:0,
+                runAnimationIndex:16,
+                dieAnimationIndex:9,
+                spawnAnimationIndex:7,
+                attackAnimationIndex:2,
+                attackinterval: 500,
+                attack: 1,
+                life:10,
+                speed:1, //one tile per 1000 ms.
+                strideDistance: 0.5,
+                strideTime: 0.25,
+                sight: 7,
+                range: 2,
+                parentMesh: null,
+                file:'low_poly_character_rpg_kit_animation',
+                scale:0.04,
+                animationSpeed: 1
+            },
+            archer:{
                 bannedMeshes:[9],
                 idleAnimationIndex:0,
                 runAnimationIndex:16,

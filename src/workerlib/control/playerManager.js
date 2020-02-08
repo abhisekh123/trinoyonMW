@@ -1,4 +1,7 @@
 
+const workerState = require('../state/workerstate');
+var linkedList = require('../../utils/linkedlist');
+const utilityFunctions = require('../utils/utilityfunctions');
 
 module.exports = {
     
@@ -13,20 +16,21 @@ module.exports = {
 
     init: function(){
         // var tmpColorIndex = 100;
-        this.maxPlayerCount = world_config.players.length;
-        for(var i = 0; i < this.maxPlayerCount; ++i){
-            var playerObject = {
-                isActive:true, // is false if commandar has died
-                isAIDriven:true,
-                opponentAI:null,
-                teamColor : this.getNewPlayerColor(),
-                leaderBotID: null,
-                teamID: world_config.players[i].teamID,
-                playerID: world_config.players[i].playerID,
-                botIDList: []
-            };
-            this.playerArrey[i] = playerObject;
-        }
+        // this.maxPlayerCount = world_config.players.length;
+        // for(var i = 0; i < this.maxPlayerCount; ++i){
+        //     var playerObject = {
+        //         isActive:true, // is false if commandar has died
+        //         isAIDriven:true,
+        //         opponentAI:null,
+        //         teamColor : this.getNewPlayerColor(),
+        //         leaderBotID: null,
+        //         teamID: world_config.players[i].teamID,
+        //         playerID: world_config.players[i].playerID,
+        //         botIDList: []
+        //     };
+        //     this.playerArrey[i] = playerObject;
+        // }
+        workerState.waitingUsersLinkedList = new linkedList();
     },
 
 
@@ -97,34 +101,55 @@ module.exports = {
         return this.playerMap.get(userId);
     },
 
-    getNewPlayerColor(){
-        // var color = this.selfColor;
-        // var color = [1,1,1];
-        // while(color == this.selfColor || color == this.botColor){
-        //     // color = '#' + Math.floor(Math.random() * 16777215).toString(16);// random color
-        //     color = [
-        //         Math.floor(Math.random() * 100) / 100,
-        //         Math.floor(Math.random() * 100) / 100,
-        //         Math.floor(Math.random() * 100) / 100,
-        //     ];
-        // }
-        // // console.log('tmp');
-        // var tmp = Math.random();
-        // // console.log(tmp);
-        // tmp = Math.floor(tmp * 100) / 100;
-        // // console.log(tmp);
-        // tmp = Math.floor(Math.random() * 100) / 100;
-        // // console.log(tmp);
-        var color = [
-            Math.floor(Math.random() * 100) / 100,
-            Math.floor(Math.random() * 100) / 100,
-            Math.floor(Math.random() * 100) / 100,
-        ];
-        // // console.log('generated color:' + color);
-        return color;
+    addUserToWaitingList: function(userMessage){
+        // const userId = userMessage.userId;
+        userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
+        workerState.waitingUsersLinkedList.add(userMessage);
+
+        /**
+         * userMessage{
+         *      userId
+         *      players: [userId]
+         * }
+         */
     },
 
-    admitNewPlayer: function(userId){
+    processWaitingUserAdmitRequests: function() {
+        // test time stamp to see if it is too early.
+        const timeNow = utilityFunctions.getCurrentTime();
+        if((timeNow - workerState.timeWhenLastAttemptWasMadeToProcessWaitingUsers) < workerState.minInterval_AttemptToProcessWaitingUsers){
+            // too early. will try next time.
+            console.log('too early to processWaitingUserAdmitRequests. doing nothing');
+            return;
+        }
+        console.log('processWaitingUserAdmitRequests');
+        // iterate through user list
+        if(workerState.waitingUsersLinkedList.isEmpty()){
+            console.log('no pending admit request.');
+            return;
+        }
+
+        workerState.waitingUsersLinkedList.pointToHead();
+        let currentNode = workerState.waitingUsersLinkedList.getCurrentNode();
+
+        // player count cache to optimise when too many request.
+        const playerFitCache = {
+            1: true,
+            2: true,
+            3: true,
+        }; // if false for a given player count in previous search attempt, 
+        // then no need to seach games again for other request with same player count.
+        while(currentNode != null){
+            if(!playerFitCache[currentNode.players.length]){// no point search
+                console.log('!playerFitCache[currentNode.players.length');
+                continue;
+            }
+
+            currentNode = workerState.waitingUsersLinkedList.moveToNextNode();
+        }
+    },
+
+    tryAdmitingNewPlayers: function(userList){
         // console.log('player manager------>try admitNewPlayer');
         for(var i = 0; i < this.maxPlayerCount; ++i){
             if(this.playerArrey[i].isAIDriven){
@@ -162,5 +187,19 @@ module.exports = {
     reset: function(){
         this.playerMap = {};
         this.init();
-    }
+    },
+
+    getGenericPlayerObject: function(playerID, playerTeam, gameId){
+        return {
+            id: playerID,
+            team: playerTeam,
+            isConnected: false,
+            gameId: gameId,
+            lastCommunication: 0,
+            joinTime: 0,
+            botList: ['swordman', 'swordman', 'archer', 'archer'],
+            hero: 'lion',
+            isAIDriven: true,
+        }
+    },
 }

@@ -1,6 +1,6 @@
 
-const world_config = require(__dirname + '/../../../ui/world_config');
-const item_config = require(__dirname + '/../../../ui/item_config');
+const worldConfig = require(__dirname + '/../../../ui/world_config');
+const itemConfig = require(__dirname + '/../../../ui/item_config');
 const utilityFunctions = require('../../utils/utilityfunctions');
 
 module.exports = {
@@ -8,11 +8,21 @@ module.exports = {
     // game
     games: [],
 
+    // players
+    // players: null,
+    waitingUsersLinkedList: null,
+
+    // user
+    // waitingUserCount: 0,
+    // waitingUserMap: {},
+
     // world
     grid: null,
     gridBackup: null,
-    buildingMap: {},
-    buildingArray: [],
+    buildingMap_1: {},
+    buildingArray_1: [],
+    buildingMap_2: {},
+    buildingArray_2: [],
 
     // constants / caches
     worldReferrenceModel: null, // this is referenced to create/reset world for new games.
@@ -24,23 +34,20 @@ module.exports = {
     timePreviousGameLoopStart: 0,
     timeLastGameCreationWasAttempted: 0,
     currentTime: 0,
-    timeIntervalToSimulateInEachGame: 0,
+    timeIntervalToSimulateInEachGame: 0, // time slice since last loop. Need to simulate each game for this interval.
+
+    timeWhenLastAttemptWasMadeToProcessWaitingUsers: 0,
+    minInterval_AttemptToProcessWaitingUsers: 5000, // in miliseconds
 
     customConfigs: {
         intervalForAttemptGameStart: 30000,
     },
 
-    
-
-    // user
-    waitingUserCount: 0,
-    waitingUserMap: {},
-
     getWorldConfig: function() {
-        return world_config;
+        return worldConfig;
     },
     getItemConfig: function() {
-        return item_config;
+        return itemConfig;
     },
 
     init: function() {
