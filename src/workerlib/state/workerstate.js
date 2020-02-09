@@ -29,6 +29,13 @@ module.exports = {
     distanceMatrix: null,
     angleMatrix: null,
     strategyMatrix: null,
+    // player count cache to optimise when too many request.
+    playerFitCache: { // will be reset by game start routine @ game manager.
+        1: true,
+        2: true,
+        3: true,
+    }, // if false for a given player count in previous search attempt, 
+    // then no need to seach games again for other request with same player count.
 
     // time
     timePreviousGameLoopStart: 0,

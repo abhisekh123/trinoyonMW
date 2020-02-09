@@ -33,23 +33,49 @@ module.exports = {
                 gameRoom.players_2.push(playerManager.getGenericPlayerObject(playerId, team, i));
             }
             gameRoom.startTime = null;
-            gameRoom.bots = [];
-            workerState.games = gameRoom;
+            workerState.games[i] = gameRoom;
         }
         
     },
 
     resetGame: function(indexParam) {
         const gameRoom = workerState.games(indexParam);
-        gameRoom.bots = [];
         gameRoom.isActive = false;
-        gameRoom.users = [];
         gameRoom.startTime = null;
 
-        for(var i = 0; i < gameRoom.buildings.length; ++i){
-            const building = gameRoom.buildings[i];
-            building.life = workerState.buildingMap[building.id].life;
+        // building 1
+        for(var i = 0; i < gameRoom.buildings_1.length; ++i){
+            const building = gameRoom.buildings_1[i];
+            building.life = workerState.buildingMap_1[building.id].life;
             building.isActive = true;
         }
+
+        // building 2
+        for(var i = 0; i < gameRoom.buildings_2.length; ++i){
+            const building = gameRoom.buildings_2[i];
+            building.life = workerState.buildingMap_2[building.id].life;
+            building.isActive = true;
+        }
+
+        // players 1
+        for(var i = 0; i < gameRoom.players_1.length; ++i){
+            const player = gameRoom.players_1[i];
+            player.userId = null;
+            player.isConnected = false;
+            player.lastCommunication = 0;
+            player.joinTime = 0;
+            player.isAIDriven = true;
+        }
+
+        // players 2
+        for(var i = 0; i < gameRoom.players_2.length; ++i){
+            const player = gameRoom.players_2[i];
+            player.userId = null;
+            player.isConnected = false;
+            player.lastCommunication = 0;
+            player.joinTime = 0;
+            player.isAIDriven = true;
+        }
+
     }
 }

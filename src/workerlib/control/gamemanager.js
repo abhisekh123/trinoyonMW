@@ -9,6 +9,13 @@ module.exports = {
     init: function(){
         // create refference world
         playerManager.init();
+        worldManager.init();
+    },
+
+    startNewGame: function() {
+        workerState.playerFitCache["1"] = true;
+        workerState.playerFitCache["2"] = true;
+        workerState.playerFitCache["3"] = true;
     },
 
     processGames: function() {
@@ -105,6 +112,9 @@ module.exports = {
         }
     },
 
+    terminateGamePrematurely: function() {
+
+    },
 
     initializeWorldByPopulatingWithBots: function(){
         // // console.log('playerManager.playerArrey:', playerManager.playerArrey);

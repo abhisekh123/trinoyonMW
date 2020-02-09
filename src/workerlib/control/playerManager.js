@@ -4,15 +4,6 @@ var linkedList = require('../../utils/linkedlist');
 const utilityFunctions = require('../utils/utilityfunctions');
 
 module.exports = {
-    
-    getPlayerByTeamID: function(teamID){
-        for(var i = 0; i < this.maxPlayerCount; ++i){
-            if(this.playerArrey[i].teamID == teamID){
-                return this.playerArrey[i];
-            }
-        }
-        return null;
-    },
 
     init: function(){
         // var tmpColorIndex = 100;
@@ -28,16 +19,16 @@ module.exports = {
         //         playerID: world_config.players[i].playerID,
         //         botIDList: []
         //     };
-        //     this.playerArrey[i] = playerObject;
+        //     this.playerArray[i] = playerObject;
         // }
         workerState.waitingUsersLinkedList = new linkedList();
     },
 
 
     processPlayers: function(){
-        // // console.log('process players.', playerManager.playerArrey);
-        for(var playerIndex = 0, botIndex = 0; playerIndex < playerManager.playerArrey.length; ++playerIndex){
-            const playerConfig = playerManager.playerArrey[playerIndex];
+        // // console.log('process players.', playerManager.playerArray);
+        for(var playerIndex = 0, botIndex = 0; playerIndex < playerManager.playerArray.length; ++playerIndex){
+            const playerConfig = playerManager.playerArray[playerIndex];
             // console.log('process player:', playerConfig.playerID);
             // skip inactive player and players controlled by real people
             if(!playerConfig.isActive || !playerConfig.isAIDriven){
@@ -86,7 +77,7 @@ module.exports = {
 
     removePlayer: function(userId){
         const playerID = playerManager.getPlayerID(userId);
-        const playerConfig = playerManager.playerArrey[playerID];
+        const playerConfig = playerManager.playerArray[playerID];
         const botStartIndex = playerID * this.maxBotPerPlayer;
 
         // // console.log('botStartIndex:' + botStartIndex);
@@ -109,7 +100,7 @@ module.exports = {
         /**
          * userMessage{
          *      userId
-         *      players: [userId]
+         *      users: [userId]
          * }
          */
     },
@@ -117,6 +108,7 @@ module.exports = {
     processWaitingUserAdmitRequests: function() {
         // test time stamp to see if it is too early.
         const timeNow = utilityFunctions.getCurrentTime();
+        const successfullyAdmittedRequestIndexArray = [];
         if((timeNow - workerState.timeWhenLastAttemptWasMadeToProcessWaitingUsers) < workerState.minInterval_AttemptToProcessWaitingUsers){
             // too early. will try next time.
             console.log('too early to processWaitingUserAdmitRequests. doing nothing');
@@ -132,51 +124,109 @@ module.exports = {
         workerState.waitingUsersLinkedList.pointToHead();
         let currentNode = workerState.waitingUsersLinkedList.getCurrentNode();
 
-        // player count cache to optimise when too many request.
-        const playerFitCache = {
-            1: true,
-            2: true,
-            3: true,
-        }; // if false for a given player count in previous search attempt, 
-        // then no need to seach games again for other request with same player count.
+        
         while(currentNode != null){
-            if(!playerFitCache[currentNode.players.length]){// no point search
-                console.log('!playerFitCache[currentNode.players.length');
+            if(!workerState.playerFitCache[currentNode.players.length]){// no point search
+                console.log('!workerState.playerFitCache[currentNode.players.length');
                 continue;
+            }
+
+            const result = this.tryAdmitingNewPlayers(currentNode);
+
+            if(result == true){
+                successfullyAdmittedRequestIndexArray.push(workerState.waitingUsersLinkedList.getCurrentNodeIndex());
+            } else {
+                workerState.playerFitCache[currentNode.players.length] = false;
             }
 
             currentNode = workerState.waitingUsersLinkedList.moveToNextNode();
         }
     },
 
-    tryAdmitingNewPlayers: function(userList){
-        // console.log('player manager------>try admitNewPlayer');
-        for(var i = 0; i < this.maxPlayerCount; ++i){
-            if(this.playerArrey[i].isAIDriven){
-                this.playerArrey[i].isActive = true;
-                this.playerArrey[i].isAIDriven = false;
-                this.playerArrey[i].userId = userId;
-                // this.playerArrey[i].teamColor = this.getNewPlayerColor();
-                // let newID = clientregistry.getNewUniqueID();
-                // let clientObject = {
-                //     id:null,
-                //     playerid:null,
-                // };
-                // clientObject.playerid = playerID;
-                // clientObject.id = newID;
+    tryAdmitingNewPlayers: function(admitRequest){
+        // const userId = admitRequest.userId;
+        const usersToJoin = admitRequest.users;
+        let newestSuitableGameStartTime = 0;
+        let chosenPlayers = null;
+        for(var i = 0; i < environmentState.maxGameCount; ++i){ // search each game room
+            const aiPlayerArray = [];
+            if(gameRoom.isActive == false){ // skip inactive games.
+                continue;
+            }
+            const gameRoom = workerState.games[i];
+            const currentGameStartTime = gameRoom.startTime;
+            
+            let freeSlot = 0;
+            // vacancy means game player which has never been owned by any player since start.
+            for(var j = 0; j < 5; ++j){ // Test if team 1 has vacancy.
+                const currentPlayer = gameRoom.players_1[j];
+                if(currentPlayer.userId == null){
+                    aiPlayerArray.push(currentPlayer);
+                    ++freeSlot;
+                }
+                if(freeSlot >= usersToJoin.length){
+                    break;
+                }
+            }
 
-                this.playerMap[userId] = i;
-                // return this.playerArrey[i];
-                ++this.connectedPlayerCount;
-                return this.playerArrey[i];
+            if(freeSlot >= usersToJoin.length){
+                if(currentGameStartTime > newestSuitableGameStartTime){
+                    newestSuitableGameStartTime = currentGameStartTime;
+                    chosenPlayers = aiPlayerArray;
+                    continue;
+                }
+            }
+
+            freeSlot = 0;
+            for(var j = 0; j < 5; ++j){ // Test if team 1 has vacancy.
+                const currentPlayer = gameRoom.players_2[j];
+                if(currentPlayer.userId == null){
+                    aiPlayerArray.push(currentPlayer);
+                    ++freeSlot;
+                }
+                if(freeSlot >= usersToJoin.length){
+                    break;
+                }
+            }
+
+            if(freeSlot >= usersToJoin.length){
+                if(currentGameStartTime > newestSuitableGameStartTime){
+                    newestSuitableGameStartTime = currentGameStartTime;
+                    chosenPlayers = aiPlayerArray;
+                    continue;
+                }
             }
         }
-        return null;
+        
+        if(chosenPlayers != null){
+            this.admitUserToGame(usersToJoin, chosenPlayers);
+            return true;
+        } else {
+            return false; // let calling function know that there is no 
+        }
+    },
+
+    admitUsersToGame: function(usersToJoin, chosenPlayers){
+        if(usersToJoin.length != chosenPlayers.length){
+            console.log('ERROR: usersToJoin.length != chosenPlayers.length.');
+            return;
+        }
+
+        const timeNow = utilityFunctions.getCurrentTime();
+
+        for(var j = 0; j < usersToJoin.length; ++j){
+            const player = chosenPlayers[j];
+            player.userId = usersToJoin[j];
+            player.isConnected = true;
+            player.lastCommunication = timeNow;
+            player.joinTime = timeNow;
+            player.isAIDriven = false;
+        }
     },
 
     removePlayer: function(userId){
         var playerID = this.getPlayerID(userId);
-        this.playerArrey[playerID].isActive = false;
+        this.playerArray[playerID].isActive = false;
         this.playerMap[userId] = undefined;
         this.playerMap.delete(userId);
         --this.connectedPlayerCount;
@@ -192,6 +242,7 @@ module.exports = {
     getGenericPlayerObject: function(playerID, playerTeam, gameId){
         return {
             id: playerID,
+            userId: null,
             team: playerTeam,
             isConnected: false,
             gameId: gameId,
