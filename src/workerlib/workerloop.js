@@ -29,6 +29,8 @@ module.exports = {
         messageManager.broadcastGameUpdatesToPlayers();
         playerManager.processWaitingUserAdmitRequests();
 
+        gameManager.tryStartingNewGame();
+
         let timeElapsed = math_util.getCurrentTime() - this.lastLoopExecutionTimeStamp;
         // // console.log('refreshWorld time duration:' + timeElapsed);
         if(timeElapsed > this.refreshWorldInterval){

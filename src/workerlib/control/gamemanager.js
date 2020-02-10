@@ -12,10 +12,42 @@ module.exports = {
         worldManager.init();
     },
 
-    startNewGame: function() {
+    startNewGame: function(gameRoom, startTime) {
         workerState.playerFitCache["1"] = true;
         workerState.playerFitCache["2"] = true;
         workerState.playerFitCache["3"] = true;
+
+        gameRoom.startTime = startTime;
+        gameRoom.isActive = true;
+    },
+
+    tryStartingNewGame: function() {
+        // test time stamp to see if it is too early.
+        const timeNow = utilityFunctions.getCurrentTime();
+        if((timeNow - workerState.timeWhenLastAttemptWasMadeToStartNewGame) < workerState.minInterval_AttemptToStartNewGame){
+            // too early. will try next time.
+            console.log('too early to tryStartingNewGame. doing nothing');
+            return;
+        }else{
+            workerState.timeWhenLastAttemptWasMadeToStartNewGame = timeNow;
+        }
+        console.log('processWaitingUserAdmitRequests');
+        // iterate through user list
+        if(workerState.waitingUsersLinkedList.isEmpty()){
+            console.log('no pending admit request.');
+            return;
+        }
+
+        // find if there is any empty slot to start new game
+        let foundVacantGameRoom = false;
+        for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
+            const gameRoom = workerState.games[i];
+
+            if(gameRoom.isActive = false){
+                this.startNewGame(gameRoom, timeNow);
+                break;
+            }
+        }
     },
 
     processGames: function() {

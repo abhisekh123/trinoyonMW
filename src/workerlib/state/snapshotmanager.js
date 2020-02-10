@@ -18,7 +18,7 @@ module.exports = {
     },
 
     // populate current message with latest game snapshot. To be sent to newly admitted player.
-    addSnapshot: function(currentMessage, playerConfig){
+    getGameConfig: function(gameId){
         currentMessage.bots = [];
         currentMessage.objects = [];
         currentMessage.playerConfig = {};
@@ -46,10 +46,7 @@ module.exports = {
             buildingConfigEntry.id = element.id;
             currentMessage.objects[index] = buildingConfigEntry;
         }
-        // currentMessage.objects = workerstate.buildingArray;
-        currentMessage.playerConfig = {};
-        currentMessage.playerConfig.playerID = playerConfig.playerID;
-        currentMessage.playerConfig.teamID = playerConfig.teamID;
+        
         return currentMessage;
     },
     getSnapshot: function(){

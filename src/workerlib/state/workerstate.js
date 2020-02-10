@@ -45,6 +45,8 @@ module.exports = {
 
     timeWhenLastAttemptWasMadeToProcessWaitingUsers: 0,
     minInterval_AttemptToProcessWaitingUsers: 5000, // in miliseconds
+    timeWhenLastAttemptWasMadeToStartNewGame: 0,
+    minInterval_AttemptToStartNewGame: 15000, // in miliseconds
 
     customConfigs: {
         intervalForAttemptGameStart: 30000,

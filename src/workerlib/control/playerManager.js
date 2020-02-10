@@ -113,6 +113,8 @@ module.exports = {
             // too early. will try next time.
             console.log('too early to processWaitingUserAdmitRequests. doing nothing');
             return;
+        }else{
+            workerState.timeWhenLastAttemptWasMadeToProcessWaitingUsers = timeNow;
         }
         console.log('processWaitingUserAdmitRequests');
         // iterate through user list
@@ -124,22 +126,47 @@ module.exports = {
         workerState.waitingUsersLinkedList.pointToHead();
         let currentNode = workerState.waitingUsersLinkedList.getCurrentNode();
 
-        
+        const gameMapPlayers = {}; // 
         while(currentNode != null){
             if(!workerState.playerFitCache[currentNode.players.length]){// no point search
                 console.log('!workerState.playerFitCache[currentNode.players.length');
                 continue;
             }
 
-            const result = this.tryAdmitingNewPlayers(currentNode);
+            const admittedPlayerArray = this.tryAdmitingNewPlayers(currentNode);
 
-            if(result == true){
+            if(admittedPlayerArray != null){ // group addmitted users wrt game
+                for(var i = 0; i < admittedPlayerArray.length; ++i){
+                    const gameId = admittedPlayerArray[i].gameId;
+                    if(gameMapPlayers[gameId] == undefined){
+                        gameMapPlayers[gameId] = [];
+                    }
+                    gameMapPlayers[gameId].push(admittedPlayerArray[i].userId);
+                }
                 successfullyAdmittedRequestIndexArray.push(workerState.waitingUsersLinkedList.getCurrentNodeIndex());
             } else {
                 workerState.playerFitCache[currentNode.players.length] = false;
             }
 
             currentNode = workerState.waitingUsersLinkedList.moveToNextNode();
+        }
+
+        // assuming successfullyAdmittedRequestIndexArray will have values in the increasing order
+        // so that it is safe to remove items from linked list by traversing successfullyAdmittedRequestIndexArray
+        // in the reverse order.
+        if(successfullyAdmittedRequestIndexArray.length > 0){ // remove processed request from the request list
+            for(var i = successfullyAdmittedRequestIndexArray.length - 1; i >= 0; --i){
+                // workerState.waitingUsersLinkedList.getElementAtIndex(successfullyAdmittedRequestIndexArray[i]);
+                workerState.waitingUsersLinkedList.removeFrom(successfullyAdmittedRequestIndexArray[i]);
+            }
+        }
+
+        // for each game updated, send game snapshot to newly admitted players:
+        const updatedGameArray = utilityFunctions.getObjectKeys(gameMapPlayers);
+        for(var i = 0; i < updatedGameArray.length; ++i){
+            var gameId = updatedGameArray[i];
+            var userIdList = gameMapPlayers[gameId];
+            messgeM.respondGameJoinStatus(userIdList, true, gameId)
         }
     },
 
@@ -176,7 +203,7 @@ module.exports = {
                     continue;
                 }
             }
-
+            aiPlayerArray.length = 0;// reset the array
             freeSlot = 0;
             for(var j = 0; j < 5; ++j){ // Test if team 1 has vacancy.
                 const currentPlayer = gameRoom.players_2[j];
@@ -200,9 +227,9 @@ module.exports = {
         
         if(chosenPlayers != null){
             this.admitUserToGame(usersToJoin, chosenPlayers);
-            return true;
+            return chosenPlayers;
         } else {
-            return false; // let calling function know that there is no 
+            return null; // let calling function know that there is no 
         }
     },
 

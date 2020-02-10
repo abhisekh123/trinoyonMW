@@ -3,6 +3,7 @@ const mainThreadStub = require(__dirname + '/mainthreadstub');
 const snapshotmanager = require('./state/snapshotmanager');
 const gameManager = require('../control/gamemanager');
 const playerManager = require('../control/playermanager');
+const messageFactory = require('../../factory/messagefactory');
 
 module.exports = {
     processIncomingMessages: function(){
@@ -21,24 +22,9 @@ module.exports = {
                     break;
                 case 'request_game_admit':
                     console.log('request game admit');
-                    var userId = currentMessage.userId;
-                    var playerConfig = playerManager.addUserToWaitingList(currentMessage);
-                    if(playerConfig != null){
-                        currentMessage.type = 'request_game_admit_ack';
-                        currentMessage = snapshotmanager.addSnapshot(currentMessage, playerConfig);
-                        
-                        // mainThreadStub.postMessage(currentMessage, '');
-                        // this.refreshWorld();
-                    }else{
-                        currentMessage.type = 'request_game_admit_nack';
-                        currentMessage.bots = [];
-                        currentMessage.objects = {};
-                        currentMessage.playerConfig = {};
-                        // mainThreadStub.postMessage(currentMessage, '');
-                    }
-                    // console.log('---returning:', currentMessage);
-                    console.log('player admitted successfully.');
-                    mainThreadStub.postMessage(currentMessage, '');
+                    // var userId = currentMessage.userId;
+                    playerManager.addUserToWaitingList(currentMessage);
+                    
                     break;
                 case 'request_game_exit':
                 case 'client_disconnected':
@@ -63,6 +49,23 @@ module.exports = {
         }
 
         mainThreadStub.messagebuffer.length = 0;
+    },
+
+    respondGameJoinStatus: function(userIdList, joinStatus, gameId){
+        const newMessageObject = messageFactory.getMessageObjectForUser();
+        newMessageObject.recipients = userIdList;
+        if(joinStatus){
+            newMessageObject.type = 'request_game_admit_ack';
+            
+            // console.log('---returning:', newMessageObject);
+            console.log('player admitted successfully.');
+            newMessageObject.gameConfig = snapshotmanager.getGameConfig(gameId);
+        }else{
+            // TODO
+            newMessageObject.type = 'request_game_admit_nack';
+        }
+
+        mainThreadStub.postMessage(newMessageObject, '');
     },
     broadcastGameUpdatesToPlayers: function(){
         var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
