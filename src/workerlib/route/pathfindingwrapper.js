@@ -17,6 +17,8 @@ module.exports = {
             dontCrossCorners: true,
             heuristic: PF.Heuristic.chebyshev
         });
+
+        this.prepareGrid();
     },
     
 
@@ -96,7 +98,7 @@ module.exports = {
                     z: this.worldConfig.defenceBottom[i][1]
                 }
             }
-            workerState.buildingArray_1.push(workerState.buildingMap[towerID]);
+            workerState.buildingArray_1.push(workerState.buildingMap_1[towerID]);
             ++towerIndex;
         }
         for(var i = 0; i < this.worldConfig.defenceTop.length; ++i){
@@ -115,12 +117,12 @@ module.exports = {
                     z: this.worldConfig.defenceTop[i][1]
                 }
             }
-            workerState.buildingArray_2.push(workerState.buildingMap[towerID]);
+            workerState.buildingArray_2.push(workerState.buildingMap_2[towerID]);
             ++towerIndex;
         }
         workerState.grid.setWalkableAt(this.worldConfig.topBase[0], this.worldConfig.topBase[1], false);
-        this.worldConfig.topBase.push('base1');
-        workerState.buildingMap_2['base1'] = {
+        this.worldConfig.topBase.push('base2');
+        workerState.buildingMap_2['base2'] = {
             life:this.itemConfig.items.base.life,
             attack:this.itemConfig.items.base.attack,
             type:'base',
@@ -132,38 +134,24 @@ module.exports = {
                 z: this.worldConfig.topBase[1]
             }
         }
-        workerState.buildingArray_2.push(workerState.buildingMap['base1']);
+        workerState.buildingArray_2.push(workerState.buildingMap_2['base2']);
         workerState.grid.setWalkableAt(this.worldConfig.bottomBase[0], this.worldConfig.bottomBase[1], false);
-        this.worldConfig.bottomBase.push('base2');
-        workerState.buildingMap_1['base2'] = {
+        this.worldConfig.bottomBase.push('base1');
+        workerState.buildingMap_1['base1'] = {
             life:this.itemConfig.items.base.life,
             attack:this.itemConfig.items.base.attack,
             type:'base',
             isActive: true,
             team:1,
-            id:'base2',
+            id:'base1',
             position: {
                 x: this.worldConfig.bottomBase[0],
                 z: this.worldConfig.bottomBase[1]
             }
         }
-        workerState.buildingArray_1.push(workerState.buildingMap['base2']);
+        workerState.buildingArray_1.push(workerState.buildingMap_1['base1']);
 
         workerState.gridBackup = workerState.grid.clone();
-        // this.printGrid();
-
-        // console.log('-------grid initialised');
-        // // console.log(workerState.grid);
-
-        this.finder = new PF.AStarFinder({
-            allowDiagonal: true,
-            dontCrossCorners: true,
-            heuristic: PF.Heuristic.chebyshev
-        });
-
-        this.gridBackup = this.grid.clone();
-        bot_route_utility.init(this.worldConfig, workerState.grid.clone());
-        
     },
 
     isWalkableAt: function(xParam, zParam){

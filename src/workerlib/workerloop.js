@@ -12,6 +12,7 @@ const routeManager = require('./route/routemanager');
 //bots always ave instruction: guard, follow, go
 
 module.exports = {
+    worldConfig: null,
 
     engineLoop: function(){
         // console.log('=========>refreshWorld');
@@ -31,12 +32,12 @@ module.exports = {
 
         gameManager.tryStartingNewGame();
 
-        let timeElapsed = math_util.getCurrentTime() - this.lastLoopExecutionTimeStamp;
+        let timeElapsed = utilityFunctions.getCurrentTime() - workerState.timePreviousGameLoopStart;
         // // console.log('refreshWorld time duration:' + timeElapsed);
-        if(timeElapsed > this.refreshWorldInterval){
+        if(timeElapsed > workerState.gameLoopInterval){
             setTimeout((()=>{this.engineLoop()}), 0);
         }else{
-            setTimeout((()=>{this.engineLoop()}), this.refreshWorldInterval - timeElapsed);
+            setTimeout((()=>{this.engineLoop()}), workerState.gameLoopInterval - timeElapsed);
         }
     },
 
@@ -46,17 +47,17 @@ module.exports = {
         workerState.init();
         routeManager.init();
         gameManager.init();
-        messageManager.init();
+        // messageManager.init();
+        this.worldConfig = workerState.getWorldConfig();
         
-        
-        this.maxBotPerPlayer = workerstate.getWorldConfig().commonConfig.maxBotPerPlayer;
-        this.maxBotCount = workerstate.getWorldConfig().commonConfig.maxBotCount;
-        if(this.maxBotCount != workerstate.getWorldConfig().commonConfig.maxBotPerPlayer * workerstate.getWorldConfig().commonConfig.maxPlayerCount){
+        this.maxBotPerPlayer = this.worldConfig.commonConfig.maxBotPerPlayer;
+        this.maxBotCount = this.worldConfig.commonConfig.maxBotCount;
+        if(this.maxBotCount != this.worldConfig.commonConfig.maxBotPerPlayer * this.worldConfig.commonConfig.maxPlayerCount){
             console.error('!!!!!!ERROR:this.maxBotCount != world_config.commonConfig.maxBotPerPlayer * world_config.commonConfig.maxPlayerCount');
         }
 
         //populating world with bots
-        this.initializeWorldByPopulatingWithBots();
+        // this.initializeWorldByPopulatingWithBots();
         // // console.log(workerstate);
         // // console.log("workerstate: %j", workerstate);
         this.isGameRunning = true;

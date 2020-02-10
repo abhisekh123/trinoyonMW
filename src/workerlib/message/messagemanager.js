@@ -1,6 +1,6 @@
 
-const mainThreadStub = require(__dirname + '/mainthreadstub');
-const snapshotmanager = require('./state/snapshotmanager');
+const mainThreadStub = require('../mainthreadstub');
+const snapshotmanager = require('../state/snapshotmanager');
 const gameManager = require('../control/gamemanager');
 const playerManager = require('../control/playermanager');
 const messageFactory = require('../../factory/messagefactory');

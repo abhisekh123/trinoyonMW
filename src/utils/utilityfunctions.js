@@ -33,6 +33,10 @@ module.exports = {
         return (Math.round(floatValue * 100) / 100);
     },
 
+    cloneObject: function(jsonObject){
+        return JSON.parse(JSON.stringify(jsonObject));
+    },
+
     getObjectKeys: function (objectParam) {
         return Object.keys(objectParam);
     },

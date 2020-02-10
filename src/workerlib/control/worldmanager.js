@@ -1,7 +1,7 @@
 
 const workerState = require('../state/workerstate');
 const utilityFunctions = require('../../utils/utilityfunctions');
-const environmentState = require('../state/environmentstate');
+const environmentState = require('../../../dist/server/state/environmentstate');
 const playerManager = require('./playermanager');
 
 module.exports = {
@@ -17,8 +17,12 @@ module.exports = {
     initialiseRooms: function(){
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
             const gameRoom = {};
-            gameRoom.buildings_1 = utilityFunctions.getObjectValues(workerState.buildingMap_1).clone();
-            gameRoom.buildings_2 = utilityFunctions.getObjectValues(workerState.buildingMap_2).clone();
+            gameRoom.buildings_1 = utilityFunctions.cloneObject(
+                utilityFunctions.getObjectValues(workerState.buildingMap_1)
+            );
+            gameRoom.buildings_2 = utilityFunctions.cloneObject(
+                utilityFunctions.getObjectValues(workerState.buildingMap_2)
+            );
             gameRoom.isActive = false;
             gameRoom.players_1 = [];
             gameRoom.players_2 = [];

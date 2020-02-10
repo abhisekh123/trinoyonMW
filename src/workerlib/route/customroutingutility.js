@@ -1,13 +1,14 @@
 const workerState = require('../state/workerstate');
 const pathfindingWrapper = require('./pathfindingwrapper');
 const utilityFunctions = require('../../utils/utilityfunctions');
+const fs = require('fs');
 
 module.exports = {
     worldConfig: null,
     init: function () {
         this.worldConfig = workerState.getWorldConfig();
 
-        this.initialiseGlobalDistanceMatrix();
+        this.initialiseDistanceMatrix();
         this.initialiseAngleMatrix();
         if(this.worldConfig.createFreshStrategyMatrix){
             this.createStrategyMatrix();
@@ -16,20 +17,13 @@ module.exports = {
         }
     },
 
-    isPositionUnoccupiedByBot: function (x, z) {
-        if (workerState.strategyMatrix[x][z].id == null) {
-            return true;
-        } else {
-            return false;
-        }
-    },
 
     createStrategyMatrix: function () {
         // // console.log('start createVisibilityMatrix');
         // var fileAppender = fs.createWriteStream(fileName, {
         //     flags: 'a' // 'a' means appending (old data will be preserved)
         // });
-        let writeStream = fs.createWriteStream(workerState.strategyMatrixFileName);
+        let writeStream = fs.createWriteStream(this.worldConfig.strategyMatrixFileName);
 
         // fileAppender.write('this.floor.breadth\n');
         // fileAppender.write(this.floor.breadth + '\n');
@@ -37,9 +31,9 @@ module.exports = {
         // fileAppender.write(this.floor.length.toString() + '\n');
 
         writeStream.write('this.floor.breadth\n');
-        writeStream.write(world_config.gridSide + '\n');
+        writeStream.write(this.worldConfig.gridSide + '\n');
         writeStream.write('this.floor.length\n');
-        writeStream.write(world_config.gridSide.toString() + '\n');
+        writeStream.write(this.worldConfig.gridSide.toString() + '\n');
 
         var tmpGridMatrixToStoreLinearPaths = new Array();
         // for each point in the grid, find seq of points forming straight line from point (x,z) to (26, 26)
@@ -153,7 +147,7 @@ module.exports = {
         // create instance of readline
         // each instance is associated with single input stream
         let rl = readline.createInterface({
-            input: fs.createReadStream(workerState.strategyMatrixFileName),
+            input: fs.createReadStream(this.worldConfig.strategyMatrixFileName),
         });
 
         let line_no = 0;

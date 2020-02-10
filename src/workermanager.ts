@@ -1,8 +1,8 @@
 
 const tinyworker = require("tiny-worker");
-const clientregistry = require('./state/clientstate');
+// const clientregistry = require('./state/clientstate');
 const serverState = require('./state/serverstate');
-const gameState = require('./state/gamestate');
+// const gameState = require('./state/gamestate');
 import {request_message} from './factory/types';
  
 
@@ -28,19 +28,19 @@ module.exports = {
             case 'update': // TODO : send update to main.
             // relay latest snapshot to all clients.
                 // // console.log('-->update from worker::' , ev.data);
-                for(var i = 0; i < clientregistry.clientArrey.length; ++i){
-                    if(clientregistry.clientArrey[i].isActive){
-                        var ws = clientregistry.clientArrey[i].ws;
-                        clientregistry.sendMessageToClient(ws, ev.data);
-                    }
-                }
-                gameState.setGameBotState(ev.data);
+                // for(var i = 0; i < clientregistry.clientArrey.length; ++i){
+                //     if(clientregistry.clientArrey[i].isActive){
+                //         var ws = clientregistry.clientArrey[i].ws;
+                //         clientregistry.sendMessageToClient(ws, ev.data);
+                //     }
+                // }
+                // gameState.setGameBotState(ev.data);
                 break;
             case 'request_game_admit_ack': // client has been granted admission to the game.
                 var userId = jsonData.userId;
                 console.log('get request_game_admit_ack for :' + userId);
-                let clientWS = clientregistry.clientArrey[userId].ws;
-                clientregistry.sendMessageToClient(clientWS, ev.data);
+                // let clientWS = clientregistry.clientArrey[userId].ws;
+                // clientregistry.sendMessageToClient(clientWS, ev.data);
                 break;
             default:
                 // console.log('ERROR:@worker manager, got unknown message type:' , jsonData);

@@ -1,7 +1,7 @@
 
 const workerState = require('../state/workerstate');
 var linkedList = require('../../utils/linkedlist');
-const utilityFunctions = require('../utils/utilityfunctions');
+const utilityFunctions = require('../../utils/utilityfunctions');
 
 module.exports = {
 

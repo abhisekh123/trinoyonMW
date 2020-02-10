@@ -39,6 +39,7 @@ module.exports = {
 
     // time
     timePreviousGameLoopStart: 0,
+    gameLoopInterval: 500,
     timeLastGameCreationWasAttempted: 0,
     currentTime: 0,
     timeIntervalToSimulateInEachGame: 0, // time slice since last loop. Need to simulate each game for this interval.
@@ -47,10 +48,6 @@ module.exports = {
     minInterval_AttemptToProcessWaitingUsers: 5000, // in miliseconds
     timeWhenLastAttemptWasMadeToStartNewGame: 0,
     minInterval_AttemptToStartNewGame: 15000, // in miliseconds
-
-    customConfigs: {
-        intervalForAttemptGameStart: 30000,
-    },
 
     getWorldConfig: function() {
         return worldConfig;
