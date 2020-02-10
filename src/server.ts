@@ -86,7 +86,7 @@ export class DemoServer {
         wss.on('connection', (ws: WebSocket) => {
             // // console.log('got new connection:' , ws);
             console.log('got new connection');
-            let userId = userManager.admitNewClient(ws);
+            let userId = userManager.admitNewUser(ws);
             if(userId < 0){
                 console.log('error: could not connect the new client.');
                 ws.close();
