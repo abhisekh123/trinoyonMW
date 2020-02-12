@@ -26,15 +26,15 @@ module.exports = {
         const timeNow = utilityFunctions.getCurrentTime();
         if((timeNow - workerState.timeWhenLastAttemptWasMadeToStartNewGame) < workerState.minInterval_AttemptToStartNewGame){
             // too early. will try next time.
-            console.log('too early to tryStartingNewGame. doing nothing');
+            // console.log('too early to tryStartingNewGame. doing nothing');
             return;
         }else{
             workerState.timeWhenLastAttemptWasMadeToStartNewGame = timeNow;
         }
-        console.log('processWaitingUserAdmitRequests');
+        // console.log('processWaitingUserAdmitRequests');
         // iterate through user list
         if(workerState.waitingUsersLinkedList.isEmpty()){
-            console.log('no pending admit request.');
+            // console.log('no pending admit request.');
             return;
         }
 

@@ -1,4 +1,3 @@
-
 import * as WebSocket from 'ws';
 const serverState = require('../state/serverstate');
 const environmentState = require('../state/environmentstate');
@@ -28,11 +27,11 @@ module.exports = {
     admitNewUser: function(wsParam: WebSocket){
         console.log('trying to admit new user');
         for(var i = 0; i < environmentState.maxUserCount; ++i){
-            if(!serverState.userArrey[i].userArrey){
+            if(!serverState.userArrey[i].isActive == false){
                 serverState.userArrey[i].isActive = true;
                 serverState.userArrey[i].ws = wsParam;
 
-                serverState.userMap.set(wsParam, i);
+                // serverState.wsMapToUserArrayIndex.[wsParam] = i;
                 console.log('successfully added new user:', i);
                 return i;
             }

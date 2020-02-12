@@ -1,8 +1,10 @@
 const world_config = require(__dirname + '/../../../ui/world_config');
 
 module.exports = {
+    state: 'stopped', // stopped -> startingup -> running -> shuttingdown
     userArrey:[],//saves websocket objects
-    userMap:new Map<WebSocket, any>(), // to get userArray index from websocket.
+    wsMapToUserArrayIndex: new Map<WebSocket, number>(), // to get userArray index from websocket.
+    userIdToWSMap: {},
 
     userRequest:{},
     onlinePlayers:{},

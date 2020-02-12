@@ -54,7 +54,7 @@ module.exports = {
                 if(nearestTarget == null){
                     return;
                 }else{
-                    var leaderConfig = workerstate.botMap[playerConfig.leaderBotID];
+                    var leaderConfig = workerState.botMap[playerConfig.leaderBotID];
                     // // console.log(leaderConfig.payload.position);
                     // // console.log(nearestTarget.target);
                     var nearestPosition = botroutemanager.FindClosestWalkablePoint({x:nearestTarget.target[0], y:0, z:nearestTarget.target[1]});
@@ -111,15 +111,15 @@ module.exports = {
         const successfullyAdmittedRequestIndexArray = [];
         if((timeNow - workerState.timeWhenLastAttemptWasMadeToProcessWaitingUsers) < workerState.minInterval_AttemptToProcessWaitingUsers){
             // too early. will try next time.
-            console.log('too early to processWaitingUserAdmitRequests. doing nothing');
+            // console.log('too early to processWaitingUserAdmitRequests. doing nothing');
             return;
         }else{
             workerState.timeWhenLastAttemptWasMadeToProcessWaitingUsers = timeNow;
         }
-        console.log('processWaitingUserAdmitRequests');
+        // console.log('processWaitingUserAdmitRequests');
         // iterate through user list
         if(workerState.waitingUsersLinkedList.isEmpty()){
-            console.log('no pending admit request.');
+            // console.log('no pending admit request.');
             return;
         }
 
@@ -248,6 +248,11 @@ module.exports = {
             player.lastCommunication = timeNow;
             player.joinTime = timeNow;
             player.isAIDriven = false;
+
+            workerState.userToPlayerMap[usersToJoin[j]] = {
+                playerId: player.id,
+                gameId: player.gameId
+            };
         }
     },
 

@@ -6,6 +6,7 @@
         "strict": true,
         "sourceMap": true,
         "typeRoots": [
+            "./custom_typings",
             "node_modules/@types"
         ]
     },

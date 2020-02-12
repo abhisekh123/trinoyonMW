@@ -11,6 +11,7 @@ module.exports = {
     // players
     // players: null,
     waitingUsersLinkedList: null,
+    userToPlayerMap: {},
 
     // user
     // waitingUserCount: 0,
@@ -30,12 +31,13 @@ module.exports = {
     angleMatrix: null,
     strategyMatrix: null,
     // player count cache to optimise when too many request.
+    // if false for a given player count in previous search attempt, 
+    // then no need to seach games again for other request with same player count.
     playerFitCache: { // will be reset by game start routine @ game manager.
         1: true,
         2: true,
         3: true,
-    }, // if false for a given player count in previous search attempt, 
-    // then no need to seach games again for other request with same player count.
+    }, 
 
     // time
     timePreviousGameLoopStart: 0,
@@ -49,6 +51,8 @@ module.exports = {
     timeWhenLastAttemptWasMadeToStartNewGame: 0,
     minInterval_AttemptToStartNewGame: 15000, // in miliseconds
 
+
+    // methods
     getWorldConfig: function() {
         return worldConfig;
     },

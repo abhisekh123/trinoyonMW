@@ -19,7 +19,12 @@ module.exports = {
         return newName;
     },
 
-    getCurrentTime:function(){
+    // both inputs should be integers.
+    getRandom: function(rangeStart, rangeEnd){
+        return Math.floor(Math.random() * (rangeEnd - rangeStart)) + rangeStart;
+    },
+
+    getCurrentTime: function(){
         // const d = new Date();
         // const n = d.getTime();
         // return n;
