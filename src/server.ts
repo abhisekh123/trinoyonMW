@@ -45,6 +45,7 @@ passport.serializeUser(function(user: any, done: any) {
     callbackURL: environmentState.facebookAuth.callbackURL,
   },
   function(accessToken: any, refreshToken: any, profile: any, cb: any) {
+      console.log('passport use.');
     // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
     //   return cb(err, user);
     // });
@@ -143,13 +144,15 @@ app.delete('/logout', function (req, res) {
 
 // console.log('completed initialising assetmanager.');
 app.get('/', function (req, res) {
-    console.log(req);
-    res.sendFile(path.join(__dirname + '/../../public/index.html'));
+    console.log('req for root');
+    // res.sendFile(path.join(__dirname + '/../../public/index.html'));
+    res.send('root');
 });
 
 app.post('/', function (req, res) {
     // console.log(req.body);
-    res.sendFile(path.join(__dirname + '/../../public/index.html'));
+    // res.sendFile(path.join(__dirname + '/../../public/index.html'));
+    res.send('root - post');
 });
 
 app.get('/ppolicy', function (req, res) {
@@ -163,7 +166,8 @@ app.get('/termsofservice', function (req, res) {
 });
 
 app.post('/howrwi', function (req, res) {
-    res.send(serverstate.getServerState());
+    // res.send(serverstate.getServerState());
+    res.send('a1');
 });
 
 app.post('/9h109x', function (req, res) {// phionix .... restart routine.
@@ -195,12 +199,14 @@ app.get('/account', ensureAuthenticated, function(req: any, res){
 // );
 
 app.get('/auth/facebook',
-  passport.authenticate('facebook'));
+  passport.authenticate('facebook')
+);
  
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
+    console.log('call back.');
     res.redirect('/');
   });
   
@@ -408,6 +414,7 @@ export class DemoServer {
 }
 
 function ensureAuthenticated(req: any, res: any, next: any) {
+    console.log('ensure authenticated.');
     if (req.isAuthenticated()) { return next(); }
     res.redirect('/login')
   }
