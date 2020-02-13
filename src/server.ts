@@ -99,6 +99,7 @@ app.post('/login', function (req, res) {
     //
     // "Log in" user and set userId to session.
     //
+    console.log('asdfvcv');
     const id = uuid.v4();
 
     console.log(`Updating session for user ${id}`);
@@ -161,13 +162,20 @@ app.get('/account', ensureAuthenticated, function(req: any, res){
   });
   
 //   app.get('/auth/facebook', passport.authenticate('facebook',{scope:'email'}));
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook', function (req, res) {// phionix .... restart routine.
+        console.log('auth');
+        passport.authenticate('facebook');
+        // serverManager.initiateServerShutDownRoutine();
+        // res.send(serverstate.getServerState());
+    }
+);
   
   
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
     function(req, res) {
-      res.redirect('/');
+        console.log('adafs');
+        res.redirect('/');
     });
   
   app.get('/logout', function(req: any, res){
