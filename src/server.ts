@@ -172,7 +172,7 @@ app.get('/auth/facebook', function (req, res) {// phionix .... restart routine.
   
   
   app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
+    // passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
     function(req, res) {
         console.log('adafs');
         res.redirect('/');
