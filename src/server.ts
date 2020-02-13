@@ -108,7 +108,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 app.use(sessionParser);
 // console.log()
 app.post('/login', function (req, res) {
@@ -169,6 +169,7 @@ app.get('/auth/facebook/callback',
     });
 
 app.get('/howrwi', function (req, res) {
+    console.log('how r wi');
     // res.send(serverstate.getServerState());
     res.send('a1');
 });
