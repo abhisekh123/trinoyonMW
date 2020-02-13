@@ -28,15 +28,15 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 // const cookieParser = require('cookie-parser');
 // const bodyParser = require('body-parser');
 // Passport session setup.
-// passport.serializeUser(function(user: any, done: any) {
-//     console.log('serialise function.');
-//     done(null, user);
-//   });
+passport.serializeUser(function(user: any, done: any) {
+    console.log('serialise function.');
+    done(null, user);
+  });
   
-//   passport.deserializeUser(function(obj: any, done: any) {
-//     console.log('deserialise function.');
-//     done(null, obj);
-//   });
+  passport.deserializeUser(function(obj: any, done: any) {
+    console.log('deserialise function.');
+    done(null, obj);
+  });
 
   // Use the FacebookStrategy within Passport.
   passport.use(new FacebookStrategy({
