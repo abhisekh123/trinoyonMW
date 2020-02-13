@@ -175,12 +175,12 @@ app.get('/auth/facebook', function (req, res) {// phionix .... restart routine.
 );
   
   
-  app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
-    // function(req, res) {
-    //     console.log('adafs');
-    //     res.redirect('/');
-    // }
+  app.get('/auth/facebook/callback',function (req, res) {// phionix .... restart routine.
+        console.log('callback');
+        passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' });
+        // serverManager.initiateServerShutDownRoutine();
+        // res.send(serverstate.getServerState());
+    }
 );
   
   app.get('/logout', function(req: any, res){
