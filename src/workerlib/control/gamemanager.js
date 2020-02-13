@@ -2,7 +2,7 @@
 const workerState = require('../state/workerstate');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const worldManager = require('./worldmanager');
-const playerManager = require('./playermanager0');
+const playerManager = require('./playermanager');
 
 module.exports = {
     // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
