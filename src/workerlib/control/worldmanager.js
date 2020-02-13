@@ -2,7 +2,7 @@
 const workerState = require('../state/workerstate');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const environmentState = require('../../../dist/server/state/environmentstate');
-const playerManager = require('./playermanager');
+const playerManager = require('./playermanager0');
 
 module.exports = {
     worldConfig: null,
