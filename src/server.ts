@@ -19,8 +19,57 @@ const serverManager = require('./control/servermanager');
 
 
 const fs = require('fs');
-const environment = require('./state/environmentstate');
+const environmentState = require('./state/environmentstate');
 const serverstate = require('./state/serverstate');
+
+// authentication
+const passport = require('passport');
+const FacebookStrategy = require('passport-facebook').Strategy;
+// const cookieParser = require('cookie-parser');
+// const bodyParser = require('body-parser');
+// Passport session setup.
+passport.serializeUser(function(user: any, done: any) {
+    done(null, user);
+  });
+  
+  passport.deserializeUser(function(obj: any, done: any) {
+    done(null, obj);
+  });
+
+  // Use the FacebookStrategy within Passport.
+
+passport.use(new FacebookStrategy({
+    clientID: environmentState.facebookAuth.clientID,
+    clientSecret:environmentState.facebookAuth.clientSecret ,
+    callbackURL: environmentState.facebookAuth.callbackURL,
+    profileFields: environmentState.facebookAuth.profileFields
+  },
+  function(accessToken: any, refreshToken: any, profile: any, done: any) {
+    // const { email, first_name, last_name } = profile._json;
+    // const userData = {
+    //   email,
+    //   firstName: first_name,
+    //   lastName: last_name
+    // };
+    process.nextTick(function () {
+      //Check whether the User exists or not using profile.id
+      if(environmentState.facebookAuth.use_database) {
+        // if sets to true
+        // pool.query("SELECT * from user_info where user_id="+profile.id, (err,rows) => {
+        //   if(err) throw err;
+        //   if(rows && rows.length === 0) {
+        //       console.log("There is no such user, adding now");
+        //       pool.query("INSERT into user_info(user_id,user_name) VALUES('"+profile.id+"','"+profile.username+"')");
+        //   } else {
+        //       console.log("User already exists in database");
+        //   }
+        // });
+      }
+      return done(null, profile);
+    });
+  }
+));
+
 
 const map = new Map();
 //
@@ -34,6 +83,15 @@ const sessionParser = session({
 });
 
 const app = express();
+
+// for authentication
+// app.use(cookieParser());
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({ secret: 'keyboard cat', key: 'sid'}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use(express.static('public'));
 app.use(sessionParser);
 // console.log()
@@ -97,6 +155,26 @@ app.post('/9h109x', function (req, res) {// phionix .... restart routine.
     res.send(serverstate.getServerState());
 });
 
+
+app.get('/account', ensureAuthenticated, function(req: any, res){
+    res.render('account', { user: req.user });
+  });
+  
+//   app.get('/auth/facebook', passport.authenticate('facebook',{scope:'email'}));
+app.get('/auth/facebook', passport.authenticate('facebook'));
+  
+  
+  app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
+    function(req, res) {
+      res.redirect('/');
+    });
+  
+  app.get('/logout', function(req: any, res){
+    req.logout();
+    res.redirect('/');
+  });
+
 export class DemoServer {
 
     loginRoutine(req: any) {
@@ -158,7 +236,7 @@ export class DemoServer {
         // };
         // let httpsserver = null;
 
-        if (environment.environment == 'server') {
+        if (environmentState.environment == 'server') {
             // httpOptions.key = fs.readFileSync("/home/trinoyon/ssl.key");
             // httpOptions.cert = fs.readFileSync("/home/trinoyon/ssl.cert");
 
@@ -274,7 +352,7 @@ export class DemoServer {
         console.log('-----portParam:', portParam);
         //start our server
 
-        if (environment.environment == 'server') {
+        if (environmentState.environment == 'server') {
             server.listen(443, () => {
                 // console.log(`Server started on port ${httpsserver.address.toString} :)`);
             });
@@ -295,10 +373,14 @@ export class DemoServer {
     }
 }
 
+function ensureAuthenticated(req: any, res: any, next: any) {
+    if (req.isAuthenticated()) { return next(); }
+    res.redirect('/login')
+  }
 
 
 const demoServer = new DemoServer();
-if (environment.environment == 'server') {
+if (environmentState.environment == 'server') {
     demoServer.startServer(80);
 } else {
     demoServer.startServer(8080);
