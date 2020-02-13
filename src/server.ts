@@ -28,62 +28,62 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 // const cookieParser = require('cookie-parser');
 // const bodyParser = require('body-parser');
 // Passport session setup.
-passport.serializeUser(function(user: any, done: any) {
+passport.serializeUser(function (user: any, done: any) {
     console.log('serialise function.');
     done(null, user);
-  });
-  
-  passport.deserializeUser(function(obj: any, done: any) {
+});
+
+passport.deserializeUser(function (obj: any, done: any) {
     console.log('deserialise function.');
     done(null, obj);
-  });
+});
 
-  // Use the FacebookStrategy within Passport.
-  passport.use(new FacebookStrategy({
+// Use the FacebookStrategy within Passport.
+passport.use(new FacebookStrategy({
     clientID: environmentState.facebookAuth.clientID,
-    clientSecret:environmentState.facebookAuth.clientSecret ,
+    clientSecret: environmentState.facebookAuth.clientSecret,
     callbackURL: environmentState.facebookAuth.callbackURL,
-  },
-  function(accessToken: any, refreshToken: any, profile: any, cb: any) {
-      console.log('passport use.');
-    // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-    //   return cb(err, user);
-    // });
-  }
+},
+    function (accessToken: any, refreshToken: any, profile: any, cb: any) {
+        console.log('passport use.');
+        // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+        //   return cb(err, user);
+        // });
+    }
 ));
 
 passport.use(new FacebookStrategy({
     clientID: environmentState.facebookAuth.clientID,
-    clientSecret:environmentState.facebookAuth.clientSecret ,
+    clientSecret: environmentState.facebookAuth.clientSecret,
     callbackURL: environmentState.facebookAuth.callbackURL,
     profileFields: environmentState.facebookAuth.profileFields
-  },
-  function(accessToken: any, refreshToken: any, profile: any, done: any) {
-      console.log('use function.');
-    // const { email, first_name, last_name } = profile._json;
-    // const userData = {
-    //   email,
-    //   firstName: first_name,
-    //   lastName: last_name
-    // };
-    // process.nextTick(function () {
-    //   //Check whether the User exists or not using profile.id
-    //   if(environmentState.facebookAuth.use_database) {
-    //     // if sets to true
-    //     // pool.query("SELECT * from user_info where user_id="+profile.id, (err,rows) => {
-    //     //   if(err) throw err;
-    //     //   if(rows && rows.length === 0) {
-    //     //       console.log("There is no such user, adding now");
-    //     //       pool.query("INSERT into user_info(user_id,user_name) VALUES('"+profile.id+"','"+profile.username+"')");
-    //     //   } else {
-    //     //       console.log("User already exists in database");
-    //     //   }
-    //     // });
-    //   }
-    //   return done(null, profile);
-    // });
-    return done(null, profile);
-  }
+},
+    function (accessToken: any, refreshToken: any, profile: any, done: any) {
+        console.log('use function.');
+        // const { email, first_name, last_name } = profile._json;
+        // const userData = {
+        //   email,
+        //   firstName: first_name,
+        //   lastName: last_name
+        // };
+        // process.nextTick(function () {
+        //   //Check whether the User exists or not using profile.id
+        //   if(environmentState.facebookAuth.use_database) {
+        //     // if sets to true
+        //     // pool.query("SELECT * from user_info where user_id="+profile.id, (err,rows) => {
+        //     //   if(err) throw err;
+        //     //   if(rows && rows.length === 0) {
+        //     //       console.log("There is no such user, adding now");
+        //     //       pool.query("INSERT into user_info(user_id,user_name) VALUES('"+profile.id+"','"+profile.username+"')");
+        //     //   } else {
+        //     //       console.log("User already exists in database");
+        //     //   }
+        //     // });
+        //   }
+        //   return done(null, profile);
+        // });
+        return done(null, profile);
+    }
 ));
 
 
@@ -103,7 +103,7 @@ const app = express();
 // for authentication
 // app.use(cookieParser());
 // app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({ secret: 'keyboard cat', key: 'sid'}));
+app.use(session({ secret: 'keyboard cat', key: 'sid' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -155,15 +155,18 @@ app.post('/', function (req, res) {
     res.send('root - post');
 });
 
-app.get('/ppolicy', function (req, res) {
-    // console.log(req.body);
-    res.sendFile(path.join(__dirname + '/../../public/ppolicy.html'));
-});
 
-app.get('/termsofservice', function (req, res) {
-    // console.log(req.body);
-    res.sendFile(path.join(__dirname + '/../../public/termsofservice.html'));
-});
+app.get('/auth/facebook',
+    passport.authenticate('facebook')
+);
+
+app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    function (req, res) {
+        // Successful authentication, redirect home.
+        console.log('call back.');
+        res.redirect('/');
+    });
 
 app.get('/howrwi', function (req, res) {
     // res.send(serverstate.getServerState());
@@ -176,10 +179,6 @@ app.post('/9h109x', function (req, res) {// phionix .... restart routine.
 });
 
 
-app.get('/account', ensureAuthenticated, function(req: any, res){
-    res.render('account', { user: req.user });
-  });
-  
 //   app.get('/auth/facebook', passport.authenticate('facebook',{scope:'email'}));
 // app.get('/auth/facebook', function (req, res) {// phionix .... restart routine.
 //         console.log('auth123');
@@ -188,8 +187,8 @@ app.get('/account', ensureAuthenticated, function(req: any, res){
 //         // res.send(serverstate.getServerState());
 //     }
 // );
-  
-  
+
+
 //   app.get('/auth/facebook/callback',function (req, res) {// phionix .... restart routine.
 //         console.log('callback');
 //         passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' });
@@ -198,22 +197,22 @@ app.get('/account', ensureAuthenticated, function(req: any, res){
 //     }
 // );
 
-app.get('/auth/facebook',
-  passport.authenticate('facebook')
-);
- 
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    console.log('call back.');
-    res.redirect('/');
-  });
-  
-  app.get('/logout', function(req: any, res){
+
+app.get('/ppolicy', function (req, res) {
+    // console.log(req.body);
+    res.sendFile(path.join(__dirname + '/../../public/ppolicy.html'));
+});
+
+app.get('/termsofservice', function (req, res) {
+    // console.log(req.body);
+    res.sendFile(path.join(__dirname + '/../../public/termsofservice.html'));
+});
+
+
+app.get('/logout', function (req: any, res) {
     req.logout();
     res.redirect('/');
-  });
+});
 
 export class DemoServer {
 
@@ -417,7 +416,7 @@ function ensureAuthenticated(req: any, res: any, next: any) {
     console.log('ensure authenticated.');
     if (req.isAuthenticated()) { return next(); }
     res.redirect('/login')
-  }
+}
 
 
 const demoServer = new DemoServer();
