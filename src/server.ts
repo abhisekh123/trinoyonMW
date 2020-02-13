@@ -29,10 +29,12 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 // const bodyParser = require('body-parser');
 // Passport session setup.
 passport.serializeUser(function(user: any, done: any) {
+    console.log('serialise function.');
     done(null, user);
   });
   
   passport.deserializeUser(function(obj: any, done: any) {
+    console.log('deserialise function.');
     done(null, obj);
   });
 
@@ -45,28 +47,30 @@ passport.use(new FacebookStrategy({
     profileFields: environmentState.facebookAuth.profileFields
   },
   function(accessToken: any, refreshToken: any, profile: any, done: any) {
+      console.log('use function.');
     // const { email, first_name, last_name } = profile._json;
     // const userData = {
     //   email,
     //   firstName: first_name,
     //   lastName: last_name
     // };
-    process.nextTick(function () {
-      //Check whether the User exists or not using profile.id
-      if(environmentState.facebookAuth.use_database) {
-        // if sets to true
-        // pool.query("SELECT * from user_info where user_id="+profile.id, (err,rows) => {
-        //   if(err) throw err;
-        //   if(rows && rows.length === 0) {
-        //       console.log("There is no such user, adding now");
-        //       pool.query("INSERT into user_info(user_id,user_name) VALUES('"+profile.id+"','"+profile.username+"')");
-        //   } else {
-        //       console.log("User already exists in database");
-        //   }
-        // });
-      }
-      return done(null, profile);
-    });
+    // process.nextTick(function () {
+    //   //Check whether the User exists or not using profile.id
+    //   if(environmentState.facebookAuth.use_database) {
+    //     // if sets to true
+    //     // pool.query("SELECT * from user_info where user_id="+profile.id, (err,rows) => {
+    //     //   if(err) throw err;
+    //     //   if(rows && rows.length === 0) {
+    //     //       console.log("There is no such user, adding now");
+    //     //       pool.query("INSERT into user_info(user_id,user_name) VALUES('"+profile.id+"','"+profile.username+"')");
+    //     //   } else {
+    //     //       console.log("User already exists in database");
+    //     //   }
+    //     // });
+    //   }
+    //   return done(null, profile);
+    // });
+    return done(null, profile);
   }
 ));
 
@@ -172,11 +176,12 @@ app.get('/auth/facebook', function (req, res) {// phionix .... restart routine.
   
   
   app.get('/auth/facebook/callback',
-    // passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
-    function(req, res) {
-        console.log('adafs');
-        res.redirect('/');
-    });
+    passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
+    // function(req, res) {
+    //     console.log('adafs');
+    //     res.redirect('/');
+    // }
+);
   
   app.get('/logout', function(req: any, res){
     req.logout();
