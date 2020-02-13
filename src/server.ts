@@ -165,7 +165,7 @@ app.get('/termsofservice', function (req, res) {
     res.sendFile(path.join(__dirname + '/../../public/termsofservice.html'));
 });
 
-app.post('/howrwi', function (req, res) {
+app.get('/howrwi', function (req, res) {
     // res.send(serverstate.getServerState());
     res.send('a1');
 });
