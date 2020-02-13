@@ -163,7 +163,7 @@ app.get('/account', ensureAuthenticated, function(req: any, res){
   
 //   app.get('/auth/facebook', passport.authenticate('facebook',{scope:'email'}));
 app.get('/auth/facebook', function (req, res) {// phionix .... restart routine.
-        console.log('auth');
+        console.log('auth123');
         passport.authenticate('facebook');
         // serverManager.initiateServerShutDownRoutine();
         // res.send(serverstate.getServerState());
