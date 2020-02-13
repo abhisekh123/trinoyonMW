@@ -28,17 +28,28 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 // const cookieParser = require('cookie-parser');
 // const bodyParser = require('body-parser');
 // Passport session setup.
-passport.serializeUser(function(user: any, done: any) {
-    console.log('serialise function.');
-    done(null, user);
-  });
+// passport.serializeUser(function(user: any, done: any) {
+//     console.log('serialise function.');
+//     done(null, user);
+//   });
   
-  passport.deserializeUser(function(obj: any, done: any) {
-    console.log('deserialise function.');
-    done(null, obj);
-  });
+//   passport.deserializeUser(function(obj: any, done: any) {
+//     console.log('deserialise function.');
+//     done(null, obj);
+//   });
 
   // Use the FacebookStrategy within Passport.
+  passport.use(new FacebookStrategy({
+    clientID: environmentState.facebookAuth.clientID,
+    clientSecret:environmentState.facebookAuth.clientSecret ,
+    callbackURL: environmentState.facebookAuth.callbackURL,
+  },
+  function(accessToken: any, refreshToken: any, profile: any, cb: any) {
+    // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+    //   return cb(err, user);
+    // });
+  }
+));
 
 passport.use(new FacebookStrategy({
     clientID: environmentState.facebookAuth.clientID,
@@ -166,22 +177,32 @@ app.get('/account', ensureAuthenticated, function(req: any, res){
   });
   
 //   app.get('/auth/facebook', passport.authenticate('facebook',{scope:'email'}));
-app.get('/auth/facebook', function (req, res) {// phionix .... restart routine.
-        console.log('auth123');
-        passport.authenticate('facebook');
-        // serverManager.initiateServerShutDownRoutine();
-        // res.send(serverstate.getServerState());
-    }
-);
+// app.get('/auth/facebook', function (req, res) {// phionix .... restart routine.
+//         console.log('auth123');
+//         passport.authenticate('facebook');
+//         // serverManager.initiateServerShutDownRoutine();
+//         // res.send(serverstate.getServerState());
+//     }
+// );
   
   
-  app.get('/auth/facebook/callback',function (req, res) {// phionix .... restart routine.
-        console.log('callback');
-        passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' });
-        // serverManager.initiateServerShutDownRoutine();
-        // res.send(serverstate.getServerState());
-    }
-);
+//   app.get('/auth/facebook/callback',function (req, res) {// phionix .... restart routine.
+//         console.log('callback');
+//         passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' });
+//         // serverManager.initiateServerShutDownRoutine();
+//         // res.send(serverstate.getServerState());
+//     }
+// );
+
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+ 
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
   
   app.get('/logout', function(req: any, res){
     req.logout();
