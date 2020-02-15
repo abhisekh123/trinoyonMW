@@ -34,10 +34,10 @@ module.exports = {
         return user;
     },
     findUser: async function (userId: string) {
-        console.log('find user start');
+        // console.log('find user start');
         const searchResult = await this.db.users.findOne({ id: userId });
-        console.log('find user executed query');
-        console.log(searchResult);
+        // console.log('find user executed query');
+        // console.log(searchResult);
         return searchResult;
     },
     updateUser: function () {

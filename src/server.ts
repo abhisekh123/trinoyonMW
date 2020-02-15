@@ -39,20 +39,6 @@ passport.deserializeUser(function (user: any, done: any) {
     done(null, user);
 });
 
-// Use the FacebookStrategy within Passport.
-// passport.use(new FacebookStrategy({
-//     clientID: environmentState.facebookAuth.clientID,
-//     clientSecret: environmentState.facebookAuth.clientSecret,
-//     callbackURL: environmentState.facebookAuth.callbackURL,
-// },
-//     function (accessToken: any, refreshToken: any, profile: any, cb: any) {
-//         console.log('passport use.');
-//         // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-//         //   return cb(err, user);
-//         // });
-//     }
-// ));
-
 passport.use(new FacebookStrategy({
     clientID: environmentState.facebookAuth.clientID,
     clientSecret: environmentState.facebookAuth.clientSecret,
@@ -60,43 +46,21 @@ passport.use(new FacebookStrategy({
     profileFields: environmentState.facebookAuth.profileFields
 },
     async function (accessToken: any, refreshToken: any, profile: any, done: any) {
-        console.log('use function.', profile);
-        console.log('accesstoken:', accessToken);
+        // console.log('use function.', profile);
+        // console.log('accesstoken:', accessToken);
         const user = await dbManager.findUser(profile.id);
-        console.log('searched for user');
-        console.log(user);
+        // console.log('searched for user');
+        // console.log(user);
 
         if (user) {
-            console.log('known user');
+            // console.log('known user');
             return done(null, user);
         } else {
-            console.log('creating new user');
+            // console.log('creating new user');
             const newUser = await dbManager.createNewUser(profile);
             return done(null, newUser);
         }
-        // const { email, first_name, last_name } = profile._json;
-        // const userData = {
-        //   email,
-        //   firstName: first_name,
-        //   lastName: last_name
-        // };
-        // process.nextTick(function () {
-        //   //Check whether the User exists or not using profile.id
-        //   if(environmentState.facebookAuth.use_database) {
-        //     // if sets to true
-        //     // pool.query("SELECT * from user_info where user_id="+profile.id, (err,rows) => {
-        //     //   if(err) throw err;
-        //     //   if(rows && rows.length === 0) {
-        //     //       console.log("There is no such user, adding now");
-        //     //       pool.query("INSERT into user_info(user_id,user_name) VALUES('"+profile.id+"','"+profile.username+"')");
-        //     //   } else {
-        //     //       console.log("User already exists in database");
-        //     //   }
-        //     // });
-        //   }
-        //   return done(null, profile);
-        // });
-        // return done(null, profile);
+        
     }
 ));
 
