@@ -12,7 +12,7 @@ module.exports = {
     },
     init: async function () {
         this.db.users = new datastore({
-            filename: '../users.db',
+            filename: '../data_trinoyonMW/users.db',
             autoload: true
         });
     },
