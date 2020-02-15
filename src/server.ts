@@ -30,12 +30,12 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 // const bodyParser = require('body-parser');
 // Passport session setup.
 passport.serializeUser(function (user: any, done: any) {
-    console.log('serialise function.');
+    // console.log('serialise function.');
     done(null, user);
 });
 
 passport.deserializeUser(function (user: any, done: any) {
-    console.log('deserialise function.');
+    // console.log('deserialise function.');
     done(null, user);
 });
 
@@ -341,7 +341,7 @@ export class DemoServer {
         wss.on('connection', (ws: WebSocket, req: any) => {
             // if (req.session) {
             // }
-
+            console.log(req);
 
             // const userId_new = req.session.userId;
 
@@ -404,7 +404,7 @@ export class DemoServer {
 }
 
 function ensureAuthenticated(req: any, res: any, next: any) {
-    console.log('ensure authenticated.');
+    // console.log('ensure authenticated.');
     if (req.isAuthenticated()) { return next(); }
     res.redirect('/login')
 }
