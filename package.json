@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "nedb": "^1.8.0",
+    "nedb-promise": "^2.0.1",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
     "pathfinding": "^0.4.18",

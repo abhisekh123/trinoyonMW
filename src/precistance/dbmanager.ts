@@ -1,4 +1,6 @@
-const Datastore = require('nedb');
+// const Datastore = require('nedb');
+// import datastore from 'nedb-promise';
+const datastore = require('nedb-promise');
 const utilityFunctions = require(__dirname + '/../../../src/utils/utilityfunctions');
 
 //   , db = new Datastore({ filename: '/usee', autoload: true });
@@ -9,7 +11,7 @@ module.exports = {
         users: null,
     },
     init: async function () {
-        this.db.users = new Datastore({
+        this.db.users = new datastore({
             filename: '../users.db',
             autoload: true
         });
@@ -30,7 +32,7 @@ module.exports = {
     },
     findUser: async function (userId: string) {
         console.log('find user start');
-        const searchResult = await this.db.users.find({ id: userId });
+        const searchResult = await this.db.users.findOne({ id: userId });
         console.log('find user executed query');
         console.log(searchResult);
         return searchResult;
