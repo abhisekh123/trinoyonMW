@@ -126,7 +126,7 @@ app.use(passport.session());
 app.get("/login", function (req, res) {
     res.send("<a href='/auth/facebook'>login through facebook</a>");
 });
-
+app.use('/static', express.static(path.join(__dirname + '/../../public')));
 // app.use(express.static('public'));
 // console.log()
 app.post('/login1', function (req, res) {
