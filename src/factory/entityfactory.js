@@ -18,6 +18,10 @@ module.exports = {
         return gameRoom;
     },
 
+    getNewUserProfile: function() {
+
+    },
+
     getNewWaitingUserObject: function() {
         // var waitingObject
     },

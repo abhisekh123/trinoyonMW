@@ -6,6 +6,7 @@ import * as http from 'http';
 import * as https from 'https';
 import * as WebSocket from 'ws';
 import * as path from 'path';
+const dbManager = require('./precistance/dbManager');
 
 import { request_message } from './factory/types';
 import { RequestProcessor } from './process_request';
@@ -33,24 +34,24 @@ passport.serializeUser(function (user: any, done: any) {
     done(null, user);
 });
 
-passport.deserializeUser(function (obj: any, done: any) {
+passport.deserializeUser(function (user: any, done: any) {
     console.log('deserialise function.');
-    done(null, obj);
+    done(null, user);
 });
 
 // Use the FacebookStrategy within Passport.
-passport.use(new FacebookStrategy({
-    clientID: environmentState.facebookAuth.clientID,
-    clientSecret: environmentState.facebookAuth.clientSecret,
-    callbackURL: environmentState.facebookAuth.callbackURL,
-},
-    function (accessToken: any, refreshToken: any, profile: any, cb: any) {
-        console.log('passport use.');
-        // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-        //   return cb(err, user);
-        // });
-    }
-));
+// passport.use(new FacebookStrategy({
+//     clientID: environmentState.facebookAuth.clientID,
+//     clientSecret: environmentState.facebookAuth.clientSecret,
+//     callbackURL: environmentState.facebookAuth.callbackURL,
+// },
+//     function (accessToken: any, refreshToken: any, profile: any, cb: any) {
+//         console.log('passport use.');
+//         // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+//         //   return cb(err, user);
+//         // });
+//     }
+// ));
 
 passport.use(new FacebookStrategy({
     clientID: environmentState.facebookAuth.clientID,
@@ -58,8 +59,20 @@ passport.use(new FacebookStrategy({
     callbackURL: environmentState.facebookAuth.callbackURL,
     profileFields: environmentState.facebookAuth.profileFields
 },
-    function (accessToken: any, refreshToken: any, profile: any, done: any) {
-        console.log('use function.');
+    async function (accessToken: any, refreshToken: any, profile: any, done: any) {
+        console.log('use function.', profile);
+        console.log('accesstoken:', accessToken);
+        const user = await dbManager.findUser(profile.id);
+        console.log('searched for user');
+        console.log(user);
+
+        if (user) {
+            console.log('known user');
+            return done(null, user);
+        } else {
+            const newUser = await dbManager.createNewUser(profile.id);
+            return done(null, newUser);
+        }
         // const { email, first_name, last_name } = profile._json;
         // const userData = {
         //   email,
@@ -82,7 +95,7 @@ passport.use(new FacebookStrategy({
         //   }
         //   return done(null, profile);
         // });
-        return done(null, profile);
+        // return done(null, profile);
     }
 ));
 
@@ -103,15 +116,19 @@ const app = express();
 // for authentication
 // app.use(cookieParser());
 // app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({ secret: 'keyboard cat', key: 'sid' }));
+// app.use(session({ secret: 'keyboard cat', key: 'sid' }));
+app.use(sessionParser);
 app.use(passport.initialize());
 app.use(passport.session());
 
+// login page
+app.get("/login", function (req, res) {
+    res.send("<a href='/auth/facebook'>login through facebook</a>");
+});
 
 // app.use(express.static('public'));
-app.use(sessionParser);
 // console.log()
-app.post('/login', function (req, res) {
+app.post('/login1', function (req, res) {
     //
     // "Log in" user and set userId to session.
     //
@@ -143,7 +160,7 @@ app.delete('/logout', function (req, res) {
 });
 
 // console.log('completed initialising assetmanager.');
-app.get('/', function (req, res) {
+app.get('/', ensureAuthenticated, function (req, res) {
     console.log('req for root');
     // res.sendFile(path.join(__dirname + '/../../public/index.html'));
     res.send('root');
@@ -160,13 +177,18 @@ app.get('/auth/facebook',
     passport.authenticate('facebook')
 );
 
-app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
-    function (req, res) {
-        // Successful authentication, redirect home.
-        console.log('call back.');
-        res.redirect('/');
-    });
+// app.get('/auth/facebook/callback',
+//     passport.authenticate('facebook', { failureRedirect: '/login' }),
+//     function (req, res) {
+//         // Successful authentication, redirect home.
+//         console.log('call back.');
+//         res.redirect('/');
+//     });
+app.get("/auth/facebook/callback",
+    passport.authenticate("facebook", {
+        successRedirect : "/",
+        failureRedirect : "/login"
+}));
 
 app.get('/howrwi', function (req, res) {
     console.log('how r wi');
@@ -252,6 +274,7 @@ export class DemoServer {
     }
 
     async startServer(portParam: number) {
+        dbManager.init();
         userManager.init();
         // console.log('starting worker');
         workerManager.startWorker();
@@ -418,6 +441,8 @@ function ensureAuthenticated(req: any, res: any, next: any) {
     if (req.isAuthenticated()) { return next(); }
     res.redirect('/login')
 }
+
+
 
 
 const demoServer = new DemoServer();
