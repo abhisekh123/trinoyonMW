@@ -1,5 +1,5 @@
 const Datastore = require('nedb');
-const utilityFunctions = require('../utils/utilityfunctions');
+const utilityFunctions = require(__dirname + '/../../../src/utils/utilityfunctions');
 
 //   , db = new Datastore({ filename: '/usee', autoload: true });
 // You can issue commands right away

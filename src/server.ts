@@ -6,7 +6,7 @@ import * as http from 'http';
 import * as https from 'https';
 import * as WebSocket from 'ws';
 import * as path from 'path';
-const dbManager = require('./precistance/dbManager');
+const dbManager = require('./precistance/dbmanager');
 
 import { request_message } from './factory/types';
 import { RequestProcessor } from './process_request';
