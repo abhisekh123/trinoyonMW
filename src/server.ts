@@ -70,7 +70,8 @@ passport.use(new FacebookStrategy({
             console.log('known user');
             return done(null, user);
         } else {
-            const newUser = await dbManager.createNewUser(profile.id);
+            console.log('creating new user');
+            const newUser = await dbManager.createNewUser(profile);
             return done(null, newUser);
         }
         // const { email, first_name, last_name } = profile._json;
@@ -159,14 +160,20 @@ app.delete('/logout', function (req, res) {
 
 });
 
+
+app.get('/logout', function (req: any, res) {
+    req.logout();
+    res.redirect('/');
+});
+
 // console.log('completed initialising assetmanager.');
 app.get('/', ensureAuthenticated, function (req, res) {
     console.log('req for root');
-    // res.sendFile(path.join(__dirname + '/../../public/index.html'));
-    res.send('root');
+    res.sendFile(path.join(__dirname + '/../../public/index.html'));
+    // res.send('root');
 });
 
-app.post('/', function (req, res) {
+app.post('/', ensureAuthenticated, function (req, res) {
     // console.log(req.body);
     // res.sendFile(path.join(__dirname + '/../../public/index.html'));
     res.send('root - post');
@@ -232,10 +239,6 @@ app.get('/termsofservice', function (req, res) {
 });
 
 
-app.get('/logout', function (req: any, res) {
-    req.logout();
-    res.redirect('/');
-});
 
 export class DemoServer {
 

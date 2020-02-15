@@ -17,14 +17,17 @@ module.exports = {
         });
     },
 
-    createNewUser: async function (userId: string) {
+    createNewUser: async function (profile: any) {
         const now = utilityFunctions.getCurrentTime();
         const user = {
-            id: userId,
+            id: profile.id,
             joiniing: now,
             lastLogin: now,
             isOnline: true,
             gold: 0,
+            firstName: profile._json.first_name,
+            lastName: profile._json.last_name,
+            email: profile._json.email,
         };
 
         await this.db.users.insert(user);
