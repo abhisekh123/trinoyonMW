@@ -259,11 +259,13 @@ export class DemoServer {
                 cert: fs.readFileSync("/home/trinoyon/ssl.cert")
             }, app);
             server.on('upgrade', function (request, socket, head) {
-                console.log('upgrade: Parsing session from request...1');
+                console.log('upgrade: Parsing session from request...1/2');
                 console.log('1....request.session-->', request.session);
                 console.log('1....request.session-->', socket.session);
                 console.log('1....request.session-->', head);
-                // console.log('request-->', request);
+                console.log('Sec-WebSocket-Protocol', request.getHeader('Sec-WebSocket-Protocol'));
+                // console.log('header count', request.max)
+                console.log('request-->', request);
                 sessionParser(request, {}, () => {
                     if (!request.session.userId) {
                         socket.destroy();
