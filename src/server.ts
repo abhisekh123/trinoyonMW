@@ -134,7 +134,7 @@ app.get('/logout', function (req: any, res) {
 app.get('/', ensureAuthenticated, function (req, res) {
     console.log('req for root');
     console.log('2....request.session-->', req.session);
-    console.log(';;;;=>', req);
+    // console.log(';;;;=>', req);
     res.sendFile(path.join(__dirname + '/../../public/index.html'));
     // res.send('root');
 });
