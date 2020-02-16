@@ -74,7 +74,7 @@ const map = new Map();
 const sessionParser = session({
     saveUninitialized: false,
     secret: '$eCuRiTy',
-    resave: true
+    resave: false
 });
 
 const app = express();
