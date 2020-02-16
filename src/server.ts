@@ -71,9 +71,9 @@ const map = new Map();
 // WebSocket server.
 //
 const sessionParser = session({
-    saveUninitialized: false,
+    saveUninitialized: true,
     secret: '$eCuRiTy',
-    resave: false
+    resave: true
 });
 
 const app = express();
