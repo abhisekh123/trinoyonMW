@@ -328,22 +328,6 @@ export class DemoServer {
         // }
         // http.IncomingMessage
 
-        wss.on('upgrade', function(request, socket, head) {
-            console.log('Parsing session from request...345');
-            console.log('request.session-->', request.session);
-            sessionParser(request, {}, () => {
-              if (!request.session.userId) {
-                socket.destroy();
-                return;
-              }
-
-              console.log('Session is parsed!');
-
-              wss.handleUpgrade(request, socket, head, function(ws) {
-                wss.emit('connection', ws, request);
-              });
-            });
-          });
 
         wss.on('connection', (ws: WebSocket, req: any) => {
             // if (req.session) {

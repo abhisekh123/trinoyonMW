@@ -25,7 +25,7 @@ function initSystem(){
     // local
     // tg.socket = new WebSocket("ws://" + window.location.hostname + ":8080", ["protocolOne", "protocolTwo"]);
     if(window.location.port == ''){
-        tg.socket = new WebSocket("wss://" + window.location.hostname, ["protocolOne", "protocolTwo"]);
+        tg.socket = new WebSocket("wss://" + window.location.hostname, ["protocolOneo", "protocolTwo"]);
     }else{
         tg.socket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port , ["protocolOne", "protocolTwo"]);
     }
