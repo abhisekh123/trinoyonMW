@@ -260,6 +260,8 @@ export class DemoServer {
             server.on('upgrade', function (request, socket, head) {
                 console.log('upgrade: Parsing session from request...1');
                 console.log('1....request.session-->', request.session);
+                console.log('1....request.session-->', socket.session);
+                console.log('1....request.session-->', head);
                 // console.log('request-->', request);
                 sessionParser(request, {}, () => {
                     if (!request.session.userId) {
