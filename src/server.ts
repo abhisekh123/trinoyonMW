@@ -341,6 +341,8 @@ export class DemoServer {
         wss.on('connection', (ws: WebSocket, req: any) => {
             // if (req.session) {
             // }
+            console.log('user-->', req.user);
+            console.log('request object');
             console.log(req);
 
             // const userId_new = req.session.userId;
@@ -370,11 +372,12 @@ export class DemoServer {
                 requestProcessor.process(reqMsg, ws);
             });
             ws.on('close', (message: string) => {
-                // console.log('closed connection.');
+                console.log('closed connection.');
                 this.removeUser(ws);
             });
 
             ws.on('error', (message: string) => {
+                console.log('error connection.');
                 this.removeUser(ws);
             });
 
@@ -394,6 +397,7 @@ export class DemoServer {
     }
 
     removeUser(wsParam: WebSocket) {
+        console.log('removeUser start');
         requestProcessor.process({
             type: 'client_disconnected',
             userId: '',
