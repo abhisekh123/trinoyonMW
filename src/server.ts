@@ -1,7 +1,7 @@
 import * as express from 'express';
 const session = require('express-session');
-const bodyParser = require('body-parser');
-const uuid = require('uuid');
+// const bodyParser = require('body-parser');
+// const uuid = require('uuid');
 
 import * as http from 'http';
 import * as https from 'https';
@@ -83,7 +83,7 @@ const app = express();
 // app.use(cookieParser());
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(session({ secret: 'keyboard cat', key: 'sid' }));
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(sessionParser);
 app.use(passport.initialize());
 app.use(passport.session());
@@ -95,20 +95,20 @@ app.get("/login", function (req, res) {
 app.use('/static', express.static(path.join(__dirname + '/../../public')));
 // app.use(express.static('public'));
 // console.log()
-app.post('/login1', function (req, res) {
-    //
-    // "Log in" user and set userId to session.
-    //
-    console.log('asdfvcv');
-    const id = uuid.v4();
+// app.post('/login1', function (req, res) {
+//     //
+//     // "Log in" user and set userId to session.
+//     //
+//     console.log('asdfvcv');
+//     // const id = uuid.v4();
 
-    console.log(`Updating session for user ${id}`);
-    if (req.session) {
-        req.session.user = id;
-    }
-    // req.session.userId = id;
-    res.send({ result: 'OK', message: 'Session updated' });
-});
+//     // console.log(`Updating session for user ${id}`);
+//     // if (req.session) {
+//     //     req.session.user = id;
+//     // }
+//     // req.session.userId = id;
+//     res.send({ result: 'OK', message: 'Session updated' });
+// });
 
 app.delete('/logout', function (req, res) {
     // let ws = null;
@@ -192,25 +192,25 @@ app.get('/termsofservice', function (req, res) {
 
 export class DemoServer {
 
-    loginRoutine(req: any) {
-        const id = uuid.v4();
+    // loginRoutine(req: any) {
+    //     // const id = uuid.v4();
 
-        console.log(`Updating session for user ${id}`);
-        if (req.session) {
-            req.session.user = id;
-        }
-        // req.session.userId = id;
-        return { result: 'OK', message: 'Session updated' };
-    }
+    //     console.log(`Updating session for user ${id}`);
+    //     if (req.session) {
+    //         req.session.user = id;
+    //     }
+    //     // req.session.userId = id;
+    //     return { result: 'OK', message: 'Session updated' };
+    // }
 
-    logoutRoutine(req: any) {
-        const ws = map.get(req.session.userId);
-        req.session.destroy(function () {
-            if (ws) ws.close();
+    // logoutRoutine(req: any) {
+    //     const ws = map.get(req.session.userId);
+    //     req.session.destroy(function () {
+    //         if (ws) ws.close();
 
-            return { result: 'OK', message: 'Session destroyed' };
-        });
-    }
+    //         return { result: 'OK', message: 'Session destroyed' };
+    //     });
+    // }
 
     admitNewConnectionRoutine(req: any, ws: WebSocket) {
         const userId_new = req.session.userId;
@@ -267,18 +267,26 @@ export class DemoServer {
                 console.log('1....request.session-->', head);
                 console.log('request-->', request);
                 console.log('hedra-->', request.headers);
-                console.log('234', request.headers['sec-websocket-protocol']);
-                console.log('Sec-WebSocket-Protocol', request.get('Sec-WebSocket-Protocol'));
-                console.log('Sec-WebSocket-Protocol', request.getHeader('Sec-WebSocket-Protocol'));
+                console.log('234<' + request.headers['sec-websocket-protocol'] + '>');
+                // const customHeaderItemArray = request.headers['sec-websocket-protocol'].split(',');
+                const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
+                console.log(customHeaderItemArray);
+                // console.log('Sec-WebSocket-Protocol', request.get('Sec-WebSocket-Protocol'));
+                // console.log('Sec-WebSocket-Protocol', request.getHeader('Sec-WebSocket-Protocol'));
                 // console.log('header count', request.max)
                 
                 sessionParser(request, {}, () => {
-                    if (!request.session.userId) {
+                    console.log('inside session parser');
+                    const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
+                    console.log(customHeaderItemArray);
+                    // if (!request.session.userId) {
+                    if (customHeaderItemArray[0] !== 'protocolOne') {
+                        console.log('customHeaderItemArray[0]::', customHeaderItemArray[0]);
                         socket.destroy();
                         return;
                     }
 
-                    console.log('Session is parsed!');
+                    console.log('Session is parsed and accepted!');
 
                     wss.handleUpgrade(request, socket, head, function (ws) {
                         wss.emit('connection', ws, request);
