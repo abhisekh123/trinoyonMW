@@ -1,5 +1,6 @@
 import * as express from 'express';
 const session = require('express-session');
+const bodyParser = require('body-parser');
 const uuid = require('uuid');
 
 import * as http from 'http';
@@ -71,7 +72,7 @@ const map = new Map();
 // WebSocket server.
 //
 const sessionParser = session({
-    saveUninitialized: true,
+    saveUninitialized: false,
     secret: '$eCuRiTy',
     resave: true
 });
@@ -82,6 +83,7 @@ const app = express();
 // app.use(cookieParser());
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(session({ secret: 'keyboard cat', key: 'sid' }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(sessionParser);
 app.use(passport.initialize());
 app.use(passport.session());
@@ -263,9 +265,11 @@ export class DemoServer {
                 console.log('1....request.session-->', request.session);
                 console.log('1....request.session-->', socket.session);
                 console.log('1....request.session-->', head);
+                console.log('request-->', request);
+                console.log('Sec-WebSocket-Protocol', request.get('Sec-WebSocket-Protocol'));
                 console.log('Sec-WebSocket-Protocol', request.getHeader('Sec-WebSocket-Protocol'));
                 // console.log('header count', request.max)
-                console.log('request-->', request);
+                
                 sessionParser(request, {}, () => {
                     if (!request.session.userId) {
                         socket.destroy();
