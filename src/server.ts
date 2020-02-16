@@ -265,8 +265,8 @@ export class DemoServer {
                 console.log('1....request.session-->', request.session);
                 console.log('1....request.session-->', socket.session);
                 console.log('1....request.session-->', head);
-                console.log('request-->', request);
-                console.log('hedra-->', request.headers);
+                // console.log('request-->', request);
+                // console.log('hedra-->', request.headers);
                 console.log('234<' + request.headers['sec-websocket-protocol'] + '>');
                 // const customHeaderItemArray = request.headers['sec-websocket-protocol'].split(',');
                 const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
@@ -344,7 +344,7 @@ export class DemoServer {
         wss.on('connection', (ws: WebSocket, req: any) => {
             // if (req.session) {
             // }
-            console.log('user-->', req.user);
+            console.log('start user connection routine-->', req.user);
             console.log('user-->', req.session);
             console.log('request object');
             // console.log(req);
@@ -376,12 +376,12 @@ export class DemoServer {
                 requestProcessor.process(reqMsg, ws);
             });
             ws.on('close', (message: string) => {
-                console.log('closed connection.');
+                console.log('closed connection.', message);
                 this.removeUser(ws);
             });
 
             ws.on('error', (message: string) => {
-                console.log('error connection.');
+                console.log('error connection.', message);
                 this.removeUser(ws);
             });
 
