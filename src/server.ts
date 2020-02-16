@@ -328,6 +328,7 @@ export class DemoServer {
             // if (req.session) {
             // }
             console.log('user-->', req.user);
+            console.log('user-->', req.session);
             console.log('request object');
             // console.log(req);
 
@@ -397,6 +398,7 @@ function ensureAuthenticated(req: any, res: any, next: any) {
     // console.log('ensure authenticated.');
     if (req.isAuthenticated()) { 
         console.log('authenticated.');
+        req.session.userTest = 1;
         return next(); 
     }
     console.log('not authenticated.');
