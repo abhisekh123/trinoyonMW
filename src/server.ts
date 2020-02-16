@@ -274,24 +274,28 @@ export class DemoServer {
                 // console.log('Sec-WebSocket-Protocol', request.get('Sec-WebSocket-Protocol'));
                 // console.log('Sec-WebSocket-Protocol', request.getHeader('Sec-WebSocket-Protocol'));
                 // console.log('header count', request.max)
-                
-                sessionParser(request, {}, () => {
-                    console.log('inside session parser');
-                    const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
-                    console.log(customHeaderItemArray);
-                    // if (!request.session.userId) {
-                    if (customHeaderItemArray[0] !== 'protocolOne') {
-                        console.log('customHeaderItemArray[0]::', customHeaderItemArray[0]);
-                        socket.destroy();
-                        return;
-                    }
+                if (customHeaderItemArray[0] !== 'protocolOne') {
+                    console.log('customHeaderItemArray[0]::', customHeaderItemArray[0]);
+                    socket.destroy();
+                    return;
+                }
+                // sessionParser(request, {}, () => {
+                //     console.log('inside session parser');
+                //     const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
+                //     console.log(customHeaderItemArray);
+                //     // if (!request.session.userId) {
+                //     if (customHeaderItemArray[0] !== 'protocolOne') {
+                //         console.log('customHeaderItemArray[0]::', customHeaderItemArray[0]);
+                //         socket.destroy();
+                //         return;
+                //     }
 
-                    console.log('Session is parsed and accepted!');
+                //     console.log('Session is parsed and accepted!');
 
-                    wss.handleUpgrade(request, socket, head, function (ws) {
-                        // wss.emit('connection', ws, request);
-                    });
-                });
+                //     wss.handleUpgrade(request, socket, head, function (ws) {
+                //         wss.emit('connection', ws, request);
+                //     });
+                // });
             });
         } else {
             server = http.createServer(app);
