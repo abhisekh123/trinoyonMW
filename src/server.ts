@@ -322,7 +322,7 @@ export class DemoServer {
         // http.IncomingMessage
 
         wss.on('upgrade', function(request, socket, head) {
-            console.log('Parsing session from request...');
+            console.log('Parsing session from request...345');
             console.log('request.session-->', request.session);
             sessionParser(request, {}, () => {
               if (!request.session.userId) {
