@@ -266,6 +266,8 @@ export class DemoServer {
                 console.log('1....request.session-->', socket.session);
                 console.log('1....request.session-->', head);
                 console.log('request-->', request);
+                console.log('hedra-->', request.headers);
+                console.log('234', request.headers['sec-websocket-protocol']);
                 console.log('Sec-WebSocket-Protocol', request.get('Sec-WebSocket-Protocol'));
                 console.log('Sec-WebSocket-Protocol', request.getHeader('Sec-WebSocket-Protocol'));
                 // console.log('header count', request.max)
