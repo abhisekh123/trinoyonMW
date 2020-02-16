@@ -289,7 +289,7 @@ export class DemoServer {
                     console.log('Session is parsed and accepted!');
 
                     wss.handleUpgrade(request, socket, head, function (ws) {
-                        wss.emit('connection', ws, request);
+                        // wss.emit('connection', ws, request);
                     });
                 });
             });
