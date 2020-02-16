@@ -135,6 +135,7 @@ app.get('/', ensureAuthenticated, function (req, res) {
     console.log('req for root');
     console.log('2....request.session-->', req.session);
     // console.log(';;;;=>', req);
+    res.setHeader('test-field', 'testy');
     res.sendFile(path.join(__dirname + '/../../public/index.html'));
     // res.send('root');
 });
