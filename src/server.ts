@@ -84,7 +84,7 @@ const app = express();
 // app.use(session({ secret: 'keyboard cat', key: 'sid' }));
 app.use(sessionParser);
 app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.session());
 
 // login page
 app.get("/login", function (req, res) {
