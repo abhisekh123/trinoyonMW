@@ -275,7 +275,7 @@ export class DemoServer {
                 cert: fs.readFileSync("/home/trinoyon/ssl.cert")
             }, app);
             server.on('upgrade', function (request, socket, head) {
-                console.log('upgrade: Parsing session from request...');
+                console.log('upgrade: Parsing session from request...1');
 
                 sessionParser(request, {}, () => {
                     if (!request.session.userId) {
@@ -293,7 +293,7 @@ export class DemoServer {
         } else {
             server = http.createServer(app);
             server.on('upgrade', function (request, socket, head) {
-                console.log('upgrade: Parsing session from request...');
+                console.log('upgrade: Parsing session from request...2');
 
                 sessionParser(request, {}, () => {
                     if (!request.session.userId) {
