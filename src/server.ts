@@ -133,6 +133,8 @@ app.get('/logout', function (req: any, res) {
 // console.log('completed initialising assetmanager.');
 app.get('/', ensureAuthenticated, function (req, res) {
     console.log('req for root');
+    console.log('2....request.session-->', req.session);
+    console.log(';;;;=>', req);
     res.sendFile(path.join(__dirname + '/../../public/index.html'));
     // res.send('root');
 });
@@ -171,25 +173,6 @@ app.post('/9h109x', function (req, res) {// phionix .... restart routine.
     serverManager.initiateServerShutDownRoutine();
     res.send(serverstate.getServerState());
 });
-
-
-//   app.get('/auth/facebook', passport.authenticate('facebook',{scope:'email'}));
-// app.get('/auth/facebook', function (req, res) {// phionix .... restart routine.
-//         console.log('auth123');
-//         passport.authenticate('facebook');
-//         // serverManager.initiateServerShutDownRoutine();
-//         // res.send(serverstate.getServerState());
-//     }
-// );
-
-
-//   app.get('/auth/facebook/callback',function (req, res) {// phionix .... restart routine.
-//         console.log('callback');
-//         passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' });
-//         // serverManager.initiateServerShutDownRoutine();
-//         // res.send(serverstate.getServerState());
-//     }
-// );
 
 
 app.get('/ppolicy', function (req, res) {
@@ -276,8 +259,8 @@ export class DemoServer {
             }, app);
             server.on('upgrade', function (request, socket, head) {
                 console.log('upgrade: Parsing session from request...1');
-                console.log('request.session-->', request.session);
-                console.log('request-->', request);
+                console.log('1....request.session-->', request.session);
+                // console.log('request-->', request);
                 sessionParser(request, {}, () => {
                     if (!request.session.userId) {
                         socket.destroy();
