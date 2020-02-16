@@ -139,8 +139,8 @@ app.get('/', ensureAuthenticated, function (req, res) {
 
 app.post('/', ensureAuthenticated, function (req, res) {
     // console.log(req.body);
-    // res.sendFile(path.join(__dirname + '/../../public/index.html'));
-    res.send('root - post');
+    res.sendFile(path.join(__dirname + '/../../public/index.html'));
+    // res.send('root - post');
 });
 
 
@@ -323,7 +323,7 @@ export class DemoServer {
 
         wss.on('upgrade', function(request, socket, head) {
             console.log('Parsing session from request...');
-
+            console.log('request.session-->', request.session);
             sessionParser(request, {}, () => {
               if (!request.session.userId) {
                 socket.destroy();
@@ -409,7 +409,11 @@ export class DemoServer {
 
 function ensureAuthenticated(req: any, res: any, next: any) {
     // console.log('ensure authenticated.');
-    if (req.isAuthenticated()) { return next(); }
+    if (req.isAuthenticated()) { 
+        console.log('authenticated.');
+        return next(); 
+    }
+    console.log('not authenticated.');
     res.redirect('/login')
 }
 
