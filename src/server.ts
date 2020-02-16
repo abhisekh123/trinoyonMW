@@ -321,29 +321,29 @@ export class DemoServer {
         // }
         // http.IncomingMessage
 
-        // server.on('upgrade', function(request, socket, head) {
-        //     console.log('Parsing session from request...');
+        wss.on('upgrade', function(request, socket, head) {
+            console.log('Parsing session from request...');
 
-        //     sessionParser(request, {}, () => {
-        //       if (!request.session.userId) {
-        //         socket.destroy();
-        //         return;
-        //       }
+            sessionParser(request, {}, () => {
+              if (!request.session.userId) {
+                socket.destroy();
+                return;
+              }
 
-        //       console.log('Session is parsed!');
+              console.log('Session is parsed!');
 
-        //       wss.handleUpgrade(request, socket, head, function(ws) {
-        //         wss.emit('connection', ws, request);
-        //       });
-        //     });
-        //   });
+              wss.handleUpgrade(request, socket, head, function(ws) {
+                wss.emit('connection', ws, request);
+              });
+            });
+          });
 
         wss.on('connection', (ws: WebSocket, req: any) => {
             // if (req.session) {
             // }
             console.log('user-->', req.user);
             console.log('request object');
-            console.log(req);
+            // console.log(req);
 
             // const userId_new = req.session.userId;
 
