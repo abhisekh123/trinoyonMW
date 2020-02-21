@@ -121,7 +121,7 @@ tg.startCharacterAnimation = function(characterConfig, currentAction, animationP
     }
     var isCharacter = true;
     // var characterConfig = tg.characterConfig[id];
-    var characterTypeConfig = itemConfigs.characters[characterConfig.characterName];
+    var characterTypeConfig = itemConfigs.items[characterConfig.characterName];
     if(characterTypeConfig == null ||characterConfig == undefined){
         isCharacter = false;
     }
@@ -293,7 +293,7 @@ function createAmbience() {
 
     playButton.onPointerUpObservable.add(function() {
         console.log('click play button.');
-        sendMessageToWS(getEmptyMessagePacket('request_game_admit'));
+        tg.sendMessageToWS(tg.getEmptyMessagePacket('request_game_admit'));
     });
     tg.UIConfig.playButton = playButton;
 
@@ -309,7 +309,7 @@ function createAmbience() {
     exitGameButton.onPointerUpObservable.add(function() {
         // tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.exitGameButton);
         // showHomePage();
-        sendMessageToWS(getEmptyMessagePacket('request_game_exit'));
+        tg.sendMessageToWS(tg.getEmptyMessagePacket('request_game_exit'));
     });
     tg.UIConfig.exitGameButton = exitGameButton;
 
@@ -404,7 +404,7 @@ function addStaticItems(){
 }
 
 function loadGLTFAssets() {
-    // console.log('load gltf assets');
+    console.log('load gltf assets');
     var staticItemCount = 0;
     tg.totalAssetsToBeLoaded = 2 + worldItems.defenceBottom.length 
         + worldItems.defenceTop.length + worldItems.characters.length;
@@ -457,7 +457,7 @@ function loadGLTFAssets() {
     // load characters
     for (let index = 0; index < worldItems.characters.length; index++) {
         var characterItem = worldItems.characters[index];
-        var characterConfig = itemConfigs.characters[characterItem.type];
+        var characterConfig = itemConfigs.items[characterItem.type];
         loadCharacters(
             characterItem,
             characterConfig,
@@ -471,7 +471,7 @@ function loadCharacters(
 ){
     BABYLON.SceneLoader.ImportMesh(
         '',
-        'static/model/' + characterConfig.model + '/',
+        'static/model/' + characterConfig.file + '/',
         "scene.gltf",
         tg.scene,
         // processLoadedModel
@@ -521,7 +521,7 @@ function processLoadedModel (
     playerID
 ) {
     // console.log('--------->' + characterName);
-    var characterConfig = itemConfigs.characters[characterName];
+    var characterConfig = itemConfigs.items[characterName];
     if(characterConfig == null || characterConfig == undefined){
         console.error('character config is empty. exiting. character name:' + characterName);
         return;
@@ -650,6 +650,7 @@ function loadStaticModel(
     itemID,
     itemType
   ) {
+    console.log('loadStaticModel');
     newMeshes[0].position.x = positionParam.x;
     newMeshes[0].position.y = positionParam.y;
     newMeshes[0].position.z = positionParam.z;
@@ -661,7 +662,7 @@ function loadStaticModel(
         newMeshes[i].isPickable = false;
     }
 
-    var buildingConfig = itemConfigs.buildings[itemType];
+    var buildingConfig = itemConfigs.items[itemType];
 
     worldItems.staticObjectMap[itemID] = {};
     worldItems.staticObjectMap[itemID].parentMesh = newMeshes[0];

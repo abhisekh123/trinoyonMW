@@ -1,4 +1,6 @@
-
+/**
+ * init world and init persistant 3D components
+ */
 
 tg.playerDimensionBaseUnit = 10;
 tg.cameraSavedPosition={};
@@ -390,5 +392,5 @@ function initVideo(){
 function entrypoint(){
     
     initVideo();
-    sendMessageToWS(getEmptyMessagePacket('init_world'));
+    tg.sendMessageToWS(tg.getEmptyMessagePacket('init_world'));
 }

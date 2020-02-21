@@ -5,18 +5,13 @@ import * as WebSocket from 'ws';
 const assetManager = require('./asset_manager/asset_manager');
 const workermanager = require('./workermanager');
 const userManager = require('./control/usermanager');
+const serverState = require('./state/serverstate');
 // const serverstate = require('./state/serverstate');
 
 export class RequestProcessor {
     
-    process(requestJSON: request_message, ws: WebSocket) {
-        const userIndex = userManager.getUserIndexFromWebsocket(ws);
-        if(userIndex == undefined || userIndex == null){
-            console.log('ERROR:Dropping request. Unknown sender.');
-            return;
-        }else{
-            requestJSON.userId = userIndex;
-        }
+    process(requestJSON: request_message) {
+        
         switch (requestJSON.type) {
             case 'action':
                 // console.log('got action update from client');
@@ -28,7 +23,7 @@ export class RequestProcessor {
             case 'init_video':
             case 'init_world':
                 console.log('got message type:<' + requestJSON.type + '>');
-                this.sendMessagePacket('ack1', assetManager.getAsset(requestJSON.type), ws);
+                this.sendMessagePacket('ack1', assetManager.getAsset(requestJSON.type), requestJSON.userId);
                 break;
             case 'request_game_admit':
                 console.log('got message with type:request_game_admit');
@@ -40,7 +35,7 @@ export class RequestProcessor {
             case 'client_disconnected':
                 // console.log('got message with type:', requestJSON.type);
                 // this.sendMessagePacket('ack_request_game_exit', {} as any, ws);
-                const userId = userManager.removeUser(ws);
+                const userId = userManager.removeUser(requestJSON.userId);
                 requestJSON.userId = userId;
                 workermanager.postMessage(requestJSON);
                 break;
@@ -51,12 +46,15 @@ export class RequestProcessor {
     }
 
     // send message to the client.
-    sendMessagePacket(packetType: string, payload: JSON, ws: WebSocket){
+    sendMessagePacket(packetType: string, payload: JSON, userId: string){
+        console.log('sending message packet', userId);
+        const ws: WebSocket = serverState.userIdToWSMap[userId].ws;
+        // console.log('ws=>', ws);
         var container = {type:packetType, message:payload};
         try {
             ws.send(JSON.stringify(container));    
         } catch (error) {
-            // console.log(error);
+            console.log(error);
         }
     }
 

@@ -22,7 +22,7 @@ module.exports = {
                 return this.inventory.store.init_audio_key;
                 break;
             case 'init':
-                return this.inventory.store.init_key;
+                return this.inventory.store.init_key + this.inventory.store.network_manager_key;
                 break;
             case 'init_video':
                 // // console.log(this.inventory.store.init_video_key);

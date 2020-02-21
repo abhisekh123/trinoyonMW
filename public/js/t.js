@@ -19,23 +19,31 @@ function initSystem(){
     // resize the canvas to fill browser window dynamically
     window.addEventListener('resize', resizeCanvas, false);
     resizeCanvas();
+    
+    $.get('/ox', {type:'p'}, function (data, textStatus, jqXHR) {
+        console.log('ox response', data);
+        tg.connectToParent(data.data.u, data.data.k);
+    });
+    
+}
 
-    // server
-    // tg.socket = new WebSocket("wss://" + window.location.hostname + ":443", ["protocolOne", "protocolTwo"]);
-    // local
-    // tg.socket = new WebSocket("ws://" + window.location.hostname + ":8080", ["protocolOne", "protocolTwo"]);
-    if(window.location.port == ''){
-        tg.socket = new WebSocket("wss://" + window.location.hostname, ["protocolOneo", "protocolTwo"]);
-    }else{
-        tg.socket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port , ["protocolOne", "protocolTwo"]);
-    }
+tg.connectToParent = function(parentEndPoint, keyIdentifier){
+    // parentEndPoint = window.location.hostname;
+    console.log('parentEndPoint:', parentEndPoint);
+    console.log('keyIdentifier:', keyIdentifier);
+    tg.socket = new WebSocket(parentEndPoint, keyIdentifier);
+    // if(window.location.port == ''){
+    //     tg.socket = new WebSocket("wss://" + parentEndPoint, [keyIdentifier, "protocolTwo"]);
+    // }else{
+    //     tg.socket = new WebSocket("ws://" + parentEndPoint + ":" + window.location.port , [keyIdentifier, "protocolTwo"]);
+    // }
     tg.socket.onopen = function (event) {
-        // console.log('connected to websocket server.');
-        sendMessageToWS(getEmptyMessagePacket('init'));
+        console.log('connected to websocket server.');
+        tg.sendMessageToWS(tg.getEmptyMessagePacket('init'));
     };
 
     tg.socket.onmessage = function (event) {
-        // // console.log('got message from server::' + event.data);
+        // console.log('got message from server::' + event.data);
         const responseJSON = JSON.parse(event.data);
         if(responseJSON.type == 'update'){// message is game update
             // console.log('processing update.');
@@ -61,22 +69,22 @@ function initSystem(){
     };
 }
 
-function sendMessageToWS(message){
+tg.sendMessageToWS = function(message){
     tg.socket.send(message);
 }
 
-function sendJSONMessageToWS(message){
+tg.sendJSONMessageToWS = function(message){
     tg.socket.send(JSON.stringify(message));
 }
 
-function getEmptyMessagePacket(type){
+tg.getEmptyMessagePacket = function(type){
     var container = {};
     container.type = type;
 
     return JSON.stringify(container);
 }
 
-function getActionPacketJSON(type){
+tg.getActionPacketJSON = function(type){
     var container = {};
     container.type = 'action';
     container.message = {};

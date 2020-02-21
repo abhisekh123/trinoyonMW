@@ -80,7 +80,7 @@ var worldItems = {
             playerID:1
         },
         {
-            type:'boy',
+            type:'swordman',
             isLeader: false,
             position:{
                 x:46,
@@ -97,7 +97,7 @@ var worldItems = {
             playerID:1
         },
         {
-            type:'boy',
+            type:'swordman',
             isLeader: false,
             position:{
                 x:46,
@@ -132,7 +132,7 @@ var worldItems = {
             playerID:2
         },
         {
-            type:'boy',
+            type:'swordman',
             isLeader: false,
             position:{
                 x:42,
@@ -149,7 +149,7 @@ var worldItems = {
             playerID:2
         },
         {
-            type:'boy',
+            type:'swordman',
             isLeader: false,
             position:{
                 x:42,
@@ -185,7 +185,7 @@ var worldItems = {
             playerID:3
         },
         {
-            type:'boy',
+            type:'swordman',
             isLeader: false,
             position:{
                 x:46,
@@ -202,7 +202,7 @@ var worldItems = {
             playerID:3
         },
         {
-            type:'boy',
+            type:'swordman',
             isLeader: false,
             position:{
                 x:46,
@@ -237,7 +237,7 @@ var worldItems = {
             playerID:4
         },
         {
-            type:'boy',
+            type:'swordman',
             isLeader: false,
             position:{
                 x:42,
@@ -254,7 +254,7 @@ var worldItems = {
             playerID:4
         },
         {
-            type:'boy',
+            type:'swordman',
             isLeader: false,
             position:{
                 x:42,

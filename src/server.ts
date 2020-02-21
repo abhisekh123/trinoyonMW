@@ -1,7 +1,7 @@
 import * as express from 'express';
 const session = require('express-session');
 // const bodyParser = require('body-parser');
-// const uuid = require('uuid');
+const uuid = require('uuid');
 
 import * as http from 'http';
 import * as https from 'https';
@@ -22,7 +22,7 @@ const serverManager = require('./control/servermanager');
 
 const fs = require('fs');
 const environmentState = require('./state/environmentstate');
-const serverstate = require('./state/serverstate');
+const serverState = require('./state/serverstate');
 
 // authentication
 const passport = require('passport');
@@ -61,12 +61,11 @@ passport.use(new FacebookStrategy({
             const newUser = await dbManager.createNewUser(profile);
             return done(null, newUser);
         }
-        
+
     }
 ));
 
 
-const map = new Map();
 //
 // We need the same instance of the session parser in express and
 // WebSocket server.
@@ -80,13 +79,49 @@ const sessionParser = session({
 const app = express();
 
 // for authentication
-// app.use(cookieParser());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(session({ secret: 'keyboard cat', key: 'sid' }));
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(sessionParser);
 app.use(passport.initialize());
 app.use(passport.session());
+
+// miscellanious 
+app.get("/ox", function (req, res) {
+    console.log('ox called');
+    console.log(req.query);
+    var respJSON: any = {
+        status: 'fail',
+        // data: '123'
+    };
+    console.log('a');
+    console.log(req.session);
+    console.log('b');
+    switch (req.query.type) {
+        case 'p': // find a parent
+            var URL = '';
+            if (environmentState.environment == 'server') {
+                URL = 'wss://trinoyon.com';
+            } else {
+                URL = 'ws://localhost:8080';
+            }
+            const userKey = getNewKey(req);
+            respJSON.data = {
+                u: URL,
+                k: userKey
+            };
+            respJSON.status = 'ok';
+
+            // later send this key to the intended parent server
+            if (serverState.userIdToWSMap[userKey] != undefined) {
+                // if there is already a connection.
+                // remove user routine.
+            }
+            serverState.userIdToWSMap[userKey] = {}; // check if there is actually a connection.
+            break;
+
+        default:
+            break;
+    }
+    res.send(respJSON);
+});
 
 // login page
 app.get("/login", function (req, res) {
@@ -110,21 +145,21 @@ app.use('/static', express.static(path.join(__dirname + '/../../public')));
 //     res.send({ result: 'OK', message: 'Session updated' });
 // });
 
-app.delete('/logout', function (req, res) {
-    // let ws = null;
-    if (req.session) {
-        const ws = map.get(req.session.userId);
-        req.session.destroy(function () {
-            if (ws) ws.close();
+// app.delete('/logout', function (req, res) {
+//     // let ws = null;
+//     if (req.session) {
+//         const ws = map.get(req.session.userId);
+//         req.session.destroy(function () {
+//             if (ws) ws.close();
 
-            res.send({ result: 'OK', message: 'Session destroyed' });
-        });
-    } else {
-        return;
-    }
-    console.log('Destroying session');
+//             res.send({ result: 'OK', message: 'Session destroyed' });
+//         });
+//     } else {
+//         return;
+//     }
+//     console.log('Destroying session');
 
-});
+// });
 
 
 app.get('/logout', function (req: any, res) {
@@ -153,28 +188,21 @@ app.get('/auth/facebook',
     passport.authenticate('facebook')
 );
 
-// app.get('/auth/facebook/callback',
-//     passport.authenticate('facebook', { failureRedirect: '/login' }),
-//     function (req, res) {
-//         // Successful authentication, redirect home.
-//         console.log('call back.');
-//         res.redirect('/');
-//     });
 app.get("/auth/facebook/callback",
     passport.authenticate("facebook", {
-        successRedirect : "/",
-        failureRedirect : "/login"
-}));
+        successRedirect: "/",
+        failureRedirect: "/login"
+    }));
 
 app.get('/howrwi', function (req, res) {
     console.log('how r wi');
-    // res.send(serverstate.getServerState());
+    // res.send(serverState.getServerState());
     res.send('a1');
 });
 
 app.post('/9h109x', function (req, res) {// phionix .... restart routine.
     serverManager.initiateServerShutDownRoutine();
-    res.send(serverstate.getServerState());
+    res.send(serverState.getServerState());
 });
 
 
@@ -192,40 +220,6 @@ app.get('/termsofservice', function (req, res) {
 
 export class DemoServer {
 
-    // loginRoutine(req: any) {
-    //     // const id = uuid.v4();
-
-    //     console.log(`Updating session for user ${id}`);
-    //     if (req.session) {
-    //         req.session.user = id;
-    //     }
-    //     // req.session.userId = id;
-    //     return { result: 'OK', message: 'Session updated' };
-    // }
-
-    // logoutRoutine(req: any) {
-    //     const ws = map.get(req.session.userId);
-    //     req.session.destroy(function () {
-    //         if (ws) ws.close();
-
-    //         return { result: 'OK', message: 'Session destroyed' };
-    //     });
-    // }
-
-    admitNewConnectionRoutine(req: any, ws: WebSocket) {
-        const userId_new = req.session.userId;
-
-        map.set(userId_new, ws);
-        // // console.log('got new connection:' , ws);
-        console.log('got new connection');
-        let userId = userManager.admitNewUser(ws);
-        if (userId < 0) {
-            console.log('error: could not connect the new client.');
-            ws.close();
-            return;
-        }
-    }
-
     async startServer(portParam: number) {
         dbManager.init();
         userManager.init();
@@ -235,26 +229,11 @@ export class DemoServer {
         // console.log('starting init routine.');
         await assetManager.init();
 
-        //
-        // Serve static files from the 'public' folder.
-        //
-
-
-
-        // app.use('/static', express.static(path.join(__dirname + '/../../public')));
-
         //initialize a simple http server
         let server = null;
 
-        // const httpOptions = {
-        //     key: null,
-        //     cert: null
-        // };
-        // let httpsserver = null;
 
         if (environmentState.environment == 'server') {
-            // httpOptions.key = fs.readFileSync("/home/trinoyon/ssl.key");
-            // httpOptions.cert = fs.readFileSync("/home/trinoyon/ssl.cert");
 
             server = https.createServer({
                 key: fs.readFileSync("/home/trinoyon/ssl.key"),
@@ -262,55 +241,63 @@ export class DemoServer {
             }, app);
             server.on('upgrade', function (request, socket, head) {
                 console.log('upgrade: Parsing session from request...1/2');
-                console.log('1....request.session-->', request.session);
-                console.log('1....request.session-->', socket.session);
-                console.log('1....request.session-->', head);
-                // console.log('request-->', request);
-                // console.log('hedra-->', request.headers);
                 console.log('234<' + request.headers['sec-websocket-protocol'] + '>');
                 // const customHeaderItemArray = request.headers['sec-websocket-protocol'].split(',');
-                const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
-                console.log(customHeaderItemArray);
-                // console.log('Sec-WebSocket-Protocol', request.get('Sec-WebSocket-Protocol'));
-                // console.log('Sec-WebSocket-Protocol', request.getHeader('Sec-WebSocket-Protocol'));
-                // console.log('header count', request.max)
-                if (customHeaderItemArray[0] !== 'protocolOne') {
-                    console.log('customHeaderItemArray[0]::', customHeaderItemArray[0]);
+                // const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
+                // console.log(customHeaderItemArray);
+                // const incomingKey = customHeaderItemArray[0];
+                const incomingKey = request.headers['sec-websocket-protocol'];
+                const keyConfig = serverState.userIdToWSMap[incomingKey];
+                if (keyConfig == null || keyConfig == undefined) {
+                    console.log('keyConfig == null || keyConfig == undefined for incoming key', incomingKey);
                     socket.destroy();
                     return;
                 }
-                // sessionParser(request, {}, () => {
-                //     console.log('inside session parser');
-                //     const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
-                //     console.log(customHeaderItemArray);
-                //     // if (!request.session.userId) {
-                //     if (customHeaderItemArray[0] !== 'protocolOne') {
-                //         console.log('customHeaderItemArray[0]::', customHeaderItemArray[0]);
-                //         socket.destroy();
-                //         return;
-                //     }
 
-                //     console.log('Session is parsed and accepted!');
 
-                //     wss.handleUpgrade(request, socket, head, function (ws) {
-                //         wss.emit('connection', ws, request);
-                //     });
-                // });
+                // console.log('a');
+                // console.log(request.session);
+                // console.log('b');
+                request.session.userId = incomingKey;
+                sessionParser(request, {}, () => {
+                    // console.log('ea');
+                    // console.log(request.session);
+                    // console.log('be');
+                    request.session.userId = incomingKey;
+                    wss.handleUpgrade(request, socket, head, function (ws) {
+                        // console.log('eea');
+                        // console.log(request.session);
+                        // console.log('bee');
+                        wss.emit('connection', ws, request);
+                    });
+                });
             });
         } else {
             server = http.createServer(app);
             server.on('upgrade', function (request, socket, head) {
                 console.log('upgrade: Parsing session from request...2');
-                console.log('request.session-->', request.session);
+                // const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
+                // console.log(customHeaderItemArray);
+                // const incomingKey = customHeaderItemArray[0];
+                const incomingKey = request.headers['sec-websocket-protocol'];
+                const keyConfig = serverState.userIdToWSMap[incomingKey];
+                request.incomingKey = incomingKey;
+                if (keyConfig == null || keyConfig == undefined) {
+                    console.log('keyConfig == null || keyConfig == undefined for incoming key', incomingKey);
+                    socket.destroy();
+                    return;
+                }
+
+
                 sessionParser(request, {}, () => {
-                    if (!request.session.userId) {
-                        socket.destroy();
-                        return;
-                    }
-
-                    console.log('Session is parsed!');
-
+                    // console.log('ea');
+                    // console.log(request.session);
+                    // console.log('be');
+                    request.session.userId = incomingKey;
                     wss.handleUpgrade(request, socket, head, function (ws) {
+                        // console.log('eea');
+                        // console.log(request.session);
+                        // console.log('bee');
                         wss.emit('connection', ws, request);
                     });
                 });
@@ -319,40 +306,31 @@ export class DemoServer {
 
 
         //initialize the WebSocket server instance
-        const wss = new WebSocket.Server({ server });
-        // let wss = null;
-        // if (environment.environment == 'server') {
-        //     wss = new WebSocket.Server({ server: httpsserver });
-        // } else {
-        //     wss = new WebSocket.Server({ server });
-        // }
-        // http.IncomingMessage
+        // const wss = new WebSocket.Server({ server });
+        const wss = new WebSocket.Server({ clientTracking: false, noServer: true });
 
 
         wss.on('connection', (ws: WebSocket, req: any) => {
+            const userId = req.session.userId;
+            const keyConfig = serverState.userIdToWSMap[userId];
+            keyConfig.ws = ws;
             // if (req.session) {
             // }
-            console.log('start user connection routine-->', req.user);
-            console.log('user-->', req.session);
-            console.log('request object');
-            // console.log(req);
-
-            // const userId_new = req.session.userId;
-
-            // map.set(userId_new, ws);
-            // // // console.log('got new connection:' , ws);
-            // console.log('got new connection');
-            // let userId = userManager.admitNewUser(ws);
-            // if (userId < 0) {
-            //     console.log('error: could not connect the new client.');
-            //     ws.close();
-            //     return;
-            // }
-
+            // console.log('start user connection routine-->', req.user);
+            // console.log('user-->', req.session);
+            // console.log('request object');
+            // const customHeaderItemArray: string[] = req.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
+            //     console.log(customHeaderItemArray);
+            // console.log('request.testValue::', req.testValue);
             //connection is up, let's add a simple simple event
+
+            // const userConfig = serverState.userIdToWSMap[userKey];
+            // console.log('aa');
+            // console.log(req.session);
+            // console.log('ba');
             ws.on('message', (message: string) => {
                 //log the received message and send it back to the client
-
+                // ws.send('hi');   
                 var messageJSON = messageValidator.validateIncomingMessage(message);
 
                 if (messageJSON == null || messageJSON == undefined) {
@@ -361,16 +339,17 @@ export class DemoServer {
                 }
 
                 const reqMsg: request_message = messageJSON as request_message;
-                requestProcessor.process(reqMsg, ws);
+                reqMsg.userId = userId;
+                requestProcessor.process(reqMsg);
             });
             ws.on('close', (message: string) => {
                 console.log('closed connection.', message);
-                this.removeUser(ws);
+                this.removeUser(userId);
             });
 
             ws.on('error', (message: string) => {
                 console.log('error connection.', message);
-                this.removeUser(ws);
+                this.removeUser(userId);
             });
 
         });
@@ -390,27 +369,47 @@ export class DemoServer {
 
     removeUser(wsParam: WebSocket) {
         console.log('removeUser start');
-        requestProcessor.process({
-            type: 'client_disconnected',
-            userId: '',
-            teamID: 0,
-            message: {}
-        } as request_message, wsParam);
+        // requestProcessor.process({
+        //     type: 'client_disconnected',
+        //     userId: '',
+        //     teamID: 0,
+        //     message: {}
+        // } as request_message, wsParam);
     }
 }
 
 function ensureAuthenticated(req: any, res: any, next: any) {
     // console.log('ensure authenticated.');
-    if (req.isAuthenticated()) { 
+    if (environmentState.environment == 'local') {
+        return next();
+    }
+    if (req.isAuthenticated()) {
         console.log('authenticated.');
-        req.session.userTest = 1;
-        return next(); 
+        // req.session.userTest = 1;
+        return next();
     }
     console.log('not authenticated.');
     res.redirect('/login')
 }
 
+// function admitNewConnectionRoutine(req: any, ws: WebSocket) {
+//     const userId_new = req.session.userId;
+//     // // console.log('got new connection:' , ws);
+//     console.log('got new connection');
+//     let userId = userManager.admitNewUser(ws);
+//     if (userId < 0) {
+//         console.log('error: could not connect the new client.');
+//         ws.close();
+//         return;
+//     }
+// }
 
+function getNewKey(requestObject: any) {
+    const id = uuid.v4();
+    console.log('get new key', id);
+    var key = id;
+    return key;
+}
 
 
 const demoServer = new DemoServer();

@@ -7,7 +7,10 @@
         "init_video_key": "init_video.js",
         "init_world_key": "init_world.js",
         "world_config_key": "world_config.js",
-        "item_config_key": "item_config.js"
+        "item_config_key": "item_config.js",
+        "network_manager_key": "network_manager.js",
+        "pagenavigationmanager_key": "pagenavigationmanager.js",
+        "pageviewmanager_key": "pageviewmanager.js"
     },
     "images": {
         "test_key": "test.jpg",
