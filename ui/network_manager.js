@@ -1,4 +1,5 @@
 
-tg.testNetworkMethod = function() {
-    console.log('testNetworkMethod');
+tg.nm = {};
+tg.nm.initNetworkManager = function() {
+    console.log('initNetworkManager');
 };

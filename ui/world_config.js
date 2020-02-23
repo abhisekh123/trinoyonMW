@@ -11,7 +11,11 @@ var worldItems = {
     // 2 cycles / sec
     createFreshStrategyMatrix: true,
     strategyMatrixFileName: 'visibilityMatrix.txt',
-    playerDimensionBaseUnit: 10,
+
+    uiConfig: {
+        playerDimensionBaseUnit: 10,
+    },
+    
     maxRange: 10,
     neighbourhoodBoxSide: 21,
     gridSide: 89,

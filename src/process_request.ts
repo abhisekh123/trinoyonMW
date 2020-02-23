@@ -18,9 +18,9 @@ export class RequestProcessor {
                 // console.log(requestJSON);
                 workermanager.postMessage(requestJSON);
                 break;
-            case 'init_audio':
+            case 'binary':
             case 'init':
-            case 'init_video':
+            case 'init_ui':
             case 'init_world':
                 console.log('got message type:<' + requestJSON.type + '>');
                 this.sendMessagePacket('ack1', assetManager.getAsset(requestJSON.type), requestJSON.userId);

@@ -331,6 +331,7 @@ export class DemoServer {
             ws.on('message', (message: string) => {
                 //log the received message and send it back to the client
                 // ws.send('hi');   
+                console.log('got new message:', message);
                 var messageJSON = messageValidator.validateIncomingMessage(message);
 
                 if (messageJSON == null || messageJSON == undefined) {

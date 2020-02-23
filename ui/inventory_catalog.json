@@ -5,12 +5,16 @@
         "init_key": "init.js",
         "init_audio_key": "init_audio.js",
         "init_video_key": "init_video.js",
+        "init_input_key": "init_input.js",
         "init_world_key": "init_world.js",
         "world_config_key": "world_config.js",
         "item_config_key": "item_config.js",
         "network_manager_key": "network_manager.js",
         "pagenavigationmanager_key": "pagenavigationmanager.js",
-        "pageviewmanager_key": "pageviewmanager.js"
+        "pageviewmanager_key": "pageviewmanager.js",
+        "ui_utility_key": "ui_utility.js",
+        "bot_manager_key": "bot_manager.js",
+        "assetmanager_key": "assetmanager.js"
     },
     "images": {
         "test_key": "test.jpg",

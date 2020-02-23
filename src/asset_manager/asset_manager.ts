@@ -18,18 +18,34 @@ module.exports = {
 
     getAsset: function(assetType: string, assetID: string){
         switch (assetType) {
-            case 'init_audio':
-                return this.inventory.store.init_audio_key;
-                break;
+            // case 'init_audio':
+            //     return this.inventory.store.init_audio_key;
+            //     break;
             case 'init':
-                return this.inventory.store.init_key + this.inventory.store.network_manager_key;
+                return this.inventory.store.init_key 
+                + this.inventory.store.network_manager_key
+                + this.inventory.store.ui_utility_key;
                 break;
-            case 'init_video':
+            // case 'init_video':
+            //     // // console.log(this.inventory.store.init_video_key);
+            //     return this.inventory.store.init_video_key
+            //      + this.inventory.store.pagenavigationmanager_key
+            //      + this.inventory.store.pageviewmanager_key;
+            //     break;
+            case 'init_ui':
                 // // console.log(this.inventory.store.init_video_key);
-                return this.inventory.store.init_video_key;
+                return this.inventory.store.init_video_key
+                 + this.inventory.store.pagenavigationmanager_key
+                 + this.inventory.store.pageviewmanager_key
+                 + this.inventory.store.init_audio_key
+                 + this.inventory.store.init_input_key;
                 break;
             case 'init_world':
-                return this.inventory.store.world_config_key + this.inventory.store.item_config_key + this.inventory.store.init_world_key;
+                return this.inventory.store.world_config_key
+                + this.inventory.store.item_config_key
+                + this.inventory.store.init_world_key
+                + this.inventory.store.bot_manager_key
+                + this.inventory.store.assetmanager_key;
                 // return this.inventory.store.world_config_key;
                 break;
             case 'binary':
