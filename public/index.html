@@ -9,22 +9,44 @@
   <script src="static/js/utils.js"></script>
   <script src="static/js/t.js"></script>
   <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/w3.css">
   <!-- <script src="static/js/babylon.gui.js"></script> -->
   <!-- <script src="static/js/dat.gui.min.js"></script> -->
   <script src="static/js/babylon.gui.js"></script>
-  <style type="text/css">
 
-  </style>
 </head>
 
 <body onload="initSystem()">
   <canvas id='tc'></canvas>
   <!-- <img src="static/img/bird.jpg" id="testimg"/> -->
   <!-- The Modal -->
-  <div id="myModal" class="modal">
+  <div id="menu-modal" class="modal center">
+    <!-- loader -->
+    <div class="load-indicator menuText" id="load-indicator">
+      <div class="w3-light-grey">
+        <div id="loader-bar" class="w3-container w3-green" style="height:24px;width:0%"></div>
+      </div>
+      <p id="loader-text">0% loaded...</p>
+    </div>
 
-    <!-- Modal content -->
-    <div class="modal-content">
+    <!-- home -->
+    <div class="menu-home" id="menu-home">
+      <table>
+        <!-- <tr>
+          <td>
+            <div id="player-selection-container">
+              test
+            </div>
+          </td>
+        </tr> -->
+        <tr>
+          <td align=center><button class="menuText center w3-button w3-black w3-round" id="button-start">start</button></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- start game -->
+    <!-- <div class="start-game">
       <tr>
         <td>
           <div id="player-selection-container">
@@ -36,9 +58,11 @@
         <td><span class="close">start</span></td>
       </tr>
 
-    </div>
-
+    </div> -->
   </div>
+  <!-- Modal content -->
+
+
 </body>
 
 </html>

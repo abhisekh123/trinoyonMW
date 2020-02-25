@@ -15,26 +15,33 @@ tg.pn.showHomePage = function(){
     console.log('showHomePage');
     switch (tg.pn.currentPage) {
         case 'landing':
-            tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
+            // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
+            $("#load-indicator").hide();
             break;
     
         default:
             break;
     }
     tg.pn.currentPage = 'home';
-    
-    tg.pv.advancedTexture.addControl(tg.pv.uiComponents.buttons.playButton);  
+    $("#menu-home").show();
+    tg.pv.setModalDimensionPercentage('30%', '30%');
+    // tg.pv.advancedTexture.addControl(tg.pv.uiComponents.buttons.playButton);  
 }
 
 
 
 tg.pn.showLandingPage = function(){
+    console.log('show landing page');
     tg.pn.currentPage = 'landing';
-    tg.pv.advancedTexture.addControl(tg.pv.loadingText);
+    
+    $("#load-indicator").show();
+    tg.pv.setModalDimensionPercentage('50%', '90%');
+    // tg.pv.advancedTexture.addControl(tg.pv.loadingText);
 }
 
 
 tg.pn.init = function() {
     tg.pv.init();
+    tg.pv.showModal();
     tg.pn.showLandingPage();
 };
