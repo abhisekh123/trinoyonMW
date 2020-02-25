@@ -9,22 +9,22 @@ module.exports = {
     inventory: {},
 
     // function to encode file data to base64 encoded string
-    base64_encode: function(file: string) {
+    base64_encode: function (file: string) {
         // read binary data
         var bitmap = fs.readFileSync(file);
         // convert binary data to base64 encoded string
         return new Buffer(bitmap).toString('base64');
     },
 
-    getAsset: function(assetType: string, assetID: string){
+    getAsset: function (assetType: string, assetID: string) {
         switch (assetType) {
             // case 'init_audio':
             //     return this.inventory.store.init_audio_key;
             //     break;
             case 'init':
-                return this.inventory.store.init_key 
-                + this.inventory.store.network_manager_key
-                + this.inventory.store.ui_utility_key;
+                return this.inventory.store.init_key
+                    + this.inventory.store.network_manager_key
+                    + this.inventory.store.ui_utility_key;
                 break;
             // case 'init_video':
             //     // // console.log(this.inventory.store.init_video_key);
@@ -35,17 +35,19 @@ module.exports = {
             case 'init_ui':
                 // // console.log(this.inventory.store.init_video_key);
                 return this.inventory.store.init_video_key
-                 + this.inventory.store.pagenavigationmanager_key
-                 + this.inventory.store.pageviewmanager_key
-                 + this.inventory.store.init_audio_key
-                 + this.inventory.store.init_input_key;
+                    + this.inventory.store.pageviewmanager_key
+                    + this.inventory.store.pagenavigationmanager_key
+
+                    + this.inventory.store.init_audio_key
+                    + this.inventory.store.html_logic_key
+                    + this.inventory.store.init_input_key;
                 break;
             case 'init_world':
                 return this.inventory.store.world_config_key
-                + this.inventory.store.item_config_key
-                + this.inventory.store.init_world_key
-                + this.inventory.store.bot_manager_key
-                + this.inventory.store.assetmanager_key;
+                    + this.inventory.store.item_config_key
+                    + this.inventory.store.init_world_key
+                    + this.inventory.store.bot_manager_key
+                    + this.inventory.store.assetmanager_key;
                 // return this.inventory.store.world_config_key;
                 break;
             case 'binary':
@@ -59,7 +61,8 @@ module.exports = {
         }
     },
 
-    init: async function(){
+    // read files from asset catalog and load it in memory.
+    init: async function () {
         const parentCtrl = this;
 
         const v1 = await readFilePromise(__dirname + '/../../../ui/inventory_catalog.json', 'utf-8');

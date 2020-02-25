@@ -14,7 +14,8 @@
         "pageviewmanager_key": "pageviewmanager.js",
         "ui_utility_key": "ui_utility.js",
         "bot_manager_key": "bot_manager.js",
-        "assetmanager_key": "assetmanager.js"
+        "assetmanager_key": "assetmanager.js",
+        "html_logic_key": "html_logic.js"
     },
     "images": {
         "test_key": "test.jpg",

@@ -59,50 +59,12 @@ function initialiseCamera() {
     // tg.cameraSavedPosition.z = tg.camera.position.z;
 }
 
-function createTextures(){
-
-    var material_semitransparent_blue = new BABYLON.StandardMaterial('blue', tg.scene);
-    material_semitransparent_blue.diffuseColor = BABYLON.Color3.Blue();
-    material_semitransparent_blue.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-    material_semitransparent_blue.backFaceCulling = false;
-    material_semitransparent_blue.needDepthPrePass = true;
-    material_semitransparent_blue.alpha = 0.7;
-
-    var material_semitransparent_red = new BABYLON.StandardMaterial('red', tg.scene);
-    material_semitransparent_red.diffuseColor = BABYLON.Color3.Red();
-    material_semitransparent_red.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-    material_semitransparent_red.backFaceCulling = false;
-    material_semitransparent_red.needDepthPrePass = true;
-    material_semitransparent_red.alpha = 0.5;
-
-    var material_semitransparent_chosen = new BABYLON.StandardMaterial('chosen', tg.scene);
-    material_semitransparent_chosen.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.9);
-    material_semitransparent_chosen.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-    material_semitransparent_chosen.backFaceCulling = false;
-    material_semitransparent_chosen.needDepthPrePass = true;
-    material_semitransparent_chosen.alpha = 0.6;
-
-    var material_character_parent = new BABYLON.StandardMaterial('material_character_parent', tg.scene);
-    material_character_parent.diffuseColor = new BABYLON.Color3(0, 0, 0);
-    material_character_parent.emissiveColor = new BABYLON.Color3(0, 0, 0);
-    material_character_parent.backFaceCulling = false;
-    material_character_parent.needDepthPrePass = true;
-    material_character_parent.alpha = 0;
-
-    tg.material_semitransparent_blue = material_semitransparent_blue;
-    tg.material_semitransparent_red = material_semitransparent_red;
-    tg.material_semitransparent_chosen = material_semitransparent_chosen;
-    tg.material_character_parent = material_character_parent;
-};
-
-
-
 
 function initUI(){
     // alert('initVideo');
     createScene(); //Call the createScene function
     initialiseCamera();
-    createTextures();
+    // createTextures();
 
 //     var el = document.getElementsByTagName("canvas")[0];
 //   el.addEventListener("touchstart", handleStart, false);

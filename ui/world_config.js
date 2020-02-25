@@ -14,16 +14,19 @@ var worldItems = {
 
     uiConfig: {
         playerDimensionBaseUnit: 10,
+        hiddenY: -10000, //value of y coordinate when object is hidden 
     },
     
     maxRange: 10,
     neighbourhoodBoxSide: 21,
     gridSide: 89,
     gridUnitSize: 50,
-    topBase:[44,6], // team 2 :: base1
-    bottomBase:[44,82], // team 1 :: base2
-    defenceBottom:[[48,79],[40,79],[44,71],[19,73],[72,69]], // team 1
-    defenceTop:[[44,17],[40,9],[48,9],[16,19],[69,15]], // team 2
+
+    topBase:[44,6], // team 1 :: base1
+    defenceTop:[[44,17],[40,9],[48,9],[16,19],[69,15]], // team 1
+
+    bottomBase:[44,82], // team 2 :: base2
+    defenceBottom:[[48,79],[40,79],[44,71],[19,73],[72,69]], // team 2
 
     maxDistanceFromLeader: 6,
 

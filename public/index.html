@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <title>Express HTML</title>
   <script src="static/js/babylon.js"></script>
@@ -7,22 +8,37 @@
   <script src="static/js/jquery.js"></script>
   <script src="static/js/utils.js"></script>
   <script src="static/js/t.js"></script>
+  <link rel="stylesheet" href="static/css/style.css">
   <!-- <script src="static/js/babylon.gui.js"></script> -->
   <!-- <script src="static/js/dat.gui.min.js"></script> -->
   <script src="static/js/babylon.gui.js"></script>
   <style type="text/css">
-    * { margin:0; padding:0; } /* to remove the top and left whitespace */
-    html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
-    canvas { display:block; } /* To remove the scrollbars */
-    /* to show the canvas bounds */
-    /* canvas {
-        background: #eee;
-    } */
+
   </style>
 </head>
+
 <body onload="initSystem()">
   <canvas id='tc'></canvas>
   <!-- <img src="static/img/bird.jpg" id="testimg"/> -->
-  <img id="testimg"/>
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <tr>
+        <td>
+          <div id="player-selection-container">
+            test
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><span class="close">start</span></td>
+      </tr>
+
+    </div>
+
+  </div>
 </body>
+
 </html>

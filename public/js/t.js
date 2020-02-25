@@ -53,7 +53,7 @@ tg.connectToParent = function(parentEndPoint, keyIdentifier){
             alert('could not join. game is full.');
         }else if(responseJSON.type == 'request_game_admit_ack'){
             // console.log('processing request_game_admit_ack.');
-            tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.playButton);
+            // tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.playButton);
             tg.startGamePlay(responseJSON);
         }else if(responseJSON.type == 'ack_request_game_exit'){
             // console.log('processing ack_request_game_exit.');

@@ -79,64 +79,35 @@ module.exports = {
 
         var towerIndex = 0;
 
+        // obstacles
         for(var i = 0; i < this.worldConfig.obstacles.length; ++i){
             workerState.grid.setWalkableAt(this.worldConfig.obstacles[i][0], this.worldConfig.obstacles[i][1], false);
         }
-        for(var i = 0; i < this.worldConfig.defenceBottom.length; ++i){
-            workerState.grid.setWalkableAt(this.worldConfig.defenceBottom[i][0], this.worldConfig.defenceBottom[i][1], false);
-            var towerID = 'tower' + towerIndex;
-            this.worldConfig.defenceBottom[i].push(towerID);
-            workerState.buildingMap_1[towerID] = {
-                life:this.itemConfig.items.tower.life,
-                attack:this.itemConfig.items.tower.attack,
-                isActive: true,
-                type:'tower',
-                team:1,
-                id:towerID,
-                position: {
-                    x: this.worldConfig.defenceBottom[i][0],
-                    z: this.worldConfig.defenceBottom[i][1]
-                }
-            }
-            workerState.buildingArray_1.push(workerState.buildingMap_1[towerID]);
-            ++towerIndex;
-        }
+
+        // defence team 1(top)
         for(var i = 0; i < this.worldConfig.defenceTop.length; ++i){
             workerState.grid.setWalkableAt(this.worldConfig.defenceTop[i][0], this.worldConfig.defenceTop[i][1], false);
             var towerID = 'tower' + towerIndex;
             this.worldConfig.defenceTop[i].push(towerID);
-            workerState.buildingMap_2[towerID] = {
+            workerState.buildingMap_1[towerID] = {
                 life:this.itemConfig.items.tower.life,
                 attack:this.itemConfig.items.tower.attack,
                 type:'tower',
                 isActive: true,
-                team:2,
+                team:1,
                 id:towerID,
                 position: {
                     x: this.worldConfig.defenceTop[i][0],
                     z: this.worldConfig.defenceTop[i][1]
                 }
             }
-            workerState.buildingArray_2.push(workerState.buildingMap_2[towerID]);
+            workerState.buildingArray_1.push(workerState.buildingMap_1[towerID]);
             ++towerIndex;
         }
+
+        // base team 1(top)
         workerState.grid.setWalkableAt(this.worldConfig.topBase[0], this.worldConfig.topBase[1], false);
-        this.worldConfig.topBase.push('base2');
-        workerState.buildingMap_2['base2'] = {
-            life:this.itemConfig.items.base.life,
-            attack:this.itemConfig.items.base.attack,
-            type:'base',
-            isActive: true,
-            team:2,
-            id:'base1',
-            position: {
-                x: this.worldConfig.topBase[0],
-                z: this.worldConfig.topBase[1]
-            }
-        }
-        workerState.buildingArray_2.push(workerState.buildingMap_2['base2']);
-        workerState.grid.setWalkableAt(this.worldConfig.bottomBase[0], this.worldConfig.bottomBase[1], false);
-        this.worldConfig.bottomBase.push('base1');
+        this.worldConfig.topBase.push('base1');
         workerState.buildingMap_1['base1'] = {
             life:this.itemConfig.items.base.life,
             attack:this.itemConfig.items.base.attack,
@@ -145,11 +116,49 @@ module.exports = {
             team:1,
             id:'base1',
             position: {
+                x: this.worldConfig.topBase[0],
+                z: this.worldConfig.topBase[1]
+            }
+        }
+        workerState.buildingArray_1.push(workerState.buildingMap_1['base1']);
+
+        // defence team 2(bottom)
+        for(var i = 0; i < this.worldConfig.defenceBottom.length; ++i){
+            workerState.grid.setWalkableAt(this.worldConfig.defenceBottom[i][0], this.worldConfig.defenceBottom[i][1], false);
+            var towerID = 'tower' + towerIndex;
+            this.worldConfig.defenceBottom[i].push(towerID);
+            workerState.buildingMap_2[towerID] = {
+                life:this.itemConfig.items.tower.life,
+                attack:this.itemConfig.items.tower.attack,
+                isActive: true,
+                type:'tower',
+                team:2,
+                id:towerID,
+                position: {
+                    x: this.worldConfig.defenceBottom[i][0],
+                    z: this.worldConfig.defenceBottom[i][1]
+                }
+            }
+            workerState.buildingArray_2.push(workerState.buildingMap_2[towerID]);
+            ++towerIndex;
+        }
+        
+        // base team 2(bottom)
+        workerState.grid.setWalkableAt(this.worldConfig.bottomBase[0], this.worldConfig.bottomBase[1], false);
+        this.worldConfig.bottomBase.push('base2');
+        workerState.buildingMap_2['base2'] = {
+            life:this.itemConfig.items.base.life,
+            attack:this.itemConfig.items.base.attack,
+            type:'base',
+            isActive: true,
+            team:2,
+            id:'base1',
+            position: {
                 x: this.worldConfig.bottomBase[0],
                 z: this.worldConfig.bottomBase[1]
             }
         }
-        workerState.buildingArray_1.push(workerState.buildingMap_1['base1']);
+        workerState.buildingArray_2.push(workerState.buildingMap_2['base2']);
 
         workerState.gridBackup = workerState.grid.clone();
     },

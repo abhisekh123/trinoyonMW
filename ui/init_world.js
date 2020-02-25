@@ -109,21 +109,22 @@ function createAmbience() {
     light.groundColor = new BABYLON.Color3(1, 1, 1);
 
     tg.light2 = light;
-    
-    addStaticItems();
 
-    tg.camera.target = tg.ground.position;
+    // tg.camera.target = tg.am.ground.position;
 }
 
 
 
+// custom function exevuted in render loop.
 tg.newRefreshFunction = function() {
-    console.log('tg.newRefreshFunction');
+    // console.log('tg.newRefreshFunction');
 }
 
 function entrypoint() {
-    // tg.refreshUI = tg.newRefreshFunction;
+    tg.refreshUI = tg.newRefreshFunction;
+    tg.pn.init();
     createAmbience();
+    tg.am.init();
 
     // tg.updateWorld = updateWorld;
     

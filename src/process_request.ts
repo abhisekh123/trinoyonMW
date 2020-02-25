@@ -40,7 +40,7 @@ export class RequestProcessor {
                 workermanager.postMessage(requestJSON);
                 break;
             default:
-                // console.log('ERROR: unknown message type:<' + requestJSON.type + '>');
+                console.log('ERROR: unknown message type:<' + requestJSON.type + '>');
                 break;
         }
     }
