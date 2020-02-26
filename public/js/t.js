@@ -54,7 +54,8 @@ tg.connectToParent = function(parentEndPoint, keyIdentifier){
         }else if(responseJSON.type == 'request_game_admit_ack'){
             // console.log('processing request_game_admit_ack.');
             // tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.playButton);
-            tg.startGamePlay(responseJSON);
+            // tg.startGamePlay(responseJSON);
+            tg.pn.showGameStartCountDownPage(responseJSON.estimatedTimeInSeconds);
         }else if(responseJSON.type == 'ack_request_game_exit'){
             // console.log('processing ack_request_game_exit.');
             // tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.exitGameButton);

@@ -2,6 +2,7 @@
 const tinyworker = require("tiny-worker");
 // const clientregistry = require('./state/clientstate');
 const serverState = require('./state/serverstate');
+const clientBroadcaster = require('./clientbroadcaster');
 // const gameState = require('./state/gamestate');
 import {request_message} from './factory/types';
  
@@ -36,11 +37,13 @@ module.exports = {
                 // }
                 // gameState.setGameBotState(ev.data);
                 break;
+            case 'request_game_admit_nack': // client has been granted admission to the game.
             case 'request_game_admit_ack': // client has been granted admission to the game.
                 var userId = jsonData.userId;
                 console.log('get request_game_admit_ack for :' + userId);
                 // let clientWS = clientregistry.clientArrey[userId].ws;
                 // clientregistry.sendMessageToClient(clientWS, ev.data);
+                clientBroadcaster.sendMessageToRecipientByUserID(userId, JSON.stringify(jsonData));
                 break;
             default:
                 // console.log('ERROR:@worker manager, got unknown message type:' , jsonData);

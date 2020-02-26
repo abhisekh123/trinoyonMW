@@ -3,6 +3,7 @@ const workerState = require('../state/workerstate');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const worldManager = require('./worldmanager');
 const playerManager = require('./playermanager');
+const environmentState = require('../../../dist/server/state/environmentstate');
 
 module.exports = {
     // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
@@ -39,11 +40,17 @@ module.exports = {
         }
 
         // find if there is any empty slot to start new game
-        let foundVacantGameRoom = false;
+        // let foundVacantGameRoom = false;
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
             const gameRoom = workerState.games[i];
 
             if(gameRoom.isActive = false){
+                console.log('found an empty gameroom. trying to start');
+                const admitResponse = playerManager.processWaitingUserAdmitRequests(gameRoom);
+                if(admitResponse == false){
+                    console.log('failed to admit players. skipping game start attempt for now.');
+                    return;
+                }
                 this.startNewGame(gameRoom, timeNow);
                 break;
             }

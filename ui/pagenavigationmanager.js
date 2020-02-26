@@ -28,6 +28,29 @@ tg.pn.showHomePage = function(){
     // tg.pv.advancedTexture.addControl(tg.pv.uiComponents.buttons.playButton);  
 }
 
+tg.pn.showGameStartCountDownPage = function(estimatedTimeInSeconds){
+    console.log('show GameStartCountDown page');
+    switch (tg.pn.currentPage) {
+        case 'home':
+            // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
+            $("#load-indicator").hide();
+            break;
+    
+        default:
+            break;
+    }
+    tg.pn.currentPage = 'startcountdown';
+    tg.hl.gameStartCountDownTickHandler(); // call method once to update html before rendering, to avoid glitch.
+    // so that on each clock tick our custom method is also executed.
+    tg.clockUpdateEventHandler_customActivity = tg.hl.gameStartCountDownTickHandler; 
+    tg.resetClockTimeElapsed();
+    $('#load-estimate').html(tg.uu.convertSecondsMMSS(estimatedTimeInSeconds));
+    tg.pv.setModalDimensionPercentage('50%', '90%');
+    $("#game-start-countdown").show();
+    
+    
+    // tg.pv.advancedTexture.addControl(tg.pv.loadingText);
+}
 
 
 tg.pn.showLandingPage = function(){

@@ -109,3 +109,11 @@ canvas {
     background-color: #333333;
     /* height: 90%; */
 }
+
+.load-estimate{
+    height: 40%;
+}
+
+.load-estimate-time-elapsed{
+    height: 60%;
+}

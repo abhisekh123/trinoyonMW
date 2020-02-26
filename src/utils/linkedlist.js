@@ -172,12 +172,15 @@ module.exports = function () {
     // prints the list items 
     this.printList = function () {
         var curr = this.head;
-        var str = "";
+        // var str = "";
+        console.log(this.size);
         while (curr) {
-            str += curr.element + " ";
+            console.log('---');
+            // str +  = curr.element + " ";
+            console.log(curr);
             curr = curr.next;
         }
-        console.log(str);
+        // console.log(str);
     }
 
     // insert element at the position index 

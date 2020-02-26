@@ -2,6 +2,7 @@
 const workerState = require('../state/workerstate');
 var linkedList = require('../../utils/linkedlist');
 const utilityFunctions = require('../../utils/utilityfunctions');
+const environmentState = require('../../../dist/server/state/environmentstate');
 
 module.exports = {
 
@@ -92,10 +93,30 @@ module.exports = {
         return this.playerMap.get(userId);
     },
 
+    canAdmitNewPlayer: function(){
+        const maxWaitingListSize = environmentState.maxGameCount * environmentState.maxPlayerPerTeam * 2;
+        if(workerState.waitingUsersLinkedList.size < maxWaitingListSize){
+            return true;
+        } else {
+            return false;
+        }
+    },
+
     addUserToWaitingList: function(userMessage){
         // const userId = userMessage.userId;
-        userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
-        workerState.waitingUsersLinkedList.add(userMessage);
+        if(this.canAdmitNewPlayer()){
+            userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
+            userMessage.players = [userMessage.userId];
+            workerState.waitingUsersLinkedList.add(userMessage);
+            const estimatedTimeInSeconds = this.getPlayStartTimeEstimate();
+            userMessage.estimatedTimeInSeconds = estimatedTimeInSeconds;
+            userMessage.type = 'request_game_admit_ack';
+            mainThreadStub.postMessage(userMessage, '');
+        } else {
+            userMessage.type = 'request_game_admit_nack';
+            mainThreadStub.postMessage(userMessage, '');
+        }
+        
 
         /**
          * userMessage{
@@ -105,35 +126,42 @@ module.exports = {
          */
     },
 
-    processWaitingUserAdmitRequests: function() {
+    getPlayStartTimeEstimate: function() {
+        const gameMultiple = workerState.waitingUsersLinkedList.size / (environmentState.maxPlayerPerTeam * 2);
+        return ((gameMultiple * workerState.minInterval_AttemptToStartNewGame) + 45000) / 1000; // estimate for seconds
+        
+    },
+
+    processWaitingUserAdmitRequests: function(gameRoom) {
         // test time stamp to see if it is too early.
-        const timeNow = utilityFunctions.getCurrentTime();
-        const successfullyAdmittedRequestIndexArray = [];
-        if((timeNow - workerState.timeWhenLastAttemptWasMadeToProcessWaitingUsers) < workerState.minInterval_AttemptToProcessWaitingUsers){
-            // too early. will try next time.
-            // console.log('too early to processWaitingUserAdmitRequests. doing nothing');
-            return;
-        }else{
-            workerState.timeWhenLastAttemptWasMadeToProcessWaitingUsers = timeNow;
-        }
+        // const timeNow = utilityFunctions.getCurrentTime();
+        // const successfullyAdmittedRequestIndexArray = [];
+        // if((timeNow - workerState.timeWhenLastAttemptWasMadeToProcessWaitingUsers) < workerState.minInterval_AttemptToProcessWaitingUsers){
+        //     // too early. will try next time.
+        //     // console.log('too early to processWaitingUserAdmitRequests. doing nothing');
+        //     return;
+        // }else{
+        //     workerState.timeWhenLastAttemptWasMadeToProcessWaitingUsers = timeNow;
+        // }
         // console.log('processWaitingUserAdmitRequests');
         // iterate through user list
         if(workerState.waitingUsersLinkedList.isEmpty()){
             // console.log('no pending admit request.');
-            return;
+            return false;
         }
 
+        workerState.waitingUsersLinkedList.printList();
         workerState.waitingUsersLinkedList.pointToHead();
         let currentNode = workerState.waitingUsersLinkedList.getCurrentNode();
 
         const gameMapPlayers = {}; // 
-        while(currentNode != null){
-            if(!workerState.playerFitCache[currentNode.players.length]){// no point search
-                console.log('!workerState.playerFitCache[currentNode.players.length');
+        while(currentNode != null){ // search each request and try to admit to game.
+            if(!workerState.playerFitCache[currentNode.element.players.length]){// no point search
+                console.log('!workerState.playerFitCache[currentNode.element.players.length');
                 continue;
             }
 
-            const admittedPlayerArray = this.tryAdmitingNewPlayers(currentNode);
+            const admittedPlayerArray = this.tryAdmitingNewPlayers(currentNode.element);
 
             if(admittedPlayerArray != null){ // group addmitted users wrt game
                 for(var i = 0; i < admittedPlayerArray.length; ++i){
@@ -145,7 +173,7 @@ module.exports = {
                 }
                 successfullyAdmittedRequestIndexArray.push(workerState.waitingUsersLinkedList.getCurrentNodeIndex());
             } else {
-                workerState.playerFitCache[currentNode.players.length] = false;
+                workerState.playerFitCache[currentNode.element.players.length] = false;
             }
 
             currentNode = workerState.waitingUsersLinkedList.moveToNextNode();
@@ -177,15 +205,16 @@ module.exports = {
         let chosenPlayers = null;
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // search each game room
             const aiPlayerArray = [];
+            const gameRoom = workerState.games[i];
+            const currentGameStartTime = gameRoom.startTime;
+
             if(gameRoom.isActive == false){ // skip inactive games.
                 continue;
             }
-            const gameRoom = workerState.games[i];
-            const currentGameStartTime = gameRoom.startTime;
             
             let freeSlot = 0;
             // vacancy means game player which has never been owned by any player since start.
-            for(var j = 0; j < 5; ++j){ // Test if team 1 has vacancy.
+            for(var j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // Test if team 1 has vacancy.
                 const currentPlayer = gameRoom.players_1[j];
                 if(currentPlayer.userId == null){
                     aiPlayerArray.push(currentPlayer);

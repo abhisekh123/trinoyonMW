@@ -46,8 +46,8 @@ module.exports = {
     currentTime: 0,
     timeIntervalToSimulateInEachGame: 0, // time slice since last loop. Need to simulate each game for this interval.
 
-    timeWhenLastAttemptWasMadeToProcessWaitingUsers: 0,
-    minInterval_AttemptToProcessWaitingUsers: 5000, // in miliseconds
+    // timeWhenLastAttemptWasMadeToProcessWaitingUsers: 0,
+    // minInterval_AttemptToProcessWaitingUsers: 5000, // in miliseconds
     timeWhenLastAttemptWasMadeToStartNewGame: 0,
     minInterval_AttemptToStartNewGame: 15000, // in miliseconds
 

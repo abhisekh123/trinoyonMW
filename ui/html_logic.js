@@ -11,5 +11,12 @@ $('#button-start').click(function(){
     tg.nm.requestGameAdmit();
 });
 
+tg.hl.gameStartCountDownTickHandler = function(){
+    $('#load-estimate-time-elapsed').html(tg.uu.convertSecondsMMSS(tg.clockTimeElapsed));
+};
 
+tg.hl.countDownHandler_idle = function(){
+    // do nothing
+    console.log('countDownHandler_idle');
+}
 

@@ -1,4 +1,8 @@
 
+/**
+ * Process request from users(clients)
+ */
+
 // var types = require('.types');
 import {request_message} from './factory/types';
 import * as WebSocket from 'ws';
@@ -26,7 +30,7 @@ export class RequestProcessor {
                 this.sendMessagePacket('ack1', assetManager.getAsset(requestJSON.type), requestJSON.userId);
                 break;
             case 'request_game_admit':
-                console.log('got message with type:request_game_admit');
+                console.log('got message with type:request_game_admit userID:', requestJSON.userId);
                 // this.sendMessagePacket('ack_request_game_admit', {} as any, ws);
                 
                 workermanager.postMessage(requestJSON);
