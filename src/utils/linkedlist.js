@@ -1,33 +1,40 @@
-
 module.exports = function () {
     this.head = null;
     this.size = 0;
     this.currentNode = null;
     this.currentNodeIndex = 0;
 
-    this.pointToHead = function(){
+    this.pointToHead = function () {
         this.currentNode = this.head;
         this.currentNodeIndex = 0;
     }
 
-    this.getCurrentNode = function(){
+    this.getCurrentNode = function () {
         return this.currentNode;
     }
 
-    this.getCurrentNodeIndex = function(){
-        if(this.currentNode == null || this.currentNode == undefined){
+    this.getCurrentNodeIndex = function () {
+        if (this.currentNode == null || this.currentNode == undefined) {
             return null;
         }
         return this.currentNodeIndex;
     }
 
-    this.moveToNextNode = function(){
-        if(this.currentNode == null || this.currentNode == undefined){
+    this.moveToNextNode = function () {
+        if (this.currentNode == null || this.currentNode == undefined) {
             return null;
         }
         this.currentNode = this.currentNode.next;
         ++this.currentNodeIndex;
         return this.currentNode;
+    }
+
+    this.removeCurrentNode = function () {
+        const nextNode = this.getCurrentNode().next;
+        this.removeFrom(this.getCurrentNodeIndex());
+        this.currentNode = nextNode;
+        return this.currentNode;
+        
     }
 
     // adds an element at the end 
@@ -61,9 +68,13 @@ module.exports = function () {
     // removes an element from the 
     // specified location 
     this.removeFrom = function (index) {
-        if (index > 0 && index > this.size)
+        if (index == null || index < 0) {
             return -1;
-        else {
+        }
+
+        if (index > 0 && index > this.size) {
+            return -1;
+        } else {
             var curr, prev, it = 0;
             curr = this.head;
             prev = curr;

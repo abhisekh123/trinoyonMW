@@ -5,8 +5,12 @@ const utilityFunctions = require('../../utils/utilityfunctions');
 const environmentState = require('../../../dist/server/state/environmentstate');
 
 module.exports = {
+    worldConfig: null,
+    itemConfig: null,
 
     init: function(){
+        this.worldConfig = workerState.getWorldConfig();
+        this.itemConfig = workerState.getItemConfig();
         // var tmpColorIndex = 100;
         // this.maxPlayerCount = world_config.players.length;
         // for(var i = 0; i < this.maxPlayerCount; ++i){
@@ -149,58 +153,124 @@ module.exports = {
             // console.log('no pending admit request.');
             return false;
         }
-
+        console.log('start processWaitingUserAdmitRequests');
         workerState.waitingUsersLinkedList.printList();
+
         workerState.waitingUsersLinkedList.pointToHead();
         let currentNode = workerState.waitingUsersLinkedList.getCurrentNode();
+        // let nextNode = null;
 
-        const gameMapPlayers = {}; // 
+        // const gameMapPlayers = {};
         while(currentNode != null){ // search each request and try to admit to game.
+            
             if(!workerState.playerFitCache[currentNode.element.players.length]){// no point search
                 console.log('!workerState.playerFitCache[currentNode.element.players.length');
-                continue;
-            }
-
-            const admittedPlayerArray = this.tryAdmitingNewPlayers(currentNode.element);
-
-            if(admittedPlayerArray != null){ // group addmitted users wrt game
-                for(var i = 0; i < admittedPlayerArray.length; ++i){
-                    const gameId = admittedPlayerArray[i].gameId;
-                    if(gameMapPlayers[gameId] == undefined){
-                        gameMapPlayers[gameId] = [];
-                    }
-                    gameMapPlayers[gameId].push(admittedPlayerArray[i].userId);
-                }
-                successfullyAdmittedRequestIndexArray.push(workerState.waitingUsersLinkedList.getCurrentNodeIndex());
             } else {
-                workerState.playerFitCache[currentNode.element.players.length] = false;
+                const admitResponse = this.tryAdmitingNewPlayersToGame(currentNode.element, gameRoom);
+                if(!admitResponse){ // could not admit
+                    workerState.playerFitCache[currentNode.element.players.length] = false;
+                }else{
+                    // admitted successfully. remove the request.
+                    currentNode = workerState.waitingUsersLinkedList.removeCurrentNode();
+                    continue;
+                }
             }
-
             currentNode = workerState.waitingUsersLinkedList.moveToNextNode();
+            
+
+            
+
+            // if(admittedPlayerArray != null){ // group addmitted users wrt game
+            //     for(var i = 0; i < admittedPlayerArray.length; ++i){
+            //         const gameId = admittedPlayerArray[i].gameId;
+            //         if(gameMapPlayers[gameId] == undefined){
+            //             gameMapPlayers[gameId] = [];
+            //         }
+            //         gameMapPlayers[gameId].push(admittedPlayerArray[i].userId);
+            //     }
+            //     successfullyAdmittedRequestIndexArray.push(workerState.waitingUsersLinkedList.getCurrentNodeIndex());
+            // } else {
+            //     workerState.playerFitCache[currentNode.element.players.length] = false;
+            // }
+
+            
         }
 
         // assuming successfullyAdmittedRequestIndexArray will have values in the increasing order
         // so that it is safe to remove items from linked list by traversing successfullyAdmittedRequestIndexArray
         // in the reverse order.
-        if(successfullyAdmittedRequestIndexArray.length > 0){ // remove processed request from the request list
-            for(var i = successfullyAdmittedRequestIndexArray.length - 1; i >= 0; --i){
-                // workerState.waitingUsersLinkedList.getElementAtIndex(successfullyAdmittedRequestIndexArray[i]);
-                workerState.waitingUsersLinkedList.removeFrom(successfullyAdmittedRequestIndexArray[i]);
-            }
-        }
+        // if(successfullyAdmittedRequestIndexArray.length > 0){ // remove processed request from the request list
+        //     for(var i = successfullyAdmittedRequestIndexArray.length - 1; i >= 0; --i){
+        //         // workerState.waitingUsersLinkedList.getElementAtIndex(successfullyAdmittedRequestIndexArray[i]);
+        //         workerState.waitingUsersLinkedList.removeFrom(successfullyAdmittedRequestIndexArray[i]);
+        //     }
+        // }
 
         // for each game updated, send game snapshot to newly admitted players:
-        const updatedGameArray = utilityFunctions.getObjectKeys(gameMapPlayers);
-        for(var i = 0; i < updatedGameArray.length; ++i){
-            var gameId = updatedGameArray[i];
-            var userIdList = gameMapPlayers[gameId];
-            messgeM.respondGameJoinStatus(userIdList, true, gameId)
+        // const updatedGameArray = utilityFunctions.getObjectKeys(gameMapPlayers);
+        // for(var i = 0; i < updatedGameArray.length; ++i){
+        //     var gameId = updatedGameArray[i];
+        //     var userIdList = gameMapPlayers[gameId];
+        //     messgeM.respondGameJoinStatus(userIdList, true, gameId)
+        // }
+    },
+
+    tryAdmitingNewPlayersToGame: function(admitRequest, gameRoom){
+        const usersToJoin = admitRequest.users;
+        let selectedTeam = null;
+
+        if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_1) >= usersToJoin.length){
+            selectedTeam = gameRoom.players_1;
+        } else {
+            if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_2) >= usersToJoin.length){
+                selectedTeam = gameRoom.players_2;
+            }else{
+                return false;
+            }
+        }
+        // let usersToJoinIndex = 0;
+        // at this point we know that selected team has enough vacancy to accomodate all 'usersToJoin'
+        var j = 0;
+        for(var i = 0; i < usersToJoin.length; ++i){ // for each requested user
+            
+            let newUserToAdmit = usersToJoin[i];
+            for(; j < environmentState.maxPlayerPerTeam; ++j){ // search for the next empty slot
+                const selectedTeamPlayer = selectedTeam[j];
+                if(selectedTeamPlayer.userId == null){ // found an empty slot. admitting the new player.
+                    this.completePlayerAdmissionFormalities(selectedTeamPlayer, newUserToAdmit);
+                    break;// process next player to join.
+                }
+            }
         }
     },
 
-    tryAdmitingNewPlayers: function(admitRequest){
+    /**
+     * update ds in the game regarding player admission.
+     */
+    completePlayerAdmissionFormalities: function(selectedTeamPlayer, newUserToAdmit) {
+        selectedTeamPlayer.userId = newUserToAdmit.id;
+        selectedTeamPlayer.botList = newUserToAdmit.botList;
+        selectedTeamPlayer.hero = newUserToAdmit.hero;
+    },
+
+    getEmptyPlayerSlotsInTeam: function(players) {
+        let freeSlot = 0;
+        for(var j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // Test if team 1 has vacancy.
+            const currentPlayer = players[j];
+            if(currentPlayer.userId == null){
+                // aiPlayerArray.push(currentPlayer);
+                ++freeSlot;
+            }
+            // if(freeSlot >= usersToJoin.length){
+            //     break;
+            // }
+        }
+        return freeSlot;
+    },
+
+    tryAdmitingNewPlayersOld: function(admitRequest, gameRoom){
         // const userId = admitRequest.userId;
-        const usersToJoin = admitRequest.users;
+        
         let newestSuitableGameStartTime = 0;
         let chosenPlayers = null;
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // search each game room
@@ -301,7 +371,7 @@ module.exports = {
     },
 
     getGenericPlayerObject: function(playerID, playerTeam, gameId){
-        return {
+        const playerObject = {
             id: playerID,
             userId: null,
             team: playerTeam,
@@ -311,7 +381,33 @@ module.exports = {
             joinTime: 0,
             botList: ['swordman', 'swordman', 'archer', 'archer'],
             hero: 'lion',
+            botObjectList: [],
             isAIDriven: true,
+        };
+
+        botObjectList.push(this.getBotObject(playerObject.hero));
+        for(var i = 0; i < playerObject.botList.length; ++i){
+            botObjectList.push(this.getBotObject(playerObject.botList[i]));
         }
+
+        return playerObject;
     },
+
+    getBotObject: function(botType){
+        const returnJSON = {};
+        const botTypeItemConfig = this.itemConfig.items[botType];
+        if(botTypeItemConfig == null || botTypeItemConfig == undefined){
+            console.log('ERROR: no item config found for type:', botTypeItemConfig);
+            return returnJSON;
+        }
+
+        returnJSON.attackinterval = botTypeItemConfig.attackinterval;
+        returnJSON.attack = botTypeItemConfig.attack;
+        returnJSON.life = botTypeItemConfig.life;
+        returnJSON.speed = botTypeItemConfig.speed; //one tile per 1000 ms.
+        returnJSON.strideDistance = botTypeItemConfig.strideDistance;
+        returnJSON.strideTime = botTypeItemConfig.strideTime;
+        returnJSON.sight = botTypeItemConfig.sight;
+        returnJSON.range = botTypeItemConfig.range;
+    }
 }

@@ -26,12 +26,12 @@ module.exports = {
             gameRoom.isActive = false;
             gameRoom.players_1 = [];
             gameRoom.players_2 = [];
-            for(var j = 0; j < 5; ++j){ // populate room with generic players of team 1.
+            for(var j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // populate room with generic players of team 1.
                 var team = 1;
                 var playerId = 'player_' + j;
                 gameRoom.players_1.push(playerManager.getGenericPlayerObject(playerId, team, i));
             }
-            for(var j = 5; j < 10; ++j){ // populate room with generic players of team 2.
+            for(var j = environmentState.maxPlayerPerTeam; j < (environmentState.maxPlayerPerTeam * 2); ++j){ // populate room with generic players of team 2.
                 var team = 2;
                 var playerId = 'player_' + j;
                 gameRoom.players_2.push(playerManager.getGenericPlayerObject(playerId, team, i));

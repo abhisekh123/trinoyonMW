@@ -24,9 +24,11 @@ var worldItems = {
 
     topBase:[44,6], // team 1 :: base1
     defenceTop:[[44,17],[40,9],[48,9],[16,19],[69,15]], // team 1
+    topBasePlayerPosition:[[46, 4], [46, 3], [46, 5], [42, 4], [42, 3], [42, 5]],
 
     bottomBase:[44,82], // team 2 :: base2
     defenceBottom:[[48,79],[40,79],[44,71],[19,73],[72,69]], // team 2
+    bottomBasePlayerPosition:[[46, 84], [46, 83], [46, 85], [42, 84], [42, 83], [42, 85]],
 
     maxDistanceFromLeader: 6,
 

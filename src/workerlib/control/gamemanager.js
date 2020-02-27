@@ -41,6 +41,7 @@ module.exports = {
 
         // find if there is any empty slot to start new game
         // let foundVacantGameRoom = false;
+        // will start asmany games possible for given waiting list and free game rooms.
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
             const gameRoom = workerState.games[i];
 
