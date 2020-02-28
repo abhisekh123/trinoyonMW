@@ -387,27 +387,38 @@ module.exports = {
 
         botObjectList.push(this.getBotObject(playerObject.hero));
         for(var i = 0; i < playerObject.botList.length; ++i){
-            botObjectList.push(this.getBotObject(playerObject.botList[i]));
+            botObjectList.push(this.setBotObjectAttributes(playerObject.botList[i]), {});
         }
 
         return playerObject;
     },
 
-    getBotObject: function(botType){
-        const returnJSON = {};
+    setBotObjectAttributes: function(botType, botObject){
+        // const returnJSON = {};
         const botTypeItemConfig = this.itemConfig.items[botType];
         if(botTypeItemConfig == null || botTypeItemConfig == undefined){
             console.log('ERROR: no item config found for type:', botTypeItemConfig);
-            return returnJSON;
+            return botObject;
         }
 
-        returnJSON.attackinterval = botTypeItemConfig.attackinterval;
-        returnJSON.attack = botTypeItemConfig.attack;
-        returnJSON.life = botTypeItemConfig.life;
-        returnJSON.speed = botTypeItemConfig.speed; //one tile per 1000 ms.
-        returnJSON.strideDistance = botTypeItemConfig.strideDistance;
-        returnJSON.strideTime = botTypeItemConfig.strideTime;
-        returnJSON.sight = botTypeItemConfig.sight;
-        returnJSON.range = botTypeItemConfig.range;
+        // data related to bot type config.
+        botObject.type = botType;
+        botObject.attackinterval = botTypeItemConfig.attackinterval;
+        botObject.attack = botTypeItemConfig.attack;
+        botObject.life = botTypeItemConfig.life;
+        botObject.speed = botTypeItemConfig.speed; //one tile per 1000 ms.
+        botObject.strideDistance = botTypeItemConfig.strideDistance;
+        botObject.strideTime = botTypeItemConfig.strideTime;
+        botObject.sight = botTypeItemConfig.sight;
+        botObject.range = botTypeItemConfig.range;
+
+        // data related to game play runtime
+        botObject.position = [0, 0, 0];
+        botObject.action = null;
+        botObject.path = [];
+        botObject.instruction = null;
+        botObject.deltaTime = 0;
+
+        return botObject;
     }
 }

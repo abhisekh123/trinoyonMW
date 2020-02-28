@@ -129,7 +129,6 @@ module.exports = {
         // console.log('requestAIToInstructBot:' + characterConfig.id);
         var botType = characterConfig.type;
         // var botItemConfig = workerstate.getItemConfig().characters[botType];
-        // var playerConfig = playerManager.playerArrey[characterConfig.team];
 
         // if(characterConfig.isLeader){
         //     playerConfig.leaderBotID = characterConfig.id;

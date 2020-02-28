@@ -1,8 +1,8 @@
 
 const mainThreadStub = require('../mainthreadstub');
 const snapshotmanager = require('../state/snapshotmanager');
-const gameManager = require('../control/gamemanager');
-const playerManager = require('../control/playermanager');
+// const gameManager = require('../control/gamemanager');
+const playerManager = require('../control/gameassetmanager');
 const messageFactory = require('../../factory/messagefactory');
 
 module.exports = {

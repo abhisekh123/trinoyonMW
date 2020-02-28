@@ -2,18 +2,21 @@
 const workerState = require('../state/workerstate');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const worldManager = require('./worldmanager');
-const playerManager = require('./playermanager');
+const gameAssetManager = require('./gameassetmanager');
 const environmentState = require('../../../dist/server/state/environmentstate');
 
 module.exports = {
     // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
     init: function(){
         // create refference world
-        playerManager.init();
+        gameAssetManager.init();
         worldManager.init();
     },
 
     startNewGame: function(gameRoom, startTime) {
+
+        worldManager.resetGame(gameRoom);
+        
         workerState.playerFitCache["1"] = true;
         workerState.playerFitCache["2"] = true;
         workerState.playerFitCache["3"] = true;
@@ -47,19 +50,21 @@ module.exports = {
 
             if(gameRoom.isActive = false){
                 console.log('found an empty gameroom. trying to start');
-                const admitResponse = playerManager.processWaitingUserAdmitRequests(gameRoom);
+                const admitResponse = gameAssetManager.processWaitingUserAdmitRequests(gameRoom);
                 if(admitResponse == false){
                     console.log('failed to admit players. skipping game start attempt for now.');
                     return;
+                } else {
+                    this.startNewGame(gameRoom, timeNow);
                 }
-                this.startNewGame(gameRoom, timeNow);
-                break;
+                
+                // break;
             }
         }
     },
 
     processGames: function() {
-        if(playerManager.connectedPlayerCount > 0 && this.isGameRunning){
+        if(gameAssetManager.connectedPlayerCount > 0 && this.isGameRunning){
             this.processPlayers();
             
             // console.log('=== completed processing players');
@@ -134,7 +139,7 @@ module.exports = {
         this.sendSnapshotUpdateToMain();
 
         // reset game
-        playerManager.reset();
+        gameAssetManager.reset();
 
         for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
             const characterConfig = workerstate.getWorldConfig().characters[index];
@@ -157,13 +162,13 @@ module.exports = {
     },
 
     initializeWorldByPopulatingWithBots: function(){
-        // // console.log('playerManager.playerArrey:', playerManager.playerArrey);
+        // // console.log('gameAssetManager.playerArrey:', gameAssetManager.playerArrey);
         for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
             const characterConfig = workerstate.getWorldConfig().characters[index];
             var botType = characterConfig.type;
             var botItemConfig = workerstate.getItemConfig().characters[botType];
             // // console.log('characterConfig.playerID:', characterConfig.playerID);
-            var playerConfig = playerManager.playerArrey[characterConfig.playerID - 1];
+            var playerConfig = gameAssetManager.playerArrey[characterConfig.playerID - 1];
 
             if(characterConfig.isLeader){
                 playerConfig.leaderBotID = characterConfig.id;
