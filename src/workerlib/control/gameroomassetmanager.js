@@ -1,12 +1,16 @@
 
+// helper function to gameroommanager to provide/update different components of the game room.
+
 const workerState = require('../state/workerstate');
 var linkedList = require('../../utils/linkedlist');
+const messageManager = require('../message/messagemanager');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const environmentState = require('../../../dist/server/state/environmentstate');
 
 module.exports = {
     worldConfig: null,
     itemConfig: null,
+    teamPrefferenceFlag: false,
 
     init: function(){
         this.worldConfig = workerState.getWorldConfig();
@@ -108,19 +112,20 @@ module.exports = {
 
     addUserToWaitingList: function(userMessage){
         // const userId = userMessage.userId;
+        userMessage.players = [userMessage.userId];
         if(this.canAdmitNewPlayer()){
             userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
-            userMessage.players = [userMessage.userId];
+            
             workerState.waitingUsersLinkedList.add(userMessage);
             const estimatedTimeInSeconds = this.getPlayStartTimeEstimate();
             userMessage.estimatedTimeInSeconds = estimatedTimeInSeconds;
             userMessage.type = 'request_game_admit_ack';
-            mainThreadStub.postMessage(userMessage, '');
+            // mainThreadStub.postMessage(userMessage, '');
         } else {
             userMessage.type = 'request_game_admit_nack';
-            mainThreadStub.postMessage(userMessage, '');
+            // mainThreadStub.postMessage(userMessage, '');
         }
-        
+        messageManager.sendMessage(userMessage);
 
         /**
          * userMessage{
@@ -170,7 +175,7 @@ module.exports = {
                 if(!admitResponse){ // could not admit
                     workerState.playerFitCache[currentNode.element.players.length] = false;
                 }else{
-                    // admitted successfully. remove the request.
+                    // admitted successfully. remove the current request node, move to next node.
                     currentNode = workerState.waitingUsersLinkedList.removeCurrentNode();
                     continue;
                 }
@@ -192,8 +197,6 @@ module.exports = {
             // } else {
             //     workerState.playerFitCache[currentNode.element.players.length] = false;
             // }
-
-            
         }
 
         // assuming successfullyAdmittedRequestIndexArray will have values in the increasing order
@@ -219,15 +222,29 @@ module.exports = {
         const usersToJoin = admitRequest.users;
         let selectedTeam = null;
 
-        if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_1) >= usersToJoin.length){
-            selectedTeam = gameRoom.players_1;
-        } else {
+        this.teamPrefferenceFlag = !this.teamPrefferenceFlag; // change the team prefference first.
+        if(this.teamPrefferenceFlag){ // try adding to team 1 first
+            if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_1) >= usersToJoin.length){
+                selectedTeam = gameRoom.players_1;
+            } else {
+                if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_2) >= usersToJoin.length){
+                    selectedTeam = gameRoom.players_2;
+                }else{
+                    return false;
+                }
+            }
+        }else{ // try adding to team 2 first
             if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_2) >= usersToJoin.length){
                 selectedTeam = gameRoom.players_2;
-            }else{
-                return false;
+            } else {
+                if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_1) >= usersToJoin.length){
+                    selectedTeam = gameRoom.players_1;
+                }else{
+                    return false;
+                }
             }
         }
+        
         // let usersToJoinIndex = 0;
         // at this point we know that selected team has enough vacancy to accomodate all 'usersToJoin'
         var j = 0;
@@ -242,16 +259,11 @@ module.exports = {
                 }
             }
         }
+
+        return true;
     },
 
-    /**
-     * update ds in the game regarding player admission.
-     */
-    completePlayerAdmissionFormalities: function(selectedTeamPlayer, newUserToAdmit) {
-        selectedTeamPlayer.userId = newUserToAdmit.id;
-        selectedTeamPlayer.botList = newUserToAdmit.botList;
-        selectedTeamPlayer.hero = newUserToAdmit.hero;
-    },
+    
 
     getEmptyPlayerSlotsInTeam: function(players) {
         let freeSlot = 0;
@@ -268,69 +280,69 @@ module.exports = {
         return freeSlot;
     },
 
-    tryAdmitingNewPlayersOld: function(admitRequest, gameRoom){
-        // const userId = admitRequest.userId;
+    // tryAdmitingNewPlayersOld: function(admitRequest, gameRoom){
+    //     // const userId = admitRequest.userId;
         
-        let newestSuitableGameStartTime = 0;
-        let chosenPlayers = null;
-        for(var i = 0; i < environmentState.maxGameCount; ++i){ // search each game room
-            const aiPlayerArray = [];
-            const gameRoom = workerState.games[i];
-            const currentGameStartTime = gameRoom.startTime;
+    //     let newestSuitableGameStartTime = 0;
+    //     let chosenPlayers = null;
+    //     for(var i = 0; i < environmentState.maxGameCount; ++i){ // search each game room
+    //         const aiPlayerArray = [];
+    //         const gameRoom = workerState.games[i];
+    //         const currentGameStartTime = gameRoom.startTime;
 
-            if(gameRoom.isActive == false){ // skip inactive games.
-                continue;
-            }
+    //         if(gameRoom.isActive == false){ // skip inactive games.
+    //             continue;
+    //         }
             
-            let freeSlot = 0;
-            // vacancy means game player which has never been owned by any player since start.
-            for(var j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // Test if team 1 has vacancy.
-                const currentPlayer = gameRoom.players_1[j];
-                if(currentPlayer.userId == null){
-                    aiPlayerArray.push(currentPlayer);
-                    ++freeSlot;
-                }
-                if(freeSlot >= usersToJoin.length){
-                    break;
-                }
-            }
+    //         let freeSlot = 0;
+    //         // vacancy means game player which has never been owned by any player since start.
+    //         for(var j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // Test if team 1 has vacancy.
+    //             const currentPlayer = gameRoom.players_1[j];
+    //             if(currentPlayer.userId == null){
+    //                 aiPlayerArray.push(currentPlayer);
+    //                 ++freeSlot;
+    //             }
+    //             if(freeSlot >= usersToJoin.length){
+    //                 break;
+    //             }
+    //         }
 
-            if(freeSlot >= usersToJoin.length){
-                if(currentGameStartTime > newestSuitableGameStartTime){
-                    newestSuitableGameStartTime = currentGameStartTime;
-                    chosenPlayers = aiPlayerArray;
-                    continue;
-                }
-            }
-            aiPlayerArray.length = 0;// reset the array
-            freeSlot = 0;
-            for(var j = 0; j < 5; ++j){ // Test if team 1 has vacancy.
-                const currentPlayer = gameRoom.players_2[j];
-                if(currentPlayer.userId == null){
-                    aiPlayerArray.push(currentPlayer);
-                    ++freeSlot;
-                }
-                if(freeSlot >= usersToJoin.length){
-                    break;
-                }
-            }
+    //         if(freeSlot >= usersToJoin.length){
+    //             if(currentGameStartTime > newestSuitableGameStartTime){
+    //                 newestSuitableGameStartTime = currentGameStartTime;
+    //                 chosenPlayers = aiPlayerArray;
+    //                 continue;
+    //             }
+    //         }
+    //         aiPlayerArray.length = 0;// reset the array
+    //         freeSlot = 0;
+    //         for(var j = 0; j < 5; ++j){ // Test if team 1 has vacancy.
+    //             const currentPlayer = gameRoom.players_2[j];
+    //             if(currentPlayer.userId == null){
+    //                 aiPlayerArray.push(currentPlayer);
+    //                 ++freeSlot;
+    //             }
+    //             if(freeSlot >= usersToJoin.length){
+    //                 break;
+    //             }
+    //         }
 
-            if(freeSlot >= usersToJoin.length){
-                if(currentGameStartTime > newestSuitableGameStartTime){
-                    newestSuitableGameStartTime = currentGameStartTime;
-                    chosenPlayers = aiPlayerArray;
-                    continue;
-                }
-            }
-        }
+    //         if(freeSlot >= usersToJoin.length){
+    //             if(currentGameStartTime > newestSuitableGameStartTime){
+    //                 newestSuitableGameStartTime = currentGameStartTime;
+    //                 chosenPlayers = aiPlayerArray;
+    //                 continue;
+    //             }
+    //         }
+    //     }
         
-        if(chosenPlayers != null){
-            this.admitUserToGame(usersToJoin, chosenPlayers);
-            return chosenPlayers;
-        } else {
-            return null; // let calling function know that there is no 
-        }
-    },
+    //     if(chosenPlayers != null){
+    //         this.admitUserToGame(usersToJoin, chosenPlayers);
+    //         return chosenPlayers;
+    //     } else {
+    //         return null; // let calling function know that there is no 
+    //     }
+    // },
 
     admitUsersToGame: function(usersToJoin, chosenPlayers){
         if(usersToJoin.length != chosenPlayers.length){
@@ -370,6 +382,57 @@ module.exports = {
         this.init();
     },
 
+    resetAllBotPositionToStartingPosition: function(gameRoom) {
+        // players 1
+        for(var i = 0; i < gameRoom.players_1.length; ++i){
+            const player = gameRoom.players_1[i];
+            // player.userId = null;
+            player.isConnected = true;
+            player.lastCommunication = gameRoom.startTime;
+            player.joinTime = gameRoom.startTime;
+            // player.isAIDriven = true;
+            this.setAllBotsOfPlayerToPosition(player, this.worldConfig.topBasePlayerPosition, Math.PI);
+        }
+
+        // players 2
+        for(var i = 0; i < gameRoom.players_2.length; ++i){
+            const player = gameRoom.players_2[i];
+            // player.userId = null;
+            player.isConnected = true;
+            player.lastCommunication = gameRoom.startTime;
+            player.joinTime = gameRoom.startTime;
+            // player.isAIDriven = true;
+            this.setAllBotsOfPlayerToPosition(player, this.worldConfig.bottomBasePlayerPosition, 0);
+        }
+    },
+
+    setAllBotsOfPlayerToPosition: function(player, position, rotation){ // position : [x,z]
+        for(var i = 0; i < player.botObjectList.length; ++i){
+            player.botObjectList[i].position[0] = position[0];
+            player.botObjectList[i].position[2] = position[1];
+            player.botObjectList[i].rotation = rotation;
+        }
+    },
+
+    /**
+     * update ds in the game regarding player admission.
+     */
+    completePlayerAdmissionFormalities: function(selectedTeamPlayer, newUserToAdmit) {
+        selectedTeamPlayer.userId = newUserToAdmit.id;
+        selectedTeamPlayer.botList = newUserToAdmit.botList;
+        selectedTeamPlayer.hero = newUserToAdmit.hero;
+
+        selectedTeamPlayer.isConnected = true;
+        selectedTeamPlayer.lastCommunication = 0;
+        selectedTeamPlayer.joinTime = 0;
+        selectedTeamPlayer.isAIDriven = false;
+
+        this.setBotObjectAttributes(selectedTeamPlayer.hero, selectedTeamPlayer.botObjectList[0]); // rewrite the hero bot object with new hero config.
+        for(var i = 0; i < selectedTeamPlayer.botList.length; ++i){
+            this.setBotObjectAttributes(selectedTeamPlayer.botList[i], selectedTeamPlayer.botObjectList[i + 1]);
+        }
+    },
+
     getGenericPlayerObject: function(playerID, playerTeam, gameId){
         const playerObject = {
             id: playerID,
@@ -385,9 +448,9 @@ module.exports = {
             isAIDriven: true,
         };
 
-        botObjectList.push(this.getBotObject(playerObject.hero));
+        playerObject.botObjectList.push(this.setBotObjectAttributes(playerObject.hero, {}));
         for(var i = 0; i < playerObject.botList.length; ++i){
-            botObjectList.push(this.setBotObjectAttributes(playerObject.botList[i]), {});
+            playerObject.botObjectList.push(this.setBotObjectAttributes(playerObject.botList[i]), {});
         }
 
         return playerObject;
@@ -399,7 +462,7 @@ module.exports = {
         if(botTypeItemConfig == null || botTypeItemConfig == undefined){
             console.log('ERROR: no item config found for type:', botTypeItemConfig);
             return botObject;
-        }
+        } // TODO: add else and set details for default type.
 
         // data related to bot type config.
         botObject.type = botType;
@@ -414,6 +477,7 @@ module.exports = {
 
         // data related to game play runtime
         botObject.position = [0, 0, 0];
+        botObject.rotation = 0;
         botObject.action = null;
         botObject.path = [];
         botObject.instruction = null;

@@ -360,7 +360,7 @@ tg.am.loadGLTFAssetsForStaticItems = function (actionOnComplete) {
             },
             {
                 rx: 0,
-                ry: Math.PI,
+                ry: 0,
                 rz: 0
             },
             0.05,

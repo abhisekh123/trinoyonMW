@@ -2,7 +2,7 @@
 const mainThreadStub = require('../mainthreadstub');
 const snapshotmanager = require('../state/snapshotmanager');
 // const gameManager = require('../control/gamemanager');
-const playerManager = require('../control/gameassetmanager');
+const gameRoomAssetManager = require('../control/gameroomassetmanager');
 const messageFactory = require('../../factory/messagefactory');
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
                 case 'request_game_admit':
                     console.log('request game admit');
                     // var userId = currentMessage.userId;
-                    playerManager.addUserToWaitingList(currentMessage);
+                    gameRoomAssetManager.addUserToWaitingList(currentMessage);
                     
                     break;
                 case 'request_game_exit':
@@ -35,13 +35,13 @@ module.exports = {
 
                     // console.log('get exit request from client:' + userId);
 
-                    playerID = playerManager.getPlayerID(userId);
+                    playerID = gameRoomAssetManager.getPlayerID(userId);
                     if(playerID == null || playerID == undefined){
                         console.error('ERROR removing player from worker with userId:' + userId + ' Client already not existing.');
                         return;
                     }
                     this.removePlayer(userId);
-                    playerManager.removePlayer(userId);
+                    gameRoomAssetManager.removePlayer(userId);
                     break;
                 default:
                     // console.log('ERROR@WebWorker:Received message with unknown type:' + currentMessage);
@@ -51,15 +51,15 @@ module.exports = {
         mainThreadStub.messagebuffer.length = 0;
     },
 
-    respondGameJoinStatus: function(userIdList, joinStatus, gameId){
+    respondGameJoinStatus: function(userIdList, joinStatus){
         const newMessageObject = messageFactory.getMessageObjectForUser();
-        newMessageObject.recipients = userIdList;
+        newMessageObject.players = userIdList;
         if(joinStatus){
             newMessageObject.type = 'request_game_admit_ack';
             
             // console.log('---returning:', newMessageObject);
             console.log('player admitted successfully.');
-            newMessageObject.gameConfig = snapshotmanager.getGameConfig(gameId);
+            // newMessageObject.gameConfig = snapshotmanager.getGameConfig(gameId);
         }else{
             // TODO
             newMessageObject.type = 'request_game_admit_nack';
@@ -67,7 +67,59 @@ module.exports = {
 
         mainThreadStub.postMessage(newMessageObject, '');
     },
-    broadcastGameUpdatesToPlayers: function(){
+
+    sendMessage: function(message){
+        mainThreadStub.postMessage(message, '');
+    },
+    // broadcastGameUpdatesToPlayers: function(){
+    //     var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
+    //     mainThreadStub.postMessage(responseJSONString, '');
+    // },
+
+    broadCompleteGameConfigToPlayers: function(gameRoom){
+        var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
+        responseJSONString.players = this.getActualPlayerIDListForGame(gameRoom);
+        responseJSONString.update = gameRoom;
+        
+        mainThreadStub.postMessage(responseJSONString, '');
+    },
+
+    broadcastGameUpdatesToPlayers: function(gameRoom){
+        var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
+        responseJSONString.players = this.getActualPlayerIDListForGame(gameRoom);
+        responseJSONString.update = this.getGameUpdateMessage(gameRoom);
+        
+        mainThreadStub.postMessage(responseJSONString, '');
+    },
+
+    getGameUpdateMessage: function(gameRoom){
+        const updatePacket = {};
+        return updatePacket;
+    },
+
+    getActualPlayerIDListForGame: function(gameRoom){
+        const playerIDList = [];
+        // players 1
+        for(var i = 0; i < gameRoom.players_1.length; ++i){
+            const player = gameRoom.players_1[i];
+            if(player.isAIDriven){
+                continue;
+            }
+            playerIDList.push(player.userId);
+        }
+
+        // players 2
+        for(var i = 0; i < gameRoom.players_2.length; ++i){
+            const player = gameRoom.players_2[i];
+            if(player.isAIDriven){
+                continue;
+            }
+            playerIDList.push(player.userId);
+        }
+        return playerIDList;
+    },
+
+    broadcastGameResultToPlayers: function(gameRoom){
         var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
         mainThreadStub.postMessage(responseJSONString, '');
     },

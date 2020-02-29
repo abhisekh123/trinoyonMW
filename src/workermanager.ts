@@ -39,11 +39,14 @@ module.exports = {
                 break;
             case 'request_game_admit_nack': // client has been granted admission to the game.
             case 'request_game_admit_ack': // client has been granted admission to the game.
-                var userId = jsonData.userId;
-                console.log('get request_game_admit_ack for :' + userId);
+                var userIdList = jsonData.players;
+                console.log('get request_game_admit_ack for :' + userIdList);
                 // let clientWS = clientregistry.clientArrey[userId].ws;
                 // clientregistry.sendMessageToClient(clientWS, ev.data);
-                clientBroadcaster.sendMessageToRecipientByUserID(userId, JSON.stringify(jsonData));
+                for (var i = 0; i < userIdList.length; ++i){
+                    clientBroadcaster.sendMessageToRecipientByUserID(userIdList[i], JSON.stringify(jsonData));
+                }
+                
                 break;
             default:
                 // console.log('ERROR:@worker manager, got unknown message type:' , jsonData);

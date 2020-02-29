@@ -1,28 +1,65 @@
 
+// logical operation for game lifecycle
+
 const workerState = require('../state/workerstate');
 const utilityFunctions = require('../../utils/utilityfunctions');
-const worldManager = require('./worldmanager');
-const gameAssetManager = require('./gameassetmanager');
+const gameRoomManager = require('./gameroommanager');
+const gameRoomAssetManager = require('./gameroomassetmanager');
 const environmentState = require('../../../dist/server/state/environmentstate');
+const messageManager = require('../message/messagemanager');
 
 module.exports = {
     // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
     init: function(){
         // create refference world
-        gameAssetManager.init();
-        worldManager.init();
+        gameRoomAssetManager.init();
+        gameRoomManager.init();
     },
 
-    startNewGame: function(gameRoom, startTime) {
+    terminateGame(gameRoom){
+        gameRoomManager.resetGame(gameRoom);
 
-        worldManager.resetGame(gameRoom);
+
+        // old code
+        var loosingTeam = itemConfigParam.team;
+        var update = {};
+        update.action = 'over';
+        update.loosingTeam = loosingTeam;
+        update.x = 0;
+        update.z = 0;
+        this.latestSnapshot[itemConfigParam.id] = update;
+        this.isStateUpdated = true;
+        // this.isGameRunning = false;
+        this.sendSnapshotUpdateToMain();
+
+        // reset game
+        gameRoomAssetManager.reset();
+
+        for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
+            const characterConfig = workerstate.getWorldConfig().characters[index];
+            var botObject = workerstate.botArray[index];
+            botObject.payload.position[0] = characterConfig.position.x;
+            botObject.payload.position[2] = characterConfig.position.z;
+            botObject.life = characterConfig.life;
+        }
         
-        workerState.playerFitCache["1"] = true;
-        workerState.playerFitCache["2"] = true;
-        workerState.playerFitCache["3"] = true;
+        for (let index = 0; index < workerstate.buildingArray.length; index++) {
+            var buildingType = workerstate.buildingArray[index].type;
+            var buildingItemConfig = workerstate.getItemConfig().buildings[buildingType];
+            workerstate.buildingArray[i].life = buildingItemConfig.life;;
+            workerstate.buildingArray[i].isActive = true;
+        }
+    },
 
+
+    startNewGame: function(gameRoom, startTime) {
+        // by this time all user admission is complete.
         gameRoom.startTime = startTime;
+        // ,,, reset ai players
+        gameRoomAssetManager.resetAllBotPositionToStartingPosition(gameRoom);
         gameRoom.isActive = true;
+
+        messageManager.broadCompleteGameConfigToPlayers(gameRoom);
     },
 
     tryStartingNewGame: function() {
@@ -50,7 +87,11 @@ module.exports = {
 
             if(gameRoom.isActive = false){
                 console.log('found an empty gameroom. trying to start');
-                const admitResponse = gameAssetManager.processWaitingUserAdmitRequests(gameRoom);
+
+                workerState.playerFitCache["1"] = true;
+                workerState.playerFitCache["2"] = true;
+                workerState.playerFitCache["3"] = true;
+                const admitResponse = gameRoomAssetManager.processWaitingUserAdmitRequests(gameRoom);
                 if(admitResponse == false){
                     console.log('failed to admit players. skipping game start attempt for now.');
                     return;
@@ -64,7 +105,7 @@ module.exports = {
     },
 
     processGames: function() {
-        if(gameAssetManager.connectedPlayerCount > 0 && this.isGameRunning){
+        if(gameRoomAssetManager.connectedPlayerCount > 0 && this.isGameRunning){
             this.processPlayers();
             
             // console.log('=== completed processing players');
@@ -126,49 +167,16 @@ module.exports = {
         }
     },
     
-    terminateGame(itemConfigParam){
-        var loosingTeam = itemConfigParam.team;
-        var update = {};
-        update.action = 'over';
-        update.loosingTeam = loosingTeam;
-        update.x = 0;
-        update.z = 0;
-        this.latestSnapshot[itemConfigParam.id] = update;
-        this.isStateUpdated = true;
-        // this.isGameRunning = false;
-        this.sendSnapshotUpdateToMain();
-
-        // reset game
-        gameAssetManager.reset();
-
-        for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
-            const characterConfig = workerstate.getWorldConfig().characters[index];
-            var botObject = workerstate.botArray[index];
-            botObject.payload.position[0] = characterConfig.position.x;
-            botObject.payload.position[2] = characterConfig.position.z;
-            botObject.life = characterConfig.life;
-        }
-        
-        for (let index = 0; index < workerstate.buildingArray.length; index++) {
-            var buildingType = workerstate.buildingArray[index].type;
-            var buildingItemConfig = workerstate.getItemConfig().buildings[buildingType];
-            workerstate.buildingArray[i].life = buildingItemConfig.life;;
-            workerstate.buildingArray[i].isActive = true;
-        }
-    },
-
-    terminateGamePrematurely: function() {
-
-    },
+    
 
     initializeWorldByPopulatingWithBots: function(){
-        // // console.log('gameAssetManager.playerArrey:', gameAssetManager.playerArrey);
+        // // console.log('gameRoomAssetManager.playerArrey:', gameRoomAssetManager.playerArrey);
         for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
             const characterConfig = workerstate.getWorldConfig().characters[index];
             var botType = characterConfig.type;
             var botItemConfig = workerstate.getItemConfig().characters[botType];
             // // console.log('characterConfig.playerID:', characterConfig.playerID);
-            var playerConfig = gameAssetManager.playerArrey[characterConfig.playerID - 1];
+            var playerConfig = gameRoomAssetManager.playerArrey[characterConfig.playerID - 1];
 
             if(characterConfig.isLeader){
                 playerConfig.leaderBotID = characterConfig.id;

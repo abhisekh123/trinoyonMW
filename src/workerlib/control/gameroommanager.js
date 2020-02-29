@@ -1,8 +1,10 @@
 
+// operation related to maintaining datastructure for game rooms.
+
 const workerState = require('../state/workerstate');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const environmentState = require('../../../dist/server/state/environmentstate');
-const gameAssetManager = require('./gameassetmanager');
+const gameRoomAssetManager = require('./gameroomassetmanager');
 
 module.exports = {
     worldConfig: null,
@@ -29,12 +31,12 @@ module.exports = {
             for(var j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // populate room with generic players of team 1.
                 var team = 1;
                 var playerId = 'player_' + j;
-                gameRoom.players_1.push(gameAssetManager.getGenericPlayerObject(playerId, team, i));
+                gameRoom.players_1.push(gameRoomAssetManager.getGenericPlayerObject(playerId, team, i));
             }
             for(var j = environmentState.maxPlayerPerTeam; j < (environmentState.maxPlayerPerTeam * 2); ++j){ // populate room with generic players of team 2.
                 var team = 2;
                 var playerId = 'player_' + j;
-                gameRoom.players_2.push(gameAssetManager.getGenericPlayerObject(playerId, team, i));
+                gameRoom.players_2.push(gameRoomAssetManager.getGenericPlayerObject(playerId, team, i));
             }
             gameRoom.startTime = null;
             workerState.games[i] = gameRoom;
@@ -44,8 +46,8 @@ module.exports = {
 
     resetGame: function(gameRoom) {
         // const gameRoom = workerState.games(indexParam);
-        gameRoom.isActive = false;
-        gameRoom.startTime = null;
+        // gameRoom.isActive = false;
+        // gameRoom.startTime = null;
 
         // building 1
         for(var i = 0; i < gameRoom.buildings_1.length; ++i){
