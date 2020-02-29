@@ -27,7 +27,7 @@ module.exports = {
         
         gameManager.processGames();
         
-        messageManager.broadcastGameUpdatesToPlayers();
+        // messageManager.broadcastGameUpdatesToPlayers();
 
         gameManager.tryStartingNewGame();
 

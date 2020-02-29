@@ -450,7 +450,7 @@ module.exports = {
 
         playerObject.botObjectList.push(this.setBotObjectAttributes(playerObject.hero, {}));
         for(var i = 0; i < playerObject.botList.length; ++i){
-            playerObject.botObjectList.push(this.setBotObjectAttributes(playerObject.botList[i]), {});
+            playerObject.botObjectList.push(this.setBotObjectAttributes(playerObject.botList[i], {}));
         }
 
         return playerObject;
