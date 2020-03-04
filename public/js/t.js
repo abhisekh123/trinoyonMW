@@ -71,7 +71,7 @@ tg.connectToParent = function(parentEndPoint, keyIdentifier){
 }
 
 tg.sendMessageToWS = function(message){
-    tg.socket.send(message);
+    tg.socket.send(JSON.stringify(message));
 }
 
 tg.sendJSONMessageToWS = function(message){
@@ -81,8 +81,8 @@ tg.sendJSONMessageToWS = function(message){
 tg.getEmptyMessagePacket = function(type){
     var container = {};
     container.type = type;
-
-    return JSON.stringify(container);
+    return container;
+    // return JSON.stringify(container);
 }
 
 tg.getActionPacketJSON = function(type){

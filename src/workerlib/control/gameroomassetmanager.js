@@ -3,7 +3,8 @@
 
 const workerState = require('../state/workerstate');
 var linkedList = require('../../utils/linkedlist');
-const messageManager = require('../message/messagemanager');
+// const messageManager = require('../message/messagemanager');
+const mainThreadStub = require('../mainthreadstub');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const environmentState = require('../../../dist/server/state/environmentstate');
 
@@ -13,6 +14,7 @@ module.exports = {
     teamPrefferenceFlag: false,
 
     init: function(){
+        console.log('game room asset manager init');
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();
         // var tmpColorIndex = 100;
@@ -113,9 +115,10 @@ module.exports = {
     addUserToWaitingList: function(userMessage){
         // const userId = userMessage.userId;
         userMessage.players = [userMessage.userId];
+        console.log('addUserToWaitingList:', userMessage);
+
         if(this.canAdmitNewPlayer()){
             userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
-            
             workerState.waitingUsersLinkedList.add(userMessage);
             const estimatedTimeInSeconds = this.getPlayStartTimeEstimate();
             userMessage.estimatedTimeInSeconds = estimatedTimeInSeconds;
@@ -125,7 +128,8 @@ module.exports = {
             userMessage.type = 'request_game_admit_nack';
             // mainThreadStub.postMessage(userMessage, '');
         }
-        messageManager.sendMessage(userMessage);
+        // messageManager.sendMessage(userMessage);
+        mainThreadStub.postMessage(userMessage, '');
 
         /**
          * userMessage{
@@ -139,6 +143,10 @@ module.exports = {
         const gameMultiple = workerState.waitingUsersLinkedList.size / (environmentState.maxPlayerPerTeam * 2);
         return ((gameMultiple * workerState.minInterval_AttemptToStartNewGame) + 45000) / 1000; // estimate for seconds
         
+    },
+
+    test: function(){
+        console.log('test');
     },
 
     processWaitingUserAdmitRequests: function(gameRoom) {
@@ -219,6 +227,7 @@ module.exports = {
     },
 
     tryAdmitingNewPlayersToGame: function(admitRequest, gameRoom){
+        console.log('tryAdmitingNewPlayersToGame:', admitRequest);
         const usersToJoin = admitRequest.users;
         let selectedTeam = null;
 

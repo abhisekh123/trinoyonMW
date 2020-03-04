@@ -24,7 +24,11 @@ tg.pn.showHomePage = function(){
     }
     tg.pn.currentPage = 'home';
     $("#menu-home").show();
-    tg.pv.setModalDimensionPercentage('30%', '30%');
+    tg.pv.setModalDimensionPercentage('80%', '80%');
+    tg.botSelection = {
+        botList: ['swordman', 'swordman', 'swordman', 'swordman'],
+        hero: 'lion',
+    }
     // tg.pv.advancedTexture.addControl(tg.pv.uiComponents.buttons.playButton);  
 }
 

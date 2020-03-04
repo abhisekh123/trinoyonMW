@@ -12,7 +12,7 @@ function initClient(){
 
 tg.clockUpdateEventHandler = function() {
     // place holder
-    console.log('clock updated:', tg.clockTimeElapsed);
+    // console.log('clock updated:', tg.clockTimeElapsed);
     tg.clockTimeElapsed += tg.clockTickInterval;
     tg.clockUpdateEventHandler_customActivity();
 }
@@ -20,7 +20,7 @@ tg.clockUpdateEventHandler = function() {
 // this is the custom method which can be overridden to do custom activity for every clock tick.
 tg.clockUpdateEventHandler_customActivity = function(){
     // do nothing
-    console.log('clockUpdateEventHandler_customActivity');
+    // console.log('clockUpdateEventHandler_customActivity');
 }
 
 tg.resetClockTimeElapsed = function(){

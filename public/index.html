@@ -18,7 +18,7 @@
 
 <body onload="initSystem()">
   <canvas id='tc'></canvas>
-  <!-- <img src="static/img/bird.jpg" id="testimg"/> -->
+
   <!-- The Modal -->
   <div id="menu-modal" class="modal center">
     <!-- loader -->
@@ -31,47 +31,63 @@
 
     <!-- home -->
     <div class="menu-home" id="menu-home">
-      <table>
-        <tr>
-          <td>
-            <div id="player-selection-container">
-              test
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div id="player-selection-container">
-              test
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div id="player-selection-container">
-              test
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div id="player-selection-container">
-              test
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div id="player-selection-container">
-              test
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td align=center><button class="menuText center w3-button w3-black w3-round" id="button-start">start</button>
-          </td>
-        </tr>
-      </table>
+      <h1 class="menu-header">Choose Your Team</h1>
+
+      <div class="home-grid-container">
+        <div class="home-grid-header">Selected</div>
+        <div class="home-grid-header">Option 1</div>
+        <div class="home-grid-header">Option 2</div>
+
+        <div class="bot-selection-container">
+          <img src="static/img/swordsman_icon.png" class="bot-image" id="bot-selection-1" />
+        </div>
+        <div class="bot-selection-option-container" id="botoption_1-1" name="swordsman">
+          <img src="static/img/swordsman_icon.png" id="botoptionimage_1-1" class="bot-image" />
+          <p class="bot-image-tag" id="bot-image-tag_1-1">&#10004;</p>
+        </div>
+        <div class="bot-selection-option-container" id="botoption_1-2" name="archer">
+          <img src="static/img/archer_icon.png" id="botoptionimage_1-2" class="bot-image" />
+          <p class="bot-image-tag" style="display: none;" id="bot-image-tag_1-2">&#10004;</p>
+        </div>
+
+        <div class="bot-selection-container">
+          <img src="static/img/swordsman_icon.png" class="bot-image" id="bot-selection-2" />
+        </div>
+        <div class="bot-selection-option-container" id="botoption_2-1" name="swordsman">
+          <img src="static/img/swordsman_icon.png" id="botoptionimage_2-1" class="bot-image" />
+          <p class="bot-image-tag" id="bot-image-tag_2-1">&#10004;</p>
+        </div>
+        <div class="bot-selection-option-container" id="botoption_2-2" name="archer">
+          <img src="static/img/archer_icon.png" id="botoptionimage_2-2" class="bot-image" />
+          <p class="bot-image-tag" style="display: none;" id="bot-image-tag_2-2">&#10004;</p>
+        </div>
+
+        <div class="bot-selection-container">
+          <img src="static/img/swordsman_icon.png" class="bot-image" id="bot-selection-3" />
+        </div>
+        <div class="bot-selection-option-container" id="botoption_3-1" name="swordsman">
+          <img src="static/img/swordsman_icon.png" id="botoptionimage_3-1" class="bot-image" />
+          <p class="bot-image-tag" id="bot-image-tag_3-1">&#10004;</p>
+        </div>
+        <div class="bot-selection-option-container" id="botoption_3-2" name="archer">
+          <img src="static/img/archer_icon.png" id="botoptionimage_3-2" class="bot-image" />
+          <p class="bot-image-tag" style="display: none;" id="bot-image-tag_3-2">&#10004;</p>
+        </div>
+
+        <div class="bot-selection-container">
+          <img src="static/img/swordsman_icon.png" class="bot-image" id="bot-selection-4" />
+        </div>
+        <div class="bot-selection-option-container" id="botoption_4-1" name="swordsman">
+          <img src="static/img/swordsman_icon.png" id="botoptionimage_4-1" class="bot-image" />
+          <p class="bot-image-tag" id="bot-image-tag_4-1">&#10004;</p>
+        </div>
+        <div class="bot-selection-option-container" id="botoption_4-2" name="archer">
+          <img src="static/img/archer_icon.png" id="botoptionimage_4-2" class="bot-image" />
+          <p class="bot-image-tag" style="display: none;" id="bot-image-tag_4-2">&#10004;</p>
+        </div>
+
+        <div class="button-home-start">start</div>
+      </div>
     </div>
 
     <!-- start countdown for starting the game. -->
@@ -84,20 +100,6 @@
       </div>
     </div>
 
-    <!-- start game -->
-    <!-- <div class="start-game">
-      <tr>
-        <td>
-          <div id="player-selection-container">
-            test
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td><span class="close">start</span></td>
-      </tr>
-
-    </div> -->
   </div>
   <!-- Modal content -->
 

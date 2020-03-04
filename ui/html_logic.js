@@ -6,9 +6,32 @@ tg.hl = {};
 
 // tg.hl.
 console.log('sdf');
-$('#button-start').click(function(){
-    console.log('clicked button-start');
+$('.button-home-start').click(function(){
+    console.log('clicked button-home-start');
     tg.nm.requestGameAdmit();
+});
+
+$('.bot-selection-option-container').click(function(element){
+    element.preventDefault();
+    var id = this.id;
+    console.log('clicked bot-selection-option-container with id:', id);
+    var elemntName = $('#' + id).attr('name');
+    console.log('elemntName:', elemntName);
+    // tg.nm.requestGameAdmit();
+    var rowCol = id.split('_')[1];
+    var rowIndex = rowCol.split('-')[0];
+    console.log(rowCol);
+    var rowIdPrefix = "bot-image-tag_" + rowIndex;
+    console.log(rowIdPrefix);
+    $("[id^=" + rowIdPrefix + "]").hide();
+    $('#bot-image-tag_' + rowCol).show();
+    var currentElementImageSource = $("#botoptionimage_" + rowCol).attr('src');
+    console.log(currentElementImageSource);
+    $('#bot-selection-' + rowIndex).attr('src', currentElementImageSource);
+
+    tg.botSelection.botList[rowIndex - 1] = elemntName;
+
+    console.log(tg.botSelection);
 });
 
 tg.hl.gameStartCountDownTickHandler = function(){

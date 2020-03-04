@@ -4,6 +4,8 @@ const snapshotmanager = require('../state/snapshotmanager');
 // const gameManager = require('../control/gamemanager');
 const gameRoomAssetManager = require('../control/gameroomassetmanager');
 const messageFactory = require('../../factory/messagefactory');
+// const utilityFunctions = require('../../utils/utilityfunctions');
+// const environmentState = require('../../../dist/server/state/environmentstate');
 
 module.exports = {
     processIncomingMessages: function(){
@@ -21,8 +23,11 @@ module.exports = {
                     this.updateBotAction(currentMessage);
                     break;
                 case 'request_game_admit':
-                    console.log('request game admit');
+                    console.log('request game admit', currentMessage);
                     // var userId = currentMessage.userId;
+                    // console.log(gameRoomAssetManager);
+                    // console.log(messageFactory);
+                    // gameRoomAssetManager.test();
                     gameRoomAssetManager.addUserToWaitingList(currentMessage);
                     
                     break;
@@ -68,9 +73,9 @@ module.exports = {
         mainThreadStub.postMessage(newMessageObject, '');
     },
 
-    sendMessage: function(message){
-        mainThreadStub.postMessage(message, '');
-    },
+    // sendMessage: function(message){
+    //     mainThreadStub.postMessage(message, '');
+    // },
     // broadcastGameUpdatesToPlayers: function(){
     //     var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
     //     mainThreadStub.postMessage(responseJSONString, '');
