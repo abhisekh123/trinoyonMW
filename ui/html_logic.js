@@ -35,7 +35,7 @@ $('.bot-selection-option-container').click(function(element){
 });
 
 tg.hl.gameStartCountDownTickHandler = function(){
-    $('#load-estimate-time-elapsed').html(tg.uu.convertSecondsMMSS(tg.clockTimeElapsed));
+    $('#load-estimate-time-elapsed').html('Time elapsed ' + tg.uu.convertSecondsMMSS(tg.clockTimeElapsed / 1000));
 };
 
 tg.hl.countDownHandler_idle = function(){

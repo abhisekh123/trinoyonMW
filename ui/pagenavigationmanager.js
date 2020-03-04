@@ -37,7 +37,7 @@ tg.pn.showGameStartCountDownPage = function(estimatedTimeInSeconds){
     switch (tg.pn.currentPage) {
         case 'home':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
-            $("#load-indicator").hide();
+            $("#menu-home").hide();
             break;
     
         default:
@@ -48,7 +48,7 @@ tg.pn.showGameStartCountDownPage = function(estimatedTimeInSeconds){
     // so that on each clock tick our custom method is also executed.
     tg.clockUpdateEventHandler_customActivity = tg.hl.gameStartCountDownTickHandler; 
     tg.resetClockTimeElapsed();
-    $('#load-estimate').html(tg.uu.convertSecondsMMSS(estimatedTimeInSeconds));
+    $('#load-estimate').html('Estimated start time ' + tg.uu.convertSecondsMMSS(estimatedTimeInSeconds));
     tg.pv.setModalDimensionPercentage('50%', '90%');
     $("#game-start-countdown").show();
     

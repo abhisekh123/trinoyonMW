@@ -14,12 +14,13 @@ tg.uu.convertSecondsHHMMSS = function (sec) {
 
 tg.uu.convertSecondsMMSS = function (sec) {
     // var hrs = Math.floor(sec / 3600);
+    sec = Math.floor(sec);
     var min = Math.floor(sec / 60);
     var seconds = sec - (min * 60);
     seconds = Math.round(seconds * 100) / 100
 
     // var result = (hrs < 10 ? "0" + hrs : hrs);
     var result = (min < 10 ? "0" + min : min);
-    result += "-" + (seconds < 10 ? "0" + seconds : seconds);
+    result += ":" + (seconds < 10 ? "0" + seconds : seconds);
     return result;
 };

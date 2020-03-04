@@ -93,12 +93,14 @@ canvas {
     text-align: center;
 } */
 
-.menuText {
+.menu-text {
     color: #aaa;
     /* float: ; */
     font-size: 28px;
     font-weight: bold;
     text-align: center;
+    width: 100%;
+
 }
 
 /* The Close Button */
@@ -120,10 +122,14 @@ canvas {
 
 .load-estimate {
     height: 40%;
+    width: 100%;
+    top: 40%;
 }
 
 .load-estimate-time-elapsed {
-    height: 60%;
+    height: 40%;
+    width: 100%;
+    top: 60%;
 }
 
 .bot-selection-table {
