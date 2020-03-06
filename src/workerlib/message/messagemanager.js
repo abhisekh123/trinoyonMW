@@ -81,12 +81,65 @@ module.exports = {
     //     mainThreadStub.postMessage(responseJSONString, '');
     // },
 
+    extractBotObjectConfigInformation: function(botObjectListParam){
+        const configArray = [];
+        // extract config information for each bot
+        for(var i = 0; i < botObjectListParam.length; ++i){
+            const configObject = {};
+            configObject.id = botObjectListParam[i].id;
+            configObject.type = botObjectListParam[i].type;
+            configObject.position = botObjectListParam[i].position;
+            configObject.rotation = botObjectListParam[i].rotation;
+            configArray.push(configObject);
+        }
+        return configArray;
+    },
+
     broadCompleteGameConfigToPlayers: function(gameRoom){
-        var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
-        responseJSONString.players = this.getActualPlayerIDListForGame(gameRoom);
-        responseJSONString.update = gameRoom;
+        const payload = {};
+        payload.playerIDList = [];
+        payload.players = [];
+
+        for(var i = 0; i < gameRoom.players_1.length; ++i){
+            const player = gameRoom.players_1[i];
+            const playerConfig = {};
+            playerConfig.id = player.id;
+            playerConfig.botObjectList = this.extractBotObjectConfigInformation(player.botObjectList);
+            payload.players.push(playerConfig);
+
+            if(player.isAIDriven){
+                continue;
+            }
+            payload.playerIDList.push({
+                id: player.userId,
+                index: i
+            });
+        }
+
+        // players 2
+        for(var i = 0; i < gameRoom.players_2.length; ++i){
+            const player = gameRoom.players_2[i];
+            const playerConfig = {};
+            playerConfig.id = player.id;
+            playerConfig.botObjectList = this.extractBotObjectConfigInformation(player.botObjectList);
+            payload.players.push(playerConfig);
+
+            if(player.isAIDriven){
+                continue;
+            }
+            payload.playerIDList.push({
+                id: player.userId,
+                index: i
+            });
+        }
+
+        var responseJSON = mainThreadStub.getResponseEmptyPacket('game_config', payload);
+        // responseJSONString.players = this.getActualPlayerIDListForGame(gameRoom);
+        // responseJSONString.update = gameRoom;
+
+        console.log('sending game config');
         
-        mainThreadStub.postMessage(responseJSONString, '');
+        mainThreadStub.postMessage(responseJSON, '');
     },
 
     broadcastGameUpdatesToPlayers: function(gameRoom){

@@ -48,6 +48,24 @@ module.exports = {
                 }
                 
                 break;
+            case 'game_config': 
+                console.log('game_config::', jsonData);
+                var playerConfig = jsonData.payload.players;
+                var playerIDList = jsonData.payload.playerIDList;
+                var gameConfig = {
+                    type: 'game_config',
+                    playerConfig,
+                    playerIndex: -1
+                };
+                // gameConfig.playerConfig = playerConfig;
+                // delete jsonData.players;
+                console.log('send game_config for :' + playerIDList);
+                // let clientWS = clientregistry.clientArrey[userId].ws;
+                // clientregistry.sendMessageToClient(clientWS, ev.data);
+                for (var i = 0; i < playerIDList.length; ++i){
+                    gameConfig.playerIndex = playerIDList[i].index;
+                    clientBroadcaster.sendMessageToRecipientByUserID(playerIDList[i].id, JSON.stringify(gameConfig));
+                }
             default:
                 // console.log('ERROR:@worker manager, got unknown message type:' , jsonData);
                 break;

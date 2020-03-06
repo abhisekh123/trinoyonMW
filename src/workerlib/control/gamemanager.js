@@ -53,10 +53,13 @@ module.exports = {
 
 
     startNewGame: function(gameRoom, startTime) {
+        console.log('starting new game room');
         // by this time all user admission is complete.
         gameRoom.startTime = startTime;
         // ,,, reset ai players
         gameRoomAssetManager.resetAllBotPositionToStartingPosition(gameRoom);
+        // console.log(gameRoom);
+        utilityFunctions.printEntireObjectNeatyle(gameRoom);
         gameRoom.isActive = true;
 
         messageManager.broadCompleteGameConfigToPlayers(gameRoom);
@@ -72,10 +75,10 @@ module.exports = {
         }else{
             workerState.timeWhenLastAttemptWasMadeToStartNewGame = timeNow;
         }
-        // console.log('processWaitingUserAdmitRequests');
+        console.log('processWaitingUserAdmitRequests');
         // iterate through user list
         if(workerState.waitingUsersLinkedList.isEmpty()){
-            // console.log('no pending admit request.');
+            console.log('no pending admit request.');
             return;
         }
 
@@ -84,8 +87,9 @@ module.exports = {
         // will start asmany games possible for given waiting list and free game rooms.
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
             const gameRoom = workerState.games[i];
+            // console.log('<<' + i + '>>', gameRoom);
 
-            if(gameRoom.isActive = false){
+            if(gameRoom.isActive == false){
                 console.log('found an empty gameroom. trying to start');
 
                 workerState.playerFitCache["1"] = true;

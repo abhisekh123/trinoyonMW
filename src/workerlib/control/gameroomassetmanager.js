@@ -150,6 +150,7 @@ module.exports = {
     },
 
     processWaitingUserAdmitRequests: function(gameRoom) {
+        var response = false;
         // test time stamp to see if it is too early.
         // const timeNow = utilityFunctions.getCurrentTime();
         // const successfullyAdmittedRequestIndexArray = [];
@@ -164,7 +165,7 @@ module.exports = {
         // iterate through user list
         if(workerState.waitingUsersLinkedList.isEmpty()){
             // console.log('no pending admit request.');
-            return false;
+            return response;
         }
         console.log('start processWaitingUserAdmitRequests');
         workerState.waitingUsersLinkedList.printList();
@@ -181,10 +182,14 @@ module.exports = {
             } else {
                 const admitResponse = this.tryAdmitingNewPlayersToGame(currentNode.element, gameRoom);
                 if(!admitResponse){ // could not admit
+                    console.log('could not admit:', currentNode.element);
                     workerState.playerFitCache[currentNode.element.players.length] = false;
                 }else{
                     // admitted successfully. remove the current request node, move to next node.
+                    console.log('successfully admitted:', currentNode.element);
                     currentNode = workerState.waitingUsersLinkedList.removeCurrentNode();
+                    
+                    response = true;
                     continue;
                 }
             }
@@ -224,11 +229,14 @@ module.exports = {
         //     var userIdList = gameMapPlayers[gameId];
         //     messgeM.respondGameJoinStatus(userIdList, true, gameId)
         // }
+        console.log('game room:', gameRoom);
+        console.log('returning:', response);
+        return response;
     },
 
     tryAdmitingNewPlayersToGame: function(admitRequest, gameRoom){
         console.log('tryAdmitingNewPlayersToGame:', admitRequest);
-        const usersToJoin = admitRequest.users;
+        const usersToJoin = admitRequest.players;
         let selectedTeam = null;
 
         this.teamPrefferenceFlag = !this.teamPrefferenceFlag; // change the team prefference first.
@@ -263,7 +271,7 @@ module.exports = {
             for(; j < environmentState.maxPlayerPerTeam; ++j){ // search for the next empty slot
                 const selectedTeamPlayer = selectedTeam[j];
                 if(selectedTeamPlayer.userId == null){ // found an empty slot. admitting the new player.
-                    this.completePlayerAdmissionFormalities(selectedTeamPlayer, newUserToAdmit);
+                    this.completePlayerAdmissionFormalities(selectedTeamPlayer, newUserToAdmit, admitRequest.selection);
                     break;// process next player to join.
                 }
             }
@@ -400,7 +408,7 @@ module.exports = {
             player.lastCommunication = gameRoom.startTime;
             player.joinTime = gameRoom.startTime;
             // player.isAIDriven = true;
-            this.setAllBotsOfPlayerToPosition(player, this.worldConfig.topBasePlayerPosition, Math.PI);
+            this.setAllBotsOfPlayerToPosition(player, this.worldConfig.topBasePlayerPosition[i], Math.PI);
         }
 
         // players 2
@@ -411,7 +419,7 @@ module.exports = {
             player.lastCommunication = gameRoom.startTime;
             player.joinTime = gameRoom.startTime;
             // player.isAIDriven = true;
-            this.setAllBotsOfPlayerToPosition(player, this.worldConfig.bottomBasePlayerPosition, 0);
+            this.setAllBotsOfPlayerToPosition(player, this.worldConfig.bottomBasePlayerPosition[i], 0);
         }
     },
 
@@ -426,10 +434,10 @@ module.exports = {
     /**
      * update ds in the game regarding player admission.
      */
-    completePlayerAdmissionFormalities: function(selectedTeamPlayer, newUserToAdmit) {
-        selectedTeamPlayer.userId = newUserToAdmit.id;
-        selectedTeamPlayer.botList = newUserToAdmit.botList;
-        selectedTeamPlayer.hero = newUserToAdmit.hero;
+    completePlayerAdmissionFormalities: function(selectedTeamPlayer, newUserToAdmit, botSelection) {
+        selectedTeamPlayer.userId = newUserToAdmit;
+        selectedTeamPlayer.botList = botSelection.botList;
+        selectedTeamPlayer.hero = botSelection.hero;
 
         selectedTeamPlayer.isConnected = true;
         selectedTeamPlayer.lastCommunication = 0;
@@ -460,6 +468,11 @@ module.exports = {
         playerObject.botObjectList.push(this.setBotObjectAttributes(playerObject.hero, {}));
         for(var i = 0; i < playerObject.botList.length; ++i){
             playerObject.botObjectList.push(this.setBotObjectAttributes(playerObject.botList[i], {}));
+        }
+
+        // setup id for each bot
+        for(var i = 0; i < playerObject.botObjectList.length; ++i){
+            playerObject.botObjectList[i].id = playerID + '_' + i;
         }
 
         return playerObject;

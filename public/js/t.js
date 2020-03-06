@@ -48,6 +48,9 @@ tg.connectToParent = function(parentEndPoint, keyIdentifier){
         if(responseJSON.type == 'update'){// message is game update
             // console.log('processing update.');
             tg.updateWorld(responseJSON);
+        }else if(responseJSON.type == 'game_config'){
+            console.log('processing game_config.', responseJSON);
+            // alert('could not join. game is full.');
         }else if(responseJSON.type == 'request_game_admit_nack'){
             // console.log('processing request_game_admit_nack.');
             alert('could not join. game is full.');

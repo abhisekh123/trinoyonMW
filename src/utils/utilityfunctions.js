@@ -1,3 +1,4 @@
+const util = require('util');
 // Contains only pure functions.
 module.exports = {
     dateObject: new Date(),
@@ -81,5 +82,9 @@ module.exports = {
         var result = (min < 10 ? "0" + min : min);
         result += "-" + (seconds < 10 ? "0" + seconds : seconds);
         return result;
+    },
+    printEntireObjectNeatyle: function(objectParam){
+        // console.log(util.inspect(objectParam, false, null, true /* enable colors */));
+        console.log(JSON.stringify(objectParam, null, 4));
     }
 };
