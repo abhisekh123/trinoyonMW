@@ -1,5 +1,5 @@
 
-// logical operation for game lifecycle
+// logical operation for lifecycle for all games.
 
 const workerState = require('../state/workerstate');
 const utilityFunctions = require('../../utils/utilityfunctions');
@@ -108,9 +108,19 @@ module.exports = {
         }
     },
 
-    processGames: function() {
+    processGames: function(timeSliceParam) {
+        // will start asmany games possible for given waiting list and free game rooms.
+        for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
+            const gameRoom = workerState.games[i];
+            // console.log('<<' + i + '>>', gameRoom);
+
+            if(gameRoom.isActive == true){
+                gameRoomAssetManager.processPlayers(gameRoom);
+            }
+        }
+
         if(gameRoomAssetManager.connectedPlayerCount > 0 && this.isGameRunning){
-            this.processPlayers();
+            
             
             // console.log('=== completed processing players');
             var timeSlice;// processActionResolution;refreshWorldInterval

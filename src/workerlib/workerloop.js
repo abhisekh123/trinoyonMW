@@ -25,7 +25,7 @@ module.exports = {
             messageManager.processIncomingMessages();
         }
         
-        gameManager.processGames();
+        gameManager.processGames(workerState.timeIntervalToSimulateInEachGame);
         
         // messageManager.broadcastGameUpdatesToPlayers();
 
