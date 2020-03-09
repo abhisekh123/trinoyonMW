@@ -8,6 +8,7 @@ const gameRoomAssetManager = require('./gameroomassetmanager');
 const environmentState = require('../../../dist/server/state/environmentstate');
 const messageManager = require('../message/messagemanager');
 const aiManager = require('./ai/aimanager');
+const actionManager = require('./action/actionmanager');
 
 module.exports = {
     worldConfig: null,
@@ -19,6 +20,7 @@ module.exports = {
         // this.itemConfig = workerState.getItemConfig();
 
         aiManager.init();
+        actionManager.init();
         
         // create refference world
         gameRoomAssetManager.init();
