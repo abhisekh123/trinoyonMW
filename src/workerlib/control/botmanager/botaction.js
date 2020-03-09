@@ -1,7 +1,8 @@
-// might not be needed.
+/**
+ * Routine to process bot action
+ */
+
 module.exports = {
-    gameBotState:{},
-    gameStaticObjectState:{},
 
     
 

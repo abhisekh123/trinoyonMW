@@ -35,6 +35,7 @@ var worldItems = {
     refreshWorldInterval: 500, // refreshWorld() should run once every interval.
     refreshWorldPerIntervalUI: 10,
     processActionResolution: 200, // for each refreshWorld() delta time will be broken into interval of this.
+    matchMaxTimeDuration: 5 * 60 * 1000, // 5 minutes
     // topTeamCaracters:[[44,8], [46, 6], [42, 6]],
     // bottomTeamCaracters:[[44,80], [46, 82], [42, 82]],
     // top team = 1

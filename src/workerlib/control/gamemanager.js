@@ -7,13 +7,41 @@ const gameRoomManager = require('./gameroommanager');
 const gameRoomAssetManager = require('./gameroomassetmanager');
 const environmentState = require('../../../dist/server/state/environmentstate');
 const messageManager = require('../message/messagemanager');
+const aiManager = require('./ai/aimanager');
 
 module.exports = {
+    worldConfig: null,
+    // itemConfig: null,
     // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
     init: function(){
+
+        this.worldConfig = workerState.getWorldConfig();
+        // this.itemConfig = workerState.getItemConfig();
+
+        aiManager.init();
+        
         // create refference world
         gameRoomAssetManager.init();
         gameRoomManager.init();
+    },
+
+    processGames: function() {
+        // will start asmany games possible for given waiting list and free game rooms.
+        for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
+            const gameRoom = workerState.games[i];
+            // console.log('<<' + i + '>>', gameRoom);
+
+            if(gameRoom.isActive == true){
+                if((gameRoom.startTime - workerState.currentTime) < this.worldConfig.matchMaxTimeDuration){
+                    this.terminateGame(gameRoom);
+                    continue;
+                }
+
+                gameRoomManager.processPlayers(gameRoom);
+                gameRoomManager.processBuildings(gameRoom);
+                gameRoomManager.processBots(gameRoom);
+            }
+        }
     },
 
     terminateGame(gameRoom){
@@ -108,144 +136,6 @@ module.exports = {
         }
     },
 
-    processGames: function(timeSliceParam) {
-        // will start asmany games possible for given waiting list and free game rooms.
-        for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
-            const gameRoom = workerState.games[i];
-            // console.log('<<' + i + '>>', gameRoom);
-
-            if(gameRoom.isActive == true){
-                gameRoomAssetManager.processPlayers(gameRoom);
-            }
-        }
-
-        if(gameRoomAssetManager.connectedPlayerCount > 0 && this.isGameRunning){
-            
-            
-            // console.log('=== completed processing players');
-            var timeSlice;// processActionResolution;refreshWorldInterval
-            var remainingTimeForThisRefreshCycle = this.deltaTimeForRefresh; // remainig time for current refresh cycle.
-            
-            // update building life cycle:
-            for(var i = 0; i < workerstate.buildingArray.length; ++i){
-                if(workerstate.buildingArray[i].life <= 0 && workerstate.buildingArray[i].isActive){ // bots that died in last cycle.
-                    // this.processBot(i, timeSlice);
-                    // var botConfig = this.botArray[i];
-                    // // console.log('5');
-                    // this.instructBot(workerstate.buildingArray[i], 'die', null);
-                    if(workerstate.buildingArray[i].type == 'base'){
-                        this.terminateGame(workerstate.buildingArray[i]);
-                        this.refreshWorld();
-                        // return;
-                    }
-                    // console.log('building:' + workerstate.buildingArray[i].id + ' DIED.');
-                    workerstate.buildingArray[i].isActive = false;
-                    var update = {};
-                    update.action = 'die';
-                    update.botType = workerstate.buildingArray[i].type;
-                    update.x = workerstate.buildingArray[i].position.x;
-                    update.z = workerstate.buildingArray[i].position.z;
-                    this.latestSnapshot[workerstate.buildingArray[i].id] = update;
-                    this.isStateUpdated = true;
-                }
-            }
-            // update bot life cycle
-            for(var i = 0; i < this.maxBotCount; ++i){
-                if(workerstate.botArray[i].life <= 0 && workerstate.botArray[i].isActive){ // bots that died in last cycle.
-                    // this.processBot(i, timeSlice);
-                    // var botConfig = this.botArray[i];
-                    // // console.log('6');
-                    this.instructBot(workerstate.botArray[i], 'die', null);
-                    // workerstate.botArray[i].isActive = false;
-                    // console.log('bot:' + workerstate.botArray[i].id + ' DIED.');
-                }
-            }
-            do{
-                // console.log('--))start do loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
-                if(remainingTimeForThisRefreshCycle <= this.processActionResolution){
-                    timeSlice = remainingTimeForThisRefreshCycle;
-                    remainingTimeForThisRefreshCycle = 0;
-                }else{
-                    timeSlice = this.processActionResolution;
-                    remainingTimeForThisRefreshCycle = remainingTimeForThisRefreshCycle - this.processActionResolution;
-                }
-                for(var i = 0; i < this.maxBotCount; ++i){
-                    if(workerstate.botArray[i].isActive == true){
-                        this.processBot(i, timeSlice);
-                        // var botConfig = this.botArray[i];
-                    }
-                    // this.processBot(i, timeSlice); /// process all bots : active, inactive.
-                }
-                // // console.log('end do loop');
-            }while(remainingTimeForThisRefreshCycle > 0);
-        }
-    },
     
-    
-
-    initializeWorldByPopulatingWithBots: function(){
-        // // console.log('gameRoomAssetManager.playerArrey:', gameRoomAssetManager.playerArrey);
-        for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
-            const characterConfig = workerstate.getWorldConfig().characters[index];
-            var botType = characterConfig.type;
-            var botItemConfig = workerstate.getItemConfig().characters[botType];
-            // // console.log('characterConfig.playerID:', characterConfig.playerID);
-            var playerConfig = gameRoomAssetManager.playerArrey[characterConfig.playerID - 1];
-
-            if(characterConfig.isLeader){
-                playerConfig.leaderBotID = characterConfig.id;
-            }else{
-                playerConfig.botIDList.push(characterConfig.id);
-            }
-
-            var botObject = {
-                timeelapsedincurrentaction:0,
-                isActive:true,
-                isAIDriven:false,
-                id:characterConfig.id,
-                isLeader: characterConfig.isLeader,
-                shotfired:0,
-                botRouteIndex:0,
-                targetbotid:null,
-                // currentweapon:botItemConfig.attachmentmesh[0],
-                nextweapon:null,
-                backupinstruction:null,
-                // weaponinventory:botItemConfig.attachmentmesh,
-                life:botItemConfig.life,
-                attack: botItemConfig.attack,
-                attackinterval: botItemConfig.attackinterval,
-                spawnDuration: botItemConfig.spawnDuration,
-                damageincurred:0,
-                speed: botItemConfig.speed,
-                range: botItemConfig.range,
-                engagedEnemyTarget: null,
-                engagedEnemyType: null,
-                type: 'bot',
-                botType: botType,
-                team:characterConfig.team,
-                playerID:characterConfig.playerID,
-                botIndex: index,
-                instruction: {
-                    type: 'idle'
-                },
-                // currentBot.instruction.type = 'idle',
-                payload:{
-                    teamColor:playerConfig.teamColor,
-                    type:botType,
-                    // team:characterConfig.team,
-                    position:[
-                        characterConfig.position.x, 
-                        characterConfig.position.y, 
-                        characterConfig.position.z
-                    ],
-                    rotation:0,
-                },
-            };
-            // // console.log('admitting new bot at initialization:', botObject.payload.position);
-            workerstate.botArray[index] = botObject;
-            workerstate.botMap[characterConfig.id] = botObject;
-            this.admitNewBot(index);
-        }
-    },
     
 }

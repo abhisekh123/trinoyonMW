@@ -5,6 +5,7 @@ const workerState = require('../state/workerstate');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const environmentState = require('../../../dist/server/state/environmentstate');
 const gameRoomAssetManager = require('./gameroomassetmanager');
+const aiManager = require('./ai/aimanager');
 
 module.exports = {
     worldConfig: null,
@@ -20,8 +21,80 @@ module.exports = {
      * game progress / refresh
      */
 
+    processBuildings: function(gameRoom){
+        // update building life cycle:
+        for(var i = 0; i < workerstate.buildingArray.length; ++i){
+            if(workerstate.buildingArray[i].life <= 0 && workerstate.buildingArray[i].isActive){ // bots that died in last cycle.
+                // this.processBot(i, timeSlice);
+                // var botConfig = this.botArray[i];
+                // // console.log('5');
+                // this.instructBot(workerstate.buildingArray[i], 'die', null);
+                if(workerstate.buildingArray[i].type == 'base'){
+                    this.terminateGame(workerstate.buildingArray[i]);
+                    this.refreshWorld();
+                    // return;
+                }
+                // console.log('building:' + workerstate.buildingArray[i].id + ' DIED.');
+                workerstate.buildingArray[i].isActive = false;
+                var update = {};
+                update.action = 'die';
+                update.botType = workerstate.buildingArray[i].type;
+                update.x = workerstate.buildingArray[i].position.x;
+                update.z = workerstate.buildingArray[i].position.z;
+                this.latestSnapshot[workerstate.buildingArray[i].id] = update;
+                this.isStateUpdated = true;
+            }
+        }
+    },
+
+    processBots: function(gameRoom){
+
+            // update bot life cycle
+            for(var i = 0; i < this.maxBotCount; ++i){
+                if(workerstate.botArray[i].life <= 0 && workerstate.botArray[i].isActive){ // bots that died in last cycle.
+                    // this.processBot(i, timeSlice);
+                    // var botConfig = this.botArray[i];
+                    // // console.log('6');
+                    this.instructBot(workerstate.botArray[i], 'die', null);
+                    // workerstate.botArray[i].isActive = false;
+                    // console.log('bot:' + workerstate.botArray[i].id + ' DIED.');
+                }
+            }
+
+            var timeSlice;// processActionResolution;refreshWorldInterval
+            var remainingTimeForThisRefreshCycle = this.deltaTimeForRefresh; // remainig time for current refresh cycle.
+            
+            
+            do{
+                // console.log('--))start do loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
+                if(remainingTimeForThisRefreshCycle <= this.processActionResolution){
+                    timeSlice = remainingTimeForThisRefreshCycle;
+                    remainingTimeForThisRefreshCycle = 0;
+                }else{
+                    timeSlice = this.processActionResolution;
+                    remainingTimeForThisRefreshCycle = remainingTimeForThisRefreshCycle - this.processActionResolution;
+                }
+                for(var i = 0; i < this.maxBotCount; ++i){
+                    if(workerstate.botArray[i].isActive == true){
+                        this.processBot(i, timeSlice);
+                        // var botConfig = this.botArray[i];
+                    }
+                    // this.processBot(i, timeSlice); /// process all bots : active, inactive.
+                }
+                // // console.log('end do loop');
+            }while(remainingTimeForThisRefreshCycle > 0);
+    },
+
     processPlayers: function(gameRoom){
         // // console.log('process players.', playerManager.playerArray);
+        for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){ // populate room with generic players of team 1.
+            if(gameRoom.players_1[i].isAIDriven){
+                this.processPlayerAI(gameRoom.players_2[i]);
+            }
+            if(gameRoom.players_2[i].isAIDriven){
+                this.processPlayerAI(gameRoom.players_2[i]);
+            }
+        }
         for(var playerIndex = 0, botIndex = 0; playerIndex < playerManager.playerArray.length; ++playerIndex){
             const playerConfig = playerManager.playerArray[playerIndex];
             // console.log('process player:', playerConfig.playerID);
@@ -38,8 +111,7 @@ module.exports = {
             // }
 
             // if player is AI
-            // // console.log('playerConfig.id:', playerConfig);
-            var areAllBotsIdle = this.areAllBotsIdle(playerConfig);
+            
             // console.log('areAllBotsIdle:', areAllBotsIdle);
             if(areAllBotsIdle){
                 // all bots are idle. Loiter.
@@ -69,7 +141,17 @@ module.exports = {
             }
         }
     },
-    
+
+    processPlayerAI: function(playerObjectParam){
+        // // console.log('playerConfig.id:', playerConfig);
+        var areAllBotsIdle = this.areAllBotsIdle(playerObjectParam);
+    },
+
+
+    /**
+     * DS CRUD Operations.
+     */
+
     initialiseRooms: function(){
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
             const gameRoom = {};
