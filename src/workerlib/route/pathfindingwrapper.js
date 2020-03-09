@@ -152,7 +152,7 @@ module.exports = {
             type:'base',
             isActive: true,
             team:2,
-            id:'base1',
+            id:'base2',
             position: {
                 x: this.worldConfig.bottomBase[0],
                 z: this.worldConfig.bottomBase[1]

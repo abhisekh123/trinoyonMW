@@ -46,10 +46,10 @@ function initialiseCamera() {
 	tg.camera.rotationOffset = 0;
 	
 	// //Acceleration of camera in moving from current to goal position
-	tg.camera.cameraAcceleration = 0.002
+	// tg.camera.cameraAcceleration = 0.002
 	
 	// //The speed at which acceleration is halted 
-    tg.camera.maxCameraSpeed = 5
+    // tg.camera.maxCameraSpeed = 5
     
     tg.camera.attachControl(tg.canvas, true);
 

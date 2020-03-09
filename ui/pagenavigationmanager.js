@@ -9,6 +9,44 @@ tg.pn = {};
 
 tg.pn.currentPage = null;
 
+tg.pn.showMatchStartingLoader = function(){
+    console.log('showMatchStartingLoader. current page:', tg.pn.currentPage);
+    switch (tg.pn.currentPage) {
+        case 'startcountdown':
+            // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
+            $("#game-start-countdown").hide();
+            // $("#menu-home").hide();
+            break;
+    
+        default:
+            break;
+    }
+
+    tg.pn.currentPage = 'match-loading';
+    tg.stopClock();
+    tg.hl.setLoaderHeaderText('Prepare To Fight!');
+    $("#load-indicator").show();
+    tg.pv.setModalDimensionPercentage('50%', '90%');
+};
+
+tg.pn.showMatchPage = function(){
+    console.log('showMatchPage');
+    switch (tg.pn.currentPage) {
+        case 'match-loading':
+            // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
+            $("#load-indicator").hide();
+            tg.pv.hideModal();
+            break;
+    
+        default:
+            break;
+    }
+
+    tg.stopClock();
+    // tg.hl.setLoaderHeaderText('Prepare To Fight!');
+    // $("#load-indicator").show();
+    // tg.pv.setModalDimensionPercentage('50%', '90%');
+};
 
 // display home page.
 tg.pn.showHomePage = function(){

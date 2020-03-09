@@ -23,7 +23,7 @@ module.exports = {
             //     break;
             case 'init':
                 return this.inventory.store.init_key
-                    + this.inventory.store.network_manager_key
+                    + this.inventory.store.manager_network_key
                     + this.inventory.store.ui_utility_key;
                 break;
             // case 'init_video':
@@ -44,10 +44,16 @@ module.exports = {
                 break;
             case 'init_world':
                 return this.inventory.store.world_config_key
-                    + this.inventory.store.item_config_key
-                    + this.inventory.store.init_world_key
-                    + this.inventory.store.bot_manager_key
-                    + this.inventory.store.assetmanager_key;
+                + this.inventory.store.item_config_key
+                + this.inventory.store.init_world_key
+                + this.inventory.store.assetmanager_key
+
+                + this.inventory.store.manager_audio_key
+                + this.inventory.store.manager_bot_key
+                + this.inventory.store.manager_effect_key
+                + this.inventory.store.manager_static_key
+                + this.inventory.store.manager_view_key
+                + this.inventory.store.manager_world_key;
                 // return this.inventory.store.world_config_key;
                 break;
             case 'binary':

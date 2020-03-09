@@ -75,10 +75,10 @@ module.exports = {
         }else{
             workerState.timeWhenLastAttemptWasMadeToStartNewGame = timeNow;
         }
-        console.log('processWaitingUserAdmitRequests');
+        // console.log('processWaitingUserAdmitRequests');
         // iterate through user list
         if(workerState.waitingUsersLinkedList.isEmpty()){
-            console.log('no pending admit request.');
+            // console.log('no pending admit request.');
             return;
         }
 

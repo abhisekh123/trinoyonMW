@@ -36,7 +36,7 @@ tg.pv.createTexts = function(){
     tg.pv.loadingText = loadingText;
 }
 
-// display gameplay page.
+// display gameplay page. (old)
 tg.pv.startGamePlay = function(gameJSON){
     tg.UIConfig.advancedTexture.addControl(tg.UIConfig.exitGameButton); 
     var playerConfig = gameJSON.playerConfig;
@@ -119,7 +119,7 @@ tg.pv.createButtons = function(){
 
     playButton.onPointerUpObservable.add(function() {
         console.log('click play button.');
-        // tg.nm.requestGameAdmit();
+        // tg.network.requestGameAdmit();
         // Get the modal
         
         tg.pv.modal.style.display = "block";

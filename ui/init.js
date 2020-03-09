@@ -45,7 +45,7 @@ tg.stopClock = function() {
 
 function entrypoint(){
     initClient();
-    tg.nm.initNetworkManager();
+    tg.network.initNetworkManager();
     // console.log('1');
     var packet = tg.getEmptyMessagePacket('init_ui');
     console.log(packet);

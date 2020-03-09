@@ -50,6 +50,7 @@ tg.connectToParent = function(parentEndPoint, keyIdentifier){
             tg.updateWorld(responseJSON);
         }else if(responseJSON.type == 'game_config'){
             console.log('processing game_config.', responseJSON);
+            tg.world.startNewMatch(responseJSON.playerConfig, responseJSON.playerIndex);
             // alert('could not join. game is full.');
         }else if(responseJSON.type == 'request_game_admit_nack'){
             // console.log('processing request_game_admit_nack.');
@@ -77,9 +78,6 @@ tg.sendMessageToWS = function(message){
     tg.socket.send(JSON.stringify(message));
 }
 
-tg.sendJSONMessageToWS = function(message){
-    tg.socket.send(JSON.stringify(message));
-}
 
 tg.getEmptyMessagePacket = function(type){
     var container = {};

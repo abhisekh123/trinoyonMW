@@ -104,6 +104,7 @@ module.exports = {
             const player = gameRoom.players_1[i];
             const playerConfig = {};
             playerConfig.id = player.id;
+            playerConfig.team = player.team;
             playerConfig.botObjectList = this.extractBotObjectConfigInformation(player.botObjectList);
             payload.players.push(playerConfig);
 
@@ -121,6 +122,7 @@ module.exports = {
             const player = gameRoom.players_2[i];
             const playerConfig = {};
             playerConfig.id = player.id;
+            playerConfig.team = player.team;
             playerConfig.botObjectList = this.extractBotObjectConfigInformation(player.botObjectList);
             payload.players.push(playerConfig);
 

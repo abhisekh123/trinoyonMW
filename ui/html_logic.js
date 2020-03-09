@@ -8,7 +8,7 @@ tg.hl = {};
 console.log('sdf');
 $('.button-home-start').click(function(){
     console.log('clicked button-home-start');
-    tg.nm.requestGameAdmit();
+    tg.network.requestGameAdmit();
 });
 
 $('.bot-selection-option-container').click(function(element){
@@ -17,7 +17,7 @@ $('.bot-selection-option-container').click(function(element){
     console.log('clicked bot-selection-option-container with id:', id);
     var elemntName = $('#' + id).attr('name');
     console.log('elemntName:', elemntName);
-    // tg.nm.requestGameAdmit();
+    // tg.network.requestGameAdmit();
     var rowCol = id.split('_')[1];
     var rowIndex = rowCol.split('-')[0];
     console.log(rowCol);
@@ -33,6 +33,10 @@ $('.bot-selection-option-container').click(function(element){
 
     console.log(tg.botSelection);
 });
+
+tg.hl.setLoaderHeaderText = function(textParam){
+    $('#load-indicator-header').html(textParam);
+};
 
 tg.hl.gameStartCountDownTickHandler = function(){
     $('#load-estimate-time-elapsed').html('Time elapsed ' + tg.uu.convertSecondsMMSS(tg.clockTimeElapsed / 1000));
