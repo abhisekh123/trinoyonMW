@@ -34,7 +34,7 @@ module.exports = {
             // console.log('<<' + i + '>>', gameRoom);
 
             if(gameRoom.isActive == true){
-                if((gameRoom.startTime - workerState.currentTime) < this.worldConfig.matchMaxTimeDuration){
+                if((workerState.currentTime - gameRoom.startTime) > this.worldConfig.matchMaxTimeDuration){
                     this.terminateGame(gameRoom);
                     continue;
                 }
@@ -47,6 +47,7 @@ module.exports = {
     },
 
     terminateGame(gameRoom){
+        return;
         gameRoomManager.resetGame(gameRoom);
 
 
@@ -89,7 +90,7 @@ module.exports = {
         // ,,, reset ai players
         gameRoomAssetManager.resetAllBotPositionToStartingPosition(gameRoom);
         // console.log(gameRoom);
-        utilityFunctions.printEntireObjectNeatyle(gameRoom);
+        // utilityFunctions.printEntireObjectNeatyle(gameRoom);
         gameRoom.isActive = true;
 
         messageManager.broadCompleteGameConfigToPlayers(gameRoom);

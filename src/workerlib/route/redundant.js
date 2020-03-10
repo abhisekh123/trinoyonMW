@@ -1,15 +1,13 @@
-
-
 module.exports = {
     botArray: [],
     botMap: {},
     buildingMap: {},
     buildingArray: [],
     // baseMap: {}
-    workerRegister:{},
+    workerRegister: {},
     grid: null,
     gridBackup: null,
-    finder:null,
+    finder: null,
     mapPrecalculatedDataGrid: null,
     botPositionArray: new Array(), // bot id vs bot position.
     finder: null,
@@ -21,7 +19,7 @@ module.exports = {
     maxBotCount: 100,
     createFreshVisibility: true,
 
-    restoreGrid: function(){
+    restoreGrid: function () {
         this.grid = this.gridBackup.clone();
     },
 
@@ -66,9 +64,9 @@ module.exports = {
         return null;
     },
 
-    deActivateBot: function(botid){
+    deActivateBot: function (botid) {
         var botConfig = this.tg.botConfig[botid];
-        if(botConfig == undefined || botConfig == null){
+        if (botConfig == undefined || botConfig == null) {
             // console.log('ERROR: Bot undefined. Skip termination process. Bot ID:' + botid);
             return;
         }
@@ -78,7 +76,7 @@ module.exports = {
         this.tg.botConfig[botid] = null;
     },
 
-    getNewPlayerColor(){
+    getNewPlayerColor() {
         // var color = this.selfColor;
         // var color = [1,1,1];
         // while(color == this.selfColor || color == this.botColor){
@@ -151,18 +149,18 @@ module.exports = {
     },
 
 
-    findPath: function(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ){
+    findPath: function (currentPositionX, currentPositionZ, targetPositionX, targetPositionZ) {
         // console.log('findPath:' + currentPositionX + ',' + currentPositionZ + ' to '
-            // + targetPositionX + ',' + targetPositionZ);
+        // + targetPositionX + ',' + targetPositionZ);
         // // console.log(currentPositionX);
         // // console.log(currentPositionZ);
         // // console.log(targetPositionX);
         // // console.log(targetPositionZ);
         var path = this.finder.findPath(
-            Math.round((currentPositionX))// + this.tg.centreX
-            , Math.round((currentPositionZ))// + this.tg.centreZ
-            , Math.round((targetPositionX))// + this.tg.centreX
-            , Math.round((targetPositionZ))// + this.tg.centreZ
+            Math.round((currentPositionX)) // + this.tg.centreX
+            , Math.round((currentPositionZ)) // + this.tg.centreZ
+            , Math.round((targetPositionX)) // + this.tg.centreX
+            , Math.round((targetPositionZ)) // + this.tg.centreZ
             , this.grid);
         this.restoreGrid();
         // for(var i = 0; i < path.length; ++i){
@@ -174,17 +172,21 @@ module.exports = {
 
 
 
-    admitNewBot: function(botConfigParam, botid){
+    admitNewBot: function (botConfigParam, botid) {
         var botConfig = this.tg.botConfig[botid];
         // // console.log('admitNewBot@bot route manager.');
         // // console.log(botConfigParam);
-        if(botConfig != undefined && botConfig != null){
+        if (botConfig != undefined && botConfig != null) {
             // console.log('Note@botroutemanger : Bot already present for the given ID. reassigning');
             // return;
         }
 
-        var position = this.FindClosestWalkablePoint({x:botConfigParam.position[0], y:0, z:botConfigParam.position[2]});
-        if(position!=null){
+        var position = this.FindClosestWalkablePoint({
+            x: botConfigParam.position[0],
+            y: 0,
+            z: botConfigParam.position[2]
+        });
+        if (position != null) {
             botConfigParam.position[0] = position.x;
             botConfigParam.position[2] = position.z;
         }
@@ -198,71 +200,71 @@ module.exports = {
         bot_route_utility.updateBotPosition(botid, xPos, zPos);
         return position;
     },
-}
 
 
 
-initializeWorldByPopulatingWithBots: function(){
-    // // console.log('gameRoomAssetManager.playerArrey:', gameRoomAssetManager.playerArrey);
-    for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
-        const characterConfig = workerstate.getWorldConfig().characters[index];
-        var botType = characterConfig.type;
-        var botItemConfig = workerstate.getItemConfig().characters[botType];
-        // // console.log('characterConfig.playerID:', characterConfig.playerID);
-        var playerConfig = gameRoomAssetManager.playerArrey[characterConfig.playerID - 1];
+    initializeWorldByPopulatingWithBots: function () {
+        // // console.log('gameRoomAssetManager.playerArrey:', gameRoomAssetManager.playerArrey);
+        for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
+            const characterConfig = workerstate.getWorldConfig().characters[index];
+            var botType = characterConfig.type;
+            var botItemConfig = workerstate.getItemConfig().characters[botType];
+            // // console.log('characterConfig.playerID:', characterConfig.playerID);
+            var playerConfig = gameRoomAssetManager.playerArrey[characterConfig.playerID - 1];
 
-        if(characterConfig.isLeader){
-            playerConfig.leaderBotID = characterConfig.id;
-        }else{
-            playerConfig.botIDList.push(characterConfig.id);
+            if (characterConfig.isLeader) {
+                playerConfig.leaderBotID = characterConfig.id;
+            } else {
+                playerConfig.botIDList.push(characterConfig.id);
+            }
+
+            var botObject = {
+                timeelapsedincurrentaction: 0,
+                isActive: true,
+                isAIDriven: false,
+                id: characterConfig.id,
+                isLeader: characterConfig.isLeader,
+                shotfired: 0,
+                botRouteIndex: 0,
+                targetbotid: null,
+                // currentweapon:botItemConfig.attachmentmesh[0],
+                nextweapon: null,
+                backupinstruction: null,
+                // weaponinventory:botItemConfig.attachmentmesh,
+                life: botItemConfig.life,
+                attack: botItemConfig.attack,
+                attackinterval: botItemConfig.attackinterval,
+                spawnDuration: botItemConfig.spawnDuration,
+                damageincurred: 0,
+                speed: botItemConfig.speed,
+                range: botItemConfig.range,
+                engagedEnemyTarget: null,
+                engagedEnemyType: null,
+                type: 'bot',
+                botType: botType,
+                team: characterConfig.team,
+                playerID: characterConfig.playerID,
+                botIndex: index,
+                instruction: {
+                    type: 'idle'
+                },
+                // currentBot.instruction.type = 'idle',
+                payload: {
+                    teamColor: playerConfig.teamColor,
+                    type: botType,
+                    // team:characterConfig.team,
+                    position: [
+                        characterConfig.position.x,
+                        characterConfig.position.y,
+                        characterConfig.position.z
+                    ],
+                    rotation: 0,
+                },
+            };
+            // // console.log('admitting new bot at initialization:', botObject.payload.position);
+            workerstate.botArray[index] = botObject;
+            workerstate.botMap[characterConfig.id] = botObject;
+            this.admitNewBot(index);
         }
-
-        var botObject = {
-            timeelapsedincurrentaction:0,
-            isActive:true,
-            isAIDriven:false,
-            id:characterConfig.id,
-            isLeader: characterConfig.isLeader,
-            shotfired:0,
-            botRouteIndex:0,
-            targetbotid:null,
-            // currentweapon:botItemConfig.attachmentmesh[0],
-            nextweapon:null,
-            backupinstruction:null,
-            // weaponinventory:botItemConfig.attachmentmesh,
-            life:botItemConfig.life,
-            attack: botItemConfig.attack,
-            attackinterval: botItemConfig.attackinterval,
-            spawnDuration: botItemConfig.spawnDuration,
-            damageincurred:0,
-            speed: botItemConfig.speed,
-            range: botItemConfig.range,
-            engagedEnemyTarget: null,
-            engagedEnemyType: null,
-            type: 'bot',
-            botType: botType,
-            team:characterConfig.team,
-            playerID:characterConfig.playerID,
-            botIndex: index,
-            instruction: {
-                type: 'idle'
-            },
-            // currentBot.instruction.type = 'idle',
-            payload:{
-                teamColor:playerConfig.teamColor,
-                type:botType,
-                // team:characterConfig.team,
-                position:[
-                    characterConfig.position.x, 
-                    characterConfig.position.y, 
-                    characterConfig.position.z
-                ],
-                rotation:0,
-            },
-        };
-        // // console.log('admitting new bot at initialization:', botObject.payload.position);
-        workerstate.botArray[index] = botObject;
-        workerstate.botMap[characterConfig.id] = botObject;
-        this.admitNewBot(index);
-    }
-},
+    },
+}

@@ -1,10 +1,10 @@
 const workerState = require('../../state/workerstate');
 
 module.exports = {
-    'Base'                      : require('./core/Node'),
-    'Minion'                    : require('./core/Grid'),
-    'Bot'                       : require('./core/Util'),
-    'Tower'                     : require('./core/DiagonalMovement'),
+    'Base'                      : require('./baseactionprocessor'),
+    'Minion'                    : require('./minionactionprocessor'),
+    'Bot'                       : require('./botactionprocessor'),
+    'Tower'                     : require('./toweractionprocessor'),
     
     init: function(){
         this.Base.init();

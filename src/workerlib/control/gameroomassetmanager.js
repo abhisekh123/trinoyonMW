@@ -315,6 +315,7 @@ module.exports = {
         // setup id for each bot
         for(var i = 0; i < playerObject.botObjectList.length; ++i){
             playerObject.botObjectList[i].id = playerID + '_' + i;
+            playerObject.botObjectList[i].teamId = playerTeam;
         }
 
         return playerObject;

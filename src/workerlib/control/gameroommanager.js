@@ -89,62 +89,12 @@ module.exports = {
         // // console.log('process players.', playerManager.playerArray);
         for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){ // populate room with generic players of team 1.
             if(gameRoom.players_1[i].isAIDriven){
-                this.processPlayerAI(gameRoom.players_2[i]);
+                aiManager.Player.processPlayerAI(gameRoom.players_1[i], gameRoom);
             }
             if(gameRoom.players_2[i].isAIDriven){
-                this.processPlayerAI(gameRoom.players_2[i]);
+                aiManager.Player.processPlayerAI(gameRoom.players_2[i], gameRoom);
             }
         }
-        for(var playerIndex = 0, botIndex = 0; playerIndex < playerManager.playerArray.length; ++playerIndex){
-            const playerConfig = playerManager.playerArray[playerIndex];
-            // console.log('process player:', playerConfig.playerID);
-            // skip inactive player and players controlled by real people
-            if(!playerConfig.isActive || !playerConfig.isAIDriven){
-                // TODO: Add logic to spawn new AI player / admit new player here.
-                continue;
-            }
-            // check if commandar bot is still active
-            // var botIndex = this.maxBotPerPlayer * playerIndex;
-            // if(!workerstate.botArray[botIndex].isActive){
-            //     playerConfig.isActive = false;
-            //     continue;
-            // }
-
-            // if player is AI
-            
-            // console.log('areAllBotsIdle:', areAllBotsIdle);
-            if(areAllBotsIdle){
-                // all bots are idle. Loiter.
-                var nearestTarget = this.findClosestPlayerOrTowerOrBase(playerConfig);
-                // // console.log(playerConfig.id);
-                // console.log('nearestTarget:', nearestTarget);
-                if(nearestTarget == null){
-                    return;
-                }else{
-                    var leaderConfig = workerState.botMap[playerConfig.leaderBotID];
-                    // // console.log(leaderConfig.payload.position);
-                    // // console.log(nearestTarget.target);
-                    var nearestPosition = botroutemanager.FindClosestWalkablePoint({x:nearestTarget.target[0], y:0, z:nearestTarget.target[1]});
-                    var path = botroutemanager.findPath(
-                        leaderConfig.payload.position[0], 
-                        leaderConfig.payload.position[2], 
-                        nearestPosition.x, 
-                        nearestPosition.z);
-                    // // console.log('path:', path);
-                    // // console.log('4');
-                    this.instructBot(leaderConfig, 'goto',
-                    {
-                        // botRotation: suitableEnemy.botRotation,
-                        pathToEnemy: path,
-                    });
-                }
-            }
-        }
-    },
-
-    processPlayerAI: function(playerObjectParam){
-        // // console.log('playerConfig.id:', playerConfig);
-        var areAllBotsIdle = this.areAllBotsIdle(playerObjectParam);
     },
 
 
@@ -155,12 +105,19 @@ module.exports = {
     initialiseRooms: function(){
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
             const gameRoom = {};
-            gameRoom.buildings_1 = utilityFunctions.cloneObject(
-                utilityFunctions.getObjectValues(workerState.buildingMap_1)
+            // gameRoom.buildings_1 = utilityFunctions.cloneObject(
+            //     utilityFunctions.getObjectValues(workerState.buildingMap_1)
+            // );
+            // gameRoom.buildings_2 = utilityFunctions.cloneObject(
+            //     utilityFunctions.getObjectValues(workerState.buildingMap_2)
+            // );
+            gameRoom.buildingArray_1 = utilityFunctions.cloneObject(
+                utilityFunctions.getObjectValues(workerState.buildingArray_1)
             );
-            gameRoom.buildings_2 = utilityFunctions.cloneObject(
-                utilityFunctions.getObjectValues(workerState.buildingMap_2)
+            gameRoom.buildingArray_2 = utilityFunctions.cloneObject(
+                utilityFunctions.getObjectValues(workerState.buildingArray_2)
             );
+            
             gameRoom.isActive = false;
             gameRoom.players_1 = [];
             gameRoom.players_2 = [];

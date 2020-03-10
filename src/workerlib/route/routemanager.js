@@ -2,16 +2,21 @@
 /**
  * this file contains logical function that are used by ai/action
  */
-const workerstate = require('../state/workerstate');
 const pathfindingwrapper = require('./pathfindingwrapper');
 const customroutingutility = require('./customroutingutility');
+const workerState = require('../state/workerstate');
 
 
 
 module.exports = {
+    worldConfig: null,
+    itemConfig: null,
     
 
-    init: function(world_config, grid){
+    init: function(){
+        this.worldConfig = workerState.getWorldConfig();
+        this.itemConfig = workerState.getItemConfig();
+
         pathfindingwrapper.init();
         customroutingutility.init();
     },
@@ -19,91 +24,121 @@ module.exports = {
 
 
     // used for movement of player to nearesrt enemy. used by player AI
-    findClosestPlayerOrTowerOrBase: function(playerConfigParam){
-        var playerTeam = playerConfigParam.teamID;
-        var defenseList = null;
-        var base = null;
-        // console.log('findClosestPlayerOrTowerOrBase->leaderID:' + playerConfigParam.leaderBotID);
-        var leaderConfig = workerstate.botMap[playerConfigParam.leaderBotID];
-        var leaderPosition = leaderConfig.payload.position;
+    findClosestPlayerOrTowerOrBase: function(botConfigParam, gameRoom){
+        var playerTeam = botConfigParam.teamId;
+        // var defenseList = null;
+        // var base = null;
+        var enemyPlayerList = null;
+        // console.log('findClosestPlayerOrTowerOrBase->leaderID:' + botConfigParam.leaderBotID);
+        // var leaderConfig = workerstate.botMap[botConfigParam.leaderBotID];
 
-        // console.log('leader position:', leaderPosition, ' team:' + playerTeam, ' playerid:' + playerConfigParam.playerID);
+        var leaderPosition = botConfigParam.position;
+
+        // console.log('leader position:', leaderPosition, ' team:' + playerTeam, ' playerid:' + botConfigParam.playerID);
         
-        var minDistance = workerstate.getWorldConfig().gridSide + 1;
+        var minDistance = this.worldConfig.gridSide + 1;
 
         var target = null;
-        var targetType = null;
+        // var targetType = null;
+
         if(playerTeam == 1){// top team = 1
-            defenseList = workerstate.getWorldConfig().defenceTop;
-            base = workerstate.getWorldConfig().topBase
+            // defenseList = workerstate.getWorldConfig().defenceTop;
+            // base = workerstate.getWorldConfig().topBase
+            enemyPlayerList = gameRoom.players_2;
         }else{// bottom team = 2
-            defenseList = workerstate.getWorldConfig().defenceBottom;
-            base = workerstate.getWorldConfig().bottomBase;
+            // defenseList = workerstate.getWorldConfig().defenceBottom;
+            // base = workerstate.getWorldConfig().bottomBase;
+            enemyPlayerList = gameRoom.players_1;
         }
 
-        // find closest player
-        for(var playerIndex = 0; playerIndex < this.maxPlayerCount; ++playerIndex){
-            const playerConfig = playerManager.playerArrey[playerIndex];
+        // find closest enemy player bots
+        for(var playerIndex = 0; playerIndex < enemyPlayerList.length; ++playerIndex){
+            const playerConfig = enemyPlayerList[playerIndex];
             // skip inactive player and players controlled by real people and players in the same team
-            if(!playerConfig.isActive || playerConfig.teamID == playerConfigParam.teamID){
-                // TODO: Add logic to spawn new AI player / admit new player here.
-                continue;
+            // if(!playerConfig.isActive || playerConfig.teamID == botConfigParam.teamID){
+            //     // TODO: Add logic to spawn new AI player / admit new player here.
+            //     continue;
+            // }
+
+            for(var i = 0; i < playerConfig.botObjectList.length; ++i){
+                var botConfig = playerConfig.botObjectList[i];
+                var botPosition = botConfig.position;
+
+                var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
+                    leaderPosition[0], leaderPosition[2], botPosition[0], botPosition[2]
+                );
+
+                if(distance < minDistance){
+                    minDistance = distance;
+                    // target = [botPosition[0], botPosition[2]]
+                    target = botConfig;
+                    // targetType = 'bot';
+                }
             }
-            var tmpLeaderConfig = workerstate.botMap[playerConfig.leaderBotID];
-            var tmpLeaderPosition = tmpLeaderConfig.payload.position;
+
             // console.log('comparing with playerID:', playerConfig.playerID, ' tmpLeaderPosition:', tmpLeaderPosition);
-            var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
-                leaderPosition[0], leaderPosition[2], tmpLeaderPosition[0], tmpLeaderPosition[2]
-            )
             // console.log('calculated distance:', distance);
-            if(distance < minDistance){
-                minDistance = distance;
-                target = [tmpLeaderPosition[0], tmpLeaderPosition[2]]
-                targetType = 'bot';
-            }
         }
 
         // console.log('after comparing palyers, minDistance:', minDistance, ' target:', target);
 
-        for(var i = 0; i < defenseList.length; ++i){
-            if(!defenseList[i].isActive){
+        // gameRoom.buildings_1
+        for(var i = 0; i < gameRoom.buildingArray_1.length; ++i){
+            var buildingConfig = gameRoom.buildingArray_1[i];
+            if(buildingConfig.team != 0 && buildingConfig.team == playerTeam){
                 // TODO: Add logic to spawn new AI player / admit new player here.
                 continue;
             }
             // console.log('comparing with defenseList[i]:', defenseList[i]);
             var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
-                leaderPosition[0], leaderPosition[2], defenseList[i][0], defenseList[i][1]
+                leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
             )
             if(distance < minDistance){
                 minDistance = distance;
-                target = defenseList[i];
-                targetType = 'static';
+                target = buildingConfig;
+                // if(i == 0){
+                //     targetType = 'base';
+                // }else{
+                //     targetType = 'static';
+                // }
+                
+            }
+        }
+
+        // gameRoom.buildings_2
+        for(var i = 0; i < gameRoom.buildingArray_2.length; ++i){
+            var buildingConfig = gameRoom.buildingArray_2[i];
+            if(buildingConfig.team != 0 && buildingConfig.team == playerTeam){
+                // TODO: Add logic to spawn new AI player / admit new player here.
+                continue;
+            }
+            // console.log('comparing with defenseList[i]:', defenseList[i]);
+            var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
+                leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
+            )
+            if(distance < minDistance){
+                minDistance = distance;
+                target = buildingConfig;
+                // if(i == 0){
+                //     targetType = 'base';
+                // }else{
+                //     targetType = 'static';
+                // }
+                
             }
         }
 
         // console.log('after comparing defenseList, minDistance:', minDistance, ' target:', target);
-
-        // test base
-        // console.log('comparing with base:', base);
-        var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
-            leaderPosition[0], leaderPosition[2], base[0], base[1]
-        )
-        if(distance < minDistance){
-            minDistance = distance;
-            target = base;
-            targetType = 'static';
-        }
-
-        // console.log('after comparing defenseList, minDistance:', minDistance, ' target:', target);
-
         if(target == null){
             return null;
         }else{
-            return {
-                target: target,
-                targetType: targetType
-            }
+            return target;
+            // {
+            //     target: target,
+            //     targetType: targetType
+            // }
         }
+
     },
 
     // find point(x, y) closest to position such that (x, y) in in range of targetPosition.
@@ -113,8 +148,8 @@ module.exports = {
             var j = 0;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
@@ -129,8 +164,8 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
@@ -145,8 +180,8 @@ module.exports = {
             positionRunnerStart.z = positionRunnerStart.z - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
@@ -161,8 +196,8 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x + 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
@@ -224,8 +259,8 @@ module.exports = {
             var j = 0;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
@@ -241,8 +276,8 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
@@ -258,8 +293,8 @@ module.exports = {
             positionRunnerStart.z = positionRunnerStart.z - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
@@ -275,8 +310,8 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x + 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
@@ -331,19 +366,25 @@ module.exports = {
         }
     },
 
-    FindClosestWalkablePoint: function(position){
+    getBotOccupyingPosition: function(xPosParam, zPosParam){
+        return workerState.strategyMatrix[xPosParam][zPosParam].id;
+    },
 
-        if(this.tg.grid.isWalkableAt(position.x, position.z) 
-        && bot_route_utility.isPositionUnoccupiedByBot(position.x, position.z)){
+    
+    findClosestWalkablePoint: function(position){ // position = [xpos, ypos, zpos]
+
+        if(pathfindingwrapper.isWalkableAt(position[0], position[2]) 
+        && this.getBotOccupyingPosition(position[0], position[2]) == null){
             return position;
         }
+
         for(var side = 1; side < this.tg.grid.width; ++side){
-            positionRunnerStart = {x:position.x - side, z:position.z - side};// left-bottom
+            var positionRunnerStart = {x:position[0] - side, z:position[2] - side};// left-bottom
             var j = 0;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
@@ -356,8 +397,8 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
@@ -370,8 +411,8 @@ module.exports = {
             positionRunnerStart.z = positionRunnerStart.z - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
@@ -384,8 +425,8 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x + 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(bot_route_utility.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(this.tg.grid.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
                     && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;

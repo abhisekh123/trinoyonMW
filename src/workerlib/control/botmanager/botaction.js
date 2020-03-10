@@ -98,36 +98,6 @@ module.exports = {
     },
 
 
-    areAllBotsIdle: function(playerConfigParam){
-        // leaderBotID: null,
-        // botIDList: []
-        var areBotsIdleFlag = false;
-        var leaderID = playerConfigParam.leaderBotID;
-        if(leaderID == null || leaderID == undefined){
-            // console.log('ERROR:leader id not present.');
-            return false;
-        }
-
-        // // console.log('===', );
-        var leaderConfig = workerstate.botMap[playerConfigParam.leaderBotID];
-        if(leaderConfig.instruction == null || leaderConfig.instruction.type == 'idle'){
-            areBotsIdleFlag = true;
-        }else{
-            return false;
-        }
-
-        for (let i = 0; i < playerConfigParam.botIDList.length; i++) {
-            // const element = array[i];
-            var botConfig = workerstate.botMap[playerConfigParam.botIDList[i]];
-            if(botConfig.instruction == null || leaderConfig.instruction.type == 'idle'){
-                areBotsIdleFlag = true;
-            }else{
-                return false;
-            }
-        }
-        return areBotsIdleFlag;
-    },
-
     continuePerformingAction: function(currentBot, timeSliceParam){
         // // console.log(currentBot);
         // console.log('performing action for bot:<' + currentBot.id + '> with actionIndex:' + currentBot.botRouteIndex 
