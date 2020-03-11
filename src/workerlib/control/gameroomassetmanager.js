@@ -269,7 +269,7 @@ module.exports = {
             player.lastCommunication = gameRoom.startTime;
             player.joinTime = gameRoom.startTime;
             // player.isAIDriven = true;
-            this.setAllBotsOfPlayerToPosition(player, this.worldConfig.topBasePlayerPosition[i], Math.PI);
+            this.resetAllBotsOfPlayerToStartingPosition(player, this.worldConfig.topBasePlayerPosition[i], Math.PI);
         }
 
         // players 2
@@ -280,14 +280,19 @@ module.exports = {
             player.lastCommunication = gameRoom.startTime;
             player.joinTime = gameRoom.startTime;
             // player.isAIDriven = true;
-            this.setAllBotsOfPlayerToPosition(player, this.worldConfig.bottomBasePlayerPosition[i], 0);
+            this.resetAllBotsOfPlayerToStartingPosition(player, this.worldConfig.bottomBasePlayerPosition[i], 0);
         }
     },
 
-    setAllBotsOfPlayerToPosition: function(player, position, rotation){ // position : [x,z]
+    resetAllBotsOfPlayerToStartingPosition: function(player, position, rotation){ // position : [x,z]
         for(var i = 0; i < player.botObjectList.length; ++i){
             player.botObjectList[i].position[0] = position[0];
             player.botObjectList[i].position[2] = position[1];
+
+            // update respawn position for future use
+            player.botObjectList[i].spawnPosition[0] = position[0];
+            player.botObjectList[i].spawnPosition[2] = position[1];
+
             player.botObjectList[i].rotation = rotation;
         }
     },
@@ -343,6 +348,7 @@ module.exports = {
         botObject.dethTimestamp = 0;
         botObject.isActive = true;
         botObject.respawnTime = botTypeItemConfig.respawnTime;
+        botObject.spawnPosition = [0, 0, 0];
 
         // data related to game play runtime
         botObject.position = [0, 0, 0];

@@ -28,13 +28,6 @@ module.exports = {
             currentBot.hasInstruction = true;
             currentBot.isPerformingAction = false;
             break;
-            case 'spawn':
-            currentBot.instruction = {};
-            currentBot.instruction.type = 'spawn';
-            currentBot.instruction.rotation = instructionPayload.botRotation;
-            currentBot.hasInstruction = false;
-            currentBot.isPerformingAction = true;
-            break;
             case 'march':
             case 'goto':
             // {
@@ -102,7 +95,7 @@ module.exports = {
         // // console.log(botItem);
     },
 
-
+    // timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
     continuePerformingAction: function(currentBot, timeSliceParam){
         // // console.log(currentBot);
         // console.log('performing action for bot:<' + currentBot.id + '> with actionIndex:' + currentBot.botRouteIndex 
@@ -230,36 +223,6 @@ module.exports = {
                 update.z = currentBot.payload.position[2];
                 this.latestSnapshot[currentBot.id] = update;
                 this.isStateUpdated = true;
-                this.respawnIfNeeded(currentBot);
-                // // console.log('exiting with reout index:' + currentBot.botRouteIndex);
-                // // console.log('time sliece - currentBot.timeelapsedincurrentaction:' + currentBot.timeelapsedincurrentaction);
-                return timeSliceParam;
-            case 'spawn': // birth
-                
-                // currentBot.instruction.type = 'attack';
-                // currentBot.instruction.rotation = instructionPayload.botRotation;
-                // characterConfig.engagedEnemyType = suitableEnemy.chosenTargetType;
-                // characterConfig.engagedEnemyTarget = suitableEnemy.chosenEnemyID;
-    
-
-                // currentBot.payload.rotation = currentBot.instruction.rotation
-                currentBot.timeelapsedincurrentaction = 0;
-                // currentBot.isActive = true;
-                timeSliceParam = 0;
-                currentBot.botRoute = null;
-                currentBot.botRouteIndex = 0;
-                currentBot.isPerformingAction = false;
-                currentBot.hasInstruction = false;
-                currentBot.timeelapsedincurrentaction = 0;
-                // update.action = 'spawn';
-                // console.log(this.lastLoopExecutionTimeStamp, ' rebirth of:', currentBot.id , ' at position:', currentBot.payload.position);
-                var update = {};
-                update.action = currentBot.instruction.type;
-                update.botType = currentBot.type;
-                update.x = currentBot.payload.position[0];
-                update.z = currentBot.payload.position[2];
-                this.latestSnapshot[currentBot.id] = update;
-                this.isStateUpdated = true;
                 // // console.log('exiting with reout index:' + currentBot.botRouteIndex);
                 // // console.log('time sliece - currentBot.timeelapsedincurrentaction:' + currentBot.timeelapsedincurrentaction);
                 return timeSliceParam;
@@ -352,6 +315,7 @@ module.exports = {
         }
     },
 
+    // actionManager.Bot.processInstruction(botConfig, gameRoom);
     processInstruction: function(botID){
         var currentBot = workerstate.botArray[botID];
         // console.log('process bot instruction for botID:' + botID + ' currentBot.instruction.type:' + currentBot.instruction.type);
@@ -390,7 +354,6 @@ module.exports = {
                 currentBot.nextweapon = currentBot.backupinstruction.nextweapon;
                 // currentBot.nextweapon = currentBot.instruction.nextweapon;
                 break;
-            // case 'spawn':
             case 'idle':
                 // currentBot.backupinstruction = currentBot.instruction;
                 // currentBot.instruction = {};
@@ -440,93 +403,6 @@ module.exports = {
 
         // }
         // console.log('enemy life after attack:', enemyConfig.life);
-    },
-
-    respawnIfNeeded(characterConfig){
-        var parentCtrl = this;
-        switch(characterConfig.type){
-            case 'bot':
-            // enemyConfig = workerstate.botMap[characterConfig.engagedEnemyTarget];
-            setTimeout(function(){
-                parentCtrl.respawn(characterConfig);
-                // tg.selectedObjectPointerMesh.position.x = position.x;
-                // tg.selectedObjectPointerMesh.position.y = position.z;
-                // tg.selectedObjectPointerMesh.position.y = tg.selectedObjectPointerMeshPositionY;
-            }, 
-            characterConfig.spawnDuration);
-            break;
-            case 'tower':
-            // enemyConfig = workerstate.buildingMap[characterConfig.engagedEnemyTarget];
-            break;
-            default:
-            // console.log('ERROR: unknown enemy type:' + characterConfig);
-            break;
-        }
-    },
-
-    respawn(itemConfigParam){
-
-        itemConfigParam.isActive = true;
-        var itemTypeConfig = workerstate.getItemConfig().characters[itemConfigParam.botType];
-        itemConfigParam.life = itemTypeConfig.life;
-        var spawnPosition = null;
-        if(itemConfigParam.isLeader){
-            // spawn near base
-            var team = itemConfigParam.team;
-            var basePosition = null;
-            if(team == 1){
-                basePosition = workerstate.buildingMap['base2'].position;
-            }else{
-                basePosition = workerstate.buildingMap['base1'].position;
-            }
-            spawnPosition = botroutemanager.FindClosestWalkablePoint(basePosition);
-        }else{
-            var playerConfig = playerManager.getPlayerByTeamID(itemConfigParam.team);
-            var leaderConfig = workerstate.botMap[playerConfig.leaderBotID];
-            spawnPosition = botroutemanager.FindClosestWalkablePoint({
-                x: leaderConfig.payload.position[0],
-                z: leaderConfig.payload.position[2]
-            });
-        }
-        itemConfigParam.payload.position[0] = spawnPosition.x;
-        itemConfigParam.payload.position[2] = spawnPosition.z;
-        // // console.log('1');
-        this.instructBot(itemConfigParam, 'spawn', {botRotation: 0});
-    },
-
-
-    admitNewBot: function(botIndex){
-        // // console.log('admit new bot:' + botIndex);
-        // var botList = this.botArray;
-        // var botID = this.findEmptyBotSlot();
-        var botElement = workerstate.botArray[botIndex];
-        
-        var botItemProperty = workerstate.getItemConfig().characters[botElement.payload.type];
-
-        workerstate.botArray[botIndex].hasInstruction = false;
-        workerstate.botArray[botIndex].isPerformingAction = false;
-        workerstate.botArray[botIndex].life = botItemProperty.life;
-        // workerstate.botArray[botIndex].equippedWeapon = botItemProperty.attachmentmesh[0];
-
-        workerstate.botArray[botIndex].strideDistance = botItemProperty.strideDistance;
-        workerstate.botArray[botIndex].strideTime = botItemProperty.strideTime;
-        workerstate.botArray[botIndex].range = botItemProperty.range;
-        workerstate.botArray[botIndex].botRoute = null;
-
-
-        workerstate.botArray[botIndex].botRoute = null;
-
-        var position = botroutemanager.admitNewBot(botElement.payload, botIndex);
-        workerstate.botArray[botIndex].payload.position[0] = position.x;
-        workerstate.botArray[botIndex].payload.position[2] = position.z;
-    },
-
-
-    deActivateBot: function(botID){
-        if(workerstate.botArray[botID].isActive == false){
-            // console.log('ERROR:the agent is already inactive.');
-        }
-        botroutemanager.deActivateBot(botID);
     },
     
 }

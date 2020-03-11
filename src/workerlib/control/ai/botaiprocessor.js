@@ -1,11 +1,6 @@
 
 
 module.exports = {
-    botArray: [],
-    botMap: {},
-    buildingMap: {},
-    buildingArray: [],
-    // baseMap: {}
 
 
 
@@ -122,11 +117,11 @@ module.exports = {
         
     },
 
-    
-    requestAIToInstructBot: function(characterConfig){
+    // aiManager.Bot.requestAIToInstructBot(botConfig, isHero, gameRoom);
+    processAI: function(characterConfig){
         
         // var characterConfig = workerstate.botArray[botID];
-        // console.log('requestAIToInstructBot:' + characterConfig.id);
+        // console.log('processAI:' + characterConfig.id);
         var botType = characterConfig.type;
         // var botItemConfig = workerstate.getItemConfig().characters[botType];
 

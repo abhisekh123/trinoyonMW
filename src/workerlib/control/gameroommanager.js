@@ -5,6 +5,7 @@ const utilityFunctions = require('../../utils/utilityfunctions');
 const environmentState = require('../../../dist/server/state/environmentstate');
 const gameRoomAssetManager = require('./gameroomassetmanager');
 const aiManager = require('./ai/aimanager');
+const actionManager = require('./action/actionmanager');
 
 module.exports = {
     worldConfig: null,
@@ -88,7 +89,7 @@ module.exports = {
             const playerConfig = gameRoom.players_1[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
                 const botConfig = playerConfig.botObjectList[j];
-                this.processBotLifeCycle(botConfig, gameRoom);
+                this.processBotLifeCycle(botConfig, gameRoom, j==0);
             }
         }
 
@@ -97,49 +98,60 @@ module.exports = {
             const playerConfig = gameRoom.players_2[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
                 const botConfig = playerConfig.botObjectList[j];
-                this.processBotLifeCycle(botConfig, gameRoom);
+                this.processBotLifeCycle(botConfig, gameRoom, j==0);
             }
         }
         
     },
 
-    processBotLifeCycle: function(playerConfig, gameRoom) {
-    },
+    processBotLifeCycle: function(botConfig, gameRoom, isHero) {
+        // if bot is inactive, check if can spawn. return.
+        if(botConfig.isActive == false){
+            // check if eligible to respawn
+            if((workerState.currentTime - botObject.dethTimestamp) > botObject.respawnTime){
+                botConfig.action = null;
+                botConfig.instruction = null;
+                botObject.dethTimestamp = workerState.currentTime; // time at which bot re spawned
+                botObject.isActive = false;
+                player.botObjectList[i].position[0] = player.botObjectList[i].spawnPosition[0];
+                player.botObjectList[i].position[2] = player.botObjectList[i].spawnPosition[2];
 
-    processBot: function(botID, timeSliceParam){ // time slice is the time that needs to be consumed in this cycle
-        
-        var currentBot = workerstate.botArray[botID];
-        // console.log('-------->>start processBot for: <' + currentBot.id + '>');
-        var timeSlice = timeSliceParam;
-        while(timeSlice > 0){
+                // TODO : update bot position in the grid
+                return;
+            }
+        }
+
+        var timeSlice = workerState.timeIntervalToSimulateInEachGame;
+
+        if (botConfig.life <= 0 && botConfig.isActive) { // bots that died in last cycle.
+            botConfig.action = null;
+            botConfig.instruction = null;
+            botObject.dethTimestamp = workerState.currentTime;
+            botObject.isActive = false;
+
+            // TODO : update bot position in the grid
+            return;
+        }
+
+        // try consuming the timeslice by performing action
+        // deciding action does not consume time.
+        while(timeSlice > 0){ 
             // console.log('timeSlice:', timeSlice);
-            if(currentBot.isPerformingAction){
-                // // console.log('action:' + currentBot.id);
-                timeSlice = this.continuePerformingAction(currentBot, timeSlice);
-            }else if(currentBot.hasInstruction){ // instruction provided either by user or AI
-                // // console.log('instruction:' + currentBot.id);
-                this.processInstruction(botID);
+            if(botConfig.action != null){
+                // console.log('action:' + botConfig.id);
+                timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
+            }else if(botConfig.instruction != null){ // instruction provided either by user or AI
+                // // console.log('instruction:' + botConfig.id);
+                actionManager.Bot.processInstruction(botConfig, gameRoom);
             }else{// standing idle. This is executed for idle user bot.
                 // // console.log('else');
                 // timeSlice = 0;
-                this.requestAIToInstructBot(currentBot);
+                aiManager.Bot.processAI(botConfig, isHero, gameRoom);
             }
         }
-        // // console.log('exit');
     },
 
     processBotLifeCycle_Old: function(playerConfig, gameRoom) {
-        for (var i = 0; i < playerConfig.botObjectList.length; ++i) {
-            var botConfig = playerConfig.botObjectList[i];
-            if (botConfig.life <= 0 && botConfig.isActive) { // bots that died in last cycle.
-                // this.processBot(i, timeSlice);
-                // var botConfig = this.botArray[i];
-                // // console.log('6');
-                this.instructBot(botConfig, 'die', null);,,,
-                // workerstate.botArray[i].isActive = false;
-                // console.log('bot:' + workerstate.botArray[i].id + ' DIED.');
-            }
-        }
 
         var timeSlice; // processActionResolution;refreshWorldInterval
         var remainingTimeForThisRefreshCycle = this.deltaTimeForRefresh; // remainig time for current refresh cycle.
