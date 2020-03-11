@@ -8,4 +8,8 @@ module.exports = {
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();
     },
+    
+    processAI: function(buildingConfigParam, gameRoom){
+        // TODO
+    }
 }

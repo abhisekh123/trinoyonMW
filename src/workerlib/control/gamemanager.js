@@ -46,42 +46,6 @@ module.exports = {
         }
     },
 
-    terminateGame(gameRoom){
-        return;
-        gameRoomManager.resetGame(gameRoom);
-
-
-        // old code
-        var loosingTeam = itemConfigParam.team;
-        var update = {};
-        update.action = 'over';
-        update.loosingTeam = loosingTeam;
-        update.x = 0;
-        update.z = 0;
-        this.latestSnapshot[itemConfigParam.id] = update;
-        this.isStateUpdated = true;
-        // this.isGameRunning = false;
-        this.sendSnapshotUpdateToMain();
-
-        // reset game
-        gameRoomAssetManager.reset();
-
-        for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
-            const characterConfig = workerstate.getWorldConfig().characters[index];
-            var botObject = workerstate.botArray[index];
-            botObject.payload.position[0] = characterConfig.position.x;
-            botObject.payload.position[2] = characterConfig.position.z;
-            botObject.life = characterConfig.life;
-        }
-        
-        for (let index = 0; index < workerstate.buildingArray.length; index++) {
-            var buildingType = workerstate.buildingArray[index].type;
-            var buildingItemConfig = workerstate.getItemConfig().buildings[buildingType];
-            workerstate.buildingArray[i].life = buildingItemConfig.life;;
-            workerstate.buildingArray[i].isActive = true;
-        }
-    },
-
 
     startNewGame: function(gameRoom, startTime) {
         console.log('starting new game room');

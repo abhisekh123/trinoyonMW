@@ -111,6 +111,7 @@ module.exports = {
             workerState.buildingMap_1[towerID] = {
                 life:this.itemConfig.items.tower.life,
                 attack:this.itemConfig.items.tower.attack,
+                captureTime:this.itemConfig.items.tower.captureTime,
                 type:'tower',
                 isActive: true,
                 team:1,
@@ -152,6 +153,7 @@ module.exports = {
             workerState.buildingMap_2[towerID] = {
                 life:this.itemConfig.items.tower.life,
                 attack:this.itemConfig.items.tower.attack,
+                captureTime:this.itemConfig.items.tower.captureTime,
                 isActive: true,
                 type:'tower',
                 team:2,

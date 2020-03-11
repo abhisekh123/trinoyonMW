@@ -340,6 +340,10 @@ module.exports = {
         botObject.sight = botTypeItemConfig.sight;
         botObject.range = botTypeItemConfig.range;
 
+        botObject.dethTimestamp = 0;
+        botObject.isActive = true;
+        botObject.respawnTime = botTypeItemConfig.respawnTime;
+
         // data related to game play runtime
         botObject.position = [0, 0, 0];
         botObject.rotation = 0;

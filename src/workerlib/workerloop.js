@@ -31,6 +31,8 @@ module.exports = {
 
         gameManager.tryStartingNewGame();
 
+        // game taken to compute gurrent snapshot for each game
+        // will be used to schedule next iteration of engine loop
         let timeElapsed = utilityFunctions.getCurrentTime() - workerState.timePreviousGameLoopStart;
         // // console.log('refreshWorld time duration:' + timeElapsed);
         if(timeElapsed > workerState.gameLoopInterval){

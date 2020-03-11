@@ -1,5 +1,6 @@
 const workerState = require('../../state/workerstate');
 const routeManager = require('../../route/routemanager');
+const botActionProcessor = require('../action/botactionprocessor');
 
 module.exports = {
     // baseMap: {}
@@ -10,7 +11,7 @@ module.exports = {
         this.itemConfig = workerState.getItemConfig();
     },
 
-    processPlayerAI: function(playerConfigParam, gameRoom){
+    processAI: function(playerConfigParam, gameRoom){
         var areAllBotsIdle = this.areAllBotsIdle(playerConfigParam);
         if(areAllBotsIdle == true){
             var leaderBotConfig = playerConfigParam.botObjectList[0];
@@ -27,17 +28,13 @@ module.exports = {
                 // // console.log(nearestTarget.target);
                 var nearestPosition = routeManager.findClosestWalkablePoint({x:nearestTarget.target[0], y:0, z:nearestTarget.target[1]});
                 var path = routeManager.findPath(
-                    leaderBotConfig.payload.position[0], 
-                    leaderBotConfig.payload.position[2], 
+                    leaderBotConfig.position[0], 
+                    leaderBotConfig.position[2], 
                     nearestPosition.x, 
                     nearestPosition.z);
                 // // console.log('path:', path);
                 // // console.log('4');
-                this.instructBot(leaderBotConfig, 'goto',
-                {
-                    // botRotation: suitableEnemy.botRotation,
-                    pathToEnemy: path,
-                });
+                botActionProcessor.instructBot(leaderBotConfig, 'march', path);
             }
         }
     },

@@ -150,7 +150,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -166,7 +166,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -182,7 +182,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -198,7 +198,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -261,7 +261,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
                     && bot_route_utility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
@@ -278,7 +278,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
                         && bot_route_utility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
@@ -295,7 +295,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
                         && bot_route_utility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
@@ -312,7 +312,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
                         && bot_route_utility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
@@ -385,7 +385,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)){
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -399,7 +399,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)){
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -413,7 +413,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)){
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -427,7 +427,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && bot_route_utility.isPositionUnoccupiedByBot(positionRunnerStart.x, positionRunnerStart.z)){
+                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -439,5 +439,9 @@ module.exports = {
         console.error('ERROR: Closest walkable point not found for position:', position);
         return null;// walkable point not found. This should never happen.
     },
+
+    findPath: function(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ){
+        pathfindingwrapper.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
+    }
 
 }
