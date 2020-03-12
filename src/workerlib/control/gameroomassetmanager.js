@@ -349,6 +349,7 @@ module.exports = {
         botObject.isActive = true;
         botObject.respawnTime = botTypeItemConfig.respawnTime;
         botObject.spawnPosition = [0, 0, 0];
+        botObject.visibleToEnemyCount = 0;
 
         // data related to game play runtime
         botObject.position = [0, 0, 0];

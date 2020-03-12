@@ -4,18 +4,7 @@ var fs = require('fs');
 const readline = require('readline');
 
 module.exports = {
-    testVisibility: function(eyeX, eyeZ, targetX, targetZ){
-        // this.visibilityMatrix[x][z] = {
-        //     visibility : neighbourhoodVisibilityGrid,
-        //     id : null,
-        // };
-        var visibilityMap = this.visibilityMatrix[eyeX][eyeZ].visibility[targetX];
-        if((visibilityMap & (1 << targetZ)) > 0){
-            return true;
-        }else{
-            return false;
-        }
-    },
+    
     printGrid: function(){
         let width = this.tg.grid.width;
         let height = this.tg.grid.height;

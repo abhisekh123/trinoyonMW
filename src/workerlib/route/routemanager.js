@@ -3,7 +3,7 @@
  * this file contains logical function that are used by ai/action
  */
 const pathfindingwrapper = require('./pathfindingwrapper');
-const customroutingutility = require('./customroutingutility');
+const customRoutingUtility = require('./customroutingutility');
 const workerState = require('../state/workerstate');
 
 
@@ -18,12 +18,13 @@ module.exports = {
         this.itemConfig = workerState.getItemConfig();
 
         pathfindingwrapper.init();
-        customroutingutility.init();
+        customRoutingUtility.init();
     },
 
 
 
-    // used for movement of player to nearesrt enemy. used by player AI
+    // TODO: need refinement. search only for hero bot.
+    // used for movement of player to nearesrt enemy hero or building. used by player AI
     findClosestPlayerOrTowerOrBase: function(botConfigParam, gameRoom){
         var playerTeam = botConfigParam.teamId;
         // var defenseList = null;
@@ -150,7 +151,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -166,7 +167,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -182,7 +183,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -198,7 +199,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -261,10 +262,10 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
-                    && bot_route_utility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
+                    && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -278,10 +279,10 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
-                        && bot_route_utility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
+                        && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -295,10 +296,10 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
-                        && bot_route_utility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
+                        && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -312,10 +313,10 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)
-                        && bot_route_utility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
+                        && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -366,15 +367,17 @@ module.exports = {
         }
     },
 
-    getBotOccupyingPosition: function(xPosParam, zPosParam){
-        return workerState.strategyMatrix[xPosParam][zPosParam].id;
+    getObjectOccupyingThePosition: function(xPosParam, zPosParam){
+
+        return gameRoom.gridMatrix[xPosParam][zPosParam].object;
     },
 
     
+    // find closest point which is not an obstacle and also not occupied by some other bot.
     findClosestWalkablePoint: function(position){ // position = [xpos, ypos, zpos]
 
         if(pathfindingwrapper.isWalkableAt(position[0], position[2]) 
-        && this.getBotOccupyingPosition(position[0], position[2]) == null){
+        && this.getObjectOccupyingThePosition(position[0], position[2]) == null){
             return position;
         }
 
@@ -385,7 +388,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null){
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -399,7 +402,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null){
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -413,7 +416,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null){
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -427,7 +430,7 @@ module.exports = {
                 
                 if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
                     if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getBotOccupyingPosition(positionRunnerStart.x, positionRunnerStart.z) == null){
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;

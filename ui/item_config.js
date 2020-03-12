@@ -85,6 +85,7 @@
                 scale: 2,
                 sight: 3,
                 range: 3,
+                attackinterval: 1000,
             }
         },
         

@@ -17,6 +17,10 @@ module.exports = {
         this.initialiseRooms();
     },
 
+    refreshVisibility: function(gameRoom){
+        // TODO : 
+    },
+
     /**
      * game progress / refresh
      */
@@ -201,6 +205,17 @@ module.exports = {
     initialiseRooms: function () {
         for (var i = 0; i < environmentState.maxGameCount; ++i) { // intialise each game room
             const gameRoom = {};
+
+            var gridMatrix = new Array(this.worldConfig.gridSide);
+            for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
+                gridMatrix[i] = new Array(this.worldConfig.gridSide);
+                for(var k = 0; k < this.worldConfig.gridSide; ++k){ // z axis
+                    gridMatrix[i][k] = {
+                        object: null
+                    }
+                }
+            }
+            gameRoom.gridMatrix = gridMatrix;
             // gameRoom.buildings_1 = utilityFunctions.cloneObject(
             //     utilityFunctions.getObjectValues(workerState.buildingMap_1)
             // );
@@ -213,6 +228,21 @@ module.exports = {
             gameRoom.buildingArray_2 = utilityFunctions.cloneObject(
                 utilityFunctions.getObjectValues(workerState.buildingArray_2)
             );
+
+            // update grid
+            // building 1
+            for (var i = 0; i < gameRoom.buildings_1.length; ++i) {
+                const building = gameRoom.buildings_1[i];
+                gameRoom.gridMatrix[building.position[0]][building.position[2]].object = building;
+            }
+
+            // building 2
+            for (var i = 0; i < gameRoom.buildings_2.length; ++i) {
+                const building = gameRoom.buildings_2[i];
+                gameRoom.gridMatrix[building.position[0]][building.position[2]].object = building;
+            }
+
+            // NOTE: We are not updating the grid position for bots. They will be updated when they move.
 
             gameRoom.isActive = false;
             gameRoom.players_1 = [];
@@ -237,6 +267,21 @@ module.exports = {
         // const gameRoom = workerState.games(indexParam);
         // gameRoom.isActive = false;
         // gameRoom.startTime = null;
+
+        // remove all entries except buildings and towers
+        for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
+            for(var k = 0; k < this.worldConfig.gridSide; ++k){ // z axis
+                if(gameRoom.gridMatrix[i][k].object == undefined){
+                    gameRoom.gridMatrix[i][k].object = null;
+                }
+                if(gameRoom.gridMatrix[i][k].object != null){
+                    if(gameRoom.gridMatrix[i][k].object.type != 'tower' && gameRoom.gridMatrix[i][k].object.type != 'base'){
+                        gameRoom.gridMatrix[i][k].object = null;
+                    }
+                }
+            }
+        }
+        gameRoom.gridMatrix = gridMatrix;
 
         // building 1
         for (var i = 0; i < gameRoom.buildings_1.length; ++i) {

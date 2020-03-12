@@ -28,6 +28,11 @@ module.exports = {
     },
 
     processGames: function() {
+        var refreshVisibilityFlag = false;
+        if((workerState.currentTime - workerState.timeLastrefReshVisibilityWasAttempted) > workerState.refreshVisibilityInterval){
+            workerState.timeLastrefReshVisibilityWasAttempted = workerState.currentTime;
+            refreshVisibilityFlag = true;
+        }
         // will start asmany games possible for given waiting list and free game rooms.
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
             const gameRoom = workerState.games[i];
@@ -42,6 +47,10 @@ module.exports = {
                 gameRoomManager.processPlayers(gameRoom);
                 gameRoomManager.processBuildings(gameRoom);
                 gameRoomManager.processBots(gameRoom);
+
+                if(refreshVisibilityFlag == true){
+                    gameRoomManager.refreshVisibility(gameRoom);
+                }
             }
         }
     },

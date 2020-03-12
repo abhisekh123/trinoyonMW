@@ -17,6 +17,18 @@ module.exports = {
         }
     },
 
+    testVisibility: function(eyeX, eyeZ, targetX, targetZ){
+        // this.visibilityMatrix[x][z] = {
+        //     visibility : neighbourhoodVisibilityGrid,
+        //     id : null,
+        // };
+        var visibilityMap = this.visibilityMatrix[eyeX][eyeZ].visibility[targetX];
+        if((visibilityMap & (1 << targetZ)) > 0){
+            return true;
+        }else{
+            return false;
+        }
+    },
 
     createStrategyMatrix: function () {
         // // console.log('start createVisibilityMatrix');
@@ -125,8 +137,8 @@ module.exports = {
                 strategyMatrix[x][z] = {
                     visibility: neighbourhoodVisibilityGrid,
                     // localPath : neighbourPathGrid,
-                    id: null,
-                    influence: []
+                    // id: null,
+                    // influence: []
                 };
 
             }
@@ -203,7 +215,7 @@ module.exports = {
         var distanceMatrix = new Array(this.worldConfig.gridSide);
         for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
             distanceMatrix[i] = new Array(this.worldConfig.gridSide);
-            for(var k = 0; k < this.neighbourhoodBoxSide; ++k){ // z axis
+            for(var k = 0; k < this.worldConfig.gridSide; ++k){ // z axis
                 distanceMatrix[i][k] = this.roundTo2Decimal(Math.sqrt(Math.pow(i, 2) + Math.pow(k, 2)));
             }
         }
