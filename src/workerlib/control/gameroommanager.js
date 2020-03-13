@@ -30,13 +30,14 @@ module.exports = {
 
     processBots: function (gameRoom) {
 
-        // update bot life cycle
+        // update bot life cycle. 
+        // All bots who died / respawned during previous iteration interval are processed simultaniously.
         // players 1
         for (var i = 0; i < gameRoom.players_1.length; ++i) {
             const playerConfig = gameRoom.players_1[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
                 const botConfig = playerConfig.botObjectList[j];
-                this.processBotLifeCycle(botConfig, gameRoom, j==0);
+                this.processBotLifeCycle(botConfig, gameRoom);
             }
         }
 
@@ -45,39 +46,33 @@ module.exports = {
             const playerConfig = gameRoom.players_2[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
                 const botConfig = playerConfig.botObjectList[j];
-                this.processBotLifeCycle(botConfig, gameRoom, j==0);
+                this.processBotLifeCycle(botConfig, gameRoom);
+            }
+        }
+
+        // All bots execute action even if they die during the current iteration interval.
+        // this is to make result independent of sequence at which the bots are executed.
+        // process bot action
+        for (var i = 0; i < gameRoom.players_1.length; ++i) {
+            const playerConfig = gameRoom.players_1[i];
+            for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
+                const botConfig = playerConfig.botObjectList[j];
+                this.processBotAction(botConfig, gameRoom, j==0);
+            }
+        }
+
+        // players 2
+        for (var i = 0; i < gameRoom.players_2.length; ++i) {
+            const playerConfig = gameRoom.players_2[i];
+            for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
+                const botConfig = playerConfig.botObjectList[j];
+                this.processBotAction(botConfig, gameRoom, j==0);
             }
         }
         
     },
 
-    processBotLifeCycle: function(botConfig, gameRoom, isHero) {
-        // if bot is inactive, check if can spawn. return.
-        if(botConfig.isActive == false){
-            // check if eligible to respawn
-            if((workerState.currentTime - botObject.deathTimestamp) > botObject.respawnTime){
-                botConfig.action = null;
-                botObject.deathTimestamp = workerState.currentTime; // time at which bot re spawned
-                botObject.isActive = false;
-                player.botObjectList[i].position[0] = player.botObjectList[i].spawnPosition[0];
-                player.botObjectList[i].position[2] = player.botObjectList[i].spawnPosition[2];
-
-                // TODO : update bot position in the grid
-                return;
-            }
-        }
-
-        
-
-        if (botConfig.life <= 0 && botConfig.isActive) { // bots that died in last cycle.
-            botConfig.action = null;
-            botObject.deathTimestamp = workerState.currentTime;
-            botObject.isActive = false;
-
-            // TODO : update bot position in the grid
-            return;
-        }
-
+    processBotAction: function(botConfig, gameRoom, isHero) {
         // try consuming the timeslice by performing action
         // deciding action does not consume time.
         var timeSlice = workerState.timeIntervalToSimulateInEachGame;
@@ -91,6 +86,35 @@ module.exports = {
                 // timeSlice = 0;
                 aiManager.Bot.processAI(botConfig, isHero, gameRoom);
             }
+        }
+    },
+
+    processBotLifeCycle: function(botConfig, gameRoom) {
+        // if bot is inactive, check if can spawn. return.
+        if(botConfig.isActive == false){
+            // check if eligible to respawn
+            if((workerState.currentTime - botConfig.deathTimestamp) > botConfig.respawnTime){
+                botConfig.action = null;
+                botConfig.deathTimestamp = workerState.currentTime; // time at which bot re spawned
+                botConfig.isActive = true;
+                botConfig.life = botConfig.fullLife;
+                botConfig.position[0] = botConfig.spawnPosition[0];
+                botConfig.position[2] = botConfig.spawnPosition[2];
+
+                // TODO : update bot position in the grid. For now consider repawn position as special.
+                return;
+            }
+        }
+
+        
+
+        if (botConfig.life <= 0 && botConfig.isActive) { // bots that died in last cycle.
+            botConfig.action = null;
+            botConfig.deathTimestamp = workerState.currentTime;
+            botConfig.isActive = false;
+
+            gameRoom.gridMatrix[botConfig.position[0]][botConfig.position[2]].object = null;
+            return;
         }
     },
 

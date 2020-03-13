@@ -59,32 +59,6 @@ module.exports = {
         }
     },
 
-    processBotLifeCycle_Old: function(playerConfig, gameRoom) {
-
-        var timeSlice; // processActionResolution;refreshWorldInterval
-        var remainingTimeForThisRefreshCycle = this.deltaTimeForRefresh; // remainig time for current refresh cycle.
-
-
-        do {
-            // console.log('--))start do loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
-            if (remainingTimeForThisRefreshCycle <= this.processActionResolution) {
-                timeSlice = remainingTimeForThisRefreshCycle;
-                remainingTimeForThisRefreshCycle = 0;
-            } else {
-                timeSlice = this.processActionResolution;
-                remainingTimeForThisRefreshCycle = remainingTimeForThisRefreshCycle - this.processActionResolution;
-            }
-            for (var i = 0; i < this.maxBotCount; ++i) {
-                if (workerstate.botArray[i].isActive == true) {
-                    this.processBot(i, timeSlice);
-                    // var botConfig = this.botArray[i];
-                }
-                // this.processBot(i, timeSlice); /// process all bots : active, inactive.
-            }
-            // // console.log('end do loop');
-        } while (remainingTimeForThisRefreshCycle > 0);
-    },
-
 
     startNewGame: function(gameRoom, startTime) {
         console.log('starting new game room');
@@ -99,12 +73,12 @@ module.exports = {
         messageManager.broadCompleteGameConfigToPlayers(gameRoom);
     },
 
-    tryStartingNewGame: function() {
+    tryStartingNewGames: function() {
         // test time stamp to see if it is too early.
         const timeNow = utilityFunctions.getCurrentTime();
         if((timeNow - workerState.timeWhenLastAttemptWasMadeToStartNewGame) < workerState.minInterval_AttemptToStartNewGame){
             // too early. will try next time.
-            // console.log('too early to tryStartingNewGame. doing nothing');
+            // console.log('too early to tryStartingNewGames. doing nothing');
             return;
         }else{
             workerState.timeWhenLastAttemptWasMadeToStartNewGame = timeNow;

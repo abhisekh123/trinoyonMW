@@ -339,6 +339,7 @@ module.exports = {
         botObject.attackinterval = botTypeItemConfig.attackinterval;
         botObject.attack = botTypeItemConfig.attack;
         botObject.life = botTypeItemConfig.life;
+        botObject.fullLife = botTypeItemConfig.life;
         botObject.speed = botTypeItemConfig.speed; //one tile per 1000 ms.
         botObject.diagonalTime = utilityFunctions.roundTo2Decimal(1.414 / botObject.speed);
         botObject.adjacentTime = utilityFunctions.roundTo2Decimal(1 / botObject.speed);
