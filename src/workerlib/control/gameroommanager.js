@@ -78,13 +78,13 @@ module.exports = {
         var timeSlice = workerState.timeIntervalToSimulateInEachGame;
         while(timeSlice > 0){ 
             // console.log('timeSlice:', timeSlice);
-            if(botConfig.action != null){
+            if(botConfig.action == 'march' || botConfig.action == 'goto'){
                 // console.log('action:' + botConfig.id);
                 timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
             }else{// standing idle. This is executed for idle user bot.
                 // // console.log('else');
                 // timeSlice = 0;
-                aiManager.Bot.processAI(botConfig, isHero, gameRoom);
+                timeSlice = aiManager.Bot.processAI(botConfig, isHero, gameRoom, timeSlice);
             }
         }
     },

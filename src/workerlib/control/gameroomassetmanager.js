@@ -359,7 +359,7 @@ module.exports = {
         botObject.position = [0, 0, 0];
         botObject.rotation = 0;
         botObject.action = null;
-        botObject.path = [];
+        botObject.actionData = null;
         // botObject.deltaTime = 0;
 
         return botObject;

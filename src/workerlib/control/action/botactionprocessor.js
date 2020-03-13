@@ -1,4 +1,5 @@
 const workerState = require('../../state/workerstate');
+const routeManager = require('../../route/routemanager');
 
 module.exports = {
     // baseMap: {}
@@ -9,8 +10,23 @@ module.exports = {
         this.itemConfig = workerState.getItemConfig();
     },
 
-    // timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
-    continuePerformingAction: function(currentBot, timeSliceParam){
+    continuePerformingAction: function(botConfig, gameRoom, timeSlice){
+        switch(botConfig.action){
+            case 'goto':
+            // else continue transport
+            break;
+            case 'march':
+            // check if hostile in range
+            // action = ready
+            // else continue transport
+            break;
+            default:
+            console.log('unknown botConfig.action:', botConfig.action);
+            break;
+        }
+    },
+
+    continuePerformingAction_OLD: function(botConfig, gameRoom, timeSlice){
         // // console.log(currentBot);
         // adding correction by taking into account
         // the partially executed action in the last iteration.

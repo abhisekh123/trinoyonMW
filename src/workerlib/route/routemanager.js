@@ -12,6 +12,7 @@ module.exports = {
     worldConfig: null,
     itemConfig: null,
     
+    customRoutingUtility: customRoutingUtility,
 
     init: function(){
         this.worldConfig = workerState.getWorldConfig();
