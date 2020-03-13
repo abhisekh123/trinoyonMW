@@ -340,12 +340,15 @@ module.exports = {
         botObject.attack = botTypeItemConfig.attack;
         botObject.life = botTypeItemConfig.life;
         botObject.speed = botTypeItemConfig.speed; //one tile per 1000 ms.
+        botObject.diagonalTime = utilityFunctions.roundTo2Decimal(1.414 / botObject.speed);
+        botObject.adjacentTime = utilityFunctions.roundTo2Decimal(1 / botObject.speed);
         botObject.strideDistance = botTypeItemConfig.strideDistance;
         botObject.strideTime = botTypeItemConfig.strideTime;
         botObject.sight = botTypeItemConfig.sight;
         botObject.range = botTypeItemConfig.range;
 
-        botObject.dethTimestamp = 0;
+        botObject.residueTimeslice = 0;
+        botObject.deathTimestamp = 0;
         botObject.isActive = true;
         botObject.respawnTime = botTypeItemConfig.respawnTime;
         botObject.spawnPosition = [0, 0, 0];
@@ -361,4 +364,6 @@ module.exports = {
 
         return botObject;
     }
+
+
 }

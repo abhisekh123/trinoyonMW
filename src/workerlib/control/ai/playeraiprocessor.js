@@ -3,9 +3,10 @@ const routeManager = require('../../route/routemanager');
 const botActionProcessor = require('../action/botactionprocessor');
 
 module.exports = {
-    // baseMap: {}
+
     worldConfig: null,
     itemConfig: null,
+    
     init: function(){
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();

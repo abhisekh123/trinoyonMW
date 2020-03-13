@@ -205,7 +205,7 @@ module.exports = {
                 }
                 
                 // angle with positive z axis(away from camera). negetive for left side(x < 0)
-                angleMatrix[i][j] = this.roundTo2Decimal(Math.atan2((i - this.maxRange), (j - this.maxRange))); 
+                angleMatrix[i][j] = utilityFunctions.roundTo2Decimal(Math.atan2((i - this.maxRange), (j - this.maxRange))); 
             }
         }
         workerState.angleMatrix = angleMatrix;
@@ -216,7 +216,7 @@ module.exports = {
         for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
             distanceMatrix[i] = new Array(this.worldConfig.gridSide);
             for(var k = 0; k < this.worldConfig.gridSide; ++k){ // z axis
-                distanceMatrix[i][k] = this.roundTo2Decimal(Math.sqrt(Math.pow(i, 2) + Math.pow(k, 2)));
+                distanceMatrix[i][k] = utilityFunctions.roundTo2Decimal(Math.sqrt(Math.pow(i, 2) + Math.pow(k, 2)));
             }
         }
         workerState.distanceMatrix = distanceMatrix;

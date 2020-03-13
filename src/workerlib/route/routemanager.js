@@ -215,7 +215,7 @@ module.exports = {
     },
 
     // returns a path from source to a walkable point (probably nearest) in the neighbourhood of target.
-    FindPathToClosestPointInNeighbourhood: function(botID, targetBotID){ // used for getting near friendly unit (wrt sight of target)
+    findPathToClosestPointInNeighbourhood: function(botID, targetBotID){ // used for getting near friendly unit (wrt sight of target)
         var botConfig = this.tg.botConfig[botID];
         var targetBotConfig = this.tg.botConfig[targetBotID];
         var range = item_config.character[targetBotConfig.type].sight;
@@ -329,7 +329,7 @@ module.exports = {
         return null;// walkable point not found. This should never happen.
     },
 
-    FindPathToNearestVisiblePointInRange: function(botID, targetBotID){ // used for engage
+    findPathToNearestVisiblePointInRange: function(botID, targetBotID){ // used for engage
         var botConfig = this.tg.botConfig[botID];
         var targetBotConfig = this.tg.botConfig[targetBotID];
         var range = item_config.weapon[botConfig.equippedWeapon].range;

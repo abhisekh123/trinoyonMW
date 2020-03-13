@@ -44,15 +44,45 @@ module.exports = {
                     continue;
                 }
 
-                gameRoomManager.processPlayers(gameRoom);
-                gameRoomManager.processBuildings(gameRoom);
-                gameRoomManager.processBots(gameRoom);
+                gameRoomManager.processPlayers(gameRoom); // send hero to new location of all bots are idle.
+                gameRoomManager.processBuildings(gameRoom); // attack if enemy in range
+                // priorities:
+                // 1>perform actions + instruction.
+                // 2>help each other 
+                // 3>go near hero bot
+                gameRoomManager.processBots(gameRoom); 
 
                 if(refreshVisibilityFlag == true){
                     gameRoomManager.refreshVisibility(gameRoom);
                 }
             }
         }
+    },
+
+    processBotLifeCycle_Old: function(playerConfig, gameRoom) {
+
+        var timeSlice; // processActionResolution;refreshWorldInterval
+        var remainingTimeForThisRefreshCycle = this.deltaTimeForRefresh; // remainig time for current refresh cycle.
+
+
+        do {
+            // console.log('--))start do loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
+            if (remainingTimeForThisRefreshCycle <= this.processActionResolution) {
+                timeSlice = remainingTimeForThisRefreshCycle;
+                remainingTimeForThisRefreshCycle = 0;
+            } else {
+                timeSlice = this.processActionResolution;
+                remainingTimeForThisRefreshCycle = remainingTimeForThisRefreshCycle - this.processActionResolution;
+            }
+            for (var i = 0; i < this.maxBotCount; ++i) {
+                if (workerstate.botArray[i].isActive == true) {
+                    this.processBot(i, timeSlice);
+                    // var botConfig = this.botArray[i];
+                }
+                // this.processBot(i, timeSlice); /// process all bots : active, inactive.
+            }
+            // // console.log('end do loop');
+        } while (remainingTimeForThisRefreshCycle > 0);
     },
 
 

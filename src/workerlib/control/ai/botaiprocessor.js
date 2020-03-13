@@ -1,22 +1,30 @@
-
+const workerState = require('../../state/workerstate');
+const routeManager = require('../../route/routemanager');
 
 module.exports = {
 
+    worldConfig: null,
+    itemConfig: null,
+
+    init: function(){
+        this.worldConfig = workerState.getWorldConfig();
+        this.itemConfig = workerState.getItemConfig();
+    },
 
     processAI: function(botConfig, isHero, gameRoom){
         // console.log('processAI:' + botConfig.id);
 
-        var suitableEnemy = this.getSuitableEnemyTarget(botConfig, gameRoom);
+        if(isHero){
+            var suitableEnemy = routeManager.findClosestPlayerOrTowerOrBase(botConfig, gameRoom);
+        }else{
+
+        }
+
+        
         // // console.log('((((((((((((suitableEnemy:', suitableEnemy.id);
-        var leaderConfig = null;
-        // {
-        //     chosenEnemyID,
-        //     pathToEnemy,
-        //      botRotation
-        //      chosenTargetType
-        // };
+        
         if(suitableEnemy != null ){// if engaged to enemy
-            // console.log('SuitableEnemy:', suitableEnemy.chosenEnemyID);
+            
             botConfig.engagedEnemyType = suitableEnemy.chosenTargetType;
             botConfig.engagedEnemyTarget = suitableEnemy.chosenEnemyID;
             // switch (suitableEnemy.chosenTargetType) {
@@ -49,7 +57,7 @@ module.exports = {
             // console.log('leaderConfig:', leaderConfig);
             if( leaderConfig != null){
                 // // console.log('this is leader config:', leaderConfig);
-                var path = botroutemanager.findPath(
+                var path = routeManager.findPath(
                     botConfig.payload.position[0], 
                     botConfig.payload.position[2], 
                     leaderConfig.payload.position[0], 
@@ -202,7 +210,4 @@ module.exports = {
     },
     
 
-    init: function(){
-        
-    },
 }

@@ -1,11 +1,19 @@
 
 // console.log('####world_config');
 var worldItems = {
+    // assume each tile is 1 x 1 meter^2
     // avg speed : 10 kmph : 2.77m/sec
     // root(2) = 1.414
     // 2.77/1.414 = 1.96
-    // 1.414 covered in 0.5 sec
-    // 1 covered in 0.36 sec
+
+    // for speed 2.77m/sec
+    // 1.414 covered in 0.5 sec : time taken to move diagonal tile
+    // 1 covered in 0.36 sec : time taken to move adjescent tile
+
+    // for speed Xm/sec
+    // 1.414 / (X) : sec for diagonal
+    // 1 / (X) : sec for adjescent
+
     // walk stride length : 0.75M
     // run cycle length : 1.5M
     // 2 cycles / sec
