@@ -9,7 +9,6 @@ const utilityFunctions = require('../utils/utilityfunctions');
 const routeManager = require('./route/routemanager');
 // const bot_route_utility = require('./botRouteUtility');
 
-//bots always ave instruction: guard, follow, go
 
 module.exports = {
     worldConfig: null,
@@ -17,6 +16,7 @@ module.exports = {
     engineLoop: function(){
         // console.log('=========>refreshWorld');
         // var messageList = mainThreadStub.messagebuffer;
+        
         workerState.currentTime = utilityFunctions.getCurrentTime();
         
         workerState.timeIntervalToSimulateInEachGame = workerState.currentTime - workerState.timePreviousGameLoopStart;

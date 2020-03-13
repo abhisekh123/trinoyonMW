@@ -9,98 +9,9 @@ module.exports = {
         this.itemConfig = workerState.getItemConfig();
     },
 
-
-    giveInstruction: function(currentBot, instructionParam, instructionPayload){
-        // console.log('instructBot->bot:', currentBot.id, ' instructionParam:', instructionParam
-            // , ' instructionPayload:', instructionPayload);
-        currentBot.timeelapsedincurrentaction = 0;
-        switch(instructionParam){
-            case 'idle':
-            currentBot.instruction = {};
-            currentBot.instruction.type = 'idle';
-            currentBot.hasInstruction = true;
-            currentBot.isPerformingAction = false;
-            break;
-            case 'attack':
-            currentBot.instruction = {};
-            currentBot.instruction.type = 'attack';
-            currentBot.instruction.rotation = instructionPayload.botRotation;
-            currentBot.hasInstruction = true;
-            currentBot.isPerformingAction = false;
-            break;
-            case 'march':
-            case 'goto':
-            // {
-            //     botRotation: suitableEnemy.botRotation,
-            //     pathToEnemy: suitableEnemy.pathToEnemy,
-            // }
-            // var currentPositionX = currentBot.payload.position[0];
-            // var currentPositionZ = currentBot.payload.position[2];
-            // var closestWalkablePosition = botroutemanager.FindClosestWalkablePoint(currentBot.instruction);
-            // // console.log('closest point found:', closestWalkablePosition);
-            // var targetPositionX = closestWalkablePosition.x;
-            // var targetPositionZ = closestWalkablePosition.z;
-
-            // var path = botroutemanager.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
-            var path = instructionPayload;
-            // // console.log('goto path:', instructionPayload.pathToEnemy);
-            currentBot.instruction = {};
-            currentBot.instruction.type = instructionParam;
-            // // console.log('312');
-            this.planBotRoute(currentBot, path);
-            currentBot.isPerformingAction = true;
-            // // console.log(path);
-            // // console.log(currentBot);
-            currentBot.hasInstruction = false;
-            // currentBot.instruction = null;
-            // botroutemanager.updateBotPosition(botID, targetPositionX, targetPositionZ);
-            break;
-            case 'die':
-            currentBot.isPerformingAction = true;
-            // // console.log('perform action:die:::', currentBot.id);
-            currentBot.hasInstruction = false;
-            currentBot.instruction = {};
-            currentBot.instruction.type = 'die';
-            break;
-            default:
-                // console.log('ERROR: unknown instruction:' + instructionParam);
-        }
-
-    },
-
-
-    updateBotAction: function(action){
-        // // console.log('update bot action');
-        // // console.log(action);
-        // if(action.message.target == 'ground'){
-        //     // console.log('got action request for ground. skipping.');
-        //     return;
-        // }
-        // // console.log('---');
-        var botID = action.message.id;
-        var botItem = workerstate.botMap[botID];
-        // // console.log('current bot:');
-        // // console.log(this.botArray);
-        // // console.log(botID);
-        // // console.log(workerstate.botMap[botID]);
-        var payload = action.message;
-        switch(payload.type){
-            case 'changeweapon':
-            case 'goto':
-                botItem.instruction = payload;
-                botItem.hasInstruction = true;
-                break;
-        }
-        // // console.log('botItem:');
-        // // console.log(botItem);
-    },
-
     // timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
     continuePerformingAction: function(currentBot, timeSliceParam){
         // // console.log(currentBot);
-        // console.log('performing action for bot:<' + currentBot.id + '> with actionIndex:' + currentBot.botRouteIndex 
-            // + ' action:' + currentBot.instruction.type + ' currentBot.timeelapsedincurrentaction:'
-            // + currentBot.timeelapsedincurrentaction);
         // adding correction by taking into account
         // the partially executed action in the last iteration.
         // // console.log('process action for bot:' + currentBot.id);
@@ -120,14 +31,6 @@ module.exports = {
         // var weaponConfig = workerstate.getItemConfig().weapon[currentWeapon];
         var weaponConfig = workerstate.getItemConfig().weapon['handGun'];
 
-        // if(currentBot.instruction == null)
-        // {
-        //     // console.log(currentBot.id + ' has null instruction.');
-        //     // console.log(currentBot);
-        //     return;
-        // }else{
-        //     // console.log(currentBot.id + ' has valid instruction.');
-        // }
 
         switch(currentBot.instruction.type){
             case 'goto':
@@ -315,62 +218,6 @@ module.exports = {
         }
     },
 
-    // actionManager.Bot.processInstruction(botConfig, gameRoom);
-    processInstruction: function(botID){
-        var currentBot = workerstate.botArray[botID];
-        // console.log('process bot instruction for botID:' + botID + ' currentBot.instruction.type:' + currentBot.instruction.type);
-        // // console.log(currentBot);
-
-        switch(currentBot.instruction.type){
-            case 'goto':
-                var currentPositionX = currentBot.payload.position[0];
-                var currentPositionZ = currentBot.payload.position[2];
-                var closestWalkablePosition = botroutemanager.FindClosestWalkablePoint(currentBot.instruction);
-                // // console.log('closest point found:', closestWalkablePosition);
-                var targetPositionX = closestWalkablePosition.x;
-                var targetPositionZ = closestWalkablePosition.z;
-
-                var path = botroutemanager.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
-                // // console.log('1');
-                this.planBotRoute(currentBot, path);
-                currentBot.isPerformingAction = true;
-                // // console.log(path);
-                // // console.log(currentBot);
-                currentBot.hasInstruction = false;
-                // currentBot.instruction = null;
-                // botroutemanager.updateBotPosition(botID, targetPositionX, targetPositionZ);
-                break;
-            case 'attack':
-                // // console.log('process attack instruction.');
-                currentBot.isPerformingAction = true;
-                // // console.log(path);
-                // // console.log(currentBot);
-                currentBot.hasInstruction = false;
-                break;
-            case 'changeweapon':
-                currentBot.backupinstruction = currentBot.instruction;
-                currentBot.instruction = {};
-                currentBot.instruction.type = 'holsterweapon';
-                currentBot.nextweapon = currentBot.backupinstruction.nextweapon;
-                // currentBot.nextweapon = currentBot.instruction.nextweapon;
-                break;
-            case 'idle':
-                // currentBot.backupinstruction = currentBot.instruction;
-                // currentBot.instruction = {};
-                // currentBot.instruction.type = 'idle';
-                // currentBot.nextweapon = currentBot.backupinstruction.nextweapon;
-                currentBot.isPerformingAction = true;
-                currentBot.hasInstruction = false;
-                // currentBot.nextweapon = currentBot.instruction.nextweapon;
-                break;
-            default:
-                // console.log('unknown action type:' + currentBot.instruction.type);
-                break;
-        }
-
-        
-    },
-    
     updateLifeWithBotAttackDamage(characterConfig){
         // currentBot.instruction.type = 'attack';
         // currentBot.instruction.rotation = instructionPayload.botRotation;

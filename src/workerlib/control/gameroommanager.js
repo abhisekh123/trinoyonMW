@@ -57,7 +57,6 @@ module.exports = {
             // check if eligible to respawn
             if((workerState.currentTime - botObject.deathTimestamp) > botObject.respawnTime){
                 botConfig.action = null;
-                botConfig.instruction = null;
                 botObject.deathTimestamp = workerState.currentTime; // time at which bot re spawned
                 botObject.isActive = false;
                 player.botObjectList[i].position[0] = player.botObjectList[i].spawnPosition[0];
@@ -72,7 +71,6 @@ module.exports = {
 
         if (botConfig.life <= 0 && botConfig.isActive) { // bots that died in last cycle.
             botConfig.action = null;
-            botConfig.instruction = null;
             botObject.deathTimestamp = workerState.currentTime;
             botObject.isActive = false;
 
@@ -88,9 +86,6 @@ module.exports = {
             if(botConfig.action != null){
                 // console.log('action:' + botConfig.id);
                 timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
-            }else if(botConfig.instruction != null){ // instruction provided either by user or AI
-                // // console.log('instruction:' + botConfig.id);
-                actionManager.Bot.processInstruction(botConfig, gameRoom);
             }else{// standing idle. This is executed for idle user bot.
                 // // console.log('else');
                 // timeSlice = 0;
@@ -130,7 +125,6 @@ module.exports = {
             // this.processBot(i, timeSlice);
             // var botConfig = this.botArray[i];
             // // console.log('5');
-            // this.instructBot(workerstate.buildingArray[i], 'die', null);
             if (buildingConfig.type == 'base') {
                 this.terminateGame(gameRoom, {
                     loosingTeam: buildingConfig.team

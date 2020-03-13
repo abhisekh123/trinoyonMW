@@ -47,7 +47,7 @@ module.exports = {
                 gameRoomManager.processPlayers(gameRoom); // send hero to new location of all bots are idle.
                 gameRoomManager.processBuildings(gameRoom); // attack if enemy in range
                 // priorities:
-                // 1>perform actions + instruction.
+                // 1>perform actions
                 // 2>help each other 
                 // 3>go near hero bot
                 gameRoomManager.processBots(gameRoom); 

@@ -269,28 +269,28 @@ module.exports = {
     },
 
 
-    getSuitableEnemyTarget: function(objectConfig, gameRoom){
+    getSuitableEnemyTarget: function (objectConfig, gameRoom) {
         var enemyTeamID = 1;
-        if(objectConfig.team == 0){
+        if (objectConfig.team == 0) {
             return; // neutral tower. nothing to do.
-        }else if(objectConfig.team == 1){
+        } else if (objectConfig.team == 1) {
             enemyTeamID = 2;
         }
         // let minDist = world_config.gridSide + 1;
         // gameRoom.gridMatrix
     },
 
-    getSuitableOtherTeamBotTarget_OLD: function(botConfig, gameRoom){
+    getSuitableOtherTeamBotTarget_OLD: function (botConfig, gameRoom) {
         // console.log('getSuitableOtherTeamBotTarget for:' + botConfig.id 
-            // + ' at position:' + botConfig.payload.position
-            // + ' team:' + botConfig.team
-            // + ' playerID:' + botConfig.playerID);
+        // + ' at position:' + botConfig.payload.position
+        // + ' team:' + botConfig.team
+        // + ' playerID:' + botConfig.playerID);
         // // console.log(botConfig);
         var x = botConfig.payload.position[0];
         var z = botConfig.payload.position[2];
         const range = botConfig.range;
         const teamIDParam = botConfig.team;
-        
+
         // let selectedvisibilityMatrixObject = null;
         let chosenEnemyID = null;
         let pathToEnemy = null;
@@ -305,14 +305,14 @@ module.exports = {
         var buildingID = null;
         for (let i = x - range; i <= x + range; i++) {
             for (let j = z - range; j <= z + range; j++) {
-                if(!this.isPointInGrid(i, j) || (i == x && j == z)){
+                if (!this.isPointInGrid(i, j) || (i == x && j == z)) {
                     continue;
                 }
                 // // console.log('testing for bot:' + this.visibilityMatrix[i][j].id + ' at x:' + i + ' z:' + j);
-                if(this.visibilityMatrix[i][j].id != null){ // if grid position occupied
+                if (this.visibilityMatrix[i][j].id != null) { // if grid position occupied
                     // // console.log('testing for bot:' + this.visibilityMatrix[i][j].id + ' at x:' + i + ' z:' + j);
                     const botConfig = workerstate.botMap[this.visibilityMatrix[i][j].id];
-                    if(botConfig.team != teamIDParam && botConfig.isActive){
+                    if (botConfig.team != teamIDParam && botConfig.isActive) {
                         // // console.log('------...........>>>>>>>>>if');
                         // var botX = botConfig.payload.position[0];
                         // var botZ = botConfig.payload.position[2];
@@ -321,7 +321,7 @@ module.exports = {
                         // var path = visibilityMatrixAtLocation.localPath[tX][tZ];
                         var path = this.findPath(x, z, i, j);
                         // console.log('got path:', path);
-                        if(minDist > path.length){
+                        if (minDist > path.length) {
                             // selectedvisibilityMatrixObject = distMatrixObject;
                             minDist = path.length;
                             chosenEnemyID = this.visibilityMatrix[i][j].id;
@@ -330,28 +330,28 @@ module.exports = {
                             chosenTargetType = 'bot'
                         }
                     }
-                }else{
+                } else {
                     buildingID = this.isObstacleDefenseOrBase(i, j, teamIDParam);
-                    if(buildingID === null || buildingID === undefined){
+                    if (buildingID === null || buildingID === undefined) {
                         // // console.log('skipping as buildingID === null || buildingID === undefined');
-                    }else{
+                    } else {
                         // console.log('testing for is buildingID: at x:' + i + ' z:' + j + ' buildingID:', buildingID);
                         const buildingConfig = workerstate.buildingMap[buildingID];
                         // // console.log('=============>buildingConfig:', buildingConfig);
-                        if(!buildingConfig.isActive || buildingConfig.life <= 0){
+                        if (!buildingConfig.isActive || buildingConfig.life <= 0) {
                             // return null;
                             // skip inactive buildings
                             // console.log('skipping inactive building:', buildingID);
-                        }else{
+                        } else {
                             // // console.log('%%%%%%%%%%%%returned building id:', buildingID);
-                            if(buildingID != null){
+                            if (buildingID != null) {
                                 // // console.log('buildingID=', buildingID);
                                 var tX = i - x + this.maxRange;
                                 var tZ = j - z + this.maxRange;
                                 // var path = visibilityMatrixAtLocation.localPath[tX][tZ];
                                 var path = this.findPath(x, z, i, j);
                                 // console.log('got path:', path);
-                                if(minDist > path.length){
+                                if (minDist > path.length) {
                                     // selectedvisibilityMatrixObject = distMatrixObject;
                                     minDist = path.length;
                                     chosenEnemyID = buildingID;
@@ -366,7 +366,7 @@ module.exports = {
             }
         }
         // // console.log('returning chosen opponent.');
-        if(chosenEnemyID != null){
+        if (chosenEnemyID != null) {
             // console.log(11111111111);
             // // console.log('getSuitableOtherTeamBotTarget returning:', {
             //     chosenEnemyID,
@@ -385,12 +385,195 @@ module.exports = {
             returnvar.chosenTargetType = chosenTargetType;
             // console.log(returnvar);
             return returnvar;
-        }else{
+        } else {
             // console.log(2);
             // // console.log('getSuitableOtherTeamBotTarget returning null');
             return null;
         }
+
+    },
+
+
+
+    giveInstruction: function(currentBot, instructionParam, instructionPayload){
+        // console.log('instructBot->bot:', currentBot.id, ' instructionParam:', instructionParam
+            // , ' instructionPayload:', instructionPayload);
+        currentBot.timeelapsedincurrentaction = 0;
+        switch(instructionParam){
+            case 'idle':
+            currentBot.instruction = {};
+            currentBot.instruction.type = 'idle';
+            currentBot.hasInstruction = true;
+            currentBot.isPerformingAction = false;
+            break;
+            case 'attack':
+            currentBot.instruction = {};
+            currentBot.instruction.type = 'attack';
+            currentBot.instruction.rotation = instructionPayload.botRotation;
+            currentBot.hasInstruction = true;
+            currentBot.isPerformingAction = false;
+            break;
+            case 'march':
+            case 'goto':
+            // {
+            //     botRotation: suitableEnemy.botRotation,
+            //     pathToEnemy: suitableEnemy.pathToEnemy,
+            // }
+            // var currentPositionX = currentBot.payload.position[0];
+            // var currentPositionZ = currentBot.payload.position[2];
+            // var closestWalkablePosition = botroutemanager.FindClosestWalkablePoint(currentBot.instruction);
+            // // console.log('closest point found:', closestWalkablePosition);
+            // var targetPositionX = closestWalkablePosition.x;
+            // var targetPositionZ = closestWalkablePosition.z;
+
+            // var path = botroutemanager.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
+            var path = instructionPayload;
+            // // console.log('goto path:', instructionPayload.pathToEnemy);
+            currentBot.instruction = {};
+            currentBot.instruction.type = instructionParam;
+            // // console.log('312');
+            this.planBotRoute(currentBot, path);
+            currentBot.isPerformingAction = true;
+            // // console.log(path);
+            // // console.log(currentBot);
+            currentBot.hasInstruction = false;
+            // currentBot.instruction = null;
+            // botroutemanager.updateBotPosition(botID, targetPositionX, targetPositionZ);
+            break;
+            case 'die':
+            currentBot.isPerformingAction = true;
+            // // console.log('perform action:die:::', currentBot.id);
+            currentBot.hasInstruction = false;
+            currentBot.instruction = {};
+            currentBot.instruction.type = 'die';
+            break;
+            default:
+                // console.log('ERROR: unknown instruction:' + instructionParam);
+        }
+
+    },
+
+
+    updateBotAction: function(action){
+        // // console.log('update bot action');
+        // // console.log(action);
+        // if(action.message.target == 'ground'){
+        //     // console.log('got action request for ground. skipping.');
+        //     return;
+        // }
+        // // console.log('---');
+        var botID = action.message.id;
+        var botItem = workerstate.botMap[botID];
+        // // console.log('current bot:');
+        // // console.log(this.botArray);
+        // // console.log(botID);
+        // // console.log(workerstate.botMap[botID]);
+        var payload = action.message;
+        switch(payload.type){
+            case 'changeweapon':
+            case 'goto':
+                botItem.instruction = payload;
+                botItem.hasInstruction = true;
+                break;
+        }
+        // // console.log('botItem:');
+        // // console.log(botItem);
+    },
+
+    // actionManager.Bot.processInstruction(botConfig, gameRoom);
+    processInstruction: function(botID){
+        var currentBot = workerstate.botArray[botID];
+        // console.log('process bot instruction for botID:' + botID + ' currentBot.instruction.type:' + currentBot.instruction.type);
+        // // console.log(currentBot);
+
+        switch(currentBot.instruction.type){
+            case 'goto':
+                var currentPositionX = currentBot.payload.position[0];
+                var currentPositionZ = currentBot.payload.position[2];
+                var closestWalkablePosition = botroutemanager.FindClosestWalkablePoint(currentBot.instruction);
+                // // console.log('closest point found:', closestWalkablePosition);
+                var targetPositionX = closestWalkablePosition.x;
+                var targetPositionZ = closestWalkablePosition.z;
+
+                var path = botroutemanager.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
+                // // console.log('1');
+                this.planBotRoute(currentBot, path);
+                currentBot.isPerformingAction = true;
+                // // console.log(path);
+                // // console.log(currentBot);
+                currentBot.hasInstruction = false;
+                // currentBot.instruction = null;
+                // botroutemanager.updateBotPosition(botID, targetPositionX, targetPositionZ);
+                break;
+            case 'attack':
+                // // console.log('process attack instruction.');
+                currentBot.isPerformingAction = true;
+                // // console.log(path);
+                // // console.log(currentBot);
+                currentBot.hasInstruction = false;
+                break;
+            case 'changeweapon':
+                currentBot.backupinstruction = currentBot.instruction;
+                currentBot.instruction = {};
+                currentBot.instruction.type = 'holsterweapon';
+                currentBot.nextweapon = currentBot.backupinstruction.nextweapon;
+                // currentBot.nextweapon = currentBot.instruction.nextweapon;
+                break;
+            case 'idle':
+                // currentBot.backupinstruction = currentBot.instruction;
+                // currentBot.instruction = {};
+                // currentBot.instruction.type = 'idle';
+                // currentBot.nextweapon = currentBot.backupinstruction.nextweapon;
+                currentBot.isPerformingAction = true;
+                currentBot.hasInstruction = false;
+                // currentBot.nextweapon = currentBot.instruction.nextweapon;
+                break;
+            default:
+                // console.log('unknown action type:' + currentBot.instruction.type);
+                break;
+        }
+
         
+    },
+    
+    clearSnaphsot: function(){
+        this.snapshot.length = 0;
+    },
+
+    // populate current message with latest game snapshot. To be sent to newly admitted player.
+    getGameConfig: function(gameId){
+        currentMessage.bots = [];
+        currentMessage.objects = [];
+        currentMessage.playerConfig = {};
+        for (let index = 0; index < workerstate.botArray.length; index++) {
+            const element = workerstate.botArray[index];
+            const botConfigEntry = {};
+            botConfigEntry.x = element.payload.position[0];
+            botConfigEntry.y = 0;
+            botConfigEntry.z = element.payload.position[2];
+            botConfigEntry.ry = element.payload.rotation;
+            botConfigEntry.playerID = element.playerID;
+            botConfigEntry.isLeader = element.isLeader;
+            botConfigEntry.id = element.id;
+            botConfigEntry.life = element.life;
+            botConfigEntry.isActive = element.isActive;
+            botConfigEntry.action = element.instruction.type;
+            currentMessage.bots[index] = botConfigEntry;
+        }
+        for (let index = 0; index < workerstate.buildingArray.length; index++) {
+            const element = workerstate.buildingArray[index];
+            const buildingConfigEntry = {};
+            buildingConfigEntry.life = element.life;
+            buildingConfigEntry.team = element.team;
+            buildingConfigEntry.isActive = element.isActive;
+            buildingConfigEntry.id = element.id;
+            currentMessage.objects[index] = buildingConfigEntry;
+        }
+        
+        return currentMessage;
+    },
+    getSnapshot: function(){
+        // return this.snapshot;
     },
 
 }
