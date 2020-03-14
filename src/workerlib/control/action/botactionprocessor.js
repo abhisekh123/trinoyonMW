@@ -11,6 +11,10 @@ module.exports = {
         this.itemConfig = workerState.getItemConfig();
     },
 
+    traverseBotThroughPath: function(botConfig){
+
+    },,,
+
     
     continuePerformingAction: function(botConfig, gameRoom, timeSlice){
         switch(botConfig.action){
@@ -19,6 +23,15 @@ module.exports = {
             break;
             case 'march':
             // check if hostile in range
+            if(aiUtility.canAttack(botConfig)){ // if can attack
+                var hostileConfig = aiUtility.findClosestHostileInRange(botConfig, gameRoom, botConfig.range);
+                if(hostileConfig != null){ // if a hostile is found in range
+                    botConfig.action = 'fight';
+                    botConfig.actionData = hostileConfig;
+                    aiUtility.processAttackDamageEvent(botConfig, hostileConfig);
+                    return 0; // consumed all remaining time to attack. Done for the current iteration.
+                }
+            }
             // action = ready
             // else continue transport
             break;

@@ -42,15 +42,7 @@ module.exports = {
                 gameRoom
             );
             if(positionNearHostile != null){
-                var path = routeManager.findPath(
-                    botConfig.position[0],
-                    botConfig.position[2],
-                    positionNearHostile.x,
-                    positionNearHostile.z
-                );
-
-                this.planBotRoute(botConfig, path); // set timestamp to each path position.
-                aiUtility.addActionToBot(botConfig, 'march', path);
+                this.completeBotMovementActionFormalities(botConfig, positionNearHostile, 'march');
                 return timeSlice;
             }
         }
@@ -72,20 +64,34 @@ module.exports = {
                     gameRoom
                 )
                 if(positionNearLeader != null){
-                    var path = routeManager.findPath(
-                        botConfig.position[0],
-                        botConfig.position[2],
-                        positionNearLeader.x,
-                        positionNearLeader.z
-                    );
-
-                    this.planBotRoute(botConfig, path); // set timestamp to each path position.
-                    aiUtility.addActionToBot(botConfig, 'march', path);
+                    this.completeBotMovementActionFormalities(botConfig, positionNearLeader, 'march');
                     return timeSlice;
                 }
             }
         }
+
+        botConfig.activityTimeStamp = workerState.currentTime;
         return 0; // spent the time doing nothing.
+    },
+
+    completeBotMovementActionFormalities: function(botConfig, positionObject, action){
+        var path = routeManager.findPath(
+            botConfig.position[0],
+            botConfig.position[2],
+            positionObject.x,
+            positionObject.z
+        );
+
+        this.planBotRoute(botConfig, path); // set timestamp to each path position.
+        aiUtility.addActionToBot(botConfig, action, path);
+        this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z);
+    },
+
+    updateBotPositionInGridMatrix: function(botConfig, posX, posZ){
+        gameRoom.gridMatrix[botConfig.position[0]][botConfig.position[2]].object = null;
+        gameRoom.gridMatrix[posX][posZ].object = botConfig;
+        botConfig.position[0] = posX;
+        botConfig.position[2] = posZ;
     },
 
     planBotRoute: function(botConfig, path){ // each path element : [posX, posZ, time to travel, rotation]
