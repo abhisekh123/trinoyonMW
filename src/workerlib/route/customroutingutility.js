@@ -48,7 +48,8 @@ module.exports = {
         writeStream.write(this.worldConfig.gridSide.toString() + '\n');
 
         var tmpGridMatrixToStoreLinearPaths = new Array();
-        // for each point in the grid, find seq of points forming straight line from point (x,z) to (26, 26)
+        // for each point in the grid, find seq of points forming straight line from 
+        // point (x,z) to (this.worldConfig.maxRange, this.worldConfig.maxRange)
         for(var i = 0; i < this.worldConfig.neighbourhoodBoxSide; ++i){ // x axis
             tmpGridMatrixToStoreLinearPaths[i] = new Array();
             for(var j = 0; j < this.worldConfig.neighbourhoodBoxSide; ++j){ // z axis
@@ -86,13 +87,14 @@ module.exports = {
                         var actual_x = x + x_small - this.worldConfig.maxRange; // actual x coordinate in grid that we want to test. can be negetive or bigger than grid size.
                         var actual_z = z + z_small - this.worldConfig.maxRange; // actual z coordinate in grid that we want to test. can be negetive or bigger than grid size.
                         
-                        if (utilityFunctions.isPointInRangeBox(
-                            actual_x, 
-                            actual_z, 
-                            ((this.worldConfig.gridSide - 1) / 2),
-                            ((this.worldConfig.gridSide - 1) / 2),
-                            ((this.worldConfig.gridSide - 1) / 2)
-                        )) { // checking if we need to test visibility
+                        // if (utilityFunctions.isPointInRangeBox(
+                        //     actual_x, 
+                        //     actual_z, 
+                        //     ((this.worldConfig.gridSide - 1) / 2),
+                        //     ((this.worldConfig.gridSide - 1) / 2),
+                        //     ((this.worldConfig.gridSide - 1) / 2)
+                        // )) { // checking if we need to test visibility
+                        if(pathFindingWrapper.isPointInGrid(actual_x, actual_x)){
                             // testing visibility of x, z from point actual_x, actual_z
                             // // console.log('wer:', tmpGridMatrixToStoreLinearPaths.length);
                             // // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small].length);

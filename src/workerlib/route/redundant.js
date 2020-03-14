@@ -576,4 +576,219 @@ module.exports = {
         // return this.snapshot;
     },
 
+
+    processAI: function(playerConfig, botIndex, gameRoom, timeSlice){
+
+        const botConfig = playerConfig.botObjectList[botIndex];
+        // console.log('processAI:' + botConfig.id);
+        
+        // botConfig.attack = botTypeItemConfig.attack;
+        
+        
+
+        
+        // // console.log('((((((((((((suitableEnemy:', suitableEnemy.id);
+        
+        if(suitableEnemy != null ){// if engaged to enemy
+            
+            botConfig.engagedEnemyType = suitableEnemy.chosenTargetType;
+            botConfig.engagedEnemyTarget = suitableEnemy.chosenEnemyID;
+            // switch (suitableEnemy.chosenTargetType) {
+            //     case 'bot':
+            //         botConfig.engagedEnemyTarget = suitableEnemy.chosenEnemyID;        
+            //         break;
+            //     case 'static':
+            //         botConfig.engagedEnemyTarget = suitableEnemy.chosenEnemyID;
+            //         break;
+            //     default:
+            //         break;
+            // }
+            
+            if(suitableEnemy.pathToEnemy.length < (botConfig.range + 1)){ // if enemy in range
+                // engage enemy
+                // instruct bot to attack
+                // // console.log('2');
+                this.instructBot(botConfig, 'attack', {botRotation: suitableEnemy.botRotation});
+            }else{
+                // bit.engagedTargetID = null
+                // // console.log('instruct bot goto:');
+                this.instructBot(botConfig, 'goto', 
+                {
+                    // botRotation: suitableEnemy.botRotation,
+                    pathToEnemy: suitableEnemy.pathToEnemy,
+                });
+            }
+        }else{
+            leaderConfig = this.isBotAwayFromLeader(botConfig);
+            // console.log('leaderConfig:', leaderConfig);
+            if( leaderConfig != null){
+                // // console.log('this is leader config:', leaderConfig);
+                var path = routeManager.findPath(
+                    botConfig.payload.position[0], 
+                    botConfig.payload.position[2], 
+                    leaderConfig.payload.position[0], 
+                    leaderConfig.payload.position[2]);
+                // // console.log('2');
+                this.planBotRoute(botConfig, path);
+                this.instructBot(botConfig, 'goto', 
+                    {
+                        // botRotation: suitableEnemy.botRotation,
+                        pathToEnemy: path,
+                    });
+            
+            }else{
+                // // console.log('3');
+                this.instructBot(botConfig, 'idle', null);
+            }
+        }
+        
+        // action = goto; instruction = null
+        // if hostile visible, engage hostile
+        // instruction = engage, action = null
+        // if away from commander, goto commander
+        // action = goto.
+    },
+
+    /**
+     * game life cycle
+     */
+
+    reset: function(){
+        this.playerMap = {};
+        this.init();
+    },
+
+
+    getPlayerID: function(userId){
+        return this.playerMap.get(userId);
+    },
+
+
+    // find point(x, y) closest to position such that (x, y) in in range of targetPosition.
+    findClosestVisiblePointInRange: function(sourceConfig, targetConfig, range, gameRoom){
+        var minDistance = this.worldConfig.gridSide + 1;
+        var closestPosition = {
+            x: 0,
+            y: 0
+        }
+        var foundSuitablePosition = false;
+
+        for(var i = -range; i < range; ++i){ // x-axis
+            for(var j = -range; j < this.tg.grid.width; ++j){ // z-axis
+                var actualPositionX = i + targetConfig.position[0];
+                var actualPositionZ = j + targetConfig.position[2];
+                var objectOccupyintThePosition = this.getObjectOccupyingThePosition(
+                    actualPositionX,
+                    actualPositionZ,
+                    gameRoom
+                );
+                if(objectOccupyintThePosition != null){ // already some bot / building is occupying the position
+                    continue;
+                }
+
+                var distanceBetweenTargetAndNewPosition = this.getDistanceBetweenPoints(
+                    targetConfig.position[0], 
+                    targetConfig.position[2], 
+                    actualPointX, 
+                    actualPointZ
+                );
+                if(distanceBetweenTargetAndNewPosition < range){
+                    var visibility = customRoutingUtility.testVisibility(
+                        targetConfig.position[0], 
+                        targetConfig.position[2], 
+                        actualPointX, 
+                        actualPointZ
+                    );
+                    if(visibility == true){
+                        var distanceBetweenSourceAndNewPosition = this.getDistanceBetweenPoints(
+                            sourceConfig.position[0], 
+                            sourceConfig.position[2], 
+                            actualPointX, 
+                            actualPointZ
+                        );
+
+                        if(distanceBetweenSourceAndNewPosition < minDistance){
+                            minDistance = distanceBetweenSourceAndNewPosition;
+                            closestPosition.x = actualPositionX;
+                            closestPosition.z = actualPositionZ;
+                        }
+                    }
+                }
+                
+            }
+        }
+        for(var side = 1; side < this.tg.grid.width; ++side){
+            positionRunnerStart = {x:position.x - side, z:position.z - side};// left-bottom
+            var j = 0;
+            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
+                
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
+                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
+                        , targetPosition.x, targetPosition.z,range)
+                    && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
+                        position.x = positionRunnerStart.x;
+                        position.z = positionRunnerStart.z;
+                        return position;
+                    }
+                }
+                positionRunnerStart.x = positionRunnerStart.x + 1;
+            }
+
+            positionRunnerStart.x = positionRunnerStart.x - 1;
+            for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
+                
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
+                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
+                        , targetPosition.x, targetPosition.z,range)
+                        && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
+                        position.x = positionRunnerStart.x;
+                        position.z = positionRunnerStart.z;
+                        return position;
+                    }
+                }
+                positionRunnerStart.z = positionRunnerStart.z + j;
+            }
+
+            positionRunnerStart.z = positionRunnerStart.z - 1;
+            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
+                
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
+                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
+                        , targetPosition.x, targetPosition.z,range)
+                        && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
+                        position.x = positionRunnerStart.x;
+                        position.z = positionRunnerStart.z;
+                        return position;
+                    }
+                }
+                positionRunnerStart.x = positionRunnerStart.x - 1;
+            }
+
+            positionRunnerStart.x = positionRunnerStart.x + 1;
+            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
+                
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
+                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
+                        , targetPosition.x, targetPosition.z,range)
+                        && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
+                        position.x = positionRunnerStart.x;
+                        position.z = positionRunnerStart.z;
+                        return position;
+                    }
+                }
+                positionRunnerStart.z = positionRunnerStart.z - 1;
+            }
+        }
+        console.error('ERROR: FindPathToClosestPointInNeighbourhood point not found for target position:', targetBotConfig.position);
+        return null;// walkable point not found. This should never happen.
+    },
+
 }

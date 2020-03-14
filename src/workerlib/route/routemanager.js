@@ -2,7 +2,7 @@
 /**
  * this file contains logical function that are used by ai/action
  */
-const pathfindingwrapper = require('./pathfindingwrapper');
+const pathFindingWrapper = require('./pathfindingwrapper');
 const customRoutingUtility = require('./customroutingutility');
 const workerState = require('../state/workerstate');
 
@@ -11,20 +11,20 @@ const workerState = require('../state/workerstate');
 module.exports = {
     worldConfig: null,
     itemConfig: null,
-    
+
     customRoutingUtility: customRoutingUtility,
 
     init: function(){
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();
 
-        pathfindingwrapper.init();
+        pathFindingWrapper.init();
         customRoutingUtility.init();
     },
 
 
 
-    // TODO: need refinement. search only for hero bot.
+    // TODO: need refinement. search only for hero bot. Or dont consider bots / players at all
     // used for movement of player to nearesrt enemy hero or building. used by player AI
     findClosestPlayerOrTowerOrBase: function(botConfigParam, gameRoom){
         var playerTeam = botConfigParam.teamId;
@@ -144,15 +144,15 @@ module.exports = {
     },
 
     // find point(x, y) closest to position such that (x, y) in in range of targetPosition.
-    findClosestPointNeighbourhood: function(position, targetPosition, range){
+    findClosestPointNeighbourhood: function(position, targetPosition, range, gameRoom){
         for(var side = 1; side < this.tg.grid.width; ++side){
             positionRunnerStart = {x:position.x - side, z:position.z - side};// left-bottom
             var j = 0;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -166,9 +166,9 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
                 
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -182,9 +182,9 @@ module.exports = {
             positionRunnerStart.z = positionRunnerStart.z - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -198,9 +198,9 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x + 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
                     && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
                         , targetPosition.x, targetPosition.z,range)){
                         position.x = positionRunnerStart.x;
@@ -255,79 +255,64 @@ module.exports = {
     },
 
     // find point(x, y) closest to position such that (x, y) in in range of targetPosition.
-    findClosestVisiblePointInRange: function(position, targetPosition, range){
-        for(var side = 1; side < this.tg.grid.width; ++side){
-            positionRunnerStart = {x:position.x - side, z:position.z - side};// left-bottom
-            var j = 0;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
-                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
-                        , targetPosition.x, targetPosition.z,range)
-                    && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
-                }
-                positionRunnerStart.x = positionRunnerStart.x + 1;
-            }
+    findClosestVisiblePointInRange: function(sourceConfig, targetConfig, range, gameRoom){
+        var minDistance = this.worldConfig.gridSide + 1;
+        var closestPosition = {
+            x: 0,
+            y: 0
+        }
+        var foundSuitablePosition = false;
 
-            positionRunnerStart.x = positionRunnerStart.x - 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
-                
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
-                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
-                        , targetPosition.x, targetPosition.z,range)
-                        && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
+        for(var i = -range; i < range; ++i){ // x-axis
+            for(var j = -range; j < this.tg.grid.width; ++j){ // z-axis
+                var actualPositionX = i + targetConfig.position[0];
+                var actualPositionZ = j + targetConfig.position[2];
+                var objectOccupyintThePosition = this.getObjectOccupyingThePosition(
+                    actualPositionX,
+                    actualPositionZ,
+                    gameRoom
+                );
+                if(objectOccupyintThePosition != null){ // already some bot / building is occupying the position
+                    continue;
                 }
-                positionRunnerStart.z = positionRunnerStart.z + j;
-            }
 
-            positionRunnerStart.z = positionRunnerStart.z - 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
-                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
-                        , targetPosition.x, targetPosition.z,range)
-                        && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
-                }
-                positionRunnerStart.x = positionRunnerStart.x - 1;
-            }
+                var distanceBetweenTargetAndNewPosition = this.getDistanceBetweenPoints(
+                    targetConfig.position[0], 
+                    targetConfig.position[2], 
+                    actualPointX, 
+                    actualPointZ
+                );
+                if(distanceBetweenTargetAndNewPosition < range){
+                    var visibility = customRoutingUtility.testVisibility(
+                        targetConfig.position[0], 
+                        targetConfig.position[2], 
+                        actualPointX, 
+                        actualPointZ
+                    );
+                    if(visibility == true){
+                        var distanceBetweenSourceAndNewPosition = this.getDistanceBetweenPoints(
+                            sourceConfig.position[0], 
+                            sourceConfig.position[2], 
+                            actualPointX, 
+                            actualPointZ
+                        );
 
-            positionRunnerStart.x = positionRunnerStart.x + 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null
-                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
-                        , targetPosition.x, targetPosition.z,range)
-                        && customRoutingUtility.testVisibility(positionRunnerStart.x, positionRunnerStart.z, targetPosition.x, targetPosition.z)){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
+                        if(distanceBetweenSourceAndNewPosition < minDistance){
+                            minDistance = distanceBetweenSourceAndNewPosition;
+                            closestPosition.x = actualPositionX;
+                            closestPosition.z = actualPositionZ;
+                            foundSuitablePosition = true;
+                        }
                     }
                 }
-                positionRunnerStart.z = positionRunnerStart.z - 1;
+                
             }
         }
-        console.error('ERROR: FindPathToClosestPointInNeighbourhood point not found for target position:', targetBotConfig.position);
-        return null;// walkable point not found. This should never happen.
+        if(foundSuitablePosition == true){
+            return closestPosition;
+        }else{
+            return null;
+        }
     },
 
     findPathToNearestVisiblePointInRange: function(botID, targetBotID){ // used for engage
@@ -368,8 +353,10 @@ module.exports = {
         }
     },
 
-    getObjectOccupyingThePosition: function(xPosParam, zPosParam){
-
+    getObjectOccupyingThePosition: function(xPosParam, zPosParam, gameRoom){
+        if(!pathFindingWrapper.isPointInGrid(xPosParam, zPosParam)){
+            return -1;
+        }
         return gameRoom.gridMatrix[xPosParam][zPosParam].object;
     },
 
@@ -377,8 +364,8 @@ module.exports = {
     // find closest point which is not an obstacle and also not occupied by some other bot.
     findClosestWalkablePoint: function(position){ // position = [xpos, ypos, zpos]
 
-        if(pathfindingwrapper.isWalkableAt(position[0], position[2]) 
-        && this.getObjectOccupyingThePosition(position[0], position[2]) == null){
+        if(pathFindingWrapper.isWalkableAt(position[0], position[2]) 
+        && this.getObjectOccupyingThePosition(position[0], position[2], gameRoom) == null){
             return position;
         }
 
@@ -387,9 +374,9 @@ module.exports = {
             var j = 0;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null){
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -401,9 +388,9 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
                 
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null){
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -415,9 +402,9 @@ module.exports = {
             positionRunnerStart.z = positionRunnerStart.z - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null){
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -429,9 +416,9 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x + 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 
-                if(pathfindingwrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathfindingwrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z) == null){
+                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
+                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
+                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null){
                         position.x = positionRunnerStart.x;
                         position.z = positionRunnerStart.z;
                         return position;
@@ -445,7 +432,18 @@ module.exports = {
     },
 
     findPath: function(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ){
-        pathfindingwrapper.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
-    }
+        pathFindingWrapper.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
+    },
+
+    getDistanceBetweenPoints: function(startX, startZ, endX, endZ){
+        if(!pathFindingWrapper.isPointInGrid(startX, startZ)){
+            return -1;
+        }
+        if(!pathFindingWrapper.isPointInGrid(endX, endZ)){
+            return -1;
+        }
+
+        return workerState.distanceMatrix[Math.abs(endX - startX)][Math.abs(endZ - startZ)];
+    },
 
 }

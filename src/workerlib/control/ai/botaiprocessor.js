@@ -1,5 +1,8 @@
+
+
 const workerState = require('../../state/workerstate');
 const routeManager = require('../../route/routemanager');
+const aiUtility = require('./aiutility');
 
 module.exports = {
 
@@ -11,27 +14,34 @@ module.exports = {
         this.itemConfig = workerState.getItemConfig();
     },
 
-    processAI: function(playerConfig, index, gameRoom){
+    processAI: function(playerConfig, botIndex, gameRoom, timeSlice){
+        var hostileConfig = null;
+        const botConfig = playerConfig.botObjectList[botIndex];
         // console.log('processAI:' + botConfig.id);
+        
+        // botConfig.attack = botTypeItemConfig.attack;
+        
+        if(aiUtility.canAttack(botConfig)){ // if can attack
+            hostileConfig = aiUtility.findClosestHostileInRange(botConfig, gameRoom, botConfig.range);
+            if(hostileConfig != null){ // if a hostile is found in range
+                botConfig.action = 'fight';
+                botConfig.actionData = hostileConfig;
+                aiUtility.processAttackDamageEvent(botConfig, hostileConfig);
+                return 0; // consumed all remaining time to attack. Done for the current iteration.
+            }
+        }
+        
 
-        if(canAttack){
-            if(hostileInRange){
-                bot.action = fight
-                canAttack + attack as many times possible.  add remainitng time to bot residue
-                update time slice to zero.
-                return time slice
-            }else{
-                bot.action = ready
-                update time slice to zero.
-                return time slice
-            }
+        if(botIndex == 0){
+            // if(find closest bot with action = fight)
+            hostileConfig = aiUtility.findClosestHostileAttackedByTeamMate(botIndex, playerConfig);
+            // find in range visible point to bot.actiondata and march to the point
+
         }else{
-            if(isHero){
-                // var suitableEnemy = routeManager.findClosestPlayerOrTowerOrBase(botConfig, gameRoom);
-                // find closest bot with action = fight
-            }else{
-    
-            }
+            if find closest bot with action = fight
+                // find in range visible point to bot.actiondata and march to the point
+            else if away from isHero
+                get nearest neighbour and march to point.
         }
 
         

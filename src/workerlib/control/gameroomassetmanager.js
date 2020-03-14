@@ -20,18 +20,7 @@ module.exports = {
         workerState.waitingUsersLinkedList = new linkedList();
     },
 
-    /**
-     * game life cycle
-     */
-
-    reset: function(){
-        this.playerMap = {};
-        this.init();
-    },
-
-
     
-
     removePlayer: function(userId){
         const playerID = playerManager.getPlayerID(userId);
         const playerConfig = playerManager.playerArray[playerID];
@@ -45,9 +34,6 @@ module.exports = {
         }
     },
 
-    getPlayerID: function(userId){
-        return this.playerMap.get(userId);
-    },
 
     canAdmitNewPlayer: function(){
         const maxWaitingListSize = environmentState.maxGameCount * environmentState.maxPlayerPerTeam * 2;
@@ -336,29 +322,39 @@ module.exports = {
 
         // data related to bot type config.
         botObject.type = botType;
+
         botObject.attackinterval = botTypeItemConfig.attackinterval;
         botObject.attack = botTypeItemConfig.attack;
+        botObject.attackTimestamp = 0;
+
         botObject.life = botTypeItemConfig.life;
         botObject.fullLife = botTypeItemConfig.life;
+
         botObject.speed = botTypeItemConfig.speed; //one tile per 1000 ms.
         botObject.diagonalTime = utilityFunctions.roundTo2Decimal(1.414 / botObject.speed);
         botObject.adjacentTime = utilityFunctions.roundTo2Decimal(1 / botObject.speed);
         botObject.strideDistance = botTypeItemConfig.strideDistance;
         botObject.strideTime = botTypeItemConfig.strideTime;
+
         botObject.sight = botTypeItemConfig.sight;
         botObject.range = botTypeItemConfig.range;
 
-        botObject.residueTimeslice = 0;
+        // botObject.residueTimeslice = 0;
         botObject.deathTimestamp = 0;
+        botObject.activityTimeStamp = 0;
+
         botObject.isActive = true;
         botObject.respawnTime = botTypeItemConfig.respawnTime;
         botObject.spawnPosition = [0, 0, 0];
-        botObject.visibleToEnemyCount = 0;
+
+        // botObject.visibleToEnemyCount = 0;
 
         // data related to game play runtime
         botObject.position = [0, 0, 0];
         botObject.rotation = 0;
+
         botObject.action = null;
+        
         botObject.actionData = null;
         // botObject.deltaTime = 0;
 

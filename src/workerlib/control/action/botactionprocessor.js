@@ -1,5 +1,5 @@
+
 const workerState = require('../../state/workerstate');
-const routeManager = require('../../route/routemanager');
 
 module.exports = {
     // baseMap: {}
@@ -10,6 +10,7 @@ module.exports = {
         this.itemConfig = workerState.getItemConfig();
     },
 
+    
     continuePerformingAction: function(botConfig, gameRoom, timeSlice){
         switch(botConfig.action){
             case 'goto':
