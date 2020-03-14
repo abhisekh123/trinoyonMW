@@ -1,4 +1,3 @@
-
 /**
  * this file contains logical function that are used by ai/action
  */
@@ -14,7 +13,7 @@ module.exports = {
 
     customRoutingUtility: customRoutingUtility,
 
-    init: function(){
+    init: function () {
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();
 
@@ -26,7 +25,7 @@ module.exports = {
 
     // TODO: need refinement. search only for hero bot. Or dont consider bots / players at all
     // used for movement of player to nearesrt enemy hero or building. used by player AI
-    findClosestPlayerOrTowerOrBase: function(botConfigParam, gameRoom){
+    findClosestPlayerOrTowerOrBase: function (botConfigParam, gameRoom) {
         var playerTeam = botConfigParam.teamId;
         // var defenseList = null;
         // var base = null;
@@ -37,24 +36,24 @@ module.exports = {
         var leaderPosition = botConfigParam.position;
 
         // console.log('leader position:', leaderPosition, ' team:' + playerTeam, ' playerid:' + botConfigParam.playerID);
-        
+
         var minDistance = this.worldConfig.gridSide + 1;
 
         var target = null;
         // var targetType = null;
 
-        if(playerTeam == 1){// top team = 1
+        if (playerTeam == 1) { // top team = 1
             // defenseList = workerstate.getWorldConfig().defenceTop;
             // base = workerstate.getWorldConfig().topBase
             enemyPlayerList = gameRoom.players_2;
-        }else{// bottom team = 2
+        } else { // bottom team = 2
             // defenseList = workerstate.getWorldConfig().defenceBottom;
             // base = workerstate.getWorldConfig().bottomBase;
             enemyPlayerList = gameRoom.players_1;
         }
 
         // find closest enemy player bots
-        for(var playerIndex = 0; playerIndex < enemyPlayerList.length; ++playerIndex){
+        for (var playerIndex = 0; playerIndex < enemyPlayerList.length; ++playerIndex) {
             const playerConfig = enemyPlayerList[playerIndex];
             // skip inactive player and players controlled by real people and players in the same team
             // if(!playerConfig.isActive || playerConfig.teamID == botConfigParam.teamID){
@@ -62,7 +61,7 @@ module.exports = {
             //     continue;
             // }
 
-            for(var i = 0; i < playerConfig.botObjectList.length; ++i){
+            for (var i = 0; i < playerConfig.botObjectList.length; ++i) {
                 var botConfig = playerConfig.botObjectList[i];
                 var botPosition = botConfig.position;
 
@@ -70,7 +69,7 @@ module.exports = {
                     leaderPosition[0], leaderPosition[2], botPosition[0], botPosition[2]
                 );
 
-                if(distance < minDistance){
+                if (distance < minDistance) {
                     minDistance = distance;
                     // target = [botPosition[0], botPosition[2]]
                     target = botConfig;
@@ -85,9 +84,9 @@ module.exports = {
         // console.log('after comparing palyers, minDistance:', minDistance, ' target:', target);
 
         // gameRoom.buildings_1
-        for(var i = 0; i < gameRoom.buildingArray_1.length; ++i){
+        for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_1[i];
-            if(buildingConfig.team != 0 && buildingConfig.team == playerTeam){
+            if (buildingConfig.team != 0 && buildingConfig.team == playerTeam) {
                 // TODO: Add logic to spawn new AI player / admit new player here.
                 continue;
             }
@@ -95,7 +94,7 @@ module.exports = {
             var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
                 leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
             )
-            if(distance < minDistance){
+            if (distance < minDistance) {
                 minDistance = distance;
                 target = buildingConfig;
                 // if(i == 0){
@@ -103,14 +102,14 @@ module.exports = {
                 // }else{
                 //     targetType = 'static';
                 // }
-                
+
             }
         }
 
         // gameRoom.buildings_2
-        for(var i = 0; i < gameRoom.buildingArray_2.length; ++i){
+        for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_2[i];
-            if(buildingConfig.team != 0 && buildingConfig.team == playerTeam){
+            if (buildingConfig.team != 0 && buildingConfig.team == playerTeam) {
                 // TODO: Add logic to spawn new AI player / admit new player here.
                 continue;
             }
@@ -118,7 +117,7 @@ module.exports = {
             var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
                 leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
             )
-            if(distance < minDistance){
+            if (distance < minDistance) {
                 minDistance = distance;
                 target = buildingConfig;
                 // if(i == 0){
@@ -126,14 +125,14 @@ module.exports = {
                 // }else{
                 //     targetType = 'static';
                 // }
-                
+
             }
         }
 
         // console.log('after comparing defenseList, minDistance:', minDistance, ' target:', target);
-        if(target == null){
+        if (target == null) {
             return null;
-        }else{
+        } else {
             return target;
             // {
             //     target: target,
@@ -143,119 +142,73 @@ module.exports = {
 
     },
 
-    // find point(x, y) closest to position such that (x, y) in in range of targetPosition.
-    findClosestPointNeighbourhood: function(position, targetPosition, range, gameRoom){
-        for(var side = 1; side < this.tg.grid.width; ++side){
-            positionRunnerStart = {x:position.x - side, z:position.z - side};// left-bottom
+    // find point(x, y) closest walkable to targetConfig.
+    findClosestWalkablePosition: function (targetConfig, rangeParam, gameRoom) {
+        // increase widhth and check the perimeter
+        for (var side = 1; side < rangeParam; ++side) {
+            positionRunnerStart = {
+                x: targetConfig.position[0] - side,
+                z: targetConfig.position[2] - side
+            }; // left-bottom
             var j = 0;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                
-                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
-                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
-                        , targetPosition.x, targetPosition.z,range)){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
+            for (j = 0; j <= (2 * side); ++j) { // lower left -> lower right
+                if(isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
+                    return positionRunnerStart;
                 }
                 positionRunnerStart.x = positionRunnerStart.x + 1;
             }
 
             positionRunnerStart.x = positionRunnerStart.x - 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
-                
-                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
-                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
-                        , targetPosition.x, targetPosition.z,range)){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
+            for (j = 0; j <= (2 * side); ++j) { // lower right -> upper right
+                if(isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
+                    return positionRunnerStart;
                 }
                 positionRunnerStart.z = positionRunnerStart.z + j;
             }
 
             positionRunnerStart.z = positionRunnerStart.z - 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                
-                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
-                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
-                        , targetPosition.x, targetPosition.z,range)){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
+            for (j = 0; j <= (2 * side); ++j) { // lower left -> lower right
+                if(isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
+                    return positionRunnerStart;
                 }
                 positionRunnerStart.x = positionRunnerStart.x - 1;
             }
 
             positionRunnerStart.x = positionRunnerStart.x + 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                
-                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null
-                    && bot_route_utility.isPointInRange(positionRunnerStart.x, positionRunnerStart.z
-                        , targetPosition.x, targetPosition.z,range)){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
+            for (j = 0; j <= (2 * side); ++j) { // lower left -> lower right
+                if(isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
+                    return positionRunnerStart;
                 }
                 positionRunnerStart.z = positionRunnerStart.z - 1;
             }
         }
-        console.error('ERROR: FindPathToClosestPointInNeighbourhood point not found for target position:', targetBotConfig.position);
-        return null;// walkable point not found. This should never happen.
+
+        return null; // no hostiles in range.
     },
 
-    // returns a path from source to a walkable point (probably nearest) in the neighbourhood of target.
-    findPathToClosestPointInNeighbourhood: function(botID, targetBotID){ // used for getting near friendly unit (wrt sight of target)
-        var botConfig = this.tg.botConfig[botID];
-        var targetBotConfig = this.tg.botConfig[targetBotID];
-        var range = item_config.character[targetBotConfig.type].sight;
-
-        var path = this.findPath(botConfig.position[0], botConfig.position[2]
-            , targetBotConfig.position[0], targetBotConfig.position[2]);
-        var pathIndex = 0;
-        for(pathIndex = 0; pathIndex < path.length; ++pathIndex){ 
-            // trace through path from source to destination to find first point in range.
-            var pathPositionX = path[pathIndex][0];
-            var pathPositionZ = path[pathIndex][1];
-            if(bot_route_utility.isPointInRange(pathPositionX, pathPositionZ
-                , targetBotConfig.position[0], targetBotConfig.position[2],range)){
-                // got first point in path which is in range.
-                break;
+    isPositionWalkable: function(gameRoom, positionX, positionZ){
+        if (pathFindingWrapper.isPointInGrid(positionX, positionZ)) {
+            const objectAtPosition = routeManager.getObjectOccupyingThePosition(
+                positionX,
+                positionZ,
+                gameRoom,
+            );
+            const isWalkableAt = pathFindingWrapper.isWalkableAt(
+                positionX,
+                positionZ
+            );
+            // if point in grid is walkable and unoccupied.
+            if (objectAtPosition == null && isWalkableAt == true) {
+                return true;
+            }else{
+                return false;
             }
         }
-        if(pathIndex >= path.length){
-            console.error('ERROR:pathIndex == path.length');
-        }
-        path.length = pathIndex + 1;// discard remaining path
-        if(bot_route_utility.isPositionUnoccupiedByBot(path[pathIndex][0], path[pathIndex][1])){
-            
-            return path;
-        }
-        var finalPosition = findClosestPointNeighbourhood({x:botConfig.position[0], z:botConfig.position[2]}, 
-            {x:targetBotConfig.position[0], z:targetBotConfig.position[2]}, range);
-        if(finalPosition == null){
-            console.error('ERROR:finalPosition == null');
-            return path;
-        }else{
-            var pathRemaining = this.findPath(path[pathIndex][0], path[pathIndex][1]
-                , finalPosition.x, finalPosition.z);
-            return path.concat(pathRemaining);
-        }
     },
 
+
     // find point(x, y) closest to position such that (x, y) in in range of targetPosition.
-    findClosestVisiblePointInRange: function(sourceConfig, targetConfig, range, gameRoom){
+    findClosestVisiblePointInRange: function (sourceConfig, targetConfig, range, gameRoom) {
         var minDistance = this.worldConfig.gridSide + 1;
         var closestPosition = {
             x: 0,
@@ -263,8 +216,8 @@ module.exports = {
         }
         var foundSuitablePosition = false;
 
-        for(var i = -range; i < range; ++i){ // x-axis
-            for(var j = -range; j < this.tg.grid.width; ++j){ // z-axis
+        for (var i = -range; i < range; ++i) { // x-axis
+            for (var j = -range; j < this.tg.grid.width; ++j) { // z-axis
                 var actualPositionX = i + targetConfig.position[0];
                 var actualPositionZ = j + targetConfig.position[2];
                 var objectOccupyintThePosition = this.getObjectOccupyingThePosition(
@@ -272,32 +225,32 @@ module.exports = {
                     actualPositionZ,
                     gameRoom
                 );
-                if(objectOccupyintThePosition != null){ // already some bot / building is occupying the position
+                if (objectOccupyintThePosition != null) { // already some bot / building is occupying the position
                     continue;
                 }
 
                 var distanceBetweenTargetAndNewPosition = this.getDistanceBetweenPoints(
-                    targetConfig.position[0], 
-                    targetConfig.position[2], 
-                    actualPointX, 
+                    targetConfig.position[0],
+                    targetConfig.position[2],
+                    actualPointX,
                     actualPointZ
                 );
-                if(distanceBetweenTargetAndNewPosition < range){
+                if (distanceBetweenTargetAndNewPosition < range) {
                     var visibility = customRoutingUtility.testVisibility(
-                        targetConfig.position[0], 
-                        targetConfig.position[2], 
-                        actualPointX, 
+                        targetConfig.position[0],
+                        targetConfig.position[2],
+                        actualPointX,
                         actualPointZ
                     );
-                    if(visibility == true){
+                    if (visibility == true) {
                         var distanceBetweenSourceAndNewPosition = this.getDistanceBetweenPoints(
-                            sourceConfig.position[0], 
-                            sourceConfig.position[2], 
-                            actualPointX, 
+                            sourceConfig.position[0],
+                            sourceConfig.position[2],
+                            actualPointX,
                             actualPointZ
                         );
 
-                        if(distanceBetweenSourceAndNewPosition < minDistance){
+                        if (distanceBetweenSourceAndNewPosition < minDistance) {
                             minDistance = distanceBetweenSourceAndNewPosition;
                             closestPosition.x = actualPositionX;
                             closestPosition.z = actualPositionZ;
@@ -305,141 +258,35 @@ module.exports = {
                         }
                     }
                 }
-                
+
             }
         }
-        if(foundSuitablePosition == true){
+        if (foundSuitablePosition == true) {
             return closestPosition;
-        }else{
+        } else {
             return null;
         }
     },
 
-    findPathToNearestVisiblePointInRange: function(botID, targetBotID){ // used for engage
-        var botConfig = this.tg.botConfig[botID];
-        var targetBotConfig = this.tg.botConfig[targetBotID];
-        var range = item_config.weapon[botConfig.equippedWeapon].range;
 
-        var path = this.findPath(botConfig.position[0], botConfig.position[2]
-            , targetBotConfig.position[0], targetBotConfig.position[2]);
-        var pathIndex = 0;
-        for(pathIndex = 0; pathIndex < path.length; ++pathIndex){ 
-            // trace through path from source to destination to find first point in range.
-            var pathPositionX = path[pathIndex][0];
-            var pathPositionZ = path[pathIndex][1];
-            if(bot_route_utility.isPointInRange(pathPositionX, pathPositionZ
-                , targetBotConfig.position[0], targetBotConfig.position[2],range)){
-                // got first point in path which is in range.
-                break;
-            }
-        }
-        if(pathIndex >= path.length){
-            console.error('ERROR:pathIndex == path.length');
-        }
-        path.length = pathIndex + 1;// discard remaining path
-        if(bot_route_utility.isPositionUnoccupiedByBot(path[pathIndex][0], path[pathIndex][1])){
-            
-            return path;
-        }
-        var finalPosition = findClosestPointNeighbourhood({x:botConfig.position[0], z:botConfig.position[2]}, 
-            {x:targetBotConfig.position[0], z:targetBotConfig.position[2]}, range);
-        if(finalPosition == null){
-            console.error('ERROR:finalPosition == null');
-            return path;
-        }else{
-            var pathRemaining = this.findPath(path[pathIndex][0], path[pathIndex][1]
-                , finalPosition.x, finalPosition.z);
-            return path.concat(pathRemaining);
-        }
-    },
-
-    getObjectOccupyingThePosition: function(xPosParam, zPosParam, gameRoom){
-        if(!pathFindingWrapper.isPointInGrid(xPosParam, zPosParam)){
+    getObjectOccupyingThePosition: function (xPosParam, zPosParam, gameRoom) {
+        if (!pathFindingWrapper.isPointInGrid(xPosParam, zPosParam)) {
             return -1;
         }
         return gameRoom.gridMatrix[xPosParam][zPosParam].object;
     },
 
-    
-    // find closest point which is not an obstacle and also not occupied by some other bot.
-    findClosestWalkablePoint: function(position){ // position = [xpos, ypos, zpos]
 
-        if(pathFindingWrapper.isWalkableAt(position[0], position[2]) 
-        && this.getObjectOccupyingThePosition(position[0], position[2], gameRoom) == null){
-            return position;
-        }
 
-        for(var side = 1; side < this.tg.grid.width; ++side){
-            var positionRunnerStart = {x:position[0] - side, z:position[2] - side};// left-bottom
-            var j = 0;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                
-                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
-                }
-                positionRunnerStart.x = positionRunnerStart.x + 1;
-            }
-
-            positionRunnerStart.x = positionRunnerStart.x - 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
-                
-                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
-                }
-                positionRunnerStart.z = positionRunnerStart.z + j;
-            }
-
-            positionRunnerStart.z = positionRunnerStart.z - 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                
-                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
-                }
-                positionRunnerStart.x = positionRunnerStart.x - 1;
-            }
-
-            positionRunnerStart.x = positionRunnerStart.x + 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                
-                if(pathFindingWrapper.isPointInGrid(positionRunnerStart.x, positionRunnerStart.z)){
-                    if(pathFindingWrapper.isWalkableAt(positionRunnerStart.x, positionRunnerStart.z) 
-                    && this.getObjectOccupyingThePosition(positionRunnerStart.x, positionRunnerStart.z, gameRoom) == null){
-                        position.x = positionRunnerStart.x;
-                        position.z = positionRunnerStart.z;
-                        return position;
-                    }
-                }
-                positionRunnerStart.z = positionRunnerStart.z - 1;
-            }
-        }
-        console.error('ERROR: Closest walkable point not found for position:', position);
-        return null;// walkable point not found. This should never happen.
-    },
-
-    findPath: function(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ){
+    findPath: function (currentPositionX, currentPositionZ, targetPositionX, targetPositionZ) {
         pathFindingWrapper.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
     },
 
-    getDistanceBetweenPoints: function(startX, startZ, endX, endZ){
-        if(!pathFindingWrapper.isPointInGrid(startX, startZ)){
+    getDistanceBetweenPoints: function (startX, startZ, endX, endZ) {
+        if (!pathFindingWrapper.isPointInGrid(startX, startZ)) {
             return -1;
         }
-        if(!pathFindingWrapper.isPointInGrid(endX, endZ)){
+        if (!pathFindingWrapper.isPointInGrid(endX, endZ)) {
             return -1;
         }
 

@@ -14,6 +14,11 @@ module.exports = {
         this.itemConfig = workerState.getItemConfig();
     },
 
+    addActionToBot: function(botConfig, action, actionData){
+        botConfig.action = action;
+        botConfig.actionData = actionData;
+    },
+
     canAttack: function(objectConfig){
         if((workerState.currentTime - objectConfig.activityTimeStamp) > objectConfig.attackinterval){
             return true;

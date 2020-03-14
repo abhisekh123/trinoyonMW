@@ -1,5 +1,6 @@
 
 const workerState = require('../../state/workerstate');
+const aiUtility = require('../ai/aiutility');
 
 module.exports = {
     // baseMap: {}
