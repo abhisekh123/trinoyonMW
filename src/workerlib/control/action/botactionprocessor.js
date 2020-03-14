@@ -12,14 +12,20 @@ module.exports = {
     },
 
     traverseBotThroughPath: function(botConfig){
-
-    },,,
+        for (let i = 0; i < botConfig.actionData.length; i++) {
+            const pathPosition = botConfig.actionData[i];
+            if(pathPosition[3]>workerState.currentTime){
+                ,,,,
+            }
+        }
+    },
 
     
     continuePerformingAction: function(botConfig, gameRoom, timeSlice){
         switch(botConfig.action){
             case 'goto':
             // else continue transport
+            this.traverseBotThroughPath(botConfig);
             break;
             case 'march':
             // check if hostile in range
@@ -32,6 +38,7 @@ module.exports = {
                     return 0; // consumed all remaining time to attack. Done for the current iteration.
                 }
             }
+            this.traverseBotThroughPath(botConfig);
             // action = ready
             // else continue transport
             break;
