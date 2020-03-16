@@ -5,6 +5,7 @@
 
 tg.world = {};
 
+// reset world and load characters based on current match configuration
 tg.world.startNewMatch = function(playerConfigArray, playerIndex){
     // reset game static objects
     tg.static.resetStaticItems();
@@ -15,7 +16,7 @@ tg.world.startNewMatch = function(playerConfigArray, playerIndex){
     tg.pn.showMatchStartingLoader();
 };
 
-
+// method that triggers when all the assets for the current match has been loaded.
 tg.world.handleNewMatchStartReadyTrigger = function() {
     console.log('all assets loaded');
     tg.isGameLive = true;

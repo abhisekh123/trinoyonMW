@@ -81,6 +81,19 @@ canvas {
     transform: translate(-50%, -50%);
 }
 
+.game-footer-menu{
+    display: none;
+    bottom: 100%;
+}
+
+.game-header-map{
+    display: none;
+    top: 0%;
+    left: 0%;
+    width: 15%;
+    height: 15%;
+}
+
 /* Modal Content/Box */
 /* .start-game {
     background-color: #222222;

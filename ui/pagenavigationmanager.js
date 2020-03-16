@@ -44,8 +44,9 @@ tg.pn.showMatchPage = function(){
 
     tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
-    // $("#load-indicator").show();
-    // tg.pv.setModalDimensionPercentage('50%', '90%');
+    $("#game-footer-menu").show();
+    $("#game-header-map").show();
+    tg.pv.setModalDimensionPercentage('10%', '90%');
 };
 
 // display home page.

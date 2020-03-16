@@ -1,6 +1,6 @@
 
 tg.bot = {};
-
+tg.bot.selfOwnedBots = null;
 
 tg.bot.reloadBots = function(playerConfigArray, playerSelfIndex, actionOnComplete) {
     console.log('start tg.bot.reloadBots');
@@ -16,6 +16,11 @@ tg.bot.reloadBots = function(playerConfigArray, playerSelfIndex, actionOnComplet
 
     for (let i = 0; i < playerConfigArray.length; i++) {
         const playerBotArray = playerConfigArray[i].botObjectList;
+        console.log('playerBotArray:', playerBotArray);
+        if(i == playerSelfIndex){
+            
+            tg.bot.selfOwnedBots = playerBotArray;
+        }
         for (let j = 0; j < playerBotArray.length; j++) {
             let botConfig = playerBotArray[j];
             tg.bot.loadCharacters(botConfig, playerConfigArray[i].id, playerConfigArray[i].team);
