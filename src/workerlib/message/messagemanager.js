@@ -81,33 +81,15 @@ module.exports = {
     //     mainThreadStub.postMessage(responseJSONString, '');
     // },
 
-    extractBotObjectConfigInformation: function(botObjectListParam){
-        const configArray = [];
-        // extract config information for each bot
-        for(var i = 0; i < botObjectListParam.length; ++i){
-            const configObject = {};
-            configObject.id = botObjectListParam[i].id;
-            configObject.type = botObjectListParam[i].type;
-            configObject.position = botObjectListParam[i].position;
-            configObject.rotation = botObjectListParam[i].rotation;
-            configArray.push(configObject);
-        }
-        return configArray;
-    },
+    
 
-    broadCompleteGameConfigToPlayers: function(gameRoom){
+    broadcastGameConfigToPlayers: function(gameRoom){
         const payload = {};
         payload.playerIDList = [];
-        payload.players = [];
+        payload.players = gameRoom.snapShot.gameConfigArrayForPlayers;
 
         for(var i = 0; i < gameRoom.players_1.length; ++i){
             const player = gameRoom.players_1[i];
-            const playerConfig = {};
-            playerConfig.id = player.id;
-            playerConfig.team = player.team;
-            playerConfig.botObjectList = this.extractBotObjectConfigInformation(player.botObjectList);
-            payload.players.push(playerConfig);
-
             if(player.isAIDriven){
                 continue;
             }
@@ -120,12 +102,6 @@ module.exports = {
         // players 2
         for(var i = 0; i < gameRoom.players_2.length; ++i){
             const player = gameRoom.players_2[i];
-            const playerConfig = {};
-            playerConfig.id = player.id;
-            playerConfig.team = player.team;
-            playerConfig.botObjectList = this.extractBotObjectConfigInformation(player.botObjectList);
-            payload.players.push(playerConfig);
-
             if(player.isAIDriven){
                 continue;
             }

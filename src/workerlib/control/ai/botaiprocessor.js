@@ -42,7 +42,7 @@ module.exports = {
                 gameRoom
             );
             if(positionNearHostile != null){
-                this.completeBotMovementActionFormalities(botConfig, positionNearHostile, 'march');
+                this.completeBotMovementActionFormalities(botConfig, positionNearHostile, 'march', gameRoom);
                 return timeSlice;
             }
         }
@@ -64,7 +64,7 @@ module.exports = {
                     gameRoom
                 )
                 if(positionNearLeader != null){
-                    this.completeBotMovementActionFormalities(botConfig, positionNearLeader, 'march');
+                    this.completeBotMovementActionFormalities(botConfig, positionNearLeader, 'march', gameRoom);
                     return timeSlice;
                 }
             }
@@ -74,7 +74,7 @@ module.exports = {
         return 0; // spent the time doing nothing.
     },
 
-    completeBotMovementActionFormalities: function(botConfig, positionObject, action){
+    completeBotMovementActionFormalities: function(botConfig, positionObject, action, gameRoom){
         var path = routeManager.findPath(
             botConfig.position[0],
             botConfig.position[2],
@@ -84,10 +84,10 @@ module.exports = {
 
         this.planBotRoute(botConfig, path); // set timestamp to each path position.
         aiUtility.addActionToBot(botConfig, action, path);
-        this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z);
+        this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z, gameRoom);
     },
 
-    updateBotPositionInGridMatrix: function(botConfig, posX, posZ){
+    updateBotPositionInGridMatrix: function(botConfig, posX, posZ, gameRoom){
         gameRoom.gridMatrix[botConfig.position[0]][botConfig.position[2]].object = null;
         gameRoom.gridMatrix[posX][posZ].object = botConfig;
         botConfig.position[0] = posX;
@@ -99,9 +99,10 @@ module.exports = {
             console.log('ERROR:Path smaller than 2');
             return;
         }
-        var currentTime = workerState.currentTime;
+        // var currentTime = workerState.currentTime;
+        var pathTime = botConfig.activityTimeStamp;
         // path[0].push(this.setBotPathData(path[0], path[0], botConfig));
-        path[0].push(currentTime); // position at begining.
+        path[0].push(pathTime); // position at begining.
         var diffCount = 0;
         for(var i = 1; i < path.length; ++i){
             diffCount = 0;
@@ -117,15 +118,15 @@ module.exports = {
             }
             if(diffCount == 1){
                 // adjacent
-                path[i].push(botConfig.adjacentTime);
+                pathTime += botConfig.adjacentTime;
             } else if(diffCount == 2){
                 // adjacent
-                path[i].push(botConfig.diagonalTime);
+                pathTime += botConfig.diagonalTime;
             } else {
                 console.log('ERROR: unknown value for path planning:', diffCount);
-                path[i].push(botConfig.diagonalTime);
+                pathTime += botConfig.diagonalTime;
             }
-            
+            path[i].push(pathTime);
         }
         return;
     },

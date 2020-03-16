@@ -6,6 +6,7 @@ const environmentState = require('../../../dist/server/state/environmentstate');
 const gameRoomAssetManager = require('./gameroomassetmanager');
 const aiManager = require('./ai/aimanager');
 const actionManager = require('./action/actionmanager');
+const snapShotManager = require('../state/snapshotmanager');
 
 module.exports = {
     worldConfig: null,
@@ -110,6 +111,7 @@ module.exports = {
                 botConfig.position[2] = botConfig.spawnPosition[2];
 
                 // TODO : update bot position in the grid. For now consider repawn position as special.
+                snapShotManager.add_BotRespawn_Event(gameRoom, botConfig);
                 return;
             }
         }
@@ -122,6 +124,7 @@ module.exports = {
             botConfig.isActive = false;
 
             gameRoom.gridMatrix[botConfig.position[0]][botConfig.position[2]].object = null;
+            snapShotManager.add_BotDie_Event(gameRoom, botConfig);
             return;
         }
     },
@@ -167,6 +170,8 @@ module.exports = {
             // console.log('building:' + workerstate.buildingArray[i].id + ' DIED.');
             buildingConfig.isActive = false;
             buildingConfig.team = 0;
+
+            snapShotManager.add_BuildingTeamChange_Event(gameRoom, buildingConfig);
             // var update = {};
             // update.action = 'die';
             // update.botType = workerstate.buildingArray[i].type;
@@ -217,6 +222,8 @@ module.exports = {
                 }
             }
             gameRoom.gridMatrix = gridMatrix;
+            
+
             // gameRoom.buildings_1 = utilityFunctions.cloneObject(
             //     utilityFunctions.getObjectValues(workerState.buildingMap_1)
             // );
@@ -259,6 +266,7 @@ module.exports = {
                 gameRoom.players_2.push(gameRoomAssetManager.getGenericPlayerObject(playerId, team, i));
             }
             gameRoom.startTime = null;
+
             workerState.games[i] = gameRoom;
         }
 

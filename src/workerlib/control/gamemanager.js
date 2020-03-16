@@ -9,6 +9,7 @@ const environmentState = require('../../../dist/server/state/environmentstate');
 const messageManager = require('../message/messagemanager');
 const aiManager = require('./ai/aimanager');
 const actionManager = require('./action/actionmanager');
+const snapShotManager = require('../state/snapshotmanager');
 
 module.exports = {
     worldConfig: null,
@@ -27,15 +28,24 @@ module.exports = {
         gameRoomManager.init();
     },
 
-    processGames: function() {
+    processGames: function(currentTimeParam) {
         var refreshVisibilityFlag = false;
+
+        //refresh visibility?
         if((workerState.currentTime - workerState.timeLastrefReshVisibilityWasAttempted) > workerState.refreshVisibilityInterval){
             workerState.timeLastrefReshVisibilityWasAttempted = workerState.currentTime;
             refreshVisibilityFlag = true;
         }
+
         // will start asmany games possible for given waiting list and free game rooms.
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
             const gameRoom = workerState.games[i];
+            
+            snapShotManager.startNewSnapshotLoop(
+                workerState.timePreviousGameLoopStart,
+                currentTimeParam,
+                gameRoom
+            );
             // console.log('<<' + i + '>>', gameRoom);
 
             if(gameRoom.isActive == true){
@@ -69,8 +79,8 @@ module.exports = {
         // console.log(gameRoom);
         // utilityFunctions.printEntireObjectNeatyle(gameRoom);
         gameRoom.isActive = true;
-
-        messageManager.broadCompleteGameConfigToPlayers(gameRoom);
+        snapShotManager.setNewSnapshotObject(gameRoom);
+        messageManager.broadcastGameConfigToPlayers(gameRoom);
     },
 
     tryStartingNewGames: function() {

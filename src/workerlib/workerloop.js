@@ -47,7 +47,7 @@ module.exports = {
             //     // this.processBot(i, timeSlice); /// process all bots : active, inactive.
             // }
             // // console.log('end do loop');
-            gameManager.processGames();
+            gameManager.processGames(currentTime);
         } 
         workerState.timePreviousGameLoopStart = currentTime;
         workerState.currentTime = currentTime;
