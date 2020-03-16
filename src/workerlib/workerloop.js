@@ -14,7 +14,7 @@ module.exports = {
     worldConfig: null,
 
     engineLoop: function(){
-        // console.log('=========>refreshWorld');
+        console.log('=========>refreshWorld');
         // var messageList = mainThreadStub.messagebuffer;
 
         // game will be simulated till this time in the current iteration.
@@ -70,18 +70,22 @@ module.exports = {
 
     
     init: function(){
+        console.log('1');
         workerState.init();
+        console.log('112');
         routeManager.init();
+        console.log('113');
         gameManager.init();
+        console.log('114');
         // messageManager.init();
         this.worldConfig = workerState.getWorldConfig();
-        
+        console.log('2');
         this.maxBotPerPlayer = this.worldConfig.commonConfig.maxBotPerPlayer;
         this.maxBotCount = this.worldConfig.commonConfig.maxBotCount;
         if(this.maxBotCount != this.worldConfig.commonConfig.maxBotPerPlayer * this.worldConfig.commonConfig.maxPlayerCount){
             console.error('!!!!!!ERROR:this.maxBotCount != world_config.commonConfig.maxBotPerPlayer * world_config.commonConfig.maxPlayerCount');
         }
-
+        console.log('13');
         //populating world with bots
         // this.initializeWorldByPopulatingWithBots();
         // // console.log(workerstate);

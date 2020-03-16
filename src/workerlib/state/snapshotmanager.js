@@ -232,15 +232,15 @@ module.exports = {
         }
 
         // building 1
-        for (var i = 0; i < gameRoom.buildings_1.length; ++i) {
-            const buildingConfig = gameRoom.buildings_1[i];
+        for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+            const buildingConfig = gameRoom.buildingArray_1[i];
             var buildingSnapshotObject = this.getGeneric_SnapshotObject(buildingConfig);
             snapShotObject.itemState[buildingSnapshotObject.id] = buildingSnapshotObject;
         }
 
         // building 2
-        for (var i = 0; i < gameRoom.buildings_2.length; ++i) {
-            const buildingConfig = gameRoom.buildings_2[i];
+        for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+            const buildingConfig = gameRoom.buildingArray_2[i];
             var buildingSnapshotObject = this.getGeneric_SnapshotObject(buildingConfig);
             snapShotObject.itemState[buildingSnapshotObject.id] = buildingSnapshotObject;
         }

@@ -83,7 +83,6 @@ module.exports = {
 
         // console.log('after comparing palyers, minDistance:', minDistance, ' target:', target);
 
-        // gameRoom.buildings_1
         for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_1[i];
             if (buildingConfig.team != 0 && buildingConfig.team == playerTeam) {
@@ -106,7 +105,7 @@ module.exports = {
             }
         }
 
-        // gameRoom.buildings_2
+        // gameRoom.buildingArray_2
         for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_2[i];
             if (buildingConfig.team != 0 && buildingConfig.team == playerTeam) {

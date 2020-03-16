@@ -16,15 +16,17 @@ module.exports = {
     // itemConfig: null,
     // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
     init: function(){
-
+        console.log('11q');
         this.worldConfig = workerState.getWorldConfig();
         // this.itemConfig = workerState.getItemConfig();
-
+        console.log('11r');
         aiManager.init();
+        console.log('11l');
         actionManager.init();
-        
+        console.log('11t');
         // create refference world
         gameRoomAssetManager.init();
+        console.log('11v');
         gameRoomManager.init();
     },
 

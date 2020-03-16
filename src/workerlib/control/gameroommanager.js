@@ -224,10 +224,10 @@ module.exports = {
             gameRoom.gridMatrix = gridMatrix;
             
 
-            // gameRoom.buildings_1 = utilityFunctions.cloneObject(
+            // gameRoom.buildingArray_1 = utilityFunctions.cloneObject(
             //     utilityFunctions.getObjectValues(workerState.buildingMap_1)
             // );
-            // gameRoom.buildings_2 = utilityFunctions.cloneObject(
+            // gameRoom.buildingArray_2 = utilityFunctions.cloneObject(
             //     utilityFunctions.getObjectValues(workerState.buildingMap_2)
             // );
             gameRoom.buildingArray_1 = utilityFunctions.cloneObject(
@@ -239,14 +239,14 @@ module.exports = {
 
             // update grid
             // building 1
-            for (var i = 0; i < gameRoom.buildings_1.length; ++i) {
-                const building = gameRoom.buildings_1[i];
+            for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+                const building = gameRoom.buildingArray_1[i];
                 gameRoom.gridMatrix[building.position[0]][building.position[2]].object = building;
             }
 
             // building 2
-            for (var i = 0; i < gameRoom.buildings_2.length; ++i) {
-                const building = gameRoom.buildings_2[i];
+            for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+                const building = gameRoom.buildingArray_2[i];
                 gameRoom.gridMatrix[building.position[0]][building.position[2]].object = building;
             }
 
@@ -293,15 +293,15 @@ module.exports = {
         gameRoom.gridMatrix = gridMatrix;
 
         // building 1
-        for (var i = 0; i < gameRoom.buildings_1.length; ++i) {
-            const building = gameRoom.buildings_1[i];
+        for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+            const building = gameRoom.buildingArray_1[i];
             building.life = workerState.buildingMap_1[building.id].life;
             building.isActive = true;
         }
 
         // building 2
-        for (var i = 0; i < gameRoom.buildings_2.length; ++i) {
-            const building = gameRoom.buildings_2[i];
+        for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+            const building = gameRoom.buildingArray_2[i];
             building.life = workerState.buildingMap_2[building.id].life;
             building.isActive = true;
         }

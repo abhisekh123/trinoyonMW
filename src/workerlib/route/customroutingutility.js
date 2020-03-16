@@ -1,5 +1,5 @@
 const workerState = require('../state/workerstate');
-const pathfindingWrapper = require('./pathfindingwrapper');
+const pathFindingWrapper = require('./pathfindingwrapper');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const fs = require('fs');
 
@@ -104,7 +104,7 @@ module.exports = {
                             // var path = this.findPath(x, z, actual_x, actual_z);
                             // neighbourPathGrid[x_small][z_small] = path;
 
-                            if (!pathfindingWrapper.isWalkableAt(actual_x, actual_z)) {
+                            if (!pathFindingWrapper.isWalkableAt(actual_x, actual_z)) {
                                 binaryStringArray[z_small] = '0';
                                 continue;
                             }
@@ -116,7 +116,7 @@ module.exports = {
                             for (var pathIndex = 0; pathIndex < linePath.length; ++pathIndex) {
                                 var actual_x_pathPoint = x + linePath[pathIndex].x - this.worldConfig.maxRange;
                                 var actual_z_pathPoint = z + linePath[pathIndex].z - this.worldConfig.maxRange;
-                                if (!pathfindingWrapper.isWalkableAt(actual_x_pathPoint, actual_z_pathPoint)) {
+                                if (!pathFindingWrapper.isWalkableAt(actual_x_pathPoint, actual_z_pathPoint)) {
                                     // obstacle found. Stop scan and mark : Not Visible.
                                     // neighbourhoodVisibilityGrid[x_small][z_small] = false;
                                     // // console.log('visibility false.');
