@@ -6,7 +6,7 @@ const utilityFunctions = require('../../utils/utilityfunctions');
 module.exports = {
 
     // game
-    games: [],
+    gameRoomArray: [],
 
     // players
     // players: null,

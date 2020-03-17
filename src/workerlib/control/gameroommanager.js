@@ -209,8 +209,11 @@ module.exports = {
      */
 
     initialiseRooms: function () {
-        for (var i = 0; i < environmentState.maxGameCount; ++i) { // intialise each game room
+        // console.log('workerState.gameRoomArray:', workerState.gameRoomArray);
+        for (var gameId = 0; gameId < environmentState.maxGameCount; ++gameId) { // intialise each game room
             const gameRoom = {};
+            // console.log('init gameRoom:', gameId);
+
 
             var gridMatrix = new Array(this.worldConfig.gridSide);
             for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
@@ -231,10 +234,12 @@ module.exports = {
             //     utilityFunctions.getObjectValues(workerState.buildingMap_2)
             // );
             gameRoom.buildingArray_1 = utilityFunctions.cloneObject(
-                utilityFunctions.getObjectValues(workerState.buildingArray_1)
+                // utilityFunctions.getObjectValues(workerState.buildingArray_1)
+                workerState.buildingArray_1
             );
             gameRoom.buildingArray_2 = utilityFunctions.cloneObject(
-                utilityFunctions.getObjectValues(workerState.buildingArray_2)
+                // utilityFunctions.getObjectValues(workerState.buildingArray_2)
+                workerState.buildingArray_2
             );
 
             // update grid
@@ -258,22 +263,23 @@ module.exports = {
             for (var j = 0; j < environmentState.maxPlayerPerTeam; ++j) { // populate room with generic players of team 1.
                 var team = 1;
                 var playerId = 'player_' + j;
-                gameRoom.players_1.push(gameRoomAssetManager.getGenericPlayerObject(playerId, team, i));
+                gameRoom.players_1.push(gameRoomAssetManager.getGenericPlayerObject(playerId, team, gameId));
             }
             for (var j = environmentState.maxPlayerPerTeam; j < (environmentState.maxPlayerPerTeam * 2); ++j) { // populate room with generic players of team 2.
                 var team = 2;
                 var playerId = 'player_' + j;
-                gameRoom.players_2.push(gameRoomAssetManager.getGenericPlayerObject(playerId, team, i));
+                gameRoom.players_2.push(gameRoomAssetManager.getGenericPlayerObject(playerId, team, gameId));
             }
             gameRoom.startTime = null;
-
-            workerState.games[i] = gameRoom;
+            // console.log('init gameRoom3:', gameId);
+            workerState.gameRoomArray[gameId] = gameRoom;
+            // console.log('init gameRoom4:', gameId);
         }
+        console.log('completed initialiseRooms');
 
     },
 
     resetGame: function (gameRoom) {
-        // const gameRoom = workerState.games(indexParam);
         // gameRoom.isActive = false;
         // gameRoom.startTime = null;
 

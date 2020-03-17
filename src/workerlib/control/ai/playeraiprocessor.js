@@ -1,6 +1,7 @@
 const workerState = require('../../state/workerstate');
 const routeManager = require('../../route/routemanager');
-const botActionProcessor = require('../action/botactionprocessor');
+// const botActionProcessor = require('../action/botactionprocessor');
+const aiUtility = require('./aiutility');
 
 module.exports = {
 
@@ -26,16 +27,26 @@ module.exports = {
             }else{
                 // var leaderConfig = workerState.botMap[playerConfig.leaderBotID];
                 // // console.log(leaderConfig.payload.position);
-                // // console.log(nearestTarget.target);
-                var nearestPosition = routeManager.findClosestWalkablePoint({x:nearestTarget.target[0], y:0, z:nearestTarget.target[1]});
-                var path = routeManager.findPath(
-                    leaderBotConfig.position[0], 
-                    leaderBotConfig.position[2], 
-                    nearestPosition.x, 
-                    nearestPosition.z);
-                // // console.log('path:', path);
-                // // console.log('4');
-                botActionProcessor.instructBot(leaderBotConfig, 'march', path);
+                var nearestPosition = routeManager.findClosestWalkablePosition(
+                    nearestTarget, 
+                    this.worldConfig.gridSide, 
+                    gameRoom
+                );
+                if(nearestPosition == null){
+                    console.log('nearestPosition == null .... surprise!');
+                    return;
+                }
+                // console.log('player ai processor, leaderConfig:', leaderBotConfig);
+                // console.log('nearest position:', nearestPosition);
+                aiUtility.completeBotMovementActionFormalities(leaderBotConfig, nearestPosition, 'march', gameRoom);
+                // var path = routeManager.findPath(
+                //     leaderBotConfig.position[0], 
+                //     leaderBotConfig.position[2], 
+                //     nearestPosition.x, 
+                //     nearestPosition.z);
+                // // // console.log('path:', path);
+                // // // console.log('4');
+                // botActionProcessor.instructBot(leaderBotConfig, 'march', path);
             }
         }
     },

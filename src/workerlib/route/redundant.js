@@ -1202,5 +1202,8 @@ module.exports = {
                 break;
         }
     },
-
+    // redundant. just use the distance matrix.
+    isBotAwayFromLeader(botConfig, leaderConfig){
+        
+    },
 }

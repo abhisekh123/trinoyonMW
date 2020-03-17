@@ -14,7 +14,7 @@ module.exports = {
     worldConfig: null,
 
     engineLoop: function(){
-        console.log('=========>refreshWorld');
+        // console.log('=========>refreshWorld');
         // var messageList = mainThreadStub.messagebuffer;
 
         // game will be simulated till this time in the current iteration.
@@ -27,8 +27,8 @@ module.exports = {
         if(mainThreadStub.messagebuffer.length > 0){
             messageManager.processIncomingMessages();
         }
-
-        while (totalTimeToSimulate > 0);{
+        // console.log('=========>refreshWorld2, totalTimeToSimulate:', totalTimeToSimulate);
+        while (totalTimeToSimulate > 0){
             // console.log('--))start do loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
             if (totalTimeToSimulate <= workerState.gameLoopInterval) {
                 workerState.timeIntervalToSimulateInEachGame = totalTimeToSimulate;
@@ -46,16 +46,18 @@ module.exports = {
             //     }
             //     // this.processBot(i, timeSlice); /// process all bots : active, inactive.
             // }
-            // // console.log('end do loop');
+            
             gameManager.processGames(currentTime);
+            // console.log('end while loop, totalTimeToSimulate:', totalTimeToSimulate);
         } 
         workerState.timePreviousGameLoopStart = currentTime;
         workerState.currentTime = currentTime;
         
         
         // messageManager.broadcastGameUpdatesToPlayers();
-
+        // console.log('=========>refreshWorld23');
         gameManager.tryStartingNewGames();
+        // console.log('=========>refreshWorld24');
 
         // game taken to compute gurrent snapshot for each game
         // will be used to schedule next iteration of engine loop
@@ -70,29 +72,32 @@ module.exports = {
 
     
     init: function(){
-        console.log('1');
+        // console.log('1');
         workerState.init();
-        console.log('112');
+        // console.log('112');
         routeManager.init();
-        console.log('113');
+        // console.log('113');
         gameManager.init();
-        console.log('114');
+        // console.log('114');
         // messageManager.init();
         this.worldConfig = workerState.getWorldConfig();
-        console.log('2');
+        // console.log('2');
         this.maxBotPerPlayer = this.worldConfig.commonConfig.maxBotPerPlayer;
         this.maxBotCount = this.worldConfig.commonConfig.maxBotCount;
         if(this.maxBotCount != this.worldConfig.commonConfig.maxBotPerPlayer * this.worldConfig.commonConfig.maxPlayerCount){
             console.error('!!!!!!ERROR:this.maxBotCount != world_config.commonConfig.maxBotPerPlayer * world_config.commonConfig.maxPlayerCount');
         }
-        console.log('13');
+        // console.log('13');
         //populating world with bots
         // this.initializeWorldByPopulatingWithBots();
         // // console.log(workerstate);
         // // console.log("workerstate: %j", workerstate);
-        this.isGameRunning = true;
-        this.engineLoop();
-
+        
         // console.log('complete world init.');
+        workerState.timePreviousGameLoopStart = utilityFunctions.getCurrentTime();
+        this.isGameRunning = true;
+        // this.engineLoop();
+        setTimeout((()=>{this.engineLoop()}), workerState.gameLoopInterval);
+        console.log('server is up and ready to serve the humanity.');
     },
 };

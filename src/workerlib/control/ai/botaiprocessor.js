@@ -42,7 +42,7 @@ module.exports = {
                 gameRoom
             );
             if(positionNearHostile != null){
-                this.completeBotMovementActionFormalities(botConfig, positionNearHostile, 'march', gameRoom);
+                aiUtility.completeBotMovementActionFormalities(botConfig, positionNearHostile, 'march', gameRoom);
                 return timeSlice;
             }
         }
@@ -64,7 +64,7 @@ module.exports = {
                     gameRoom
                 )
                 if(positionNearLeader != null){
-                    this.completeBotMovementActionFormalities(botConfig, positionNearLeader, 'march', gameRoom);
+                    aiUtility.completeBotMovementActionFormalities(botConfig, positionNearLeader, 'march', gameRoom);
                     return timeSlice;
                 }
             }
@@ -74,66 +74,5 @@ module.exports = {
         return 0; // spent the time doing nothing.
     },
 
-    completeBotMovementActionFormalities: function(botConfig, positionObject, action, gameRoom){
-        var path = routeManager.findPath(
-            botConfig.position[0],
-            botConfig.position[2],
-            positionObject.x,
-            positionObject.z
-        );
-
-        this.planBotRoute(botConfig, path); // set timestamp to each path position.
-        aiUtility.addActionToBot(botConfig, action, path);
-        this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z, gameRoom);
-    },
-
-    updateBotPositionInGridMatrix: function(botConfig, posX, posZ, gameRoom){
-        gameRoom.gridMatrix[botConfig.position[0]][botConfig.position[2]].object = null;
-        gameRoom.gridMatrix[posX][posZ].object = botConfig;
-        botConfig.position[0] = posX;
-        botConfig.position[2] = posZ;
-    },
-
-    planBotRoute: function(botConfig, path){ // each path element : [posX, posZ, time to travel, rotation]
-        if(path.length < 2){ // TODO: check if path can be length 1.
-            console.log('ERROR:Path smaller than 2');
-            return;
-        }
-        // var currentTime = workerState.currentTime;
-        var pathTime = botConfig.activityTimeStamp;
-        // path[0].push(this.setBotPathData(path[0], path[0], botConfig));
-        path[0].push(pathTime); // position at begining.
-        var diffCount = 0;
-        for(var i = 1; i < path.length; ++i){
-            diffCount = 0;
-            // var timeDelta = this.setBotPathData(path[i], path[i + 1], botConfig);
-            // timeToTravel += (timeDelta * 1000);//convert to milliseconds.
-
-            // testing if tow consecutive path positions are adjacent or diagonal.
-            if(path[i - 1][0] != path[i][0]){
-                ++diffCount;
-            }
-            if(path[i - 1][1] != path[i][1]){
-                ++diffCount;
-            }
-            if(diffCount == 1){
-                // adjacent
-                pathTime += botConfig.adjacentTime;
-            } else if(diffCount == 2){
-                // adjacent
-                pathTime += botConfig.diagonalTime;
-            } else {
-                console.log('ERROR: unknown value for path planning:', diffCount);
-                pathTime += botConfig.diagonalTime;
-            }
-            path[i].push(pathTime);
-        }
-        return;
-    },
-
-    // redundant. just use the distance matrix.
-    isBotAwayFromLeader(botConfig, leaderConfig){
-        
-    },
 
 }

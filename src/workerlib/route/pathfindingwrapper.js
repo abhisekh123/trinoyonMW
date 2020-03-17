@@ -19,6 +19,15 @@ module.exports = {
         });
 
         this.prepareGrid();
+
+        var matrix = [
+            [0, 0, 0, 1, 0],
+            [1, 0, 0, 0, 1],
+            [0, 0, 1, 0, 0],
+        ];
+        var grid = new PF.Grid(matrix);
+        var path = workerState.finder.findPath(1, 2, 4, 2, grid);
+        console.log('==========>', path);
     },
     
 
@@ -40,22 +49,43 @@ module.exports = {
     },
 
     findPath: function(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ){
-        // // console.log('findPath');
-        // // console.log(currentPositionX);
-        // // console.log(currentPositionZ);
-        // // console.log(targetPositionX);
-        // // console.log(targetPositionZ);
-        var path = this.finder.findPath(
-            Math.round((currentPositionX))// + this.tg.centreX
-            , Math.round((currentPositionZ))// + this.tg.centreZ
-            , Math.round((targetPositionX))// + this.tg.centreX
-            , Math.round((targetPositionZ))// + this.tg.centreZ
+        // console.log('findPath');
+        // console.log(currentPositionX);
+        // console.log(currentPositionZ);
+        // console.log(targetPositionX);
+        // console.log(targetPositionZ);
+        // console.log(workerState.finder);
+        // console.log('workerState.finder.findPath', workerState.finder.findPath);
+        // console.log(workerState.grid);
+        // var path = workerState.finder.findPath(
+        //     Math.round((currentPositionX))// + this.tg.centreX
+        //     , Math.round((currentPositionZ))// + this.tg.centreZ
+        //     , Math.round((targetPositionX))// + this.tg.centreX
+        //     , Math.round((targetPositionZ))// + this.tg.centreZ
+        //     , workerState.grid);
+        var path = workerState.finder.findPath(
+            currentPositionX
+            ,currentPositionZ
+            ,targetPositionX
+            ,targetPositionZ
             , workerState.grid);
+
+        // console.log('pati:', path);
         this.restoreGrid();
         // for(var i = 0; i < path.length; ++i){
         //     path[i][0] = (path[i][0] - this.tg.centreX);
         //     path[i][1] = (path[i][1] - this.tg.centreZ);
         // }
+
+        // var matrix = [
+        //     [0, 0, 0, 1, 0],
+        //     [1, 0, 0, 0, 1],
+        //     [0, 0, 1, 0, 0],
+        // ];
+        // var grid1 = new PF.Grid(matrix);
+        // var path1 = workerState.finder.findPath(1, 2, 4, 2, grid1);
+        // console.log('==========>', path1);
+
         return path;
     },
 

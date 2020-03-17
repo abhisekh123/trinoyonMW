@@ -3,6 +3,7 @@
  * This is the file that should be imported by other files.
  * This file internally will use the sub modules for ai functions.
  */
+const aiUtility = require('./aiutility');
 
 module.exports = {
     'Player'                    : require('./playeraiprocessor'),
@@ -17,5 +18,6 @@ module.exports = {
         this.Minion.init();
         this.Bot.init();
         this.Tower.init();
+        aiUtility.init();
     }
 };

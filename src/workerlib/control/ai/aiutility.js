@@ -12,6 +12,8 @@ module.exports = {
     init: function(){
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();
+
+        // console.log('==++++', this.worldConfig);
     },
 
     addActionToBot: function(botConfig, action, actionData){
@@ -38,6 +40,7 @@ module.exports = {
 
     findClosestHostileAttackedByTeamMate: function(botIndex, playerConfig){
         var hostileConfig = null;
+        // console.log(this.worldConfig);
         var minDist = this.worldConfig.gridSide + 1;
 
         const botConfig = playerConfig.botObjectList[j];
@@ -78,7 +81,7 @@ module.exports = {
 
         // increase widhth and check the perimeter
         for(var side = 1; side < rangeParam; ++side){
-            positionRunnerStart = {x:position.x - side, z:position.z - side};// left-bottom
+            positionRunnerStart = {x:itemConfig.position[0] - side, z:itemConfig.position[2] - side};// left-bottom
             var j = 0;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
                 const objectAtPosition = routeManager.getObjectOccupyingThePosition(
@@ -151,7 +154,66 @@ module.exports = {
         }
 
         return null; // no hostiles in range.
-    }
+    },
+
+
+    completeBotMovementActionFormalities: function(botConfig, positionObject, action, gameRoom){
+        var path = routeManager.findPath(
+            botConfig.position[0],
+            botConfig.position[2],
+            positionObject.x,
+            positionObject.z
+        );
+        // console.log('completeBotMovementActionFormalities path:', path);
+        this.planBotRoute(botConfig, path); // set timestamp to each path position.
+        this.addActionToBot(botConfig, action, path);
+        this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z, gameRoom);
+    },
+
+    updateBotPositionInGridMatrix: function(botConfig, posX, posZ, gameRoom){
+        gameRoom.gridMatrix[botConfig.position[0]][botConfig.position[2]].object = null;
+        gameRoom.gridMatrix[posX][posZ].object = botConfig;
+        botConfig.position[0] = posX;
+        botConfig.position[2] = posZ;
+    },
+
+    planBotRoute: function(botConfig, path){ // each path element : [posX, posZ, time to travel, rotation]
+        if(path.length < 2){ // TODO: check if path can be length 1.
+            console.log('ERROR:Path smaller than 2', botConfig);
+            console.log('path:', path);
+            return;
+        }
+        // var currentTime = workerState.currentTime;
+        var pathTime = botConfig.activityTimeStamp;
+        // path[0].push(this.setBotPathData(path[0], path[0], botConfig));
+        path[0].push(pathTime); // position at begining.
+        var diffCount = 0;
+        for(var i = 1; i < path.length; ++i){
+            diffCount = 0;
+            // var timeDelta = this.setBotPathData(path[i], path[i + 1], botConfig);
+            // timeToTravel += (timeDelta * 1000);//convert to milliseconds.
+
+            // testing if tow consecutive path positions are adjacent or diagonal.
+            if(path[i - 1][0] != path[i][0]){
+                ++diffCount;
+            }
+            if(path[i - 1][1] != path[i][1]){
+                ++diffCount;
+            }
+            if(diffCount == 1){
+                // adjacent
+                pathTime += botConfig.adjacentTime;
+            } else if(diffCount == 2){
+                // adjacent
+                pathTime += botConfig.diagonalTime;
+            } else {
+                console.log('ERROR: unknown value for path planning:', diffCount);
+                pathTime += botConfig.diagonalTime;
+            }
+            path[i].push(pathTime);
+        }
+        return;
+    },
 }
 
 

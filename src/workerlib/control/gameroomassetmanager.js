@@ -14,7 +14,7 @@ module.exports = {
     teamPrefferenceFlag: false,
 
     init: function(){
-        console.log('game room asset manager init');
+        // console.log('game room asset manager init');
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();
         workerState.waitingUsersLinkedList = new linkedList();

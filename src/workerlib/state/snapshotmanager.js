@@ -4,7 +4,7 @@
 
 // var fs = require('fs');
 // const readline = require('readline');
-// const workerstate = require('./workerstate');
+const workerState = require('./workerstate');
 // const environmentState = require('../../state/environmentstate');
 
 module.exports = {

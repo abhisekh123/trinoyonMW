@@ -65,7 +65,7 @@ module.exports = {
                 var botConfig = playerConfig.botObjectList[i];
                 var botPosition = botConfig.position;
 
-                var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
+                var distance = this.getDistanceBetweenPoints(
                     leaderPosition[0], leaderPosition[2], botPosition[0], botPosition[2]
                 );
 
@@ -90,7 +90,7 @@ module.exports = {
                 continue;
             }
             // console.log('comparing with defenseList[i]:', defenseList[i]);
-            var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
+            var distance = this.getDistanceBetweenPoints(
                 leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
             )
             if (distance < minDistance) {
@@ -113,7 +113,7 @@ module.exports = {
                 continue;
             }
             // console.log('comparing with defenseList[i]:', defenseList[i]);
-            var distance = bot_route_utility.findDIstanceBetweenTwoPoints(
+            var distance = this.getDistanceBetweenPoints(
                 leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
             )
             if (distance < minDistance) {
@@ -151,7 +151,7 @@ module.exports = {
             }; // left-bottom
             var j = 0;
             for (j = 0; j <= (2 * side); ++j) { // lower left -> lower right
-                if(isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
+                if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
                     return positionRunnerStart;
                 }
                 positionRunnerStart.x = positionRunnerStart.x + 1;
@@ -159,7 +159,7 @@ module.exports = {
 
             positionRunnerStart.x = positionRunnerStart.x - 1;
             for (j = 0; j <= (2 * side); ++j) { // lower right -> upper right
-                if(isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
+                if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
                     return positionRunnerStart;
                 }
                 positionRunnerStart.z = positionRunnerStart.z + j;
@@ -167,7 +167,7 @@ module.exports = {
 
             positionRunnerStart.z = positionRunnerStart.z - 1;
             for (j = 0; j <= (2 * side); ++j) { // lower left -> lower right
-                if(isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
+                if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
                     return positionRunnerStart;
                 }
                 positionRunnerStart.x = positionRunnerStart.x - 1;
@@ -175,7 +175,7 @@ module.exports = {
 
             positionRunnerStart.x = positionRunnerStart.x + 1;
             for (j = 0; j <= (2 * side); ++j) { // lower left -> lower right
-                if(isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
+                if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
                     return positionRunnerStart;
                 }
                 positionRunnerStart.z = positionRunnerStart.z - 1;
@@ -187,7 +187,7 @@ module.exports = {
 
     isPositionWalkable: function(gameRoom, positionX, positionZ){
         if (pathFindingWrapper.isPointInGrid(positionX, positionZ)) {
-            const objectAtPosition = routeManager.getObjectOccupyingThePosition(
+            const objectAtPosition = this.getObjectOccupyingThePosition(
                 positionX,
                 positionZ,
                 gameRoom,
@@ -278,7 +278,7 @@ module.exports = {
 
 
     findPath: function (currentPositionX, currentPositionZ, targetPositionX, targetPositionZ) {
-        pathFindingWrapper.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
+        return pathFindingWrapper.findPath(currentPositionX, currentPositionZ, targetPositionX, targetPositionZ);
     },
 
     getDistanceBetweenPoints: function (startX, startZ, endX, endZ) {

@@ -13,8 +13,9 @@ module.exports = {
 
     traverseBotThroughPath: function(botConfig, timeSlice){
         // ignore i = 0 as it is the starting position.
+        let pathPosition = null;
         for (let i = 1; i < botConfig.actionData.length; i++) { 
-            const pathPosition = botConfig.actionData[i];
+            pathPosition = botConfig.actionData[i];
             if(pathPosition[2]>workerState.currentTime){
                 pathPosition = botConfig.actionData[i - 1];
                 botConfig.position[0] = pathPosition[0];
@@ -23,7 +24,7 @@ module.exports = {
                 return 0;
             }
         }
-        const pathPosition = botConfig.actionData[botConfig.actionData.length];
+        pathPosition = botConfig.actionData[botConfig.actionData.length - 1];
         botConfig.action = 'ready';
         botConfig.position[0] = pathPosition[0];
         botConfig.position[2] = pathPosition[1];

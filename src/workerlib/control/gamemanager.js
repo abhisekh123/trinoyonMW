@@ -16,41 +16,43 @@ module.exports = {
     // itemConfig: null,
     // this.maxPlayerCount = workerstate.getWorldConfig().commonConfig.maxPlayerCount;
     init: function(){
-        console.log('11q');
+        // console.log('11q');
         this.worldConfig = workerState.getWorldConfig();
         // this.itemConfig = workerState.getItemConfig();
-        console.log('11r');
+        // console.log('11r');
         aiManager.init();
-        console.log('11l');
+        // console.log('11l');
         actionManager.init();
-        console.log('11t');
+        // console.log('11t');
         // create refference world
         gameRoomAssetManager.init();
-        console.log('11v');
+        // console.log('11v');
         gameRoomManager.init();
     },
 
     processGames: function(currentTimeParam) {
         var refreshVisibilityFlag = false;
-
+        // console.log('process games start');
         //refresh visibility?
         if((workerState.currentTime - workerState.timeLastrefReshVisibilityWasAttempted) > workerState.refreshVisibilityInterval){
             workerState.timeLastrefReshVisibilityWasAttempted = workerState.currentTime;
             refreshVisibilityFlag = true;
         }
 
+        // console.log(workerState.gameRoomArray);
+
         // will start asmany games possible for given waiting list and free game rooms.
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
-            const gameRoom = workerState.games[i];
+            const gameRoom = workerState.gameRoomArray[i];
+            // console.log('process games i:', i);
             
-            snapShotManager.startNewSnapshotLoop(
-                workerState.timePreviousGameLoopStart,
-                currentTimeParam,
-                gameRoom
-            );
-            // console.log('<<' + i + '>>', gameRoom);
-
             if(gameRoom.isActive == true){
+                snapShotManager.startNewSnapshotLoop(
+                    workerState.timePreviousGameLoopStart,
+                    currentTimeParam,
+                    gameRoom
+                );
+
                 if((workerState.currentTime - gameRoom.startTime) > this.worldConfig.matchMaxTimeDuration){
                     this.terminateGame(gameRoom);
                     continue;
@@ -69,6 +71,8 @@ module.exports = {
                 }
             }
         }
+
+        // console.log('process games end');
     },
 
 
@@ -106,7 +110,7 @@ module.exports = {
         // let foundVacantGameRoom = false;
         // will start asmany games possible for given waiting list and free game rooms.
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
-            const gameRoom = workerState.games[i];
+            const gameRoom = workerState.gameRoomArray[i];
             // console.log('<<' + i + '>>', gameRoom);
 
             if(gameRoom.isActive == false){

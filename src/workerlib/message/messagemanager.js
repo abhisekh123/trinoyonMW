@@ -12,7 +12,7 @@ module.exports = {
         console.log('woreker@processIncomingMessages');
         var playerID = -1;
         for(var i = 0; i < mainThreadStub.messagebuffer.length; ++i){
-            // // console.log(i + '>processIncomingMessages::' + mainThreadStub.messagebuffer[i]);
+            console.log(i + '>processIncomingMessages::' + mainThreadStub.messagebuffer[i]);
             var currentMessage = mainThreadStub.messagebuffer[i];
             if(currentMessage == null || currentMessage == undefined || currentMessage.type == undefined || currentMessage.type == null){
                 continue;
