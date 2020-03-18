@@ -59,7 +59,7 @@ module.exports = {
         gameManager.tryStartingNewGames();
         // console.log('=========>refreshWorld24');
 
-        // game taken to compute gurrent snapshot for each game
+        // time taken to compute current snapshot for each game
         // will be used to schedule next iteration of engine loop
         let timeElapsed = utilityFunctions.getCurrentTime() - workerState.timePreviousGameLoopStart;
         // // console.log('refreshWorld time duration:' + timeElapsed);

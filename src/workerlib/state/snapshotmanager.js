@@ -79,7 +79,7 @@ module.exports = {
         botSnapshotObject.action = null;
         botSnapshotObject.actionData = null;
 
-        botSnapshotObject.deathTimestamp = workerState.currentTime;
+        // botSnapshotObject.deathTimestamp = workerState.currentTime;
         botSnapshotObject.activityTimeStamp = workerState.currentTime;
         botSnapshotObject.isActive = false;
 
@@ -165,7 +165,7 @@ module.exports = {
             action: itemConfig.action,
             actionData: itemConfig.actionData,
 
-            deathTimestamp: workerState.currentTime,
+            // deathTimestamp: workerState.currentTime,
             activityTimeStamp: workerState.currentTime,
             life: itemConfig.life,
             team: itemConfig.team,

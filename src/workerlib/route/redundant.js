@@ -1206,4 +1206,39 @@ module.exports = {
     isBotAwayFromLeader(botConfig, leaderConfig){
         
     },
+
+
+    updateLifeWithBotAttackDamage(characterConfig){
+        // currentBot.instruction.type = 'attack';
+        // currentBot.instruction.rotation = instructionPayload.botRotation;
+        // characterConfig.engagedEnemyType = suitableEnemy.chosenTargetType;
+        // characterConfig.engagedEnemyTarget = suitableEnemy.chosenEnemyID;
+        var enemyConfig = null;
+        var attackDamage = characterConfig.attack;
+        // // console.log('characterConfig.engagedEnemyType:', characterConfig.engagedEnemyType);
+        // // console.log(characterConfig);
+        switch(characterConfig.engagedEnemyType){
+            case 'bot':
+            enemyConfig = workerstate.botMap[characterConfig.engagedEnemyTarget];
+            break;
+            case 'static':
+            enemyConfig = workerstate.buildingMap[characterConfig.engagedEnemyTarget];
+            break;
+            default:
+            // console.log('ERROR: unknown enemy type:' + characterConfig.engagedEnemyType);
+            return;
+            // break;
+        }
+        // console.log('/////////////enemy life:', enemyConfig.life, ' enemyConfig.id:', enemyConfig.id);
+        // // console.log(enemyConfig);
+        enemyConfig.life -= attackDamage;
+        // if(characterConfig.engagedEnemyType == 'static'){
+        //     if(enemyConfig.life <= 0){
+        //         ,,,,
+        //     }
+        // }else{
+
+        // }
+        // console.log('enemy life after attack:', enemyConfig.life);
+    },
 }

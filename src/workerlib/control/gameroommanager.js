@@ -87,14 +87,15 @@ module.exports = {
         var timeSlice = workerState.timeIntervalToSimulateInEachGame;
         while(timeSlice > 0){ 
             // console.log('timeSlice:', timeSlice);
-            if(botConfig.action == 'march' || botConfig.action == 'goto'){
-                // console.log('action:' + botConfig.id);
-                timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
-            }else{// standing idle. This is executed for idle user bot.
-                // // console.log('else');
-                // timeSlice = 0;
-                timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
-            }
+            // if(botConfig.action == 'march' || botConfig.action == 'goto'){
+            //     // console.log('action:' + botConfig.id);
+            //     timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
+            // }else{// standing idle. This is executed for idle user bot.
+            //     // // console.log('else');
+            //     // timeSlice = 0;
+            //     timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
+            // }
+            timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
         }
     },
 
@@ -103,28 +104,15 @@ module.exports = {
         if(botConfig.isActive == false){
             // check if eligible to respawn
             if((workerState.currentTime - botConfig.activityTimeStamp) > botConfig.respawnTime){
-                botConfig.action = null;
-                botConfig.isActive = true;
-                botConfig.life = botConfig.fullLife;
-                botConfig.activityTimeStamp += botConfig.respawnTime;
-                botConfig.position[0] = botConfig.spawnPosition[0];
-                botConfig.position[2] = botConfig.spawnPosition[2];
-
-                // TODO : update bot position in the grid. For now consider repawn position as special.
-                snapShotManager.add_BotRespawn_Event(gameRoom, botConfig);
+                actionManager.actionUtility.addActionToBot(botConfig, 'ready', null, gameRoom);
                 return;
             }
         }
 
         
 
-        if (botConfig.life <= 0 && botConfig.isActive) { // bots that died in last cycle.
-            botConfig.action = null;
-            botConfig.activityTimeStamp = workerState.currentTime; // time of death
-            botConfig.isActive = false;
-
-            gameRoom.gridMatrix[botConfig.position[0]][botConfig.position[2]].object = null;
-            snapShotManager.add_BotDie_Event(gameRoom, botConfig);
+        if (botConfig.life <= 0 && botConfig.isActive == true) { // bots that died in last cycle.
+            actionManager.actionUtility.addActionToBot(botConfig, 'die', null, gameRoom);
             return;
         }
     },

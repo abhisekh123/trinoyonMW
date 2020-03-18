@@ -340,7 +340,7 @@ module.exports = {
         botObject.range = botTypeItemConfig.range;
 
         // botObject.residueTimeslice = 0;
-        botObject.deathTimestamp = 0;
+        // botObject.deathTimestamp = 0;
         botObject.activityTimeStamp = 0;
 
         botObject.isActive = true;

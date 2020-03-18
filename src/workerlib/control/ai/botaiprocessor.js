@@ -3,6 +3,7 @@
 const workerState = require('../../state/workerstate');
 const routeManager = require('../../route/routemanager');
 const aiUtility = require('./aiutility');
+const actionManager = require('../action/actionmanager');
 
 module.exports = {
 
@@ -20,19 +21,26 @@ module.exports = {
         // console.log('processAI:' + botConfig.id);
         
         // botConfig.attack = botTypeItemConfig.attack;
+        if(botConfig.action == 'goto'){
+            // no thinking involved. just keep going.
+            timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
+            return timeSlice;
+        }
+
+        hostileConfig = aiUtility.aiutilityRoute.findClosestHostileInRange(botConfig, gameRoom, botConfig.range);
+        if(hostileConfig != null){ // if a hostile is found in range
+            actionManager.actionUtility.addActionToBot(botConfig, 'fight', hostileConfig, gameRoom);
+            aiUtility.attackHostile(botConfig, hostileConfig, gameRoom);
+            return 0; // consumed all remaining time to attack. Done for the current iteration.
+        }
         
-        if(aiUtility.canAttack(botConfig)){ // if can attack
-            hostileConfig = aiUtility.findClosestHostileInRange(botConfig, gameRoom, botConfig.range);
-            if(hostileConfig != null){ // if a hostile is found in range
-                botConfig.action = 'fight';
-                botConfig.actionData = hostileConfig;
-                aiUtility.processAttackDamageEvent(botConfig, hostileConfig);
-                return 0; // consumed all remaining time to attack. Done for the current iteration.
-            }
+        if(botConfig.action == 'march'){
+            timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
+            return timeSlice;
         }
 
         // help out fellow bot
-        hostileConfig = aiUtility.findClosestHostileAttackedByTeamMate(botIndex, playerConfig);
+        hostileConfig = aiUtility.aiutilityRoute.findClosestHostileAttackedByTeamMate(botIndex, playerConfig);
         if(hostileConfig != null){
             // find in range visible point to bot.actiondata and march to the point
             var positionNearHostile = routeManager.findClosestVisiblePointInRange(
@@ -70,7 +78,7 @@ module.exports = {
             }
         }
 
-        botConfig.activityTimeStamp = workerState.currentTime;
+        actionManager.actionUtility.addActionToBot(botConfig, 'ready', null, gameRoom);
         return 0; // spent the time doing nothing.
     },
 
