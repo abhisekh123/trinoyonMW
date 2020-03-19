@@ -47,11 +47,6 @@ module.exports = {
             // console.log('process games i:', i);
             
             if(gameRoom.isActive == true){
-                snapShotManager.startNewSnapshotLoop(
-                    workerState.timePreviousGameLoopStart,
-                    currentTimeParam,
-                    gameRoom
-                );
 
                 if((workerState.currentTime - gameRoom.startTime) > this.worldConfig.matchMaxTimeDuration){
                     this.terminateGame(gameRoom);

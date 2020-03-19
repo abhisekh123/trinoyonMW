@@ -10,41 +10,35 @@ const workerState = require('./workerstate');
 module.exports = {
 
     init: function(){
-        
     },
-
-    
 
     // add_Regular_Event: function(gameRoom, buildingConfig){
     // },
 
-    // updateSnapshot_bot: function(gameRoom, botConfig){
+    // for actions like goto, march
+    updateBotSnapshot: function(gameRoom, botConfig){
 
-    // },
+        var snapShotObject = gameRoom.snapShot;
+        var botSnapshotObject = snapShotObject.itemState[botConfig.id];
+
+        botSnapshotObject.action = botConfig.action;
+        // botSnapshotObject.actionData = null;
+
+        // botSnapshotObject.deathTimestamp = workerState.currentTime;
+        botSnapshotObject.activityTimeStamp = botConfig.activityTimeStamp;
+        botSnapshotObject.isActive = true;
+        botSnapshotObject.life = botConfig.life;
+
+        botSnapshotObject.position[0] = botConfig.position[0];
+        botSnapshotObject.position[1] = botConfig.position[1];
+        botSnapshotObject.position[2] = botConfig.position[2];
+    },
 
     // updateSnapshot_building: function(gameRoom, buildingConfig){
-
     // },
 
-    addEventToSnapshot: function(eventObject, gameRoom){
-        gameRoom.snapShot.eventsArray.push(eventObject);
-    },
 
-    getGeneric_Event_SnapshotObject: function(){
-        return{
-            id: null,
-            event: null, // tattack, battack, die, spawn, cteam
-            timestamp: 0,
-            tid: null,
-            eData: 0,
-            position: [0,0,0],
-        };
-    },
-    /**
-     * REFRESH SNAPSHOT
-     */
-
-    add_Attack_Event: function(gameRoom, sourceConfig, targetConfig){
+    processAttackEvent: function(gameRoom, sourceConfig, targetConfig){
 
         var eventObject = this.getGeneric_Event_SnapshotObject();
         eventObject.id = sourceConfig.id;
@@ -57,17 +51,10 @@ module.exports = {
 
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[targetConfig.id];
-
-        // if(botSnapshotObject == undefined){
-        //     botSnapshotObject = this.getGenericBotSnapshotObject();
-        //     snapShotObject[botConfig.id] = botSnapshotObject;
-        // }
-        
-        botSnapshotObject.action = 'ready';
         botSnapshotObject.life = targetConfig.life;
     },
 
-    add_BotDie_Event: function(gameRoom, botConfig){
+    registerBotDieEvent: function(gameRoom, botConfig){
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
 
@@ -76,7 +63,7 @@ module.exports = {
         //     snapShotObject[botConfig.id] = botSnapshotObject;
         // }
         
-        botSnapshotObject.action = null;
+        botSnapshotObject.action = 'die';
         botSnapshotObject.actionData = null;
 
         // botSnapshotObject.deathTimestamp = workerState.currentTime;
@@ -85,14 +72,14 @@ module.exports = {
 
         var eventObject = this.getGeneric_Event_SnapshotObject();
         eventObject.id = botConfig.id;
-        eventObject.event = 'spawn';
+        eventObject.event = 'die';
         eventObject.timestamp = workerState.currentTime;
 
         addEventToSnapshot(eventObject, gameRoom);
 
     },
 
-    add_BotRespawn_Event: function(gameRoom, botConfig){
+    registerBotSpawnEvent: function(gameRoom, botConfig){
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
 
@@ -115,8 +102,12 @@ module.exports = {
 
         var eventObject = this.getGeneric_Event_SnapshotObject();
         eventObject.id = botConfig.id;
-        eventObject.event = 'die';
+        eventObject.event = 'spawn';
         eventObject.timestamp = workerState.currentTime;
+        
+        eventObject.position[0] = botConfig.position[0];
+        eventObject.position[1] = botConfig.position[1];
+        eventObject.position[2] = botConfig.position[2];
 
         addEventToSnapshot(eventObject, gameRoom);
     },
@@ -135,7 +126,7 @@ module.exports = {
 
         // botSnapshotObject.deathTimestamp = workerState.currentTime;
         itemSnapshotObject.activityTimeStamp = workerState.currentTime;
-        itemSnapshotObject.isActive = true;
+        // itemSnapshotObject.isActive = true;
         itemSnapshotObject.life = buildingConfig.life;
         itemSnapshotObject.team = buildingConfig.team;
 
@@ -143,10 +134,30 @@ module.exports = {
         eventObject.id = buildingConfig.id;
         eventObject.event = 'cteam';
         eventObject.timestamp = workerState.currentTime;
-        eventObject.eData = buildingConfig.team;
+        eventObject.position = buildingConfig.team;
 
         addEventToSnapshot(eventObject, gameRoom);
     },
+
+
+    // private method
+    addEventToSnapshot: function(eventObject, gameRoom){
+        gameRoom.snapShot.eventsArray.push(eventObject);
+    },
+
+    getGeneric_Event_SnapshotObject: function(){
+        return{
+            id: null,
+            event: null, // tattack, battack, die, spawn, cteam
+            timestamp: 0,
+            tid: null,
+            eData: 0,
+            position: [0,0,0],
+        };
+    },
+    /**
+     * REFRESH SNAPSHOT
+     */
 
     startNewSnapshotLoop: function(startTime, endTime, gameRoom){
         gameRoom.snapShot.startTime = startTime;

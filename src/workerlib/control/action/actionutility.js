@@ -43,7 +43,7 @@ module.exports = {
                 botConfig.position[2] = botConfig.spawnPosition[2];
 
                 // TODO : update bot position in the grid. For now consider repawn position as special.
-                snapShotManager.add_BotRespawn_Event(gameRoom, botConfig);
+                snapShotManager.registerBotSpawnEvent(gameRoom, botConfig);
                 // nothing to do as the bot does not occupy any position in grid
                 break;
             default:
@@ -67,7 +67,7 @@ module.exports = {
                 botConfig.activityTimeStamp = workerState.currentTime; // time of death
                 botConfig.isActive = false;
 
-                snapShotManager.add_BotDie_Event(gameRoom, botConfig);
+                snapShotManager.registerBotDieEvent(gameRoom, botConfig);
                 // nothing to do as the bot does not occupy any position in grid
                 break;
             default:
@@ -93,6 +93,7 @@ module.exports = {
         objectConfig.activityTimeStamp += objectConfig.attackinterval;
 
         // TODO: update snapshot 
+        snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
     },
 
     traverseBotThroughPath: function (botConfig, timeSlice, gameRoom) {
@@ -105,6 +106,7 @@ module.exports = {
                 botConfig.position[0] = pathPosition[0];
                 botConfig.position[2] = pathPosition[1];
                 botConfig.activityTimeStamp = pathPosition[2];
+                snapShotManager.updateBotSnapshot(gameRoom, botConfig);
                 return 0;
             }
         }
@@ -114,7 +116,7 @@ module.exports = {
         botConfig.activityTimeStamp = pathPosition[2];
         this.addActionToBot(botConfig, 'ready', null, gameRoom);
         timeSlice = workerState.currentTime - pathPosition[2];
-
+        snapShotManager.updateBotSnapshot(gameRoom, botConfig);
         // TODO: update snapshot
         return timeSlice;
     },

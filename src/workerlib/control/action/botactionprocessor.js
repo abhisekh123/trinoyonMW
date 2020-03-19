@@ -10,9 +10,6 @@ module.exports = {
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();
     },
-
-    
-
     
     continuePerformingAction: function(botConfig, gameRoom, timeSlice){
         switch(botConfig.action){
@@ -29,5 +26,4 @@ module.exports = {
         }
         return timeSlice;
     },
-    
 }

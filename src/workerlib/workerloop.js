@@ -27,6 +27,23 @@ module.exports = {
         if(mainThreadStub.messagebuffer.length > 0){
             messageManager.processIncomingMessages();
         }
+
+        if(totalTimeToSimulate > 0){
+            // reset the snapshot objects for all game rooms
+            for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
+                const gameRoom = workerState.gameRoomArray[i];
+                if(gameRoom.isActive == true){
+                    continue;
+                }
+                snapShotManager.startNewSnapshotLoop(
+                    workerState.timePreviousGameLoopStart,
+                    currentTimeParam,
+                    gameRoom
+                );
+            }
+        }
+
+        
         // console.log('=========>refreshWorld2, totalTimeToSimulate:', totalTimeToSimulate);
         while (totalTimeToSimulate > 0){
             // console.log('--))start do loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
