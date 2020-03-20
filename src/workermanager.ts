@@ -26,7 +26,7 @@ module.exports = {
         // 
         let jsonData = ev.data;
         switch(jsonData.type){
-            case 'update': // TODO : send update to main.
+            // case 'update': // TODO : send update to main.
             // relay latest snapshot to all clients.
                 // // console.log('-->update from worker::' , ev.data);
                 // for(var i = 0; i < clientregistry.clientArrey.length; ++i){
@@ -36,7 +36,7 @@ module.exports = {
                 //     }
                 // }
                 // gameState.setGameBotState(ev.data);
-                break;
+                // break;
             case 'request_game_admit_nack': // client has been granted admission to the game.
             case 'request_game_admit_ack': // client has been granted admission to the game.
                 var userIdList = jsonData.players;
@@ -48,18 +48,19 @@ module.exports = {
                 }
                 
                 break;
+            case 'update': // TODO : send update to main.
             case 'game_config': 
-                console.log('game_config::', jsonData);
+                console.log(jsonData.type + '::', jsonData);
                 var playerConfig = jsonData.payload.players;
                 var playerIDList = jsonData.payload.playerIDList;
                 var gameConfig = {
-                    type: 'game_config',
+                    type: jsonData.type,
                     playerConfig,
                     playerIndex: -1
                 };
                 // gameConfig.playerConfig = playerConfig;
                 // delete jsonData.players;
-                console.log('send game_config for :' + playerIDList);
+                console.log('send ' + jsonData.type + ' for :' + playerIDList);
                 // let clientWS = clientregistry.clientArrey[userId].ws;
                 // clientregistry.sendMessageToClient(clientWS, ev.data);
                 for (var i = 0; i < playerIDList.length; ++i){

@@ -215,7 +215,7 @@ module.exports = {
 
     setNewSnapshotObject: function(gameRoom){
         var snapShotObject = {};
-        gameRoom.gameStartTime = gameRoom.startTime;
+        snapShotObject.gameStartTime = gameRoom.gameStartTime;
         snapShotObject.startTime = gameRoom.startTime;
         snapShotObject.currentTime = workerState.currentTime;
         snapShotObject.eventsArray = [];

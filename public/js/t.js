@@ -46,7 +46,7 @@ tg.connectToParent = function(parentEndPoint, keyIdentifier){
         // console.log('got message from server::' + event.data);
         const responseJSON = JSON.parse(event.data);
         if(responseJSON.type == 'update'){// message is game update
-            // console.log('processing update.');
+            console.log('processing update.', responseJSON);
             tg.updateWorld(responseJSON);
         }else if(responseJSON.type == 'game_config'){
             console.log('processing game_config.', responseJSON);

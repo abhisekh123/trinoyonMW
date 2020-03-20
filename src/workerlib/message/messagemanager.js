@@ -8,6 +8,166 @@ const messageFactory = require('../../factory/messagefactory');
 // const environmentState = require('../../../dist/server/state/environmentstate');
 
 module.exports = {
+    
+
+    respondGameJoinStatus: function(userIdList, joinStatus){
+        const newMessageObject = messageFactory.getMessageObjectForUser();
+        newMessageObject.players = userIdList;
+        if(joinStatus){
+            newMessageObject.type = 'request_game_admit_ack';
+            
+            // console.log('---returning:', newMessageObject);
+            console.log('player admitted successfully.');
+            // newMessageObject.gameConfig = snapshotmanager.getGameConfig(gameId);
+        }else{
+            // TODO
+            newMessageObject.type = 'request_game_admit_nack';
+        }
+
+        mainThreadStub.postMessage(newMessageObject, '');
+    },
+
+    // sendMessage: function(message){
+    //     mainThreadStub.postMessage(message, '');
+    // },
+    // broadcastGameUpdatesToPlayers: function(){
+    //     var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
+    //     mainThreadStub.postMessage(responseJSONString, '');
+    // },
+
+    
+
+    broadcastGameConfigToPlayers: function(gameRoom){
+        const payload = {};
+        // payload.playerIDList = [];
+        payload.players = this.getGameConfigJSON(gameRoom);
+
+        var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1);
+        var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2);
+
+        // for(var i = 0; i < gameRoom.players_1.length; ++i){
+        //     const player = gameRoom.players_1[i];
+        //     if(player.isAIDriven){
+        //         continue;
+        //     }
+        //     payload.playerIDList.push({
+        //         id: player.userId,
+        //         index: i
+        //     });
+        // }
+
+        // // players 2
+        // for(var i = 0; i < gameRoom.players_2.length; ++i){
+        //     const player = gameRoom.players_2[i];
+        //     if(player.isAIDriven){
+        //         continue;
+        //     }
+        //     payload.playerIDList.push({
+        //         id: player.userId,
+        //         index: i
+        //     });
+        // }
+
+        console.log('sending game config');
+        // send config to players in team  1
+        payload.playerIDList = playerArrayTeam1;
+        var responseJSON = mainThreadStub.getResponseEmptyPacket('game_config', payload);
+        mainThreadStub.postMessage(responseJSON, '');
+
+        // send config to players in team  2
+        payload.playerIDList = playerArrayTeam2;
+        var responseJSON = mainThreadStub.getResponseEmptyPacket('game_config', payload);
+        mainThreadStub.postMessage(responseJSON, '');
+
+        // responseJSONString.players = this.getActualPlayerIDListForGame(gameRoom);
+        // responseJSONString.update = gameRoom;
+    },
+
+    broadcastGameUpdatesToPlayers: function(gameRoom){
+        const payload = {};
+        // payload.playerIDList = [];
+        payload.players = this.getGameUpdateJSON(gameRoom);
+
+        var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1);
+        var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2);
+        
+        console.log('sending game update');
+        // send config to players in team  1
+        payload.playerIDList = playerArrayTeam1;
+        var responseJSON = mainThreadStub.getResponseEmptyPacket('update', payload);
+        mainThreadStub.postMessage(responseJSON, '');
+
+        // send config to players in team  2
+        payload.playerIDList = playerArrayTeam2;
+        var responseJSON = mainThreadStub.getResponseEmptyPacket('update', payload);
+        mainThreadStub.postMessage(responseJSON, '');
+    },
+
+    broadcastGameResultToPlayers: function(gameRoom){
+        var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
+        mainThreadStub.postMessage(responseJSONString, '');
+    },
+
+    /**
+     * LOGICAL FUNCTIONS FOR BROADCAST
+     */
+
+    getGameUpdateJSON: function(gameRoom){
+        const updatePacket = {
+            gameStartTime: gameRoom.snapShot.gameStartTime,
+            snapshotStartTime: gameRoom.snapShot.startTime,
+            currentTime: gameRoom.snapShot.currentTime,
+            eventsArray: gameRoom.snapShot.eventsArray,
+            itemState: gameRoom.snapShot.itemState,
+        };
+        return updatePacket;
+    },
+
+    getGameConfigJSON: function(gameRoom){
+        return gameRoom.snapShot.gameConfigArrayForPlayers;
+    },
+
+    /**
+     * GET RECIPIENTS LIST
+     */
+    getActualPlayerIDListForGame: function(gameRoom, teamId){
+        var playerArray = null;
+        if(teamId == 1){
+            playerArray = gameRoom.players_1;
+        }else if(teamId == 2){
+            playerArray = gameRoom.players_2;
+        }else{
+            console.log('ERROR: unknown teamId:', teamId);
+            return [];
+        }
+        const playerIDList = [];
+
+        // players 1
+        for(var i = 0; i < playerArray.length; ++i){
+            const player = playerArray[i];
+            if(player.isAIDriven){
+                continue;
+            }
+
+            playerIDList.push({
+                id: player.userId,
+                index: i
+            });
+        }
+
+        return playerIDList;
+    },
+
+    /**
+     * GET DATA TO BE SENT
+     */
+
+
+
+
+    /**
+     * PROCESS INCOMING MESSAGE
+     */
     processIncomingMessages: function(){
         console.log('woreker@processIncomingMessages');
         var playerID = -1;
@@ -54,109 +214,5 @@ module.exports = {
         }
 
         mainThreadStub.messagebuffer.length = 0;
-    },
-
-    respondGameJoinStatus: function(userIdList, joinStatus){
-        const newMessageObject = messageFactory.getMessageObjectForUser();
-        newMessageObject.players = userIdList;
-        if(joinStatus){
-            newMessageObject.type = 'request_game_admit_ack';
-            
-            // console.log('---returning:', newMessageObject);
-            console.log('player admitted successfully.');
-            // newMessageObject.gameConfig = snapshotmanager.getGameConfig(gameId);
-        }else{
-            // TODO
-            newMessageObject.type = 'request_game_admit_nack';
-        }
-
-        mainThreadStub.postMessage(newMessageObject, '');
-    },
-
-    // sendMessage: function(message){
-    //     mainThreadStub.postMessage(message, '');
-    // },
-    // broadcastGameUpdatesToPlayers: function(){
-    //     var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
-    //     mainThreadStub.postMessage(responseJSONString, '');
-    // },
-
-    
-
-    broadcastGameConfigToPlayers: function(gameRoom){
-        const payload = {};
-        payload.playerIDList = [];
-        payload.players = gameRoom.snapShot.gameConfigArrayForPlayers;
-
-        for(var i = 0; i < gameRoom.players_1.length; ++i){
-            const player = gameRoom.players_1[i];
-            if(player.isAIDriven){
-                continue;
-            }
-            payload.playerIDList.push({
-                id: player.userId,
-                index: i
-            });
-        }
-
-        // players 2
-        for(var i = 0; i < gameRoom.players_2.length; ++i){
-            const player = gameRoom.players_2[i];
-            if(player.isAIDriven){
-                continue;
-            }
-            payload.playerIDList.push({
-                id: player.userId,
-                index: i
-            });
-        }
-
-        var responseJSON = mainThreadStub.getResponseEmptyPacket('game_config', payload);
-        // responseJSONString.players = this.getActualPlayerIDListForGame(gameRoom);
-        // responseJSONString.update = gameRoom;
-
-        console.log('sending game config');
-        
-        mainThreadStub.postMessage(responseJSON, '');
-    },
-
-    broadcastGameUpdatesToPlayers: function(gameRoom){
-        var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
-        responseJSONString.players = this.getActualPlayerIDListForGame(gameRoom);
-        responseJSONString.update = this.getGameUpdateMessage(gameRoom);
-        
-        mainThreadStub.postMessage(responseJSONString, '');
-    },
-
-    getGameUpdateMessage: function(gameRoom){
-        const updatePacket = {};
-        return updatePacket;
-    },
-
-    getActualPlayerIDListForGame: function(gameRoom){
-        const playerIDList = [];
-        // players 1
-        for(var i = 0; i < gameRoom.players_1.length; ++i){
-            const player = gameRoom.players_1[i];
-            if(player.isAIDriven){
-                continue;
-            }
-            playerIDList.push(player.userId);
-        }
-
-        // players 2
-        for(var i = 0; i < gameRoom.players_2.length; ++i){
-            const player = gameRoom.players_2[i];
-            if(player.isAIDriven){
-                continue;
-            }
-            playerIDList.push(player.userId);
-        }
-        return playerIDList;
-    },
-
-    broadcastGameResultToPlayers: function(gameRoom){
-        var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
-        mainThreadStub.postMessage(responseJSONString, '');
     },
 }

@@ -3,7 +3,6 @@
 
 const workerState = require('../state/workerstate');
 var linkedList = require('../../utils/linkedlist');
-// const messageManager = require('../message/messagemanager');
 const mainThreadStub = require('../mainthreadstub');
 const utilityFunctions = require('../../utils/utilityfunctions');
 const environmentState = require('../../../dist/server/state/environmentstate');
@@ -60,7 +59,6 @@ module.exports = {
             userMessage.type = 'request_game_admit_nack';
             // mainThreadStub.postMessage(userMessage, '');
         }
-        // messageManager.sendMessage(userMessage);
         mainThreadStub.postMessage(userMessage, '');
 
         /**
