@@ -50,7 +50,7 @@ module.exports = {
                 break;
             case 'update': // TODO : send update to main.
             case 'game_config': 
-                console.log(jsonData.type + '::', jsonData);
+                // console.log(jsonData.type + '::', jsonData);
                 var playerConfig = jsonData.payload.players;
                 var playerIDList = jsonData.payload.playerIDList;
                 var gameConfig = {

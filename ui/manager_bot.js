@@ -18,8 +18,8 @@ tg.bot.reloadBots = function(playerConfigArray, playerSelfIndex, actionOnComplet
         const playerBotArray = playerConfigArray[i].botObjectList;
         console.log('playerBotArray:', playerBotArray);
         if(i == playerSelfIndex){
-            
             tg.bot.selfOwnedBots = playerBotArray;
+            tg.hl.updateFooterIconImageForPlayerTeamBots();
         }
         for (let j = 0; j < playerBotArray.length; j++) {
             let botConfig = playerBotArray[j];

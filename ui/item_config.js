@@ -26,7 +26,8 @@
                 file:'digimon_3d_leomonice_leomon',
                 scale:5,
                 animationSpeed:1,
-                respawnTime: 5000 // 3 seconds
+                respawnTime: 5000, // 3 seconds
+                iconurl: 'static/img/lion_icon.png'
             },
             swordman:{
                 bannedMeshes:[9],
@@ -47,7 +48,8 @@
                 file:'low_poly_character_rpg_kit_animation',
                 scale:0.04,
                 animationSpeed: 1,
-                respawnTime: 3000 // 3 seconds
+                respawnTime: 3000, // 3 seconds
+                iconurl: 'static/img/swordsman_icon.png'
             },
             archer:{
                 bannedMeshes:[9],
@@ -68,7 +70,8 @@
                 file:'low_poly_character_rpg_kit_animation',
                 scale:0.04,
                 animationSpeed: 1,
-                respawnTime: 3000 // 3 seconds
+                respawnTime: 3000, // 3 seconds
+                iconurl: 'static/img/archer_icon.png'
             },
             tower:{
                 life:10,

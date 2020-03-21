@@ -42,6 +42,10 @@ module.exports = {
             positionObject.x,
             positionObject.z
         );
+        if(path.length < 2){
+            console.log('start:' + botConfig.position[0] + '] , [' + botConfig.position[2]);
+            console.log('end:' + positionObject.x + '] , [' + positionObject.z)
+        }
         // console.log('completeBotMovementActionFormalities path:', path);
         aiUtility_route.planBotRoute(botConfig, path); // set timestamp to each path position.
         actionManager.actionUtility.addActionToBot(botConfig, action, path, gameRoom);

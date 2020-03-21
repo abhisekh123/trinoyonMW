@@ -46,7 +46,7 @@ module.exports = {
         // help out fellow bot
         hostileConfig = aiUtility.aiutilityRoute.findClosestHostileAttackedByTeamMate(botIndex, playerConfig);
         if(hostileConfig != null){
-            // console.log('--help team');
+            console.log('--help team');
             // find in range visible point to bot.actiondata and march to the point
             var positionNearHostile = routeManager.findClosestVisiblePositionInRange(
                 botConfig, 
@@ -55,7 +55,7 @@ module.exports = {
                 gameRoom
             );
             if(positionNearHostile != null){
-                // console.log('---found path to hostile attacked by friend');
+                console.log('---found path to hostile attacked by friend');
                 aiUtility.completeBotMovementActionFormalities(botConfig, positionNearHostile, 'march', gameRoom);
                 return timeSlice;
             }
@@ -82,7 +82,7 @@ module.exports = {
                     gameRoom
                 )
                 if(positionNearLeader != null){
-                    // console.log('---prepare to go near hero');
+                    console.log('---prepare to go near hero');
                     aiUtility.completeBotMovementActionFormalities(botConfig, positionNearLeader, 'march', gameRoom);
                     return timeSlice;
                 }

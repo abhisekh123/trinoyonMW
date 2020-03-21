@@ -46,7 +46,7 @@ tg.pn.showMatchPage = function(){
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#game-footer-menu").show();
     $("#game-header-map").show();
-    tg.pv.setModalDimensionPercentage('10%', '90%');
+    // tg.pv.setModalDimensionPercentage('10%', '90%');
 };
 
 // display home page.

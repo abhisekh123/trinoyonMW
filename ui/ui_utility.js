@@ -24,3 +24,12 @@ tg.uu.convertSecondsMMSS = function (sec) {
     result += ":" + (seconds < 10 ? "0" + seconds : seconds);
     return result;
 };
+
+tg.uu.getObjectKeys = function (objectParam) {
+    return Object.keys(objectParam);
+};
+
+tg.uu.getObjectValues = function (objectParam) {
+    return Object.values(objectParam);
+};
+

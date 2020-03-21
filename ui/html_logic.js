@@ -45,5 +45,19 @@ tg.hl.gameStartCountDownTickHandler = function(){
 tg.hl.countDownHandler_idle = function(){
     // do nothing
     console.log('countDownHandler_idle');
-}
+};
+
+tg.hl.updateFooterIconImageForPlayerTeamBots = function(){
+    const selfBots =  tg.bot.selfOwnedBots;
+    console.log('start updateFooterIconImageForPlayerTeamBots:', selfBots);
+    // tg.itemConfigs
+    for (let j = 1; j < selfBots.length; j++) {
+        let botConfig = selfBots[j];
+        console.log('botConfig.type', botConfig.type);
+        const iconSource = tg.itemConfigs.items[botConfig.type].iconurl;
+        console.log('iconSource->', iconSource);
+        $('#footer-image_' + j).attr('src', iconSource);
+        // return;
+    }
+};
 
