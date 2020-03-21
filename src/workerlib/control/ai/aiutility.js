@@ -28,7 +28,7 @@ module.exports = {
     },
 
     // canAttack + attack as many times possible.  add remainitng time to bot in activityTimeStam field.
-    attackHostile: function(offenderConfig, defenderConfig){
+    attackHostile: function(offenderConfig, defenderConfig, gameRoom){
         while (this.canAttack(offenderConfig)){
             actionManager.actionUtility.processAttackAction(offenderConfig, defenderConfig, gameRoom);
         }

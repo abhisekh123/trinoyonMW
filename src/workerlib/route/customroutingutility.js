@@ -22,7 +22,7 @@ module.exports = {
         //     visibility : neighbourhoodVisibilityGrid,
         //     id : null,
         // };
-        var visibilityMap = this.visibilityMatrix[eyeX][eyeZ].visibility[targetX];
+        var visibilityMap = workerState.strategyMatrix[eyeX][eyeZ].visibility[targetX];
         if((visibilityMap & (1 << targetZ)) > 0){
             return true;
         }else{

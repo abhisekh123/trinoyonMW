@@ -60,13 +60,14 @@ module.exports = {
                 };
                 // gameConfig.playerConfig = playerConfig;
                 // delete jsonData.players;
-                console.log('send ' + jsonData.type + ' for :' + playerIDList);
+                // console.log('send ' + jsonData.type + ' for :' + playerIDList);
                 // let clientWS = clientregistry.clientArrey[userId].ws;
                 // clientregistry.sendMessageToClient(clientWS, ev.data);
                 for (var i = 0; i < playerIDList.length; ++i){
                     gameConfig.playerIndex = playerIDList[i].index;
                     clientBroadcaster.sendMessageToRecipientByUserID(playerIDList[i].id, JSON.stringify(gameConfig));
                 }
+                // console.log('message sent to cilent');
             default:
                 // console.log('ERROR:@worker manager, got unknown message type:' , jsonData);
                 break;

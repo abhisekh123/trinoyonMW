@@ -1,4 +1,5 @@
 const workerState = require('../../state/workerstate');
+const snapShotManager = require('../../state/snapshotmanager');
 
 module.exports = {
     // baseMap: {}
@@ -46,6 +47,8 @@ module.exports = {
                 snapShotManager.registerBotSpawnEvent(gameRoom, botConfig);
                 // nothing to do as the bot does not occupy any position in grid
                 break;
+            case null:
+                break;
             default:
                 console.log('ERROR: Unknown botConfig.action:', botConfig.action);
                 break;
@@ -90,13 +93,15 @@ module.exports = {
 
     processAttackAction: function (offenderConfig, defenderConfig, gameRoom) {
         defenderConfig.life -= offenderConfig.attack;
-        objectConfig.activityTimeStamp += objectConfig.attackinterval;
+        offenderConfig.activityTimeStamp += offenderConfig.attackinterval;
 
         // TODO: update snapshot 
         snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
     },
 
     traverseBotThroughPath: function (botConfig, timeSlice, gameRoom) {
+        // console.log('traverseBotThroughPath start', timeSlice);
+        // console.log('path:', botConfig.actionData);
         // ignore i = 0 as it is the starting position.
         let pathPosition = null;
         for (let i = 1; i < botConfig.actionData.length; i++) {
@@ -107,9 +112,11 @@ module.exports = {
                 botConfig.position[2] = pathPosition[1];
                 botConfig.activityTimeStamp = pathPosition[2];
                 snapShotManager.updateBotSnapshot(gameRoom, botConfig);
+                // console.log('return 0 at index:', i);
                 return 0;
             }
         }
+        // console.log('completed time slice. transiting to ready state.');
         pathPosition = botConfig.actionData[botConfig.actionData.length - 1];
         botConfig.position[0] = pathPosition[0];
         botConfig.position[2] = pathPosition[1];

@@ -7,6 +7,9 @@ const messageManager = require('./message/messagemanager');
 const workerState = require('./state/workerstate');
 const utilityFunctions = require('../utils/utilityfunctions');
 const routeManager = require('./route/routemanager');
+const environmentState = require('../../dist/server/state/environmentstate');
+const snapShotManager = require('./state/snapshotmanager');
+// const environmentState = require('../../../dist/server/state/environmentstate');
 // const bot_route_utility = require('./botRouteUtility');
 
 
@@ -28,22 +31,25 @@ module.exports = {
             messageManager.processIncomingMessages();
         }
 
-        if(totalTimeToSimulate > 0){
+        if(totalTimeToSimulate > 0){ 
+            // console.log('total time to simulate:', totalTimeToSimulate);
             // reset the snapshot objects for all game rooms
             for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
                 const gameRoom = workerState.gameRoomArray[i];
-                if(gameRoom.isActive == true){
+                if(gameRoom.isActive == false){
                     continue;
                 }
+                // console.log('updating snapshot for gameRoom:', gameRoom);
                 snapShotManager.startNewSnapshotLoop(
                     workerState.timePreviousGameLoopStart,
-                    currentTimeParam,
+                    currentTime,
                     gameRoom
                 );
+                // console.log('completed updating snapshot for gameRoom:');
             }
         }
 
-        
+
         // console.log('=========>refreshWorld2, totalTimeToSimulate:', totalTimeToSimulate);
         while (totalTimeToSimulate > 0){
             // console.log('--))start do loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
@@ -56,6 +62,8 @@ module.exports = {
                 totalTimeToSimulate -= workerState.gameLoopInterval;
                 workerState.timeIntervalToSimulateInEachGame = workerState.gameLoopInterval;
             }
+
+            // console.log('workerState.timeIntervalToSimulateInEachGame', workerState.timeIntervalToSimulateInEachGame);
             // for (var i = 0; i < this.maxBotCount; ++i) {
             //     if (workerstate.botArray[i].isActive == true) {
             //         this.processBot(i, timeSlice);
@@ -70,7 +78,15 @@ module.exports = {
         workerState.timePreviousGameLoopStart = currentTime;
         workerState.currentTime = currentTime;
         
-        
+        for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
+            const gameRoom = workerState.gameRoomArray[i];
+            if(gameRoom.isActive == false){
+                continue;
+            }
+            // console.log('updating snapshot for gameRoom:', gameRoom);
+            messageManager.broadcastGameUpdatesToPlayers(gameRoom);
+            // console.log('completed updating snapshot for gameRoom:');
+        }
         // messageManager.broadcastGameUpdatesToPlayers();
         // console.log('=========>refreshWorld23');
         gameManager.tryStartingNewGames();

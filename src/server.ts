@@ -354,7 +354,7 @@ export class DemoServer {
             });
 
         });
-        console.log('-----portParam:', portParam);
+        // console.log('-----portParam:', portParam);
         //start our server
 
         if (environmentState.environment == 'server') {

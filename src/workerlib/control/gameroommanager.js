@@ -34,6 +34,7 @@ module.exports = {
         // update bot life cycle. 
         // All bots who died / respawned during previous iteration interval are processed simultaniously.
         // players 1
+        // console.log('start processing bot life cycle for team 1');
         for (var i = 0; i < gameRoom.players_1.length; ++i) {
             const playerConfig = gameRoom.players_1[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
@@ -41,8 +42,10 @@ module.exports = {
                 this.processBotLifeCycle(botConfig, gameRoom);
             }
         }
+        // console.log('completed processing bot life cycle for team 1');
 
         // players 2
+        // console.log('start processing bot life cycle for team 2');
         for (var i = 0; i < gameRoom.players_2.length; ++i) {
             const playerConfig = gameRoom.players_2[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
@@ -50,10 +53,12 @@ module.exports = {
                 this.processBotLifeCycle(botConfig, gameRoom);
             }
         }
+        // console.log('completed processing bot life cycle for team 2');
 
         // All bots execute action even if they die during the current iteration interval.
         // this is to make result independent of sequence at which the bots are executed.
         // process bot action
+        // console.log('start processing bot action for team 1');
         for (var i = 0; i < gameRoom.players_1.length; ++i) {
             const playerConfig = gameRoom.players_1[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
@@ -64,8 +69,10 @@ module.exports = {
                 this.processBotAction(playerConfig, gameRoom, j);
             }
         }
+        // console.log('completed processing bot action for team 1');
 
         // players 2
+        // console.log('start processing bot action for team 2');
         for (var i = 0; i < gameRoom.players_2.length; ++i) {
             const playerConfig = gameRoom.players_2[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
@@ -76,12 +83,13 @@ module.exports = {
                 this.processBotAction(playerConfig, gameRoom, j);
             }
         }
-        
+        // console.log('completed processing bot action for team 2');
     },
 
 
     processBotAction: function(playerConfig, gameRoom, botIndex) {
-        const botConfig = playerConfig.botObjectList[botIndex];
+        // console.log('botaction for index:', botIndex);
+        // const botConfig = playerConfig.botObjectList[botIndex];
         // try consuming the timeslice by performing action
         // deciding action does not consume time.
         var timeSlice = workerState.timeIntervalToSimulateInEachGame;
@@ -96,6 +104,7 @@ module.exports = {
             //     timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
             // }
             timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
+            // console.log('timeSlice returned:', timeSlice);
         }
     },
 
@@ -200,6 +209,8 @@ module.exports = {
         // console.log('workerState.gameRoomArray:', workerState.gameRoomArray);
         for (var gameId = 0; gameId < environmentState.maxGameCount; ++gameId) { // intialise each game room
             const gameRoom = {};
+            gameRoom.id = 'gameroom_' + gameId;
+            gameRoom.gameStartTime = 0;
             // console.log('init gameRoom:', gameId);
 
 
@@ -263,7 +274,7 @@ module.exports = {
             workerState.gameRoomArray[gameId] = gameRoom;
             // console.log('init gameRoom4:', gameId);
         }
-        console.log('completed initialiseRooms');
+        // console.log('completed initialiseRooms', workerState.gameRoomArray);
 
     },
 

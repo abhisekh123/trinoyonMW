@@ -253,7 +253,7 @@ module.exports = {
             player.lastCommunication = gameRoom.startTime;
             player.joinTime = gameRoom.startTime;
             // player.isAIDriven = true;
-            this.resetAllBotsOfPlayerToStartingPosition(player, this.worldConfig.topBasePlayerPosition[i], Math.PI);
+            this.resetAllBotsOfPlayerToStartingState(player, this.worldConfig.topBasePlayerPosition[i], Math.PI, gameRoom.gameStartTime);
         }
 
         // players 2
@@ -264,11 +264,11 @@ module.exports = {
             player.lastCommunication = gameRoom.startTime;
             player.joinTime = gameRoom.startTime;
             // player.isAIDriven = true;
-            this.resetAllBotsOfPlayerToStartingPosition(player, this.worldConfig.bottomBasePlayerPosition[i], 0);
+            this.resetAllBotsOfPlayerToStartingState(player, this.worldConfig.bottomBasePlayerPosition[i], 0, gameRoom.gameStartTime);
         }
     },
 
-    resetAllBotsOfPlayerToStartingPosition: function(player, position, rotation){ // position : [x,z]
+    resetAllBotsOfPlayerToStartingState: function(player, position, rotation, gameStartTime){ // position : [x,z]
         for(var i = 0; i < player.botObjectList.length; ++i){
             player.botObjectList[i].position[0] = position[0];
             player.botObjectList[i].position[2] = position[1];
@@ -278,6 +278,7 @@ module.exports = {
             player.botObjectList[i].spawnPosition[2] = position[1];
 
             player.botObjectList[i].rotation = rotation;
+            player.botObjectList[i].activityTimeStamp = gameStartTime;
         }
     },
 

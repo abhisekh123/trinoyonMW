@@ -207,7 +207,7 @@ module.exports = {
 
 
     // find point(x, y) closest to position such that (x, y) in in range of targetPosition.
-    findClosestVisiblePointInRange: function (sourceConfig, targetConfig, range, gameRoom) {
+    findClosestVisiblePositionInRange: function (sourceConfig, targetConfig, range, gameRoom) {
         var minDistance = this.worldConfig.gridSide + 1;
         var closestPosition = {
             x: 0,
@@ -216,7 +216,7 @@ module.exports = {
         var foundSuitablePosition = false;
 
         for (var i = -range; i < range; ++i) { // x-axis
-            for (var j = -range; j < this.tg.grid.width; ++j) { // z-axis
+            for (var j = -range; j < range; ++j) { // z-axis
                 var actualPositionX = i + targetConfig.position[0];
                 var actualPositionZ = j + targetConfig.position[2];
                 var objectOccupyintThePosition = this.getObjectOccupyingThePosition(
@@ -231,22 +231,22 @@ module.exports = {
                 var distanceBetweenTargetAndNewPosition = this.getDistanceBetweenPoints(
                     targetConfig.position[0],
                     targetConfig.position[2],
-                    actualPointX,
-                    actualPointZ
+                    actualPositionX,
+                    actualPositionZ
                 );
                 if (distanceBetweenTargetAndNewPosition < range) {
                     var visibility = customRoutingUtility.testVisibility(
                         targetConfig.position[0],
                         targetConfig.position[2],
-                        actualPointX,
-                        actualPointZ
+                        actualPositionX,
+                        actualPositionZ
                     );
                     if (visibility == true) {
                         var distanceBetweenSourceAndNewPosition = this.getDistanceBetweenPoints(
                             sourceConfig.position[0],
                             sourceConfig.position[2],
-                            actualPointX,
-                            actualPointZ
+                            actualPositionX,
+                            actualPositionZ
                         );
 
                         if (distanceBetweenSourceAndNewPosition < minDistance) {

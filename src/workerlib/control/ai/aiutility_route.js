@@ -22,7 +22,7 @@ module.exports = {
         // console.log(this.worldConfig);
         var minDist = this.worldConfig.gridSide + 1;
 
-        const botConfig = playerConfig.botObjectList[j];
+        const botConfig = playerConfig.botObjectList[botIndex];
         
         for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
             if(j == botIndex){
@@ -139,7 +139,7 @@ module.exports = {
 
     planBotRoute: function(botConfig, path){ // each path element : [posX, posZ, time to travel, rotation]
         if(path.length < 2){ // TODO: check if path can be length 1.
-            console.log('ERROR:Path smaller than 2', botConfig);
+            console.error('ERROR:Path smaller than 2', botConfig);
             console.log('path:', path);
             return;
         }

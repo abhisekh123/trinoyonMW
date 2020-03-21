@@ -44,23 +44,24 @@ module.exports = {
         // will start asmany games possible for given waiting list and free game rooms.
         for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
             const gameRoom = workerState.gameRoomArray[i];
-            // console.log('process games i:', i);
             
             if(gameRoom.isActive == true){
-
-                if((workerState.currentTime - gameRoom.startTime) > this.worldConfig.matchMaxTimeDuration){
-                    this.terminateGame(gameRoom);
+                // console.log('process games id:', gameRoom.id);
+                if((workerState.currentTime - gameRoom.gameStartTime) > this.worldConfig.matchMaxTimeDuration){
+                    gameRoomManager.terminateGame(gameRoom);
                     continue;
                 }
 
                 gameRoomManager.processPlayers(gameRoom); // send hero to new location of all bots are idle.
+                // console.log('completed processing players.');
                 gameRoomManager.processBuildings(gameRoom); // attack if enemy in range
+                // console.log('completed processing buildings.');
                 // priorities:
                 // 1>perform actions
                 // 2>help each other 
                 // 3>go near hero bot
                 gameRoomManager.processBots(gameRoom); 
-
+                // console.log('completed processing bots.');
                 if(refreshVisibilityFlag == true){
                     gameRoomManager.refreshVisibility(gameRoom);
                 }
@@ -74,7 +75,7 @@ module.exports = {
     startNewGame: function(gameRoom, startTime) {
         console.log('starting new game room');
         // by this time all user admission is complete.
-        gameRoom.startTime = startTime;
+        gameRoom.gameStartTime = startTime;
         // ,,, reset ai players
         gameRoomAssetManager.resetAllBotPositionToStartingPosition(gameRoom);
         // console.log(gameRoom);

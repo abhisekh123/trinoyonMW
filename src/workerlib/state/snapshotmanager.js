@@ -46,7 +46,7 @@ module.exports = {
         eventObject.event = 'attack';
         eventObject.timestamp = workerState.currentTime;
 
-        addEventToSnapshot(eventObject, gameRoom);
+        this.addEventToSnapshot(eventObject, gameRoom);
 
 
         var snapShotObject = gameRoom.snapShot;
@@ -75,7 +75,7 @@ module.exports = {
         eventObject.event = 'die';
         eventObject.timestamp = workerState.currentTime;
 
-        addEventToSnapshot(eventObject, gameRoom);
+        this.addEventToSnapshot(eventObject, gameRoom);
 
     },
 
@@ -109,12 +109,12 @@ module.exports = {
         eventObject.position[1] = botConfig.position[1];
         eventObject.position[2] = botConfig.position[2];
 
-        addEventToSnapshot(eventObject, gameRoom);
+        this.addEventToSnapshot(eventObject, gameRoom);
     },
 
     add_BuildingTeamChange_Event: function(gameRoom, buildingConfig){
         var snapShotObject = gameRoom.snapShot;
-        var itemSnapshotObject = snapShotObject.itemState[botConfig.id];
+        var itemSnapshotObject = snapShotObject.itemState[buildingConfig.id];
 
         // if(botSnapshotObject == undefined){
         //     botSnapshotObject = this.getGenericBotSnapshotObject();
@@ -136,7 +136,7 @@ module.exports = {
         eventObject.timestamp = workerState.currentTime;
         eventObject.position = buildingConfig.team;
 
-        addEventToSnapshot(eventObject, gameRoom);
+        this.addEventToSnapshot(eventObject, gameRoom);
     },
 
 

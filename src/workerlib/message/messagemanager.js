@@ -91,14 +91,16 @@ module.exports = {
         var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1);
         var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2);
         
-        console.log('sending game update');
+        // console.log('sending game update');
         // send config to players in team  1
         payload.playerIDList = playerArrayTeam1;
+        // console.log('sending game update to team 1', payload);
         var responseJSON = mainThreadStub.getResponseEmptyPacket('update', payload);
         mainThreadStub.postMessage(responseJSON, '');
 
         // send config to players in team  2
         payload.playerIDList = playerArrayTeam2;
+        // console.log('sending game update to team 2', payload);
         var responseJSON = mainThreadStub.getResponseEmptyPacket('update', payload);
         mainThreadStub.postMessage(responseJSON, '');
     },
