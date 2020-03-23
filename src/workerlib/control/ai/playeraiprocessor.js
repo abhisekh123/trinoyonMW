@@ -16,22 +16,36 @@ module.exports = {
     processAI: function(playerConfigParam, gameRoom){
         var areAllBotsIdle = this.areAllBotsIdle(playerConfigParam);
         if(areAllBotsIdle == true){
+            console.log('-- playerAi. all bots idle for player:', playerConfigParam.id);
+            console.log('-- playerAi. position:', playerConfigParam.position);
             var leaderBotConfig = playerConfigParam.botObjectList[0];
             // all bots are idle. Loiter.
             var nearestTarget = routeManager.findClosestPlayerOrTowerOrBase(leaderBotConfig, gameRoom);
             // // console.log(playerConfig.id);
             // console.log('nearestTarget:', nearestTarget);
             if(nearestTarget == null){
-                console.log('nearestTarget is null:', nearestTarget);
+                console.log('ERROR:nearestTarget is null:', nearestTarget);
                 return;
             }else{
+                var distanceBetweenTargetAndLeader = routeManager.getDistanceBetweenPoints(
+                    leaderBotConfig.position[0],
+                    leaderBotConfig.position[2],
+                    nearestTarget.position[0],
+                    nearestTarget.position[2]
+                );
+                // if nearesr target already in range
+                if(distanceBetweenTargetAndLeader <= leaderBotConfig.range){ //this should not happen
+                    console.log('ERROR: distanceBetweenTargetAndLeader <= leaderBotConfig.range');
+                    return;
+                }
                 // var leaderConfig = workerState.botMap[playerConfig.leaderBotID];
-                // // console.log(leaderConfig.payload.position);
+                console.log('nearest target:', nearestTarget);
                 var nearestPosition = routeManager.findClosestWalkablePosition(
                     nearestTarget, 
                     this.worldConfig.gridSide, 
                     gameRoom
                 );
+                console.log('nearest position:', nearestPosition);
                 if(nearestPosition == null){
                     console.log('nearestPosition == null .... surprise!');
                     return;
@@ -54,19 +68,17 @@ module.exports = {
     areAllBotsIdle: function(playerConfigParam){
         // leaderBotID: null,
         // botIDList: []
-        var areBotsIdleFlag = false;
+        // var areBotsIdleFlag = true;
 
 
         for(var i = 0; i < playerConfigParam.botObjectList.length; ++i){
             var botConfig = playerConfigParam.botObjectList[i];
-            if(botConfig.action == null || botConfig.instruction == null){
-                areBotsIdleFlag = true;
-            }else{
+            if(botConfig.action == 'march' || botConfig.action == 'goto' || botConfig.action == 'fight'){
                 return false;
             }
         }
 
-        return areBotsIdleFlag;
+        return true;
     },
 }
 

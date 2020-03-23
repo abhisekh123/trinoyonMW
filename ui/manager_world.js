@@ -36,15 +36,20 @@ tg.world.updateWorld = function(updateParam){
         const itemKeyArray = tg.uu.getObjectKeys(itemStateMap);
         for (let index = 0; index < itemKeyArray.length; index++) {
             const updateItemKey = itemKeyArray[index];
+            const updateItemConfig = itemStateMap[updateItemKey];
             const botItem = tg.am.dynamicItems.bots[updateItemKey];
             if(botItem == undefined){
                 // console.log('unknown item:', updateItemKey);
+                const buildingConfig = tg.am.staticItems.buildings[updateItemKey];
+                buildingConfig.life = updateItemConfig.life;
+                tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, ((100 * buildingConfig.life) / buildingConfig.fullLife));
                 continue;
             }
-            const updateItemConfig = itemStateMap[updateItemKey];
-            botItem.controlMesh.position.x = updateItemConfig.position[0];
-            botItem.controlMesh.position.z = updateItemConfig.position[2];
+            
+            botItem.controlMesh.position.x = updateItemConfig.position[0] * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+            botItem.controlMesh.position.z = updateItemConfig.position[2] * tg.worldItems.uiConfig.playerDimensionBaseUnit;
             botItem.life = updateItemConfig.life;
+            tg.ui3d.updateHPBarPercentage(botItem.hpBarConfig, ((100 * botItem.life) / botItem.fullLife));
         }
     }
 };

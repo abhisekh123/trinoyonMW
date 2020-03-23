@@ -48,6 +48,9 @@ module.exports = {
             if(gameRoom.isActive == true){
                 // console.log('process games id:', gameRoom.id);
                 if((workerState.currentTime - gameRoom.gameStartTime) > this.worldConfig.matchMaxTimeDuration){
+                    console.log('workerState.currentTime:', workerState.currentTime);
+                    console.log('gameRoom.gameStartTime:', gameRoom.gameStartTime);
+                    console.log('this.worldConfig.matchMaxTimeDuration:', this.worldConfig.matchMaxTimeDuration);
                     gameRoomManager.terminateGame(gameRoom);
                     continue;
                 }

@@ -18,6 +18,9 @@ module.exports = {
     },
 
     addActionToBot: function (botConfig, action, actionData, gameRoom) {
+        console.log('addActionToBot botConfig.id:', botConfig.id);
+        console.log('-->', action);
+        // console.log('==>', actionData);
         var currentPositionX = null;
         var currentPositionZ = null;
 

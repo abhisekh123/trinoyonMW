@@ -53,7 +53,8 @@ module.exports = {
                 + this.inventory.store.manager_effect_key
                 + this.inventory.store.manager_static_key
                 + this.inventory.store.manager_view_key
-                + this.inventory.store.manager_world_key;
+                + this.inventory.store.manager_world_key
+                + this.inventory.store.manager_3dui_key;
                 // return this.inventory.store.world_config_key;
                 break;
             case 'binary':

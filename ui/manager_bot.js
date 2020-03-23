@@ -105,7 +105,7 @@ tg.bot.processLoadedModel = function (
     }
 
     const scale = characterConfig.scale;
-    const animationIndex = characterConfig.idleAnimationIndex;
+    // const animationIndex = characterConfig.idleAnimationIndex;
 
 
     for (var i = 0; i < newMeshes.length; ++i) {
@@ -133,8 +133,14 @@ tg.bot.processLoadedModel = function (
     botObject.intermediatePositionArrayIndex = 0;
     botObject.action = 'idle';
     botObject.life = characterConfig.life;
+    botObject.fullLife = characterConfig.life;
     botObject.team = team;
     botObject.playerID = playerID;
+
+    var hpBarConfig = tg.ui3d.gethpbar(characterID);
+    botObject.hpBarConfig = hpBarConfig;
+    botObject.controlMesh.scaling = new BABYLON.Vector3(1/scale, 1/scale, 1/scale);
+    hpBarConfig.healthBarContainer.parent = botObject.controlMesh;
     // var refreshWorldInterval = worldItems.refreshWorldInterval;
     var refreshWorldPerIntervalUI = worldItems.refreshWorldPerIntervalUI;
     for (var i = 0; i < refreshWorldPerIntervalUI; ++i) {
@@ -150,12 +156,12 @@ tg.bot.processLoadedModel = function (
 
     tg.am.dynamicItems.bots[characterID] = botObject;
 
-    // for (const index of characterConfig.bannedMeshes) {
-    //     newMeshes[index].isVisible = false;
-    // }
-    if (newMeshes.length > 9) {
-        newMeshes[9].isVisible = false;
+    for (const index of characterConfig.bannedMeshes) {
+        newMeshes[index].isVisible = false;
     }
+    // if (newMeshes.length > 9) {
+    //     newMeshes[9].isVisible = false;
+    // }
 
     newMeshes[0].scaling = new BABYLON.Vector3(scale, scale, scale);
     // newMeshes[0].parent = parentMesh;
@@ -191,7 +197,7 @@ tg.bot.processLoadedModel = function (
     outputplaneTexture.drawText(characterID, null, 140, "bold 80px verdana", "white");
 
     outputplaneTexture.hasAlpha = true;
-    outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 1.2;
+    // outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 1.2;
     outputplane.parent = botObject.controlMesh;
 
     botObject.outputplane = outputplane;
@@ -199,3 +205,22 @@ tg.bot.processLoadedModel = function (
     tg.am.updateNewAssetLoaded(1);
 }
 
+
+// https://www.babylonjs-playground.com/#KTGKUQ#7
+// Start all animations on given targets
+// @param - loop defines if animations must loop
+// @param - speedRatio defines the ratio to apply to animation speed (1 by default)
+// @param - from defines the from key (optional)
+// @param - to defines the to key (optional)
+// @param - isAdditive defines the additive state for the resulting animatables (optional)
+// @returns - the current animation group
+// alert(animationGroups.length); // 8 
+// animationGroups.forEach(function (animationGroup) {
+//     animationGroup.start(false, 1, 131 / 30, 160 / 30);
+// });
+// alert(animationGroups[0].from); 0
+// alert(animationGroups[0].to); 6.9
+// alert(animationGroups[0].speedRatio);
+// animationGroups[0].start(true,10,5,6,false);
+// scene.createDefaultCameraOrLight(true, true, true);
+// scene.createDefaultEnvironment();

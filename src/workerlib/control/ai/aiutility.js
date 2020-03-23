@@ -46,8 +46,9 @@ module.exports = {
             console.log('start:' + botConfig.position[0] + '] , [' + botConfig.position[2]);
             console.log('end:' + positionObject.x + '] , [' + positionObject.z)
         }
-        // console.log('completeBotMovementActionFormalities path:', path);
+        
         aiUtility_route.planBotRoute(botConfig, path); // set timestamp to each path position.
+        console.log('completeBotMovementActionFormalities path:', path);
         actionManager.actionUtility.addActionToBot(botConfig, action, path, gameRoom);
         // this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z, gameRoom);
     },

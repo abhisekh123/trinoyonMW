@@ -32,6 +32,7 @@ tg.static.loadStaticModel = function (
         id: itemID,
         position: positionParam,
         life: buildingTypeConfig.life,
+        fullLife: buildingTypeConfig.life,
         isActive: true,
     };
 
@@ -70,6 +71,14 @@ tg.static.loadStaticModel = function (
     outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 4 + newMeshes[0].position.y;
     outputplane.position.z = positionParam.z;
     // outputplane.parent = parentMesh;
+
+
+    var hpBarConfig = tg.ui3d.gethpbar(itemID);
+    buildingObject.hpBarConfig = hpBarConfig;
+    // hpBarConfig.healthBarContainer.parent = botObject.controlMesh;
+    hpBarConfig.healthBarContainer.position.x = positionParam.x;
+    hpBarConfig.healthBarContainer.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 3 + newMeshes[0].position.y;
+    hpBarConfig.healthBarContainer.position.z = positionParam.z;
 
     buildingObject.headerBoard = outputplane;
 

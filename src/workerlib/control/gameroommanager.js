@@ -158,11 +158,12 @@ module.exports = {
             // var botConfig = this.botArray[i];
             // // console.log('5');
             if (buildingConfig.type == 'base') {
+                console.log('base destroyed.');
                 this.terminateGame(gameRoom, {
                     loosingTeam: buildingConfig.team
                 });
-                this.resetGame(gameRoom);
-                // return;
+                // this.resetGame(gameRoom);
+                return;
             }
             // console.log('building:' + workerstate.buildingArray[i].id + ' DIED.');
             buildingConfig.isActive = false;
@@ -210,6 +211,7 @@ module.exports = {
         for (var gameId = 0; gameId < environmentState.maxGameCount; ++gameId) { // intialise each game room
             const gameRoom = {};
             gameRoom.id = 'gameroom_' + gameId;
+            gameRoom.timer = null;
             gameRoom.gameStartTime = 0;
             // console.log('init gameRoom:', gameId);
 
@@ -295,7 +297,7 @@ module.exports = {
                 }
             }
         }
-        gameRoom.gridMatrix = gridMatrix;
+        // gameRoom.gridMatrix = gridMatrix;
 
         // building 1
         for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
@@ -333,7 +335,10 @@ module.exports = {
 
     },
 
-    terminateGame(gameRoom, gameResultObject) { // either base destroyed or time completed.
+    terminateGame: function(gameRoom, gameResultObject) { // either base destroyed or time completed.
+        console.log('###################################');
+        console.log('###################################');
+        console.log('###################################');
         gameRoom.isActive = false;
         return;
         // gameRoomManager.resetGame(gameRoom);

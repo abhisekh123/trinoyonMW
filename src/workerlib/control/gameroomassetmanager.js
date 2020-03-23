@@ -219,6 +219,7 @@ module.exports = {
         selectedTeamPlayer.joinTime = 0;
         selectedTeamPlayer.isAIDriven = false;
 
+        console.log('selectedTeamPlayer:', selectedTeamPlayer);
         this.setBotObjectAttributes(selectedTeamPlayer.hero, selectedTeamPlayer.botObjectList[0]); // rewrite the hero bot object with new hero config.
         for(var i = 0; i < selectedTeamPlayer.botList.length; ++i){
             this.setBotObjectAttributes(selectedTeamPlayer.botList[i], selectedTeamPlayer.botObjectList[i + 1]);
@@ -330,8 +331,9 @@ module.exports = {
         botObject.fullLife = botTypeItemConfig.life;
 
         botObject.speed = botTypeItemConfig.speed; //one tile per 1000 ms.
-        botObject.diagonalTime = utilityFunctions.roundTo2Decimal(1.414 / botObject.speed);
-        botObject.adjacentTime = utilityFunctions.roundTo2Decimal(1 / botObject.speed);
+        // times are in miliseconds. but speed is in meter/second
+        botObject.diagonalTime = utilityFunctions.roundTo2Decimal((1.414 * 1000) / botObject.speed);
+        botObject.adjacentTime = utilityFunctions.roundTo2Decimal((1 * 1000) / botObject.speed);
         botObject.strideDistance = botTypeItemConfig.strideDistance;
         botObject.strideTime = botTypeItemConfig.strideTime;
 

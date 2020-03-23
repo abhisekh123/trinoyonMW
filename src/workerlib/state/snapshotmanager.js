@@ -17,7 +17,8 @@ module.exports = {
 
     // for actions like goto, march
     updateBotSnapshot: function(gameRoom, botConfig){
-
+        console.log('updateBotSnapshot, id:', botConfig.id);
+        console.log('position:', botConfig.position);
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
 

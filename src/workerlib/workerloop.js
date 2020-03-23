@@ -73,7 +73,7 @@ module.exports = {
             // }
             
             gameManager.processGames(currentTime);
-            // console.log('end while loop, totalTimeToSimulate:', totalTimeToSimulate);
+            console.log('end while loop, totalTimeToSimulate:', totalTimeToSimulate);
         } 
         workerState.timePreviousGameLoopStart = currentTime;
         workerState.currentTime = currentTime;
@@ -83,7 +83,7 @@ module.exports = {
             if(gameRoom.isActive == false){
                 continue;
             }
-            // console.log('updating snapshot for gameRoom:', gameRoom);
+            console.log('updating snapshot for gameRoom:', gameRoom.id);
             messageManager.broadcastGameUpdatesToPlayers(gameRoom);
             // console.log('completed updating snapshot for gameRoom:');
         }

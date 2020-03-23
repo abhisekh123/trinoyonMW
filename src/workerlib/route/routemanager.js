@@ -30,7 +30,7 @@ module.exports = {
         // var defenseList = null;
         // var base = null;
         var enemyPlayerList = null;
-        // console.log('findClosestPlayerOrTowerOrBase->leaderID:' + botConfigParam.leaderBotID);
+        // console.log('findClosestPlayerOrTowerOrBase->ID:', botConfigParam);
         // var leaderConfig = workerstate.botMap[botConfigParam.leaderBotID];
 
         var leaderPosition = botConfigParam.position;
@@ -55,6 +55,7 @@ module.exports = {
         // find closest enemy player bots
         for (var playerIndex = 0; playerIndex < enemyPlayerList.length; ++playerIndex) {
             const playerConfig = enemyPlayerList[playerIndex];
+            
             // skip inactive player and players controlled by real people and players in the same team
             // if(!playerConfig.isActive || playerConfig.teamID == botConfigParam.teamID){
             //     // TODO: Add logic to spawn new AI player / admit new player here.
@@ -63,12 +64,16 @@ module.exports = {
 
             for (var i = 0; i < playerConfig.botObjectList.length; ++i) {
                 var botConfig = playerConfig.botObjectList[i];
+                if(botConfig.isActive == false){
+                    continue;
+                }
                 var botPosition = botConfig.position;
-
+                // console.log('testing for bot:', botConfig.id);
+                // console.log('position:', botConfig.position);
                 var distance = this.getDistanceBetweenPoints(
                     leaderPosition[0], leaderPosition[2], botPosition[0], botPosition[2]
                 );
-
+                // console.log('distance:', distance);
                 if (distance < minDistance) {
                     minDistance = distance;
                     // target = [botPosition[0], botPosition[2]]
@@ -81,18 +86,23 @@ module.exports = {
             // console.log('calculated distance:', distance);
         }
 
+        // console.log('min distance:', minDistance);
+
         // console.log('after comparing palyers, minDistance:', minDistance, ' target:', target);
 
         for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_1[i];
-            if (buildingConfig.team != 0 && buildingConfig.team == playerTeam) {
+            if (buildingConfig.team == 0 || buildingConfig.team == playerTeam) {
                 // TODO: Add logic to spawn new AI player / admit new player here.
                 continue;
             }
             // console.log('comparing with defenseList[i]:', defenseList[i]);
+            // console.log('testing for building:', buildingConfig.id);
+            // console.log('position:', buildingConfig.position);
             var distance = this.getDistanceBetweenPoints(
                 leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
-            )
+            );
+            // console.log('distance:', distance);
             if (distance < minDistance) {
                 minDistance = distance;
                 target = buildingConfig;
@@ -104,18 +114,21 @@ module.exports = {
 
             }
         }
-
+        // console.log('min distance:', minDistance);
         // gameRoom.buildingArray_2
         for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_2[i];
-            if (buildingConfig.team != 0 && buildingConfig.team == playerTeam) {
+            if (buildingConfig.team == 0 || buildingConfig.team == playerTeam) {
                 // TODO: Add logic to spawn new AI player / admit new player here.
                 continue;
             }
+            // console.log('testing for building:', buildingConfig.id);
+            // console.log('position:', buildingConfig.position);
             // console.log('comparing with defenseList[i]:', defenseList[i]);
             var distance = this.getDistanceBetweenPoints(
                 leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
-            )
+            );
+            // console.log('distance:', distance);
             if (distance < minDistance) {
                 minDistance = distance;
                 target = buildingConfig;
@@ -127,7 +140,8 @@ module.exports = {
 
             }
         }
-
+        // console.log('min distance:', minDistance);
+        // console.log('target:', target);
         // console.log('after comparing defenseList, minDistance:', minDistance, ' target:', target);
         if (target == null) {
             return null;
