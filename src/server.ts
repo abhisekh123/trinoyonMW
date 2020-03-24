@@ -373,7 +373,7 @@ export class DemoServer {
         // requestProcessor.process({
         //     type: 'client_disconnected',
         //     userId: '',
-        //     teamID: 0,
+        //     team: 0,
         //     message: {}
         // } as request_message, wsParam);
     }

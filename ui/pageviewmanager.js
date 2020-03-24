@@ -41,7 +41,7 @@ tg.pv.startGamePlay = function(gameJSON){
     tg.UIConfig.advancedTexture.addControl(tg.UIConfig.exitGameButton); 
     var playerConfig = gameJSON.playerConfig;
     tg.playerID = playerConfig.playerID;
-    tg.teamID = playerConfig.teamID;
+    tg.team = playerConfig.team;
     tg.isGameLive = true;
 
     // console.log('startGamePlay:', gameJSON);

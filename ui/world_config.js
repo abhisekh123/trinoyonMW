@@ -62,19 +62,19 @@ var worldItems = {
     players: [
         {
             playerID:1,
-            teamID:1
+            team:1
         },
         {
             playerID:2,
-            teamID:1
+            team:1
         },
         {
             playerID:3,
-            teamID:2
+            team:2
         },
         {
             playerID:4,
-            teamID:2
+            team:2
         },
     ],
     characters: [

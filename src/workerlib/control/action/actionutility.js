@@ -18,8 +18,8 @@ module.exports = {
     },
 
     addActionToBot: function (botConfig, action, actionData, gameRoom) {
-        console.log('addActionToBot botConfig.id:', botConfig.id);
-        console.log('-->', action);
+        console.log('addAction:' + action + ' ToBot botConfig.id:' + botConfig.id + ' at position:', botConfig.position);
+        // console.log('-->', action);
         // console.log('==>', actionData);
         var currentPositionX = null;
         var currentPositionZ = null;
@@ -114,6 +114,7 @@ module.exports = {
                 botConfig.position[0] = pathPosition[0];
                 botConfig.position[2] = pathPosition[1];
                 botConfig.activityTimeStamp = pathPosition[2];
+                console.log('bot:' + botConfig.id + ' moved to:', botConfig.position);
                 snapShotManager.updateBotSnapshot(gameRoom, botConfig);
                 // console.log('return 0 at index:', i);
                 return 0;

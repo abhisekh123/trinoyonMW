@@ -3,7 +3,7 @@
 export interface request_message {
     type:    string;
     userId: string;
-    teamID: number;
+    team: number;
     message:     JSON;
 }
 

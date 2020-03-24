@@ -31,15 +31,16 @@ module.exports = {
 
         hostileConfig = aiUtility.aiutilityRoute.findClosestHostileInRange(botConfig, gameRoom, botConfig.sight);
         if(hostileConfig != null){ // if a hostile is found in range
-            console.log('--hostiles in range:', hostileConfig.id);
+            console.log('--hostiles in range:', hostileConfig);
             actionManager.actionUtility.addActionToBot(botConfig, 'fight', hostileConfig, gameRoom);
             aiUtility.attackHostile(botConfig, hostileConfig, gameRoom);
             return 0; // consumed all remaining time to attack. Done for the current iteration.
         }
         
         if(botConfig.action == 'march'){
-            console.log('--march');
+            
             timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
+            console.log('--march, timeslice:', timeSlice);
             return timeSlice;
         }
 

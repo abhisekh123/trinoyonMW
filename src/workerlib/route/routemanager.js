@@ -25,12 +25,12 @@ module.exports = {
 
     // TODO: need refinement. search only for hero bot. Or dont consider bots / players at all
     // used for movement of player to nearesrt enemy hero or building. used by player AI
-    findClosestPlayerOrTowerOrBase: function (botConfigParam, gameRoom) {
-        var playerTeam = botConfigParam.teamId;
+    findClosestHostile: function (botConfigParam, gameRoom) {
+        var playerTeam = botConfigParam.team;
         // var defenseList = null;
         // var base = null;
         var enemyPlayerList = null;
-        // console.log('findClosestPlayerOrTowerOrBase->ID:', botConfigParam);
+        // console.log('findClosestHostile->ID:', botConfigParam);
         // var leaderConfig = workerstate.botMap[botConfigParam.leaderBotID];
 
         var leaderPosition = botConfigParam.position;
@@ -57,7 +57,7 @@ module.exports = {
             const playerConfig = enemyPlayerList[playerIndex];
             
             // skip inactive player and players controlled by real people and players in the same team
-            // if(!playerConfig.isActive || playerConfig.teamID == botConfigParam.teamID){
+            // if(!playerConfig.isActive || playerConfig.team == botConfigParam.team){
             //     // TODO: Add logic to spawn new AI player / admit new player here.
             //     continue;
             // }

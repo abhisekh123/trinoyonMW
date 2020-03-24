@@ -35,7 +35,7 @@ tg.bot.reloadBots = function(playerConfigArray, playerSelfIndex, actionOnComplet
 tg.bot.loadCharacters = function (
     botConfig,
     playerID,
-    teamId
+    team
 ) {
     // const characterName = botConfig.type;
     console.log('start tg.bot.loadCharacters');
@@ -69,7 +69,7 @@ tg.bot.loadCharacters = function (
                 // botConfig.type,
                 // botConfig.id,
                 botConfig,
-                teamId,
+                team,
                 playerID
             );
         }

@@ -571,7 +571,7 @@ function updateWorld(jsonParam) {
                 animationPlayFlag = false;
                 break;
             case 'over':
-                if(update.loosingTeam == tg.teamID){
+                if(update.loosingTeam == tg.team){
                     alert('You won!');
                 }else{
                     alert('Your team was defeated');

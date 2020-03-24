@@ -83,6 +83,14 @@ module.exports = {
         gameRoomAssetManager.resetAllBotPositionToStartingPosition(gameRoom);
         // console.log(gameRoom);
         // utilityFunctions.printEntireObjectNeatyle(gameRoom);
+        // console.log('gameRoom.buildingArray_1');
+        // utilityFunctions.printEntireObjectNeatyle(gameRoom.buildingArray_1);
+        // console.log('gameRoom.buildingArray_2');
+        // utilityFunctions.printEntireObjectNeatyle(gameRoom.buildingArray_2);
+        // console.log('gameRoom.players_1');
+        // utilityFunctions.printEntireObjectNeatyle(gameRoom.players_1);
+        // console.log('gameRoom.players_2');
+        // utilityFunctions.printEntireObjectNeatyle(gameRoom.players_2);
         gameRoom.isActive = true;
         snapShotManager.setNewSnapshotObject(gameRoom);
         messageManager.broadcastGameConfigToPlayers(gameRoom);

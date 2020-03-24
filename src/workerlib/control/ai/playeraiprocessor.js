@@ -17,10 +17,11 @@ module.exports = {
         var areAllBotsIdle = this.areAllBotsIdle(playerConfigParam);
         if(areAllBotsIdle == true){
             console.log('-- playerAi. all bots idle for player:', playerConfigParam.id);
-            console.log('-- playerAi. position:', playerConfigParam.position);
+            
             var leaderBotConfig = playerConfigParam.botObjectList[0];
+            console.log('-- playerAi. leaderBotConfig position:', leaderBotConfig.position);
             // all bots are idle. Loiter.
-            var nearestTarget = routeManager.findClosestPlayerOrTowerOrBase(leaderBotConfig, gameRoom);
+            var nearestTarget = routeManager.findClosestHostile(leaderBotConfig, gameRoom);
             // // console.log(playerConfig.id);
             // console.log('nearestTarget:', nearestTarget);
             if(nearestTarget == null){
@@ -39,7 +40,7 @@ module.exports = {
                     return;
                 }
                 // var leaderConfig = workerState.botMap[playerConfig.leaderBotID];
-                console.log('nearest target:', nearestTarget);
+                console.log('nearest target:', nearestTarget.id);
                 var nearestPosition = routeManager.findClosestWalkablePosition(
                     nearestTarget, 
                     this.worldConfig.gridSide, 

@@ -221,7 +221,7 @@ module.exports = {
                 gridMatrix[i] = new Array(this.worldConfig.gridSide);
                 for(var k = 0; k < this.worldConfig.gridSide; ++k){ // z axis
                     gridMatrix[i][k] = {
-                        object: null
+                        object: null, 
                     }
                 }
             }

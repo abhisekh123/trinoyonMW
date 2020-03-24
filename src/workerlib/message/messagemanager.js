@@ -132,14 +132,14 @@ module.exports = {
     /**
      * GET RECIPIENTS LIST
      */
-    getActualPlayerIDListForGame: function(gameRoom, teamId){
+    getActualPlayerIDListForGame: function(gameRoom, team){
         var playerArray = null;
-        if(teamId == 1){
+        if(team == 1){
             playerArray = gameRoom.players_1;
-        }else if(teamId == 2){
+        }else if(team == 2){
             playerArray = gameRoom.players_2;
         }else{
-            console.log('ERROR: unknown teamId:', teamId);
+            console.log('ERROR: unknown team:', team);
             return [];
         }
         const playerIDList = [];

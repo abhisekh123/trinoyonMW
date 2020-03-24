@@ -32,6 +32,7 @@ tg.world.handleNewMatchTerminatedTrigger = function() {
 tg.world.updateWorld = function(updateParam){
     // console.log('tg.world.updateWorld:', updateParam);
     if(tg.isGameLive == true){
+        console.log('tg.world.updateWorld:', updateParam);
         const itemStateMap = updateParam.playerConfig.itemState;
         const itemKeyArray = tg.uu.getObjectKeys(itemStateMap);
         for (let index = 0; index < itemKeyArray.length; index++) {

@@ -50,14 +50,30 @@ module.exports = {
         return hostileConfig;
     },
 
+    findClosestHostileInRange: function(itemConfig, gameRoom, rangeParam){
+        const targetConfig = routeManager.findClosestHostile(itemConfig, gameRoom);
+        if(targetConfig != null){
+            var distance = routeManager.getDistanceBetweenPoints(
+                itemConfig.position[0], itemConfig.position[2], targetConfig.position[0], targetConfig.position[2]
+            );
+            if(rangeParam >= distance){
+                return targetConfig;
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
+    },
     // here the itemConfig can be buildingConfig or botConfig.
     // we are taking rangeParam because it can be range as well as sight or something else.
-    findClosestHostileInRange: function(itemConfig, gameRoom, rangeParam){
+    findClosestHostileInRange_old: function(itemConfig, gameRoom, rangeParam){
+        console.log('this.findClosestHostileInRange for:', itemConfig);
         var enemyTeam = 2;
         if(itemConfig.team == 2){
             enemyTeam = 1;
         }
-
+        console.log('enemyTeam:', enemyTeam);
         // increase widhth and check the perimeter
         for(var side = 1; side < rangeParam; ++side){
             positionRunnerStart = {x:itemConfig.position[0] - side, z:itemConfig.position[2] - side};// left-bottom
