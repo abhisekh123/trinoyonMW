@@ -19,6 +19,32 @@ module.exports = {
     },
     'aiutilityRoute': aiUtility_route,
 
+    engageHostile: function(botConfig, targetConfig, gameRoom){
+        var distanceBetweenBotAndTarget = routeManager.getDistanceBetweenPoints(
+            botConfig.position[0],
+            botConfig.position[2],
+            targetConfig.position[0],
+            targetConfig.position[2]
+        );
+        // if nearesr target already in range
+        if(distanceBetweenBotAndTarget <= botConfig.range){ //this should not happen
+            console.error('distanceBetweenBotAndTarget <= botConfig.range, attacking');
+            
+        }else{
+            var nearestPosition = routeManager.findClosestWalkablePosition(
+                targetConfig, 
+                this.worldConfig.gridSide, 
+                gameRoom
+            );
+        }
+        
+        
+        // if target is in range then attack
+        // else
+        // find closest walkable point
+        // if it is closer than current distance, march
+    },
+
     // action routines
     canAttack: function(objectConfig){
         if((workerState.currentTime - objectConfig.activityTimeStamp) > objectConfig.attackinterval){

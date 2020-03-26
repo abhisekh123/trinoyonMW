@@ -67,89 +67,89 @@ module.exports = {
     },
     // here the itemConfig can be buildingConfig or botConfig.
     // we are taking rangeParam because it can be range as well as sight or something else.
-    findClosestHostileInRange_old: function(itemConfig, gameRoom, rangeParam){
-        console.log('this.findClosestHostileInRange for:', itemConfig);
-        var enemyTeam = 2;
-        if(itemConfig.team == 2){
-            enemyTeam = 1;
-        }
-        console.log('enemyTeam:', enemyTeam);
-        // increase widhth and check the perimeter
-        for(var side = 1; side < rangeParam; ++side){
-            positionRunnerStart = {x:itemConfig.position[0] - side, z:itemConfig.position[2] - side};// left-bottom
-            var j = 0;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                const objectAtPosition = routeManager.getObjectOccupyingThePosition(
-                    positionRunnerStart.x,
-                    positionRunnerStart.z,
-                    gameRoom
-                );
-                // if point in grid and occupied.
-                if( objectAtPosition != null && objectAtPosition != -1 ){
-                    if(objectAtPosition.team == enemyTeam){
-                        // found an hostile
-                        return objectAtPosition;
-                    }
-                }
+    // findClosestHostileInRange_old: function(itemConfig, gameRoom, rangeParam){
+    //     console.log('this.findClosestHostileInRange for:', itemConfig);
+    //     var enemyTeam = 2;
+    //     if(itemConfig.team == 2){
+    //         enemyTeam = 1;
+    //     }
+    //     console.log('enemyTeam:', enemyTeam);
+    //     // increase widhth and check the perimeter
+    //     for(var side = 1; side < rangeParam; ++side){
+    //         positionRunnerStart = {x:itemConfig.position[0] - side, z:itemConfig.position[2] - side};// left-bottom
+    //         var j = 0;
+    //         for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
+    //             const objectAtPosition = routeManager.getObjectOccupyingThePosition(
+    //                 positionRunnerStart.x,
+    //                 positionRunnerStart.z,
+    //                 gameRoom
+    //             );
+    //             // if point in grid and occupied.
+    //             if( objectAtPosition != null && objectAtPosition != -1 ){
+    //                 if(objectAtPosition.team == enemyTeam){
+    //                     // found an hostile
+    //                     return objectAtPosition;
+    //                 }
+    //             }
                 
-                positionRunnerStart.x = positionRunnerStart.x + 1;
-            }
+    //             positionRunnerStart.x = positionRunnerStart.x + 1;
+    //         }
 
-            positionRunnerStart.x = positionRunnerStart.x - 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
-                const objectAtPosition = routeManager.getObjectOccupyingThePosition(
-                    positionRunnerStart.x,
-                    positionRunnerStart.z,
-                    gameRoom
-                );
-                // if point in grid and occupied.
-                if( objectAtPosition != null && objectAtPosition != -1 ){
-                    if(objectAtPosition.team == enemyTeam){
-                        // found an hostile
-                        return objectAtPosition;
-                    }
-                }
+    //         positionRunnerStart.x = positionRunnerStart.x - 1;
+    //         for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
+    //             const objectAtPosition = routeManager.getObjectOccupyingThePosition(
+    //                 positionRunnerStart.x,
+    //                 positionRunnerStart.z,
+    //                 gameRoom
+    //             );
+    //             // if point in grid and occupied.
+    //             if( objectAtPosition != null && objectAtPosition != -1 ){
+    //                 if(objectAtPosition.team == enemyTeam){
+    //                     // found an hostile
+    //                     return objectAtPosition;
+    //                 }
+    //             }
 
-                positionRunnerStart.z = positionRunnerStart.z + j;
-            }
+    //             positionRunnerStart.z = positionRunnerStart.z + j;
+    //         }
 
-            positionRunnerStart.z = positionRunnerStart.z - 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                const objectAtPosition = routeManager.getObjectOccupyingThePosition(
-                    positionRunnerStart.x,
-                    positionRunnerStart.z,
-                    gameRoom
-                );
-                // if point in grid and occupied.
-                if( objectAtPosition != null && objectAtPosition != -1 ){
-                    if(objectAtPosition.team == enemyTeam){
-                        // found an hostile
-                        return objectAtPosition;
-                    }
-                }
-                positionRunnerStart.x = positionRunnerStart.x - 1;
-            }
+    //         positionRunnerStart.z = positionRunnerStart.z - 1;
+    //         for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
+    //             const objectAtPosition = routeManager.getObjectOccupyingThePosition(
+    //                 positionRunnerStart.x,
+    //                 positionRunnerStart.z,
+    //                 gameRoom
+    //             );
+    //             // if point in grid and occupied.
+    //             if( objectAtPosition != null && objectAtPosition != -1 ){
+    //                 if(objectAtPosition.team == enemyTeam){
+    //                     // found an hostile
+    //                     return objectAtPosition;
+    //                 }
+    //             }
+    //             positionRunnerStart.x = positionRunnerStart.x - 1;
+    //         }
 
-            positionRunnerStart.x = positionRunnerStart.x + 1;
-            for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                const objectAtPosition = routeManager.getObjectOccupyingThePosition(
-                    positionRunnerStart.x,
-                    positionRunnerStart.z,
-                    gameRoom
-                );
-                // if point in grid and occupied.
-                if( objectAtPosition != null && objectAtPosition != -1 ){
-                    if(objectAtPosition.team == enemyTeam){
-                        // found an hostile
-                        return objectAtPosition;
-                    }
-                }
-                positionRunnerStart.z = positionRunnerStart.z - 1;
-            }
-        }
+    //         positionRunnerStart.x = positionRunnerStart.x + 1;
+    //         for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
+    //             const objectAtPosition = routeManager.getObjectOccupyingThePosition(
+    //                 positionRunnerStart.x,
+    //                 positionRunnerStart.z,
+    //                 gameRoom
+    //             );
+    //             // if point in grid and occupied.
+    //             if( objectAtPosition != null && objectAtPosition != -1 ){
+    //                 if(objectAtPosition.team == enemyTeam){
+    //                     // found an hostile
+    //                     return objectAtPosition;
+    //                 }
+    //             }
+    //             positionRunnerStart.z = positionRunnerStart.z - 1;
+    //         }
+    //     }
 
-        return null; // no hostiles in range.
-    },
+    //     return null; // no hostiles in range.
+    // },
 
 
 

@@ -16,16 +16,18 @@ module.exports = {
     processAI: function(playerConfigParam, gameRoom){
         var areAllBotsIdle = this.areAllBotsIdle(playerConfigParam);
         if(areAllBotsIdle == true){
-            console.log('-- playerAi. all bots idle for player:', playerConfigParam.id);
-            
             var leaderBotConfig = playerConfigParam.botObjectList[0];
-            console.log('-- playerAi. leaderBotConfig position:', leaderBotConfig.position);
+            console.log('-- playerAi. all bots idle for player:' 
+            + playerConfigParam.id + ' at position:', leaderBotConfig.position);
+            
+            
+            // console.log('-- playerAi. leaderBotConfig position:', leaderBotConfig.position);
             // all bots are idle. Loiter.
             var nearestTarget = routeManager.findClosestHostile(leaderBotConfig, gameRoom);
             // // console.log(playerConfig.id);
             // console.log('nearestTarget:', nearestTarget);
             if(nearestTarget == null){
-                console.log('ERROR:nearestTarget is null:', nearestTarget);
+                console.error('ERROR:nearestTarget is null:', nearestTarget);
                 return;
             }else{
                 var distanceBetweenTargetAndLeader = routeManager.getDistanceBetweenPoints(
@@ -36,7 +38,7 @@ module.exports = {
                 );
                 // if nearesr target already in range
                 if(distanceBetweenTargetAndLeader <= leaderBotConfig.range){ //this should not happen
-                    console.log('ERROR: distanceBetweenTargetAndLeader <= leaderBotConfig.range');
+                    console.error('ERROR: distanceBetweenTargetAndLeader <= leaderBotConfig.range');
                     return;
                 }
                 // var leaderConfig = workerState.botMap[playerConfig.leaderBotID];

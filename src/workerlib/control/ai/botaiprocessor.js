@@ -19,7 +19,7 @@ module.exports = {
         // console.log('processAI start');
         var hostileConfig = null;
         const botConfig = playerConfig.botObjectList[botIndex];
-        console.log('processAI:' + botConfig.id);
+        console.log('processAI:' + botConfig.id + ' at position:', botConfig.position);
         
         // botConfig.attack = botTypeItemConfig.attack;
         if(botConfig.action == 'goto'){
@@ -31,7 +31,8 @@ module.exports = {
 
         hostileConfig = aiUtility.aiutilityRoute.findClosestHostileInRange(botConfig, gameRoom, botConfig.sight);
         if(hostileConfig != null){ // if a hostile is found in range
-            console.log('--hostiles in range:', hostileConfig);
+            console.log('--engaging -> hostiles in sight:' + hostileConfig.id + ' at position:', hostileConfig.position);
+            aiUtility.engageHostile(botConfig, hostileConfig, gameRoom);
             actionManager.actionUtility.addActionToBot(botConfig, 'fight', hostileConfig, gameRoom);
             aiUtility.attackHostile(botConfig, hostileConfig, gameRoom);
             return 0; // consumed all remaining time to attack. Done for the current iteration.

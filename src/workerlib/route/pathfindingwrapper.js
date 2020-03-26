@@ -13,7 +13,7 @@ module.exports = {
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();
         workerState.finder = new PF.AStarFinder({
-            allowDiagonal: true,
+            allowDiagonal: false,
             dontCrossCorners: true,
             heuristic: PF.Heuristic.chebyshev
         });

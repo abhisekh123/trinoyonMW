@@ -54,8 +54,6 @@ module.exports = {
                     gameRoomManager.terminateGame(gameRoom);
                     continue;
                 }
-
-                gameRoomManager.processPlayers(gameRoom); // send hero to new location of all bots are idle.
                 // console.log('completed processing players.');
                 gameRoomManager.processBuildings(gameRoom); // attack if enemy in range
                 // console.log('completed processing buildings.');
@@ -64,6 +62,8 @@ module.exports = {
                 // 2>help each other 
                 // 3>go near hero bot
                 gameRoomManager.processBots(gameRoom); 
+                gameRoomManager.processPlayers(gameRoom); // send hero to new location of all bots are idle.
+
                 // console.log('completed processing bots.');
                 if(refreshVisibilityFlag == true){
                     gameRoomManager.refreshVisibility(gameRoom);

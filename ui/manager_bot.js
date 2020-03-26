@@ -156,8 +156,8 @@ tg.bot.processLoadedModel = function (
 
     tg.am.dynamicItems.bots[characterID] = botObject;
 
-    for (const index of characterConfig.bannedMeshes) {
-        newMeshes[index].isVisible = false;
+    for (var i = 0; i < characterConfig.bannedMeshes.length; ++i) {
+        newMeshes[characterConfig.bannedMeshes[i]].isVisible = false;
     }
     // if (newMeshes.length > 9) {
     //     newMeshes[9].isVisible = false;

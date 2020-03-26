@@ -27,22 +27,18 @@
                 scale:5,
                 animationSpeed:1,
                 respawnTime: 5000, // 3 seconds
-                iconurl: 'static/img/lion_icon.png'
+                iconurl: 'static/img/lion_icon.png',
+                headerScale: 1,
+                headerPositionY: 1,
             },
             swordman:{
-                // bannedMeshes:[9],
-                bannedMeshes:[],
-                // idleAnimationIndex:0,
-                // runAnimationIndex:16,
-                // dieAnimationIndex:9,
-                // spawnAnimationIndex:7,
-                // attackAnimationIndex:2,
-
+                bannedMeshes:[6],
+                // bannedMeshes:[],
                 idleAnimationIndex:0,
-                runAnimationIndex:0,
-                dieAnimationIndex:0,
-                spawnAnimationIndex:0,
-                attackAnimationIndex:0,
+                runAnimationIndex:16,
+                dieAnimationIndex:9,
+                spawnAnimationIndex:7,
+                attackAnimationIndex:2,
 
                 attackinterval: 1000,
                 attack: 1,
@@ -53,12 +49,13 @@
                 sight: 8,
                 range: 2,
                 parentMesh: null,
-                // file:'low_poly_character_rpg_kit_animation',
-                file: 'bow_trigger_game_character',
-                scale:0.3,
+                file:'low_poly_knight_animated',
+                scale:1.5,
                 animationSpeed: 1,
                 respawnTime: 3000, // 3 seconds
-                iconurl: 'static/img/swordsman_icon.png'
+                iconurl: 'static/img/swordsman_icon.png',
+                headerScale: 1,
+                headerPositionY: 1,
             },
             archer:{
                 // bannedMeshes:[9],
@@ -87,7 +84,9 @@
                 scale:0.3,
                 animationSpeed: 1,
                 respawnTime: 3000, // 3 seconds
-                iconurl: 'static/img/archer_icon.png'
+                iconurl: 'static/img/archer_icon.png',
+                headerScale: 1,
+                headerPositionY: 1,
             },
             tower:{
                 life:1000,
@@ -107,7 +106,33 @@
                 sight: 3,
                 range: 3,
                 attackinterval: 1000,
-            }
+            },
+            boy:{
+                bannedMeshes:[9],
+                // bannedMeshes:[],
+                idleAnimationIndex:0,
+                runAnimationIndex:16,
+                dieAnimationIndex:9,
+                spawnAnimationIndex:7,
+                attackAnimationIndex:2,
+
+                attackinterval: 1000,
+                attack: 1,
+                life:10,
+                speed:1, //one tile per 1000 ms.
+                strideDistance: 0.5,
+                strideTime: 0.25,
+                sight: 8,
+                range: 2,
+                parentMesh: null,
+                file:'low_poly_character_rpg_kit_animation',
+                scale:0.3,
+                animationSpeed: 1,
+                respawnTime: 3000, // 3 seconds
+                iconurl: 'static/img/swordsman_icon.png',
+                headerScale: 1,
+                headerPositionY: 1,
+            },
         },
         
     };
