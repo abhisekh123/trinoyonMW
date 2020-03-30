@@ -50,21 +50,21 @@ module.exports = {
         return hostileConfig;
     },
 
-    findClosestHostileInRange: function(itemConfig, gameRoom, rangeParam){
-        const targetConfig = routeManager.findClosestHostile(itemConfig, gameRoom);
-        if(targetConfig != null){
-            var distance = routeManager.getDistanceBetweenPoints(
-                itemConfig.position[0], itemConfig.position[2], targetConfig.position[0], targetConfig.position[2]
-            );
-            if(rangeParam >= distance){
-                return targetConfig;
-            }else{
-                return null;
-            }
-        }else{
-            return null;
-        }
-    },
+    // findClosestHostileInRange: function(itemConfig, gameRoom, rangeParam){
+    //     const targetConfig = routeManager.findClosestHostile(itemConfig, gameRoom);
+    //     if(targetConfig != null){
+    //         var distance = routeManager.getDistanceBetweenPoints(
+    //             itemConfig.position[0], itemConfig.position[2], targetConfig.position[0], targetConfig.position[2]
+    //         );
+    //         if(rangeParam >= distance){
+    //             return targetConfig;
+    //         }else{
+    //             return null;
+    //         }
+    //     }else{
+    //         return null;
+    //     }
+    // },
     // here the itemConfig can be buildingConfig or botConfig.
     // we are taking rangeParam because it can be range as well as sight or something else.
     // findClosestHostileInRange_old: function(itemConfig, gameRoom, rangeParam){

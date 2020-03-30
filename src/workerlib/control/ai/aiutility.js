@@ -19,31 +19,31 @@ module.exports = {
     },
     'aiutilityRoute': aiUtility_route,
 
-    engageHostile: function(botConfig, targetConfig, gameRoom){
-        var distanceBetweenBotAndTarget = routeManager.getDistanceBetweenPoints(
-            botConfig.position[0],
-            botConfig.position[2],
-            targetConfig.position[0],
-            targetConfig.position[2]
-        );
-        // if nearesr target already in range
-        if(distanceBetweenBotAndTarget <= botConfig.range){ //this should not happen
-            console.error('distanceBetweenBotAndTarget <= botConfig.range, attacking');
+    // engageHostile: function(botConfig, targetConfig, gameRoom){
+    //     var distanceBetweenBotAndTarget = routeManager.getDistanceBetweenPoints(
+    //         botConfig.position[0],
+    //         botConfig.position[2],
+    //         targetConfig.position[0],
+    //         targetConfig.position[2]
+    //     );
+    //     // if nearesr target already in range
+    //     if(distanceBetweenBotAndTarget <= botConfig.range){ //this should not happen
+    //         console.error('distanceBetweenBotAndTarget <= botConfig.range, attacking');
             
-        }else{
-            var nearestPosition = routeManager.findClosestWalkablePosition(
-                targetConfig, 
-                this.worldConfig.gridSide, 
-                gameRoom
-            );
-        }
+    //     }else{
+    //         var nearestPosition = routeManager.findClosestWalkablePosition(
+    //             targetConfig, 
+    //             this.worldConfig.gridSide, 
+    //             gameRoom
+    //         );
+    //     }
         
         
-        // if target is in range then attack
-        // else
-        // find closest walkable point
-        // if it is closer than current distance, march
-    },
+    //     // if target is in range then attack
+    //     // else
+    //     // find closest walkable point
+    //     // if it is closer than current distance, march
+    // },
 
     // action routines
     canAttack: function(objectConfig){
@@ -77,6 +77,37 @@ module.exports = {
         // console.log('completeBotMovementActionFormalities path:', path);
         actionManager.actionUtility.addActionToBot(botConfig, action, path, gameRoom);
         // this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z, gameRoom);
+    },
+
+    /**
+     * visibility: 1(visible), 0(dont care), -1(invisible)
+     * range: positive(in range), 0(dont care), negetive(outside range)
+     */
+    goNearRoutine: function(visibility, range, targetX, targetZ, botConfig, gameRoom){
+        if(this.isPositionCriteriaSatisfied(visibility, range, targetX, targetZ, 
+            botConfig.position[0], botConfig.position[2], gameRoom)){
+                return;
+        } else {
+            var newPosition = this.findClosestWalkablePositionForGivenCriteria(visibility, range, targetX, targetZ, botConfig, gameRoom);
+            if(this.comparePositionsForCriteria(visibility, range, 
+                targetX, targetZ, 
+                currentX, currentZ, 
+                newPosition.x, newPosition.z, gameRoom) > 0){
+                    this.completeBotMovementActionFormalities(botConfig, newPosition, 'march', gameRoom);
+            }
+        }
+    },
+
+    isPositionCriteriaSatisfied: function(visibility, range, targetX, targetZ, currentX, currentZ, gameRoom){
+
+    },
+
+    comparePositionsForCriteria: function(visibility, range, targetX, targetZ, currentX, currentZ,  newX, newZ, gameRoom){
+
+    },
+
+    findClosestWalkablePositionForGivenCriteria: function(visibility, range, targetX, targetZ, botConfig, gameRoom){
+
     },
 }
 

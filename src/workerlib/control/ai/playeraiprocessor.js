@@ -23,6 +23,9 @@ module.exports = {
             
             // console.log('-- playerAi. leaderBotConfig position:', leaderBotConfig.position);
             // all bots are idle. Loiter.
+            /**
+             * TODO: SHOULD CONSIDER HOSTILE BUILDINGS ONLY
+             */
             var nearestTarget = routeManager.findClosestHostile(leaderBotConfig, gameRoom);
             // // console.log(playerConfig.id);
             // console.log('nearestTarget:', nearestTarget);

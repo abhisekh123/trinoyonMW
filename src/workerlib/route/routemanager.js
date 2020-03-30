@@ -22,7 +22,7 @@ module.exports = {
     },
 
 
-
+    // TODO: HAVE FLAG : HOSTILE TYPE: BUILDINGS, HERO AND BUILDING, EVERYTHING?
     // TODO: need refinement. search only for hero bot. Or dont consider bots / players at all
     // used for movement of player to nearesrt enemy hero or building. used by player AI
     findClosestHostile: function (botConfigParam, gameRoom) {
