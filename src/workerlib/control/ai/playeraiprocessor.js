@@ -33,32 +33,33 @@ module.exports = {
                 console.error('ERROR:nearestTarget is null:', nearestTarget);
                 return;
             }else{
-                var distanceBetweenTargetAndLeader = routeManager.getDistanceBetweenPoints(
-                    leaderBotConfig.position[0],
-                    leaderBotConfig.position[2],
-                    nearestTarget.position[0],
-                    nearestTarget.position[2]
-                );
-                // if nearesr target already in range
-                if(distanceBetweenTargetAndLeader <= leaderBotConfig.range){ //this should not happen
-                    console.error('ERROR: distanceBetweenTargetAndLeader <= leaderBotConfig.range');
-                    return;
-                }
-                // var leaderConfig = workerState.botMap[playerConfig.leaderBotID];
-                console.log('nearest target:', nearestTarget.id);
-                var nearestPosition = routeManager.findClosestWalkablePosition(
-                    nearestTarget, 
-                    this.worldConfig.gridSide, 
-                    gameRoom
-                );
-                console.log('nearest position:', nearestPosition);
-                if(nearestPosition == null){
-                    console.log('nearestPosition == null .... surprise!');
-                    return;
-                }
+                aiUtility.goNearRoutine(1, botConfig.range, botConfig, gameRoom, nearestTarget);
+                // var distanceBetweenTargetAndLeader = routeManager.getDistanceBetweenPoints(
+                //     leaderBotConfig.position[0],
+                //     leaderBotConfig.position[2],
+                //     nearestTarget.position[0],
+                //     nearestTarget.position[2]
+                // );
+                // // if nearesr target already in range
+                // if(distanceBetweenTargetAndLeader <= leaderBotConfig.range){ //this should not happen
+                //     console.error('ERROR: distanceBetweenTargetAndLeader <= leaderBotConfig.range');
+                //     return;
+                // }
+                // // var leaderConfig = workerState.botMap[playerConfig.leaderBotID];
+                // console.log('nearest target:', nearestTarget.id);
+                // var nearestPosition = routeManager.findClosestWalkablePosition(
+                //     nearestTarget, 
+                //     this.worldConfig.gridSide, 
+                //     gameRoom
+                // );
+                // console.log('nearest position:', nearestPosition);
+                // if(nearestPosition == null){
+                //     console.log('nearestPosition == null .... surprise!');
+                //     return;
+                // }
                 // console.log('player ai processor, leaderConfig:', leaderBotConfig);
                 // console.log('nearest position:', nearestPosition);
-                aiUtility.completeBotMovementActionFormalities(leaderBotConfig, nearestPosition, 'march', gameRoom);
+                // aiUtility.completeBotMovementActionFormalities(leaderBotConfig, nearestPosition, 'march', gameRoom);
                 // var path = routeManager.findPath(
                 //     leaderBotConfig.position[0], 
                 //     leaderBotConfig.position[2], 

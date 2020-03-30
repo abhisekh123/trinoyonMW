@@ -61,7 +61,7 @@ module.exports = {
     },
 
 
-    completeBotMovementActionFormalities: function(botConfig, positionObject, action, gameRoom){
+    completeBotMovementActionFormalities: function(botConfig, positionObject, action, gameRoom, targetConfig){
         var path = routeManager.findPath(
             botConfig.position[0],
             botConfig.position[2],
@@ -76,9 +76,11 @@ module.exports = {
         aiUtility_route.planBotRoute(botConfig, path); // set timestamp to each path position.
         // console.log('completeBotMovementActionFormalities path:', path);
         actionData = {
-            
+            path: path,
+            timestamp: workerState.currentTime,
+            targetConfig: targetConfig
         }
-        actionManager.actionUtility.addActionToBot(botConfig, action, path, gameRoom);
+        actionManager.actionUtility.addActionToBot(botConfig, action, actionData, gameRoom);
         // this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z, gameRoom);
     },
 
@@ -86,7 +88,10 @@ module.exports = {
      * visibility: 1(visible), 0(dont care), -1(invisible)
      * range: positive(in range), 0(dont care), negetive(outside range)
      */
-    goNearRoutine: function(visibility, range, targetX, targetZ, botConfig, gameRoom, targetConfig){
+    goNearRoutine: function(visibility, range, botConfig, gameRoom, targetConfig){
+        var targetX = targetConfig.position[0];
+        var targetZ = targetConfig.position[2];
+        
         if(this.isPositionCriteriaSatisfied(visibility, range, targetX, targetZ, 
             botConfig.position[0], botConfig.position[2], gameRoom)){
                 return;
@@ -96,7 +101,7 @@ module.exports = {
                 targetX, targetZ, 
                 currentX, currentZ, 
                 newPosition.x, newPosition.z, gameRoom) > 0){
-                    this.completeBotMovementActionFormalities(botConfig, newPosition, 'march', gameRoom);
+                    this.completeBotMovementActionFormalities(botConfig, newPosition, 'march', gameRoom, targetConfig);
             }
         }
     },

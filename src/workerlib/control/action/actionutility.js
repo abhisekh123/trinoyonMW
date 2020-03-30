@@ -30,8 +30,8 @@ module.exports = {
         switch (botConfig.action) {
             case 'goto':
             case 'march':
-                currentPositionX = botConfig.actionData[botConfig.actionData.length - 1][0];
-                currentPositionZ = botConfig.actionData[botConfig.actionData.length - 1][1];
+                currentPositionX = botConfig.actionData.path[botConfig.actionData.path.length - 1][0];
+                currentPositionZ = botConfig.actionData.path[botConfig.actionData.path.length - 1][1];
                 break;
             case 'ready':
             case 'fight':
@@ -60,8 +60,8 @@ module.exports = {
         switch (action) {
             case 'goto':
             case 'march':
-                newPositionX = actionData[actionData.length - 1][0];
-                newPositionZ = actionData[actionData.length - 1][1];
+                newPositionX = botConfig.actionData.path[botConfig.actionData.path.length - 1][0];
+                newPositionZ = botConfig.actionData.path[botConfig.actionData.path.length - 1][1];
                 break;
             case 'fight':
             case 'ready':
@@ -107,10 +107,10 @@ module.exports = {
         // console.log('path:', botConfig.actionData);
         // ignore i = 0 as it is the starting position.
         let pathPosition = null;
-        for (let i = 1; i < botConfig.actionData.length; i++) {
-            pathPosition = botConfig.actionData[i];
+        for (let i = 1; i < botConfig.actionData.path.length; i++) {
+            pathPosition = botConfig.actionData.path[i];
             if (pathPosition[2] > workerState.currentTime) {
-                pathPosition = botConfig.actionData[i - 1];
+                pathPosition = botConfig.actionData.path[i - 1];
                 botConfig.position[0] = pathPosition[0];
                 botConfig.position[2] = pathPosition[1];
                 botConfig.activityTimeStamp = pathPosition[2];
@@ -121,7 +121,7 @@ module.exports = {
             }
         }
         // console.log('completed time slice. transiting to ready state.');
-        pathPosition = botConfig.actionData[botConfig.actionData.length - 1];
+        pathPosition = botConfig.actionData.path[botConfig.actionData.path.length - 1];
         botConfig.position[0] = pathPosition[0];
         botConfig.position[2] = pathPosition[1];
         botConfig.activityTimeStamp = pathPosition[2];

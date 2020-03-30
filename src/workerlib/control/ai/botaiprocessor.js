@@ -68,15 +68,13 @@ module.exports = {
 
         // test the non hero bots if they are away from hero bot.
         if(botIndex != 0 && this.shouldBotGoNearLeader(botConfig, distanceBetweenBotAndHero)){
-            aiUtility.goNearRoutine(0, this.worldConfig.closeProximity, heroConfig.position[0],
-                heroConfig.position[2], botConfig, gameRoom);
+            aiUtility.goNearRoutine(0, this.worldConfig.closeProximity, botConfig, gameRoom, heroConfig);
         } else {
             // help out fellow bot
             closestTargetConfig = aiUtility.aiutilityRoute.findClosestHostileAttackedByTeamMate(botIndex, playerConfig);
             if(closestTargetConfig != null){
                 console.log('--help team');
-                aiUtility.goNearRoutine(1, botConfig.range, closestTargetConfig.position[0],
-                    closestTargetConfig.position[2], botConfig, gameRoom);
+                aiUtility.goNearRoutine(1, botConfig.range, botConfig, gameRoom, closestTargetConfig);
                 // find in range visible point to bot.actiondata and march to the point
                 // var positionNearHostile = routeManager.findClosestVisiblePositionInRange(
                 //     botConfig, 
@@ -90,8 +88,7 @@ module.exports = {
                 //     return timeSlice;
                 // }
             } else if(distanceBetweenBotAndHostile <= botConfig.sight){ // if closest hostile detected is in sight.
-                aiUtility.goNearRoutine(1, botConfig.range, hostileConfig.position[0],
-                    hostileConfig.position[2], botConfig, gameRoom);
+                aiUtility.goNearRoutine(1, botConfig.range, botConfig, gameRoom, hostileConfig);
             }
         }
 
