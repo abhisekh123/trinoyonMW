@@ -38,7 +38,7 @@ module.exports = {
         }
 
         // hostileConfig = aiUtility.aiutilityRoute.findClosestHostileInRange(botConfig, gameRoom, botConfig.sight);
-        hostileConfig = routeManager.findClosestHostile(botConfig, gameRoom);
+        hostileConfig = routeManager.findClosestHostile(botConfig, gameRoom, this.worldConfig.ALL);
         var distanceBetweenBotAndHostile = routeManager.getDistanceBetweenPoints(
             botConfig.position[0],
             botConfig.position[2],

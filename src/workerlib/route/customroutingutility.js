@@ -201,13 +201,13 @@ module.exports = {
         for(var i = 0; i < this.worldConfig.neighbourhoodBoxSide; ++i){ // x axis
             angleMatrix[i] = new Array();
             for(var j = 0; j < this.neighbourhoodBoxSide; ++j){ // z axis
-                if(i==this.maxRange && j==this.maxRange){
+                if(i==this.worldConfig.maxRange && j==this.worldConfig.maxRange){
                     angleMatrix[i][j] = 0;
                     continue;
                 }
                 
                 // angle with positive z axis(away from camera). negetive for left side(x < 0)
-                angleMatrix[i][j] = utilityFunctions.roundTo2Decimal(Math.atan2((i - this.maxRange), (j - this.maxRange))); 
+                angleMatrix[i][j] = utilityFunctions.roundTo2Decimal(Math.atan2((i - this.worldConfig.maxRange), (j - this.worldConfig.maxRange))); 
             }
         }
         workerState.angleMatrix = angleMatrix;
@@ -284,8 +284,4 @@ module.exports = {
             z: z
         }
     },
-
-
-
-
 }

@@ -10,6 +10,7 @@ const messageManager = require('../message/messagemanager');
 const aiManager = require('./ai/aimanager');
 const actionManager = require('./action/actionmanager');
 const snapShotManager = require('../state/snapshotmanager');
+const routeManager = require('../route/routemanager');
 
 module.exports = {
     worldConfig: null,
@@ -74,6 +75,61 @@ module.exports = {
         // console.log('process games end');
     },
 
+    createNewBotGraph: function(gameRoom){
+        console.log('createNewBotGraph start');
+        var totalBotCount = 0;
+        gameRoom.allBotObjects = [];
+        var indexCounter = 0;
+        // players 1
+        for (var i = 0; i < gameRoom.players_1.length; ++i) {
+            const player = gameRoom.players_1[i];
+            
+            totalBotCount += player.botObjectList.length;
+            for (var j = 0; j < player.botObjectList.length; ++j) {
+                gameRoom.allBotObjects.push(player.botObjectList[j]);
+                player.botObjectList[j].globalIndex = indexCounter;
+                ++indexCounter;
+            }
+        }
+
+        // players 2
+        for (var i = 0; i < gameRoom.players_2.length; ++i) {
+            const player = gameRoom.players_2[i];
+            totalBotCount += player.botObjectList.length;
+            for (var j = 0; j < player.botObjectList.length; ++j) {
+                gameRoom.allBotObjects.push(player.botObjectList[j]);
+                player.botObjectList[j].globalIndex = indexCounter;
+                ++indexCounter;
+            }
+        }
+
+        console.log('total bot count:' + totalBotCount);
+
+        gameRoom.botGraph = [];
+        for(var i = 0; i < totalBotCount; ++i){ // row
+            gameRoom.botGraph[i] = [];
+            for(var j = 0; j < totalBotCount; ++j){ // col
+                if(i == j){
+                    continue;
+                }
+                var sourceBot = gameRoom.allBotObjects[i];
+                var destinationBot = gameRoom.allBotObjects[j];
+                if(sourceBot.team == destinationBot.team){
+                    continue;
+                }
+                var distance = routeManager.getDistanceBetweenPoints(
+                    sourceBot.position[0],
+                    sourceBot.position[2],
+                    destinationBot.position[0],
+                    destinationBot.position[2],
+                );
+                gameRoom.botGraph[i][j] = {
+                    distance: distance,
+                    visibility: false,
+                }
+            }
+        }
+    },
 
     startNewGame: function(gameRoom, startTime) {
         console.log('starting new game room');
@@ -81,6 +137,7 @@ module.exports = {
         gameRoom.gameStartTime = startTime;
         // ,,, reset ai players
         gameRoomAssetManager.resetAllBotPositionToStartingPosition(gameRoom);
+        this.createNewBotGraph(gameRoom);
         // console.log(gameRoom);
         // utilityFunctions.printEntireObjectNeatyle(gameRoom);
         // console.log('gameRoom.buildingArray_1');

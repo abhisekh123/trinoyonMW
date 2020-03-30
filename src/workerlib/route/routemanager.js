@@ -25,7 +25,7 @@ module.exports = {
     // TODO: HAVE FLAG : HOSTILE TYPE: BUILDINGS, HERO AND BUILDING, EVERYTHING?
     // TODO: need refinement. search only for hero bot. Or dont consider bots / players at all
     // used for movement of player to nearesrt enemy hero or building. used by player AI
-    findClosestHostile: function (botConfigParam, gameRoom) {
+    findClosestHostile: function (botConfigParam, gameRoom, hostileTypeFlag) {
         var playerTeam = botConfigParam.team;
         // var defenseList = null;
         // var base = null;
@@ -42,104 +42,108 @@ module.exports = {
         var target = null;
         // var targetType = null;
 
-        if (playerTeam == 1) { // top team = 1
-            // defenseList = workerstate.getWorldConfig().defenceTop;
-            // base = workerstate.getWorldConfig().topBase
-            enemyPlayerList = gameRoom.players_2;
-        } else { // bottom team = 2
-            // defenseList = workerstate.getWorldConfig().defenceBottom;
-            // base = workerstate.getWorldConfig().bottomBase;
-            enemyPlayerList = gameRoom.players_1;
-        }
-
         // find closest enemy player bots
-        for (var playerIndex = 0; playerIndex < enemyPlayerList.length; ++playerIndex) {
-            const playerConfig = enemyPlayerList[playerIndex];
-            
-            // skip inactive player and players controlled by real people and players in the same team
-            // if(!playerConfig.isActive || playerConfig.team == botConfigParam.team){
-            //     // TODO: Add logic to spawn new AI player / admit new player here.
-            //     continue;
-            // }
-
-            for (var i = 0; i < playerConfig.botObjectList.length; ++i) {
-                var botConfig = playerConfig.botObjectList[i];
-                if(botConfig.isActive == false){
-                    continue;
-                }
-                var botPosition = botConfig.position;
-                // console.log('testing for bot:', botConfig.id);
-                // console.log('position:', botConfig.position);
-                var distance = this.getDistanceBetweenPoints(
-                    leaderPosition[0], leaderPosition[2], botPosition[0], botPosition[2]
-                );
-                // console.log('distance:', distance);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    // target = [botPosition[0], botPosition[2]]
-                    target = botConfig;
-                    // targetType = 'bot';
-                }
+        if(hostileTypeFlag == this.worldConfig.constants.ALL || hostileTypeFlag == this.worldConfig.constants.BOTS){
+            if (playerTeam == 1) { // top team = 1
+                // defenseList = workerstate.getWorldConfig().defenceTop;
+                // base = workerstate.getWorldConfig().topBase
+                enemyPlayerList = gameRoom.players_2;
+            } else { // bottom team = 2
+                // defenseList = workerstate.getWorldConfig().defenceBottom;
+                // base = workerstate.getWorldConfig().bottomBase;
+                enemyPlayerList = gameRoom.players_1;
             }
-
-            // console.log('comparing with playerID:', playerConfig.playerID, ' tmpLeaderPosition:', tmpLeaderPosition);
-            // console.log('calculated distance:', distance);
+            for (var playerIndex = 0; playerIndex < enemyPlayerList.length; ++playerIndex) {
+                const playerConfig = enemyPlayerList[playerIndex];
+                
+                // skip inactive player and players controlled by real people and players in the same team
+                // if(!playerConfig.isActive || playerConfig.team == botConfigParam.team){
+                //     // TODO: Add logic to spawn new AI player / admit new player here.
+                //     continue;
+                // }
+    
+                for (var i = 0; i < playerConfig.botObjectList.length; ++i) {
+                    var botConfig = playerConfig.botObjectList[i];
+                    if(botConfig.isActive == false){
+                        continue;
+                    }
+                    var botPosition = botConfig.position;
+                    // console.log('testing for bot:', botConfig.id);
+                    // console.log('position:', botConfig.position);
+                    var distance = this.getDistanceBetweenPoints(
+                        leaderPosition[0], leaderPosition[2], botPosition[0], botPosition[2]
+                    );
+                    // console.log('distance:', distance);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        // target = [botPosition[0], botPosition[2]]
+                        target = botConfig;
+                        // targetType = 'bot';
+                    }
+                }
+    
+                // console.log('comparing with playerID:', playerConfig.playerID, ' tmpLeaderPosition:', tmpLeaderPosition);
+                // console.log('calculated distance:', distance);
+            }
         }
+        
 
         // console.log('min distance:', minDistance);
 
         // console.log('after comparing palyers, minDistance:', minDistance, ' target:', target);
-
-        for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
-            var buildingConfig = gameRoom.buildingArray_1[i];
-            if (buildingConfig.team == 0 || buildingConfig.team == playerTeam) {
-                // TODO: Add logic to spawn new AI player / admit new player here.
-                continue;
+        if(hostileTypeFlag == this.worldConfig.constants.ALL || hostileTypeFlag == this.worldConfig.constants.BUILDINGS){
+            for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+                var buildingConfig = gameRoom.buildingArray_1[i];
+                if (buildingConfig.team == 0 || buildingConfig.team == playerTeam) {
+                    // TODO: Add logic to spawn new AI player / admit new player here.
+                    continue;
+                }
+                // console.log('comparing with defenseList[i]:', defenseList[i]);
+                // console.log('testing for building:', buildingConfig.id);
+                // console.log('position:', buildingConfig.position);
+                var distance = this.getDistanceBetweenPoints(
+                    leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
+                );
+                // console.log('distance:', distance);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    target = buildingConfig;
+                    // if(i == 0){
+                    //     targetType = 'base';
+                    // }else{
+                    //     targetType = 'static';
+                    // }
+    
+                }
             }
-            // console.log('comparing with defenseList[i]:', defenseList[i]);
-            // console.log('testing for building:', buildingConfig.id);
-            // console.log('position:', buildingConfig.position);
-            var distance = this.getDistanceBetweenPoints(
-                leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
-            );
-            // console.log('distance:', distance);
-            if (distance < minDistance) {
-                minDistance = distance;
-                target = buildingConfig;
-                // if(i == 0){
-                //     targetType = 'base';
-                // }else{
-                //     targetType = 'static';
-                // }
-
+            // console.log('min distance:', minDistance);
+            // gameRoom.buildingArray_2
+            for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+                var buildingConfig = gameRoom.buildingArray_2[i];
+                if (buildingConfig.team == 0 || buildingConfig.team == playerTeam) {
+                    // TODO: Add logic to spawn new AI player / admit new player here.
+                    continue;
+                }
+                // console.log('testing for building:', buildingConfig.id);
+                // console.log('position:', buildingConfig.position);
+                // console.log('comparing with defenseList[i]:', defenseList[i]);
+                var distance = this.getDistanceBetweenPoints(
+                    leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
+                );
+                // console.log('distance:', distance);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    target = buildingConfig;
+                    // if(i == 0){
+                    //     targetType = 'base';
+                    // }else{
+                    //     targetType = 'static';
+                    // }
+    
+                }
             }
         }
-        // console.log('min distance:', minDistance);
-        // gameRoom.buildingArray_2
-        for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
-            var buildingConfig = gameRoom.buildingArray_2[i];
-            if (buildingConfig.team == 0 || buildingConfig.team == playerTeam) {
-                // TODO: Add logic to spawn new AI player / admit new player here.
-                continue;
-            }
-            // console.log('testing for building:', buildingConfig.id);
-            // console.log('position:', buildingConfig.position);
-            // console.log('comparing with defenseList[i]:', defenseList[i]);
-            var distance = this.getDistanceBetweenPoints(
-                leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
-            );
-            // console.log('distance:', distance);
-            if (distance < minDistance) {
-                minDistance = distance;
-                target = buildingConfig;
-                // if(i == 0){
-                //     targetType = 'base';
-                // }else{
-                //     targetType = 'static';
-                // }
-
-            }
-        }
+        
         // console.log('min distance:', minDistance);
         // console.log('target:', target);
         // console.log('after comparing defenseList, minDistance:', minDistance, ' target:', target);

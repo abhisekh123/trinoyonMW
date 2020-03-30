@@ -75,6 +75,9 @@ module.exports = {
         
         aiUtility_route.planBotRoute(botConfig, path); // set timestamp to each path position.
         // console.log('completeBotMovementActionFormalities path:', path);
+        actionData = {
+            
+        }
         actionManager.actionUtility.addActionToBot(botConfig, action, path, gameRoom);
         // this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z, gameRoom);
     },
@@ -83,7 +86,7 @@ module.exports = {
      * visibility: 1(visible), 0(dont care), -1(invisible)
      * range: positive(in range), 0(dont care), negetive(outside range)
      */
-    goNearRoutine: function(visibility, range, targetX, targetZ, botConfig, gameRoom){
+    goNearRoutine: function(visibility, range, targetX, targetZ, botConfig, gameRoom, targetConfig){
         if(this.isPositionCriteriaSatisfied(visibility, range, targetX, targetZ, 
             botConfig.position[0], botConfig.position[2], gameRoom)){
                 return;

@@ -26,7 +26,7 @@ module.exports = {
             /**
              * TODO: SHOULD CONSIDER HOSTILE BUILDINGS ONLY
              */
-            var nearestTarget = routeManager.findClosestHostile(leaderBotConfig, gameRoom);
+            var nearestTarget = routeManager.findClosestHostile(leaderBotConfig, gameRoom, this.worldConfig.BUILDINGS);
             // // console.log(playerConfig.id);
             // console.log('nearestTarget:', nearestTarget);
             if(nearestTarget == null){
