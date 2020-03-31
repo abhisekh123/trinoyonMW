@@ -21,12 +21,26 @@ module.exports = {
         customRoutingUtility.init();
     },
 
+    checkIfBotIsVisibleToEnemyTeam: function(botConfig, gameRoom){
+        var botTeam = botConfig.team;
+        gameRoom.botGraph = [];
+        for(var i = 0; i < gameRoom.botGraph.length; ++i){ // each row
+            if(gameRoom.allBotObjects[i].team == botTeam){ // skip team member bots
+                continue;
+            }
+            if(gameRoom.botGraph[i][botConfig.globalIndex].visibility == true){ // if bot is visible to anyone.
+                return true;
+            }
+        }
+        return false;
+    },
 
     // TODO: HAVE FLAG : HOSTILE TYPE: BUILDINGS, HERO AND BUILDING, EVERYTHING?
     // TODO: need refinement. search only for hero bot. Or dont consider bots / players at all
     // used for movement of player to nearesrt enemy hero or building. used by player AI
     findClosestHostile: function (botConfigParam, gameRoom, hostileTypeFlag) {
         var playerTeam = botConfigParam.team;
+        var globalIndex = botConfig.globalIndex;
         // var defenseList = null;
         // var base = null;
         var enemyPlayerList = null;
@@ -65,6 +79,10 @@ module.exports = {
                 for (var i = 0; i < playerConfig.botObjectList.length; ++i) {
                     var botConfig = playerConfig.botObjectList[i];
                     if(botConfig.isActive == false){
+                        continue;
+                    }
+                    var currentBotGlobalIndex = botConfig.globalIndex;
+                    if(!this.checkIfBotIsVisibleToEnemyTeam(botConfig, gameRoom)){ // skip bots invisible to team
                         continue;
                     }
                     var botPosition = botConfig.position;
@@ -159,8 +177,31 @@ module.exports = {
 
     },
 
+    // TODO: remove repeatative codes.
+    /**
+     * visibilityFlag:
+     * VISIBLE: 1,
+        INVISIBLE: 2,
+        DONTCARE: 0,
+     */
     // find point(x, y) closest walkable to targetConfig.
-    findClosestWalkablePosition: function (targetConfig, rangeParam, gameRoom) {
+    findClosestWalkablePosition: function (visibilityFlag, rangeParam, botConfigParam, targetConfig, gameRoom) {
+        if(
+            (visibilityFlag != this.worldConfig.constants.VISIBLE) 
+            && (visibilityFlag != this.worldConfig.constants.INVISIBLE) 
+            && (visibilityFlag != this.worldConfig.constants.DONTCARE)
+        ){
+            console.error('ERROR: unknown visibility flag:', visibilityFlag);
+            return null;
+        }
+
+        var minDistance = this.worldConfig.gridSide + 1;
+        var foundSuitablePosition = false;
+        var selectedPosition = {
+            x: 0,
+            z: 0
+        }
+        var isPositionEligible = false;
         // increase widhth and check the perimeter
         for (var side = 1; side < rangeParam; ++side) {
             positionRunnerStart = {
@@ -170,7 +211,46 @@ module.exports = {
             var j = 0;
             for (j = 0; j <= (2 * side); ++j) { // lower left -> lower right
                 if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
-                    return positionRunnerStart;
+                    // test if position is eligible
+                    isPositionEligible = false;
+                    if (visibilityFlag == this.worldConfig.constants.DONTCARE){
+                        // found a satisfactory position
+                        // return positionRunnerStart;
+                        isPositionEligible = true;
+                    }else{
+                        var visibility = customRoutingUtility.testVisibility(
+                            targetConfig.position[0],
+                            targetConfig.position[2],
+                            actualPositionX,
+                            actualPositionZ
+                        );
+                        if (visibilityFlag == this.worldConfig.constants.VISIBLE){
+                            if(visibility == true){
+                                // found a satisfactory position
+                                // return positionRunnerStart;
+                                isPositionEligible = true;
+                            }
+                        } else { // invisible.
+                            if(visibility == false){
+                                // found a satisfactory position
+                                // return positionRunnerStart;
+                                isPositionEligible = true;
+                            }
+                        }
+                    }
+                    if(isPositionEligible == true){
+                        var distance = this.getDistanceBetweenPoints(
+                            positionRunnerStart.x,
+                            positionRunnerStart.z,
+                            botConfigParam.position[0],
+                            botConfigParam.position[2]
+                        );
+                        if(distance < minDistance){
+                            foundSuitablePosition = true;
+                            selectedPosition.x = positionRunnerStart.x;
+                            selectedPosition.z = positionRunnerStart.z;
+                        }
+                    }
                 }
                 positionRunnerStart.x = positionRunnerStart.x + 1;
             }
@@ -178,7 +258,46 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x - 1;
             for (j = 0; j <= (2 * side); ++j) { // lower right -> upper right
                 if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
-                    return positionRunnerStart;
+                    // test if position is eligible
+                    isPositionEligible = false;
+                    if (visibilityFlag == this.worldConfig.constants.DONTCARE){
+                        // found a satisfactory position
+                        // return positionRunnerStart;
+                        isPositionEligible = true;
+                    }else{
+                        var visibility = customRoutingUtility.testVisibility(
+                            targetConfig.position[0],
+                            targetConfig.position[2],
+                            actualPositionX,
+                            actualPositionZ
+                        );
+                        if (visibilityFlag == this.worldConfig.constants.VISIBLE){
+                            if(visibility == true){
+                                // found a satisfactory position
+                                // return positionRunnerStart;
+                                isPositionEligible = true;
+                            }
+                        } else { // invisible.
+                            if(visibility == false){
+                                // found a satisfactory position
+                                // return positionRunnerStart;
+                                isPositionEligible = true;
+                            }
+                        }
+                    }
+                    if(isPositionEligible == true){
+                        var distance = this.getDistanceBetweenPoints(
+                            positionRunnerStart.x,
+                            positionRunnerStart.z,
+                            botConfigParam.position[0],
+                            botConfigParam.position[2]
+                        );
+                        if(distance < minDistance){
+                            foundSuitablePosition = true;
+                            selectedPosition.x = positionRunnerStart.x;
+                            selectedPosition.z = positionRunnerStart.z;
+                        }
+                    }
                 }
                 positionRunnerStart.z = positionRunnerStart.z + j;
             }
@@ -186,7 +305,46 @@ module.exports = {
             positionRunnerStart.z = positionRunnerStart.z - 1;
             for (j = 0; j <= (2 * side); ++j) { // lower left -> lower right
                 if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
-                    return positionRunnerStart;
+                    // test if position is eligible
+                    isPositionEligible = false;
+                    if (visibilityFlag == this.worldConfig.constants.DONTCARE){
+                        // found a satisfactory position
+                        // return positionRunnerStart;
+                        isPositionEligible = true;
+                    }else{
+                        var visibility = customRoutingUtility.testVisibility(
+                            targetConfig.position[0],
+                            targetConfig.position[2],
+                            actualPositionX,
+                            actualPositionZ
+                        );
+                        if (visibilityFlag == this.worldConfig.constants.VISIBLE){
+                            if(visibility == true){
+                                // found a satisfactory position
+                                // return positionRunnerStart;
+                                isPositionEligible = true;
+                            }
+                        } else { // invisible.
+                            if(visibility == false){
+                                // found a satisfactory position
+                                // return positionRunnerStart;
+                                isPositionEligible = true;
+                            }
+                        }
+                    }
+                    if(isPositionEligible == true){
+                        var distance = this.getDistanceBetweenPoints(
+                            positionRunnerStart.x,
+                            positionRunnerStart.z,
+                            botConfigParam.position[0],
+                            botConfigParam.position[2]
+                        );
+                        if(distance < minDistance){
+                            foundSuitablePosition = true;
+                            selectedPosition.x = positionRunnerStart.x;
+                            selectedPosition.z = positionRunnerStart.z;
+                        }
+                    }
                 }
                 positionRunnerStart.x = positionRunnerStart.x - 1;
             }
@@ -194,13 +352,55 @@ module.exports = {
             positionRunnerStart.x = positionRunnerStart.x + 1;
             for (j = 0; j <= (2 * side); ++j) { // lower left -> lower right
                 if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
-                    return positionRunnerStart;
+                    // test if position is eligible
+                    isPositionEligible = false;
+                    if (visibilityFlag == this.worldConfig.constants.DONTCARE){
+                        // found a satisfactory position
+                        // return positionRunnerStart;
+                        isPositionEligible = true;
+                    }else{
+                        var visibility = customRoutingUtility.testVisibility(
+                            targetConfig.position[0],
+                            targetConfig.position[2],
+                            actualPositionX,
+                            actualPositionZ
+                        );
+                        if (visibilityFlag == this.worldConfig.constants.VISIBLE){
+                            if(visibility == true){
+                                // found a satisfactory position
+                                // return positionRunnerStart;
+                                isPositionEligible = true;
+                            }
+                        } else { // invisible.
+                            if(visibility == false){
+                                // found a satisfactory position
+                                // return positionRunnerStart;
+                                isPositionEligible = true;
+                            }
+                        }
+                    }
+                    if(isPositionEligible == true){
+                        var distance = this.getDistanceBetweenPoints(
+                            positionRunnerStart.x,
+                            positionRunnerStart.z,
+                            botConfigParam.position[0],
+                            botConfigParam.position[2]
+                        );
+                        if(distance < minDistance){
+                            foundSuitablePosition = true;
+                            selectedPosition.x = positionRunnerStart.x;
+                            selectedPosition.z = positionRunnerStart.z;
+                        }
+                    }
                 }
                 positionRunnerStart.z = positionRunnerStart.z - 1;
             }
         }
-
-        return null; // no hostiles in range.
+        if(foundSuitablePosition == true){
+            return selectedPosition;
+        } else {
+            return null; // no hostiles in range.
+        }
     },
 
     isPositionWalkable: function(gameRoom, positionX, positionZ){

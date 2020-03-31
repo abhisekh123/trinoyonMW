@@ -77,7 +77,7 @@ module.exports = {
         // console.log('completeBotMovementActionFormalities path:', path);
         actionData = {
             path: path,
-            timestamp: workerState.currentTime,
+            timeStamp: workerState.currentTime,
             targetConfig: targetConfig
         }
         actionManager.actionUtility.addActionToBot(botConfig, action, actionData, gameRoom);
@@ -89,34 +89,63 @@ module.exports = {
      * range: positive(in range), 0(dont care), negetive(outside range)
      */
     goNearRoutine: function(visibility, range, botConfig, gameRoom, targetConfig){
-        var targetX = targetConfig.position[0];
-        var targetZ = targetConfig.position[2];
-        
-        if(this.isPositionCriteriaSatisfied(visibility, range, targetX, targetZ, 
-            botConfig.position[0], botConfig.position[2], gameRoom)){
-                return;
-        } else {
-            var newPosition = this.findClosestWalkablePositionForGivenCriteria(visibility, range, targetX, targetZ, botConfig, gameRoom);
-            if(this.comparePositionsForCriteria(visibility, range, 
-                targetX, targetZ, 
-                currentX, currentZ, 
-                newPosition.x, newPosition.z, gameRoom) > 0){
-                    this.completeBotMovementActionFormalities(botConfig, newPosition, 'march', gameRoom, targetConfig);
+        if(botConfig.action == 'march'){
+            if(botConfig.actionData.targetConfig.id == targetConfig.id){
+                if(targetConfig.type == 'base' || targetConfig.type == 'tower'){
+                    // since tower or base does not change position.
+                    // so do nothing. let the bot continue moving.
+                    return;
+                }
+                // the bot is already moving towards the given target.
+                if(botConfig.actionData.timeStamp >= targetConfig.positionUpdateTimeStamp){
+                    // the target bot did not move after the input bot started march
+                    // so do nothing. let the bot continue moving.
+                    return;
+                }
             }
         }
+
+        var targetX = targetConfig.position[0];
+        var targetZ = targetConfig.position[2];
+
+        // if(this.isPositionCriteriaSatisfied(visibility, range, gameRoom, botConfig, targetConfig)){
+        //     // bot is already in a desirable position. though this should not happen.
+        //     return;
+        // }
+        // var newPosition = this.findClosestWalkablePositionForGivenCriteria(visibility, range, botConfig, targetConfig, gameRoom);
+        var nearestPosition = routeManager.findClosestWalkablePosition(
+            visibility,
+            range,
+            botConfig,
+            targetConfig,
+            gameRoom
+        );
+        var path = null;
+        if(nearestPosition == null){
+            // find path to target.
+            // remove the path positions
+        }
+        if(this.comparePositionsForCriteria(visibility, range, 
+            targetX, targetZ, 
+            currentX, currentZ, 
+            newPosition.x, newPosition.z, gameRoom) > 0){
+                this.completeBotMovementActionFormalities(botConfig, newPosition, 'march', gameRoom, targetConfig);
+        }
+        // aiUtility.completeBotMovementActionFormalities(botConfig, positionNearLeader, 'march', gameRoom);
+        
     },
 
-    isPositionCriteriaSatisfied: function(visibility, range, targetX, targetZ, currentX, currentZ, gameRoom){
+    // isPositionCriteriaSatisfied: function(visibility, range, gameRoom, botConfig, targetConfig){
 
-    },
+    // },
 
-    comparePositionsForCriteria: function(visibility, range, targetX, targetZ, currentX, currentZ,  newX, newZ, gameRoom){
+    // comparePositionsForCriteria: function(visibility, range, targetX, targetZ, currentX, currentZ,  newX, newZ, gameRoom){
 
-    },
+    // },
 
-    findClosestWalkablePositionForGivenCriteria: function(visibility, range, targetX, targetZ, botConfig, gameRoom){
+    // findClosestWalkablePositionForGivenCriteria: function(visibility, range, botConfig, targetConfig, gameRoom){
 
-    },
+    // },
 }
 
 

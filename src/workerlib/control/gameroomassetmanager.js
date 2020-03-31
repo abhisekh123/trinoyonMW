@@ -280,6 +280,7 @@ module.exports = {
 
             player.botObjectList[i].rotation = rotation;
             player.botObjectList[i].activityTimeStamp = gameStartTime;
+            player.botObjectList[i].positionUpdateTimeStamp = gameStartTime;
         }
     },
 
@@ -325,7 +326,7 @@ module.exports = {
 
         botObject.attackinterval = botTypeItemConfig.attackinterval;
         botObject.attack = botTypeItemConfig.attack;
-        botObject.attackTimestamp = 0;
+        // botObject.attackTimestamp = 0;
 
         botObject.life = botTypeItemConfig.life;
         botObject.fullLife = botTypeItemConfig.life;
@@ -343,6 +344,7 @@ module.exports = {
         // botObject.residueTimeslice = 0;
         // botObject.deathTimestamp = 0;
         botObject.activityTimeStamp = 0;
+        botObject.positionUpdateTimeStamp = 0;
 
         botObject.isActive = true;
         botObject.respawnTime = botTypeItemConfig.respawnTime;

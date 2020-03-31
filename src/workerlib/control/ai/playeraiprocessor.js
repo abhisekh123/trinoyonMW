@@ -26,14 +26,17 @@ module.exports = {
             /**
              * TODO: SHOULD CONSIDER HOSTILE BUILDINGS ONLY
              */
-            var nearestTarget = routeManager.findClosestHostile(leaderBotConfig, gameRoom, this.worldConfig.BUILDINGS);
+            var nearestTarget = routeManager.findClosestHostile(leaderBotConfig, gameRoom, this.worldConfig.constants.BUILDINGS);
             // // console.log(playerConfig.id);
             // console.log('nearestTarget:', nearestTarget);
             if(nearestTarget == null){
                 console.error('ERROR:nearestTarget is null:', nearestTarget);
                 return;
             }else{
-                aiUtility.goNearRoutine(1, botConfig.range, botConfig, gameRoom, nearestTarget);
+            //     (visibilityFlag != this.worldConfig.constants.VISIBLE) 
+            // && (visibilityFlag != this.worldConfig.constants.INVISIBLE) 
+            // && (visibilityFlag != this.worldConfig.constants.DONTCARE)
+                aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, botConfig.range, botConfig, gameRoom, nearestTarget);
                 // var distanceBetweenTargetAndLeader = routeManager.getDistanceBetweenPoints(
                 //     leaderBotConfig.position[0],
                 //     leaderBotConfig.position[2],

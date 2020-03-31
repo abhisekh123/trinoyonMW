@@ -66,30 +66,35 @@ module.exports = {
             heroConfig.position[2]
         );
 
+        //     (visibilityFlag != this.worldConfig.constants.VISIBLE) 
+            // && (visibilityFlag != this.worldConfig.constants.INVISIBLE) 
+            // && (visibilityFlag != this.worldConfig.constants.DONTCARE)
         // test the non hero bots if they are away from hero bot.
         if(botIndex != 0 && this.shouldBotGoNearLeader(botConfig, distanceBetweenBotAndHero)){
-            aiUtility.goNearRoutine(0, this.worldConfig.closeProximity, botConfig, gameRoom, heroConfig);
+            aiUtility.goNearRoutine(this.worldConfig.constants.DONTCARE, this.worldConfig.closeProximity, botConfig, gameRoom, heroConfig);
         } else {
+            
+            aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, botConfig.range, botConfig, gameRoom, hostileConfig);
             // help out fellow bot
-            closestTargetConfig = aiUtility.aiutilityRoute.findClosestHostileAttackedByTeamMate(botIndex, playerConfig);
-            if(closestTargetConfig != null){
-                console.log('--help team');
-                aiUtility.goNearRoutine(1, botConfig.range, botConfig, gameRoom, closestTargetConfig);
-                // find in range visible point to bot.actiondata and march to the point
-                // var positionNearHostile = routeManager.findClosestVisiblePositionInRange(
-                //     botConfig, 
-                //     hostileConfig, 
-                //     botConfig.range, 
-                //     gameRoom
-                // );
-                // if(positionNearHostile != null){
-                //     console.log('---found path to hostile attacked by friend');
-                //     aiUtility.completeBotMovementActionFormalities(botConfig, positionNearHostile, 'march', gameRoom);
-                //     return timeSlice;
-                // }
-            } else if(distanceBetweenBotAndHostile <= botConfig.sight){ // if closest hostile detected is in sight.
-                aiUtility.goNearRoutine(1, botConfig.range, botConfig, gameRoom, hostileConfig);
-            }
+            // closestTargetConfig = aiUtility.aiutilityRoute.findClosestHostileAttackedByTeamMate(botIndex, playerConfig);
+            // if(closestTargetConfig != null){
+            //     console.log('--help team');
+            //     aiUtility.goNearRoutine(1, botConfig.range, botConfig, gameRoom, closestTargetConfig);
+            //     // find in range visible point to bot.actiondata and march to the point
+            //     // var positionNearHostile = routeManager.findClosestVisiblePositionInRange(
+            //     //     botConfig, 
+            //     //     hostileConfig, 
+            //     //     botConfig.range, 
+            //     //     gameRoom
+            //     // );
+            //     // if(positionNearHostile != null){
+            //     //     console.log('---found path to hostile attacked by friend');
+            //     //     aiUtility.completeBotMovementActionFormalities(botConfig, positionNearHostile, 'march', gameRoom);
+            //     //     return timeSlice;
+            //     // }
+            // } else if(distanceBetweenBotAndHostile <= botConfig.sight){ // if closest hostile detected is in sight.
+            //     aiUtility.goNearRoutine(1, botConfig.range, botConfig, gameRoom, hostileConfig);
+            // }
         }
 
         

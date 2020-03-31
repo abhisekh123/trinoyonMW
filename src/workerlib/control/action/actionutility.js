@@ -45,6 +45,7 @@ module.exports = {
                 botConfig.activityTimeStamp += botConfig.respawnTime;
                 botConfig.position[0] = botConfig.spawnPosition[0];
                 botConfig.position[2] = botConfig.spawnPosition[2];
+                botConfig.positionUpdateTimeStamp = botConfig.activityTimeStamp;
 
                 // TODO : update bot position in the grid. For now consider repawn position as special.
                 snapShotManager.registerBotSpawnEvent(gameRoom, botConfig);
@@ -72,7 +73,7 @@ module.exports = {
                 // botConfig.action = null;
                 botConfig.activityTimeStamp = workerState.currentTime; // time of death
                 botConfig.isActive = false;
-
+                this.clearBotGraphEntry(gameRoom, botConfig);
                 snapShotManager.registerBotDieEvent(gameRoom, botConfig);
                 // nothing to do as the bot does not occupy any position in grid
                 break;
@@ -93,13 +94,63 @@ module.exports = {
         botConfig.actionData = actionData;
     },
 
+    // for events like 'die'
+    clearBotGraphEntry: function(gameRoom, botConfig) {
+        var globalIndex = botConfig.globalIndex;
+        for (var i = 0; i < gameRoom.allBotObjects.length; i++) {
+            if(i == globalIndex){
+                continue;
+            }
+            var currentBot = gameRoom.allBotObjects[i];
+            if(currentBot.team == botConfig.team){
+                continue;
+            }
 
-    processAttackAction: function (offenderConfig, defenderConfig, gameRoom) {
-        defenderConfig.life -= offenderConfig.attack;
-        offenderConfig.activityTimeStamp += offenderConfig.attackinterval;
+            gameRoom.botGraph[globalIndex][i].distance = null;
+            gameRoom.botGraph[globalIndex][i].visibility = false;
 
-        // TODO: update snapshot 
-        snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
+            gameRoom.botGraph[i][globalIndex].distance = null;
+            gameRoom.botGraph[i][globalIndex].visibility = false;
+        }
+    },
+
+    updateBotGraphEntry: function(gameRoom, botConfig) {
+        var globalIndex = botConfig.globalIndex;
+        var visibility = false;
+        for (var i = 0; i < gameRoom.allBotObjects.length; i++) {
+            if(i == globalIndex){
+                continue;
+            }
+            var currentBot = gameRoom.allBotObjects[i];
+            if(currentBot.team == botConfig.team){
+                continue;
+            }
+            var distance = routeManager.getDistanceBetweenPoints(
+                sourceBot.position[0],
+                sourceBot.position[2],
+                destinationBot.position[0],
+                destinationBot.position[2],
+            );
+            
+            // if input bot can see currentBot
+            if(distance <= botConfig.sight){
+                visibility = true;
+            }else{
+                visibility = false;
+            }
+            gameRoom.botGraph[globalIndex][i].distance = distance;
+            gameRoom.botGraph[globalIndex][i].visibility = visibility;
+
+            // if currentBot can see input bot
+            if(distance <= currentBot.sight){
+                visibility = true;
+            }else{
+                visibility = false;
+            }
+            
+            gameRoom.botGraph[i][globalIndex].distance = distance;
+            gameRoom.botGraph[i][globalIndex].visibility = visibility;
+        }
     },
 
     traverseBotThroughPath: function (botConfig, timeSlice, gameRoom) {
@@ -114,8 +165,10 @@ module.exports = {
                 botConfig.position[0] = pathPosition[0];
                 botConfig.position[2] = pathPosition[1];
                 botConfig.activityTimeStamp = pathPosition[2];
+                botConfig.positionUpdateTimeStamp = botConfig.activityTimeStamp;
                 console.log('bot:' + botConfig.id + ' moved to:', botConfig.position);
                 snapShotManager.updateBotSnapshot(gameRoom, botConfig);
+                this.updateBotGraphEntry(gameRoom, botConfig);
                 // console.log('return 0 at index:', i);
                 return 0;
             }
@@ -125,10 +178,21 @@ module.exports = {
         botConfig.position[0] = pathPosition[0];
         botConfig.position[2] = pathPosition[1];
         botConfig.activityTimeStamp = pathPosition[2];
+        botConfig.positionUpdateTimeStamp = botConfig.activityTimeStamp;
         this.addActionToBot(botConfig, 'ready', null, gameRoom);
         timeSlice = workerState.currentTime - pathPosition[2];
         snapShotManager.updateBotSnapshot(gameRoom, botConfig);
+        this.updateBotGraphEntry(gameRoom, botConfig);
         // TODO: update snapshot
         return timeSlice;
+    },
+
+
+    processAttackAction: function (offenderConfig, defenderConfig, gameRoom) {
+        defenderConfig.life -= offenderConfig.attack;
+        offenderConfig.activityTimeStamp += offenderConfig.attackinterval;
+
+        // TODO: update snapshot 
+        snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
     },
 }

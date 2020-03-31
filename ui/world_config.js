@@ -67,6 +67,11 @@ var worldItems = {
         ALL: 0,
         BUILDINGS: 1,
         BOTS: 2,
+
+        // VISIBILITY FLAG
+        VISIBLE: 1,
+        INVISIBLE: 2,
+        DONTCARE: 0,
     }
     // players: [
     //     {
