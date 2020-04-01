@@ -118,15 +118,15 @@ module.exports = {
     },
 
     updateBotGraphEntry: function(gameRoom, botConfig) {
-        console.log('updateBotGraphEntry:', botConfig);
+        // console.log('updateBotGraphEntry:', botConfig);
         var globalIndex = botConfig.globalIndex;
         var visibility = false;
-        console.log('gameRoom.allBotObjects.length:', gameRoom.allBotObjects.length);
-        console.log('gameRoom.botGraph.length:', gameRoom.botGraph.length);
+        // console.log('gameRoom.allBotObjects.length:', gameRoom.allBotObjects.length);
+        // console.log('gameRoom.botGraph.length:', gameRoom.botGraph.length);
         for (var i = 0; i < gameRoom.allBotObjects.length; i++) {
-            console.log('i:', i);
-            console.log('gameRoom.botGraph[globalIndex].length:', gameRoom.botGraph[globalIndex].length);
-            console.log('gameRoom.botGraph[i].length:', gameRoom.botGraph[i].length);
+            // console.log('i:', i);
+            // console.log('gameRoom.botGraph[globalIndex].length:', gameRoom.botGraph[globalIndex].length);
+            // console.log('gameRoom.botGraph[i].length:', gameRoom.botGraph[i].length);
             if(i == globalIndex){
                 continue;
             }
@@ -175,7 +175,7 @@ module.exports = {
                 botConfig.position[2] = pathPosition[1];
                 botConfig.activityTimeStamp = pathPosition[2];
                 botConfig.positionUpdateTimeStamp = botConfig.activityTimeStamp;
-                console.log('bot:' + botConfig.id + ' moved to:', botConfig.position);
+                // console.log('bot:' + botConfig.id + ' moved to:', botConfig.position);
                 snapShotManager.updateBotSnapshot(gameRoom, botConfig);
                 this.updateBotGraphEntry(gameRoom, botConfig);
                 // console.log('return 0 at index:', i);

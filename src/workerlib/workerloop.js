@@ -83,7 +83,7 @@ module.exports = {
             if(gameRoom.isActive == false){
                 continue;
             }
-            console.log('updating snapshot for gameRoom:', gameRoom.id);
+            // console.log('updating snapshot for gameRoom:', gameRoom.id);
             messageManager.broadcastGameUpdatesToPlayers(gameRoom);
             // console.log('completed updating snapshot for gameRoom:');
         }

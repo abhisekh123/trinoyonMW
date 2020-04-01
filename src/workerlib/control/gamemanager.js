@@ -76,13 +76,13 @@ module.exports = {
     },
 
     createNewBotGraph: function(gameRoom){
-        console.log('============================================');
-        console.log('============================================');
-        console.log('============================================');
-        console.log('createNewBotGraph start');
-        console.log('============================================');
-        console.log('============================================');
-        console.log('============================================');
+        // console.log('============================================');
+        // console.log('============================================');
+        // console.log('============================================');
+        // console.log('createNewBotGraph start');
+        // console.log('============================================');
+        // console.log('============================================');
+        // console.log('============================================');
         var totalBotCount = 0;
         gameRoom.allBotObjects = [];
         var indexCounter = 0;
@@ -109,7 +109,7 @@ module.exports = {
             }
         }
 
-        console.log('total bot count:' + totalBotCount);
+        // console.log('total bot count:' + totalBotCount);
 
         gameRoom.botGraph = [];
         var distance = 0;
@@ -128,16 +128,16 @@ module.exports = {
                         destinationBot.position[2],
                     );
                 }
-                console.log('i:', i);
-                console.log('j:', j);
-                console.log('distance:', distance);
+                // console.log('i:', i);
+                // console.log('j:', j);
+                // console.log('distance:', distance);
                 gameRoom.botGraph[i][j] = {
                     distance: distance,
                     visibility: false,
                 }
             }
         }
-        console.log('gameRoom.botGraph.length:', gameRoom.botGraph.length);
+        // console.log('gameRoom.botGraph.length:', gameRoom.botGraph.length);
     },
 
     startNewGame: function(gameRoom, startTime) {

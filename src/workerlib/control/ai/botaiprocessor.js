@@ -128,7 +128,7 @@ module.exports = {
 
         if(botConfig.action == 'march'){
             timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
-            console.log('--march, timeslice:', timeSlice);
+            // console.log('--march, timeslice:', timeSlice);
             return timeSlice;
         }
 
