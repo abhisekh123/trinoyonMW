@@ -17,13 +17,29 @@ module.exports = {
         }
     },
 
+    // all parameters here are actual grid positions.
     testVisibility: function(eyeX, eyeZ, targetX, targetZ){
         // this.visibilityMatrix[x][z] = {
         //     visibility : neighbourhoodVisibilityGrid,
         //     id : null,
         // };
-        var visibilityMap = workerState.strategyMatrix[eyeX][eyeZ].visibility[targetX];
-        if((visibilityMap & (1 << targetZ)) > 0){
+        // console.log('eyeX:', eyeX);
+        // console.log('eyeZ:', eyeZ);
+        // console.log('targetX:', targetX);
+        // console.log('targetZ:', targetZ);
+        var targetXRelative = (targetX - eyeX) + this.worldConfig.maxRange;
+        var targetZRelative = (targetZ - eyeZ) + this.worldConfig.maxRange;
+        // console.log('targetXRelative:', targetXRelative);
+        // console.log('targetZRelative:', targetZRelative);
+        // console.log(workerState.strategyMatrix[eyeX][eyeZ].visibility);
+        var visibilityMap = workerState.strategyMatrix[eyeX][eyeZ].visibility[targetXRelative];
+
+        // console.log('visibilityMap:', visibilityMap);
+        // console.log('(1 << targetZRelative):', (1 << targetZRelative));
+        // console.log('(visibilityMap & (1 << targetZRelative)):', (visibilityMap & (1 << targetZRelative)));
+
+        
+        if((visibilityMap & (1 << targetZRelative)) > 0){
             return true;
         }else{
             return false;
@@ -31,7 +47,7 @@ module.exports = {
     },
 
     createStrategyMatrix: function () {
-        // // console.log('start createVisibilityMatrix');
+        // console.log('start createVisibilityMatrix, this.worldConfig.maxRange:', this.worldConfig.maxRange);
         // var fileAppender = fs.createWriteStream(fileName, {
         //     flags: 'a' // 'a' means appending (old data will be preserved)
         // });
@@ -53,16 +69,18 @@ module.exports = {
         for(var i = 0; i < this.worldConfig.neighbourhoodBoxSide; ++i){ // x axis
             tmpGridMatrixToStoreLinearPaths[i] = new Array();
             for(var j = 0; j < this.worldConfig.neighbourhoodBoxSide; ++j){ // z axis
-                if(i==this.worldConfig.maxRange && j==this.worldConfig.maxRange){
+                // console.log('i:' + i + ' j:' + j);
+                if(i==this.worldConfig.maxRange && j==this.worldConfig.maxRange){ // center of the matrix
                     tmpGridMatrixToStoreLinearPaths[i][j] = {
                         linePath : [{ x: i, y: 0, z: j }]
                     };
                     continue;
                 }
                 // find path from (i, j) to (26, 26) and save in tmpGridMatrixToStoreLinearPaths(i, j)
-                tmpGridMatrixToStoreLinearPaths[i][j] = {
+                tmpGridMatrixToStoreLinearPaths[i][j] = { // from i,j to center of the matrix
                     linePath : this.draw_line(i, j, this.worldConfig.maxRange, this.worldConfig.maxRange)
                 };
+                // console.log('tmpGridMatrixToStoreLinearPaths[i][j]:', tmpGridMatrixToStoreLinearPaths[i][j]);
             }
         }
 
@@ -79,21 +97,14 @@ module.exports = {
                 var neighbourhoodVisibilityGrid = new Array();
                 // preparing visibility matrix for position (x, z)
                 for (var x_small = 0; x_small < this.worldConfig.neighbourhoodBoxSide; ++x_small) { // check for neighbourhood x axis
-                    // neighbourhoodVisibilityGrid[x_small] = new Array();
-                    // neighbourPathGrid[x_small] = new Array();
+                    
                     binaryStringArray.length = 0;
                     for (var z_small = 0; z_small < this.worldConfig.neighbourhoodBoxSide; ++z_small) { // check for neighbourhood z axis
                         // x_small - 26, z_small - 26 are the relative points
                         var actual_x = x + x_small - this.worldConfig.maxRange; // actual x coordinate in grid that we want to test. can be negetive or bigger than grid size.
                         var actual_z = z + z_small - this.worldConfig.maxRange; // actual z coordinate in grid that we want to test. can be negetive or bigger than grid size.
                         
-                        // if (utilityFunctions.isPointInRangeBox(
-                        //     actual_x, 
-                        //     actual_z, 
-                        //     ((this.worldConfig.gridSide - 1) / 2),
-                        //     ((this.worldConfig.gridSide - 1) / 2),
-                        //     ((this.worldConfig.gridSide - 1) / 2)
-                        // )) { // checking if we need to test visibility
+                        // checking if we need to test visibility
                         if(pathFindingWrapper.isPointInGrid(actual_x, actual_x)){
                             // testing visibility of x, z from point actual_x, actual_z
                             // // console.log('wer:', tmpGridMatrixToStoreLinearPaths.length);
@@ -101,29 +112,34 @@ module.exports = {
                             // // console.log(x_small);
                             // // console.log(z_small);
                             // // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small][z_small]);
-                            // var path = this.findPath(x, z, actual_x, actual_z);
-                            // neighbourPathGrid[x_small][z_small] = path;
 
-                            if (!pathFindingWrapper.isWalkableAt(actual_x, actual_z)) {
-                                binaryStringArray[z_small] = '0';
-                                continue;
-                            }
+                            // if (!pathFindingWrapper.isWalkableAt(actual_x, actual_z)) {
+                            //     binaryStringArray[z_small] = '0';
+                            //     continue;
+                            // }
                             var linePath = tmpGridMatrixToStoreLinearPaths[x_small][z_small].linePath;
                             // the visibility test is positive if all points in straight line joining the points
                             // are un blocked by any ostacle. i.e. clear line of sight.
                             // neighbourhoodVisibilityGrid[x_small][z_small] = true;
                             binaryStringArray[z_small] = '1';
-                            for (var pathIndex = 0; pathIndex < linePath.length; ++pathIndex) {
-                                var actual_x_pathPoint = x + linePath[pathIndex].x - this.worldConfig.maxRange;
-                                var actual_z_pathPoint = z + linePath[pathIndex].z - this.worldConfig.maxRange;
-                                if (!pathFindingWrapper.isWalkableAt(actual_x_pathPoint, actual_z_pathPoint)) {
-                                    // obstacle found. Stop scan and mark : Not Visible.
-                                    // neighbourhoodVisibilityGrid[x_small][z_small] = false;
-                                    // // console.log('visibility false.');
-                                    binaryStringArray[z_small] = '0';
-                                    break;
+                            
+                            // if points are not adjescent, make sure all point 
+                            // between source and destination are visible
+                            if(linePath.length > 2){
+                                // for (var pathIndex = 0; pathIndex < linePath.length; ++pathIndex) {
+                                for (var pathIndex = 1; pathIndex < linePath.length - 1; ++pathIndex) {
+                                    var actual_x_pathPoint = x + linePath[pathIndex].x - this.worldConfig.maxRange;
+                                    var actual_z_pathPoint = z + linePath[pathIndex].z - this.worldConfig.maxRange;
+                                    if (!pathFindingWrapper.isWalkableAt(actual_x_pathPoint, actual_z_pathPoint)) {
+                                        // obstacle found. Stop scan and mark : Not Visible.
+                                        // neighbourhoodVisibilityGrid[x_small][z_small] = false;
+                                        // // console.log('visibility false.');
+                                        binaryStringArray[z_small] = '0';
+                                        break;
+                                    }
                                 }
                             }
+                            
 
                         } else {
                             // neighbourhoodVisibilityGrid[x_small][z_small] = false;

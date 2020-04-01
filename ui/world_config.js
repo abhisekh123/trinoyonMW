@@ -26,7 +26,7 @@ var worldItems = {
     },
     
     maxRange: 10,
-    neighbourhoodBoxSide: 21,
+    neighbourhoodBoxSide: 21, // (maxRange x 2) + 1
     gridSide: 89,
     gridUnitSize: 50,
 
@@ -72,7 +72,7 @@ var worldItems = {
         VISIBLE: 1,
         INVISIBLE: 2,
         DONTCARE: 0,
-    }
+    },
     // players: [
     //     {
     //         playerID:1,

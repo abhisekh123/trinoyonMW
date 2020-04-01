@@ -1,5 +1,6 @@
 const workerState = require('../../state/workerstate');
 const snapShotManager = require('../../state/snapshotmanager');
+const routeManager = require('../../route/routemanager');
 
 module.exports = {
     // baseMap: {}
@@ -18,7 +19,7 @@ module.exports = {
     },
 
     addActionToBot: function (botConfig, action, actionData, gameRoom) {
-        console.log('addAction:' + action + ' ToBot botConfig.id:' + botConfig.id + ' at position:', botConfig.position);
+        // console.log('addAction:' + action + ' ToBot botConfig.id:' + botConfig.id + ' at position:', botConfig.position);
         // console.log('-->', action);
         // console.log('==>', actionData);
         var currentPositionX = null;
@@ -61,8 +62,10 @@ module.exports = {
         switch (action) {
             case 'goto':
             case 'march':
-                newPositionX = botConfig.actionData.path[botConfig.actionData.path.length - 1][0];
-                newPositionZ = botConfig.actionData.path[botConfig.actionData.path.length - 1][1];
+                // newPositionX = botConfig.actionData.path[botConfig.actionData.path.length - 1][0];
+                // newPositionZ = botConfig.actionData.path[botConfig.actionData.path.length - 1][1];
+                newPositionX = actionData.path[actionData.path.length - 1][0];
+                newPositionZ = actionData.path[actionData.path.length - 1][1];
                 break;
             case 'fight':
             case 'ready':
@@ -115,9 +118,15 @@ module.exports = {
     },
 
     updateBotGraphEntry: function(gameRoom, botConfig) {
+        console.log('updateBotGraphEntry:', botConfig);
         var globalIndex = botConfig.globalIndex;
         var visibility = false;
+        console.log('gameRoom.allBotObjects.length:', gameRoom.allBotObjects.length);
+        console.log('gameRoom.botGraph.length:', gameRoom.botGraph.length);
         for (var i = 0; i < gameRoom.allBotObjects.length; i++) {
+            console.log('i:', i);
+            console.log('gameRoom.botGraph[globalIndex].length:', gameRoom.botGraph[globalIndex].length);
+            console.log('gameRoom.botGraph[i].length:', gameRoom.botGraph[i].length);
             if(i == globalIndex){
                 continue;
             }
@@ -126,10 +135,10 @@ module.exports = {
                 continue;
             }
             var distance = routeManager.getDistanceBetweenPoints(
-                sourceBot.position[0],
-                sourceBot.position[2],
-                destinationBot.position[0],
-                destinationBot.position[2],
+                botConfig.position[0],
+                botConfig.position[2],
+                currentBot.position[0],
+                currentBot.position[2],
             );
             
             // if input bot can see currentBot

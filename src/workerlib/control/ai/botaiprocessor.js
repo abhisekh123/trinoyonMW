@@ -27,7 +27,7 @@ module.exports = {
         // console.log('processAI start');
         var hostileConfig = null;
         const botConfig = playerConfig.botObjectList[botIndex];
-        console.log('processAI:' + botConfig.id + ' at position:', botConfig.position);
+        // console.log('processAI:' + botConfig.id + ' at position:', botConfig.position);
         
         // botConfig.attack = botTypeItemConfig.attack;
         if(botConfig.action == 'goto'){
@@ -38,7 +38,7 @@ module.exports = {
         }
 
         // hostileConfig = aiUtility.aiutilityRoute.findClosestHostileInRange(botConfig, gameRoom, botConfig.sight);
-        hostileConfig = routeManager.findClosestHostile(botConfig, gameRoom, this.worldConfig.ALL);
+        hostileConfig = routeManager.findClosestHostile(botConfig, gameRoom, this.worldConfig.constants.ALL);
         var distanceBetweenBotAndHostile = routeManager.getDistanceBetweenPoints(
             botConfig.position[0],
             botConfig.position[2],
@@ -47,7 +47,7 @@ module.exports = {
         );
 
         if(distanceBetweenBotAndHostile <= botConfig.range){ // if a hostile is found in range
-            console.log('--attack -> hostiles in range:' + hostileConfig.id + ' at position:', hostileConfig.position);
+            // console.log('--attack -> hostiles in range:' + hostileConfig.id + ' at position:', hostileConfig.position);
             // aiUtility.engageHostile(botConfig, hostileConfig, gameRoom);
             actionManager.actionUtility.addActionToBot(botConfig, 'fight', hostileConfig, gameRoom);
             aiUtility.attackHostile(botConfig, hostileConfig, gameRoom);
@@ -57,14 +57,17 @@ module.exports = {
         /**
          * march routine start. At end of this routine, only possible outcome is march instruction.
          */
-        var heroConfig = playerConfig.botObjectList[0];
+        var distanceBetweenBotAndHero = 0;
+        if(botIndex != 0){
+            var heroConfig = playerConfig.botObjectList[0];
+            distanceBetweenBotAndHero = routeManager.getDistanceBetweenPoints(
+                botConfig.position[0],
+                botConfig.position[2],
+                heroConfig.position[0],
+                heroConfig.position[2]
+            );
+        }
         
-        var distanceBetweenBotAndHero = routeManager.getDistanceBetweenPoints(
-            botConfig.position[0],
-            botConfig.position[2],
-            heroConfig.position[0],
-            heroConfig.position[2]
-        );
 
         //     (visibilityFlag != this.worldConfig.constants.VISIBLE) 
             // && (visibilityFlag != this.worldConfig.constants.INVISIBLE) 

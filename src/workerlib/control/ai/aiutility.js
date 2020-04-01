@@ -122,15 +122,27 @@ module.exports = {
         );
         var path = null;
         if(nearestPosition == null){
+            console.log('no suitable position found for bot:', botConfig.id);
             // find path to target.
+            // path = routeManager.findPath(
+            //     botConfig.position[0],
+            //     botConfig.position[2],
+            //     positionObject.x,
+            //     positionObject.z
+            // );
+            // for(var i = 0; i < path.length; ++i){
+            //     // if path position is not satisfied, nearest position = path[i - 1];
+            // }
             // remove the path positions
+        }else{
+            this.completeBotMovementActionFormalities(botConfig, nearestPosition, 'march', gameRoom, targetConfig);
         }
-        if(this.comparePositionsForCriteria(visibility, range, 
-            targetX, targetZ, 
-            currentX, currentZ, 
-            newPosition.x, newPosition.z, gameRoom) > 0){
-                this.completeBotMovementActionFormalities(botConfig, newPosition, 'march', gameRoom, targetConfig);
-        }
+        // if(this.comparePositionsForCriteria(visibility, range, 
+        //     targetX, targetZ, 
+        //     currentX, currentZ, 
+        //     newPosition.x, newPosition.z, gameRoom) > 0){
+        //         this.completeBotMovementActionFormalities(botConfig, newPosition, 'march', gameRoom, targetConfig);
+        // }
         // aiUtility.completeBotMovementActionFormalities(botConfig, positionNearLeader, 'march', gameRoom);
         
     },

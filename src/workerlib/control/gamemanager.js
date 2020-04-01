@@ -76,7 +76,13 @@ module.exports = {
     },
 
     createNewBotGraph: function(gameRoom){
+        console.log('============================================');
+        console.log('============================================');
+        console.log('============================================');
         console.log('createNewBotGraph start');
+        console.log('============================================');
+        console.log('============================================');
+        console.log('============================================');
         var totalBotCount = 0;
         gameRoom.allBotObjects = [];
         var indexCounter = 0;
@@ -106,29 +112,32 @@ module.exports = {
         console.log('total bot count:' + totalBotCount);
 
         gameRoom.botGraph = [];
+        var distance = 0;
         for(var i = 0; i < totalBotCount; ++i){ // row
             gameRoom.botGraph[i] = [];
+            var sourceBot = gameRoom.allBotObjects[i];
             for(var j = 0; j < totalBotCount; ++j){ // col
-                if(i == j){
-                    continue;
-                }
-                var sourceBot = gameRoom.allBotObjects[i];
                 var destinationBot = gameRoom.allBotObjects[j];
-                if(sourceBot.team == destinationBot.team){
-                    continue;
+                if(sourceBot.team == destinationBot.team || i == j){
+                    distance = this.worldConfig.gridSide + 1;
+                } else {
+                    distance = routeManager.getDistanceBetweenPoints(
+                        sourceBot.position[0],
+                        sourceBot.position[2],
+                        destinationBot.position[0],
+                        destinationBot.position[2],
+                    );
                 }
-                var distance = routeManager.getDistanceBetweenPoints(
-                    sourceBot.position[0],
-                    sourceBot.position[2],
-                    destinationBot.position[0],
-                    destinationBot.position[2],
-                );
+                console.log('i:', i);
+                console.log('j:', j);
+                console.log('distance:', distance);
                 gameRoom.botGraph[i][j] = {
                     distance: distance,
                     visibility: false,
                 }
             }
         }
+        console.log('gameRoom.botGraph.length:', gameRoom.botGraph.length);
     },
 
     startNewGame: function(gameRoom, startTime) {
