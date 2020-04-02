@@ -139,7 +139,7 @@ tg.bot.processLoadedModel = function (
 
     var hpBarConfig = tg.ui3d.gethpbar(characterID);
     botObject.hpBarConfig = hpBarConfig;
-    botObject.controlMesh.scaling = new BABYLON.Vector3(1/scale, 1/scale, 1/scale);
+    // botObject.controlMesh.scaling = new BABYLON.Vector3(1/scale, 1/scale, 1/scale);
     hpBarConfig.healthBarContainer.parent = botObject.controlMesh;
     // var refreshWorldInterval = worldItems.refreshWorldInterval;
     var refreshWorldPerIntervalUI = worldItems.refreshWorldPerIntervalUI;
@@ -179,12 +179,14 @@ tg.bot.processLoadedModel = function (
     // animationGroups[animationIndex].play(true);
     // // console.log('skeleton.animations:', skeleton.animations);
 
+    const outputPlaneScale = characterConfig.headerScale;
     //data reporter
     var outputplane = BABYLON.Mesh.CreatePlane("outputplane" + characterID, 25, tg.scene, false);
+    outputplane.scaling = new BABYLON.Vector3(outputPlaneScale, outputPlaneScale, outputPlaneScale);
     outputplane.isPickable = false;
     outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
     outputplane.material = new BABYLON.StandardMaterial("outputplane" + characterID, tg.scene);
-    // outputplane.position = new BABYLON.Vector3(0, 0, 25);
+    outputplane.position = new BABYLON.Vector3(0, characterConfig.headerPositionY, 0);
     // outputplane.scaling.y = 0.4;
 
     var outputplaneTexture = new BABYLON.DynamicTexture("dynamictexture" + characterID, 512, tg.scene, true);

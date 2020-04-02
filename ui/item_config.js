@@ -24,12 +24,12 @@
                 range: 2,
                 parentMesh: null,
                 file:'digimon_3d_leomonice_leomon',
-                scale:5,
+                scale:6,
                 animationSpeed:1,
                 respawnTime: 5000, // 3 seconds
                 iconurl: 'static/img/lion_icon.png',
-                headerScale: 1,
-                headerPositionY: 1,
+                headerScale: 0.03,
+                headerPositionY: 1.8,
             },
             swordman:{
                 bannedMeshes:[6],
@@ -50,12 +50,12 @@
                 range: 2,
                 parentMesh: null,
                 file:'low_poly_knight_animated',
-                scale:1.5,
+                scale:2.5,
                 animationSpeed: 1,
                 respawnTime: 3000, // 3 seconds
                 iconurl: 'static/img/swordsman_icon.png',
-                headerScale: 1,
-                headerPositionY: 1,
+                headerScale: 0.1,
+                headerPositionY: 3.5,
             },
             archer:{
                 // bannedMeshes:[9],
@@ -85,27 +85,8 @@
                 animationSpeed: 1,
                 respawnTime: 3000, // 3 seconds
                 iconurl: 'static/img/archer_icon.png',
-                headerScale: 1,
-                headerPositionY: 1,
-            },
-            tower:{
-                life:1000,
-                attack:2,
-                file: 'tower_gloom',
-                scale: 0.05,
-                sight: 3,
-                range: 3,
-                attackinterval: 1000,
-                captureTime: 3000 // 3 seconds
-            },
-            base:{
-                life:1000,
-                attack:2,
-                file: 'defense_tower',
-                scale: 2,
-                sight: 3,
-                range: 3,
-                attackinterval: 1000,
+                headerScale: 0.5,
+                headerPositionY: 16,
             },
             boy:{
                 bannedMeshes:[9],
@@ -132,6 +113,25 @@
                 iconurl: 'static/img/swordsman_icon.png',
                 headerScale: 1,
                 headerPositionY: 1,
+            },
+            tower:{
+                life:1000,
+                attack:2,
+                file: 'tower_gloom',
+                scale: 0.05,
+                sight: 3,
+                range: 3,
+                attackinterval: 1000,
+                captureTime: 3000 // 3 seconds
+            },
+            base:{
+                life:1000,
+                attack:2,
+                file: 'defense_tower',
+                scale: 2,
+                sight: 3,
+                range: 3,
+                attackinterval: 1000,
             },
         },
         
