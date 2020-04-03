@@ -39,7 +39,7 @@ var worldItems = {
     defenceBottom:[[48,79],[40,79],[44,71],[19,73],[72,69]], // team 2
     bottomBasePlayerPosition:[[46, 84], [46, 83], [46, 85], [42, 84], [42, 83], [42, 85]],
 
-    maxDistanceFromLeader: 16,
+    maxDistanceFromLeader: 7,
     tooAwayFromLeader: 10,
     closeProximity: 5,
 

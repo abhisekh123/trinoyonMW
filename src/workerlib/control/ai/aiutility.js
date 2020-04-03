@@ -87,6 +87,8 @@ module.exports = {
     /**
      * visibility: 1(visible), 0(dont care), -1(invisible)
      * range: positive(in range), 0(dont care), negetive(outside range)
+     * 
+     * this function will either set movement action or will retain the bot unchanged.
      */
     goNearRoutine: function(visibility, range, botConfig, gameRoom, targetConfig){
         var distance = routeManager.getDistanceBetweenPoints(
@@ -134,7 +136,7 @@ module.exports = {
         );
         // var path = null;
         if(nearestPosition == null){
-            console.log('no suitable position found for bot:', botConfig.id);
+            console.log('no suitable position found for bot so action remains unchanged:', botConfig.id);
             // find path to target.
             // path = routeManager.findPath(
             //     botConfig.position[0],

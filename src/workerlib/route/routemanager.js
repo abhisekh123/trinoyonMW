@@ -293,6 +293,18 @@ module.exports = {
         if(foundSuitablePosition == true){
             return selectedPosition;
         } else {
+            if(rangeParam < this.worldConfig.maxRange){
+                // try compromise with a bigger area
+                var nearestPosition = this.findClosestWalkablePosition(
+                    this.worldConfig.constants.DONTCARE,
+                    this.worldConfig.maxRange,
+                    botConfigParam,
+                    targetConfig,
+                    gameRoom
+                );
+                return nearestPosition;
+            }
+            
             return null; // no hostiles in range.
         }
     },

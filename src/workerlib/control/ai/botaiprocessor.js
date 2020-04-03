@@ -78,12 +78,14 @@ module.exports = {
 
         
 
-        if(botConfig.action == 'march'){
+        if(botConfig.action == 'march' || botConfig.action == 'goto'){
             timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
             // console.log('--march, timeslice:', timeSlice);
             return timeSlice;
         }
-
+        if(botConfig.action == 'ready'){
+            return 0;
+        }
         // console.error('this code should not be executed');
         // actionManager.actionUtility.addActionToBot(botConfig, 'ready', null, gameRoom);
         return timeSlice; // spent the time doing nothing.
