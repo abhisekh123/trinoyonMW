@@ -20,7 +20,7 @@
                 speed:1, //one tile per 1000 ms.
                 strideDistance: 0.5,
                 strideTime: 0.25,
-                sight: 7,
+                sight: 4,
                 range: 2,
                 parentMesh: null,
                 file:'digimon_3d_leomonice_leomon',
@@ -46,7 +46,7 @@
                 speed:1, //one tile per 1000 ms.
                 strideDistance: 0.5,
                 strideTime: 0.25,
-                sight: 8,
+                sight: 4,
                 range: 2,
                 parentMesh: null,
                 file:'low_poly_knight_animated',
@@ -76,7 +76,7 @@
                 speed:1, //one tile per 1000 ms.
                 strideDistance: 0.5,
                 strideTime: 0.25,
-                sight: 8,
+                sight: 5,
                 range: 4,
                 parentMesh: null,
                 // file:'low_poly_character_rpg_kit_animation',

@@ -28,6 +28,7 @@ function createScene() {
 tg.refreshUI = function(){
     //placeholder function.will be replaced by other methods.
     console.log('refreshUI');
+    
 }
 
 function initialiseCamera() {
@@ -65,18 +66,11 @@ function initUI(){
     createScene(); //Call the createScene function
     initialiseCamera();
     // createTextures();
-
-//     var el = document.getElementsByTagName("canvas")[0];
-//   el.addEventListener("touchstart", handleStart, false);
-//   el.addEventListener("touchend", handleEnd, false);
-//   el.addEventListener("touchcancel", handleCancel, false);
-//   el.addEventListener("touchmove", handleMove, false);
-// https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
-   
 }
 
 function entrypoint(){
     
     initUI();
+    initInput();
     tg.sendMessageToWS(tg.getEmptyMessagePacket('init_world'));
 }

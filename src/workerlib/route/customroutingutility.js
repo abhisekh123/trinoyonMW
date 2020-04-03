@@ -48,9 +48,7 @@ module.exports = {
 
     createStrategyMatrix: function () {
         // console.log('start createVisibilityMatrix, this.worldConfig.maxRange:', this.worldConfig.maxRange);
-        // var fileAppender = fs.createWriteStream(fileName, {
-        //     flags: 'a' // 'a' means appending (old data will be preserved)
-        // });
+        
         let writeStream = fs.createWriteStream(this.worldConfig.strategyMatrixFileName);
 
         // fileAppender.write('this.floor.breadth\n');
@@ -113,26 +111,20 @@ module.exports = {
                             // // console.log(z_small);
                             // // console.log('wer:', tmpGridMatrixToStoreLinearPaths[x_small][z_small]);
 
-                            // if (!pathFindingWrapper.isWalkableAt(actual_x, actual_z)) {
-                            //     binaryStringArray[z_small] = '0';
-                            //     continue;
-                            // }
                             var linePath = tmpGridMatrixToStoreLinearPaths[x_small][z_small].linePath;
                             // the visibility test is positive if all points in straight line joining the points
                             // are un blocked by any ostacle. i.e. clear line of sight.
-                            // neighbourhoodVisibilityGrid[x_small][z_small] = true;
+
                             binaryStringArray[z_small] = '1';
                             
                             // if points are not adjescent, make sure all point 
                             // between source and destination are visible
                             if(linePath.length > 2){
-                                // for (var pathIndex = 0; pathIndex < linePath.length; ++pathIndex) {
                                 for (var pathIndex = 1; pathIndex < linePath.length - 1; ++pathIndex) {
                                     var actual_x_pathPoint = x + linePath[pathIndex].x - this.worldConfig.maxRange;
                                     var actual_z_pathPoint = z + linePath[pathIndex].z - this.worldConfig.maxRange;
                                     if (!pathFindingWrapper.isWalkableAt(actual_x_pathPoint, actual_z_pathPoint)) {
                                         // obstacle found. Stop scan and mark : Not Visible.
-                                        // neighbourhoodVisibilityGrid[x_small][z_small] = false;
                                         // // console.log('visibility false.');
                                         binaryStringArray[z_small] = '0';
                                         break;
@@ -142,7 +134,6 @@ module.exports = {
                             
 
                         } else {
-                            // neighbourhoodVisibilityGrid[x_small][z_small] = false;
                             binaryStringArray[z_small] = '0';
                         }
                     }
@@ -154,9 +145,6 @@ module.exports = {
                 }
                 strategyMatrix[x][z] = {
                     visibility: neighbourhoodVisibilityGrid,
-                    // localPath : neighbourPathGrid,
-                    // id: null,
-                    // influence: []
                 };
 
             }
@@ -164,8 +152,6 @@ module.exports = {
         workerState.strategyMatrix = strategyMatrix;
 
         console.log('completed creating the visibility graph.');
-        // fileAppender.close();
-        // writeStream.close();
         writeStream.end();
         writeStream.on('finish', () => {
             // console.log('wrote all data to file');

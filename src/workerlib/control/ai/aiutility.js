@@ -89,9 +89,18 @@ module.exports = {
      * range: positive(in range), 0(dont care), negetive(outside range)
      */
     goNearRoutine: function(visibility, range, botConfig, gameRoom, targetConfig){
+        var distance = routeManager.getDistanceBetweenPoints(
+            botConfig.position[0],
+            botConfig.position[2],
+            targetConfig.position[0],
+            targetConfig.position[2]
+        );
         if(botConfig.action == 'march'){
             if(botConfig.actionData.targetConfig.id == targetConfig.id){
                 if(targetConfig.type == 'base' || targetConfig.type == 'tower'){
+                    if(distance < botConfig.sight){
+                        botConfig.action = 'goto';
+                    }
                     // since tower or base does not change position.
                     // so do nothing. let the bot continue moving.
                     return;
@@ -100,13 +109,16 @@ module.exports = {
                 if(botConfig.actionData.timeStamp >= targetConfig.positionUpdateTimeStamp){
                     // the target bot did not move after the input bot started march
                     // so do nothing. let the bot continue moving.
+                    if(distance < botConfig.sight){
+                        botConfig.action = 'goto';
+                    }
                     return;
                 }
             }
         }
 
-        var targetX = targetConfig.position[0];
-        var targetZ = targetConfig.position[2];
+        // var targetX = targetConfig.position[0];
+        // var targetZ = targetConfig.position[2];
 
         // if(this.isPositionCriteriaSatisfied(visibility, range, gameRoom, botConfig, targetConfig)){
         //     // bot is already in a desirable position. though this should not happen.
@@ -120,7 +132,7 @@ module.exports = {
             targetConfig,
             gameRoom
         );
-        var path = null;
+        // var path = null;
         if(nearestPosition == null){
             console.log('no suitable position found for bot:', botConfig.id);
             // find path to target.
@@ -135,7 +147,18 @@ module.exports = {
             // }
             // remove the path positions
         }else{
-            this.completeBotMovementActionFormalities(botConfig, nearestPosition, 'march', gameRoom, targetConfig);
+            distance = routeManager.getDistanceBetweenPoints(
+                botConfig.position[0],
+                botConfig.position[2],
+                nearestPosition.x,
+                nearestPosition.z
+            );
+            if(distance < botConfig.sight){
+                this.completeBotMovementActionFormalities(botConfig, nearestPosition, 'goto', gameRoom, targetConfig);
+            }else{
+                this.completeBotMovementActionFormalities(botConfig, nearestPosition, 'march', gameRoom, targetConfig);
+            }
+            
         }
         // if(this.comparePositionsForCriteria(visibility, range, 
         //     targetX, targetZ, 

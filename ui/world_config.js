@@ -23,6 +23,7 @@ var worldItems = {
     uiConfig: {
         playerDimensionBaseUnit: 10,
         hiddenY: -10000, //value of y coordinate when object is hidden 
+        cameraTargetMovementStep: 2,
     },
     
     maxRange: 10,
