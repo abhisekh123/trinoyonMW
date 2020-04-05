@@ -50,6 +50,7 @@ module.exports = {
 
                 + this.inventory.store.manager_audio_key
                 + this.inventory.store.manager_bot_key
+                + this.inventory.store.manager_animation_key
                 + this.inventory.store.manager_effect_key
                 + this.inventory.store.manager_static_key
                 + this.inventory.store.manager_view_key

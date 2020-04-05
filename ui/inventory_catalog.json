@@ -11,6 +11,7 @@
         "item_config_key": "item_config.js",
         "manager_audio_key": "manager_audio.js",
         "manager_bot_key": "manager_bot.js",
+        "manager_animation_key": "manager_animation.js",
         "manager_effect_key": "manager_effect.js",
         "manager_static_key": "manager_static.js",
         "manager_view_key": "manager_view.js",

@@ -34,23 +34,36 @@ tg.world.updateWorld = function(updateParam){
     if(tg.isGameLive == true){
         console.log('tg.world.updateWorld:', updateParam);
         const itemStateMap = updateParam.playerConfig.itemState;
+        // if(updateParam.playerConfig.eventsArray.length>0){
+        //     console.log('events:', updateParam.playerConfig.eventsArray);
+        // }
         const itemKeyArray = tg.uu.getObjectKeys(itemStateMap);
         for (let index = 0; index < itemKeyArray.length; index++) {
             const updateItemKey = itemKeyArray[index];
             const updateItemConfig = itemStateMap[updateItemKey];
-            const botItem = tg.am.dynamicItems.bots[updateItemKey];
-            if(botItem == undefined){
+            const botObject = tg.am.dynamicItems.bots[updateItemKey];
+            if(botObject == undefined){
                 // console.log('unknown item:', updateItemKey);
                 const buildingConfig = tg.am.staticItems.buildings[updateItemKey];
                 buildingConfig.life = updateItemConfig.life;
                 tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, ((100 * buildingConfig.life) / buildingConfig.fullLife));
                 continue;
             }
+            // if(updateItemConfig.action == 'die'){
+            //     console.log(botObject.id + ' !!die bot:', botObject.controlMesh.position);
+            //     // botObject.controlMesh.position.y = tg.worldItems.uiConfig.hiddenY;
+            // }
+
+            // if(updateItemConfig.action == 'spawn'){
+            //     console.log(botObject.id + ' +++ bot spawn:', botObject.controlMesh.position);
+            //     botObject.controlMesh.position.y = 0;
+            // }
             
-            botItem.controlMesh.position.x = updateItemConfig.position[0] * tg.worldItems.uiConfig.playerDimensionBaseUnit;
-            botItem.controlMesh.position.z = updateItemConfig.position[2] * tg.worldItems.uiConfig.playerDimensionBaseUnit;
-            botItem.life = updateItemConfig.life;
-            tg.ui3d.updateHPBarPercentage(botItem.hpBarConfig, ((100 * botItem.life) / botItem.fullLife));
+            botObject.controlMesh.position.x = (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+            botObject.controlMesh.position.z = (updateItemConfig.position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+            botObject.life = updateItemConfig.life;
+            tg.animationmanager.startCharacterAnimation(botObject, updateItemConfig.action);
+            tg.ui3d.updateHPBarPercentage(botObject.hpBarConfig, ((100 * botObject.life) / botObject.fullLife));
         }
     }
 };

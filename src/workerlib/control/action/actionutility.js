@@ -35,6 +35,7 @@ module.exports = {
                 currentPositionZ = botConfig.actionData.path[botConfig.actionData.path.length - 1][1];
                 break;
             case 'ready':
+            // case 'spawn':
             case 'fight':
                 currentPositionX = botConfig.position[0];
                 currentPositionZ = botConfig.position[2];
@@ -70,6 +71,7 @@ module.exports = {
                 break;
             case 'fight':
             case 'ready':
+            // case 'spawn':
                 console.log('==>' + action + ' botid:' + botConfig.id + ' position:' + botConfig.position);
                 newPositionX = botConfig.position[0];
                 newPositionZ = botConfig.position[2];
@@ -204,7 +206,7 @@ module.exports = {
         defenderConfig.life -= offenderConfig.attack;
         offenderConfig.activityTimeStamp += offenderConfig.attackinterval;
 
-        // TODO: update snapshot 
+        // snapShotManager.updateBotSnapshot(gameRoom, offenderConfig);
         snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
     },
 }

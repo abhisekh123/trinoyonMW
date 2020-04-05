@@ -23,6 +23,19 @@ module.exports = {
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
 
         botSnapshotObject.action = botConfig.action;
+        switch (botSnapshotObject.action) {
+            case 'march':
+            case 'goto':
+                botSnapshotObject.actionData = {
+                    path: botConfig.actionData.path,
+                    timeStamp: botConfig.actionData.timestamp,
+                }
+                break;
+        
+            default:
+                break;
+        }
+        // botSnapshotObject.actionData = botConfig.actionData;
         // botSnapshotObject.actionData = null;
 
         // botSnapshotObject.deathTimestamp = workerState.currentTime;
@@ -52,7 +65,19 @@ module.exports = {
 
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[targetConfig.id];
-        botSnapshotObject.life = targetConfig.life;
+
+        botSnapshotObject.action = sourceConfig.action;
+        botSnapshotObject.actionData = targetConfig.id;
+        // botSnapshotObject.actionData = null;
+
+        // botSnapshotObject.deathTimestamp = workerState.currentTime;
+        botSnapshotObject.activityTimeStamp = sourceConfig.activityTimeStamp;
+        botSnapshotObject.isActive = true;
+        botSnapshotObject.life = sourceConfig.life;
+
+        botSnapshotObject.position[0] = sourceConfig.position[0];
+        botSnapshotObject.position[1] = sourceConfig.position[1];
+        botSnapshotObject.position[2] = sourceConfig.position[2];
     },
 
     registerBotDieEvent: function(gameRoom, botConfig){
@@ -70,6 +95,7 @@ module.exports = {
         // botSnapshotObject.deathTimestamp = workerState.currentTime;
         botSnapshotObject.activityTimeStamp = workerState.currentTime;
         botSnapshotObject.isActive = false;
+        botSnapshotObject.life = 0;
 
         var eventObject = this.getGeneric_Event_SnapshotObject();
         eventObject.id = botConfig.id;

@@ -1,92 +1,54 @@
 
 tg.animationmanager = {};
 
+tg.animationmanager.actionToAnimationMap = {
+    'ready': 'idleAnimation',
+    'goto': 'runAnimation',
+    'march': 'runAnimation',
+    'die': 'dieAnimation',
+    'spawn': 'spawnAnimation',
+    'fight': 'attackAnimation',
+};
 
-tg.animationmanager.startCharacterAnimation = function(characterConfig, currentAction, animationPlayFlag){
-    if(animationPlayFlag == null || animationPlayFlag == undefined){
-        animationPlayFlag = true;
+tg.animationmanager.startCharacterAnimation = function(botObject, currentAction){
+    if(botObject.animationAction == currentAction){
+        // same action. nothing to do.
+        return;
     }
-    var isCharacter = true;
-    // var characterConfig = tg.characterConfig[id];
-    var characterTypeConfig = itemConfigs.items[characterConfig.characterName];
-    if(characterTypeConfig == null ||characterConfig == undefined){
-        isCharacter = false;
+    
+    var animationObject = null;
+    var animationPlayFlag = true;
+    if(currentAction == 'die'){
+        animationPlayFlag = false;
     }
-    switch(currentAction){
-        case'goto':
-            if(!isCharacter){
-                break;
-            }
-            characterConfig.action = 'goto';
-            if(characterConfig.currentAnimation != characterTypeConfig.runAnimationIndex){
-                characterConfig.animationGroups[characterConfig.currentAnimation].reset();
-                characterConfig.animationGroups[characterConfig.currentAnimation].stop();
-                characterConfig.animationGroups[characterTypeConfig.runAnimationIndex].play(animationPlayFlag);
-                characterConfig.currentAnimation = characterTypeConfig.runAnimationIndex;
-            }
-            break;
-        case 'idle':
-            if(!isCharacter){
-                break;
-            }
-            characterConfig.action = 'idle';
-            if(characterConfig.currentAnimation != characterTypeConfig.idleAnimationIndex){
-                characterConfig.animationGroups[characterConfig.currentAnimation].reset();
-                characterConfig.animationGroups[characterConfig.currentAnimation].stop();
-                characterConfig.animationGroups[characterTypeConfig.idleAnimationIndex].play(animationPlayFlag);
-                characterConfig.currentAnimation = characterTypeConfig.idleAnimationIndex;
-            }
-            break;
-        case 'attack':
-            if(!isCharacter){
-                break;
-            }
-            characterConfig.action = 'attack';
-            if(characterConfig.currentAnimation != characterTypeConfig.attackAnimationIndex){
-                characterConfig.animationGroups[characterConfig.currentAnimation].reset();
-                characterConfig.animationGroups[characterConfig.currentAnimation].stop();
-                characterConfig.animationGroups[characterTypeConfig.attackAnimationIndex].play(animationPlayFlag);
-                characterConfig.currentAnimation = characterTypeConfig.attackAnimationIndex;
-            }
-            break;
-        case 'die':
-            if(!isCharacter){
-                // break;
-                // characterConfig.residue.position.x = positionParam.x;
-                characterConfig.residue.position.y = tg.playerDimensionBaseUnit;
-                // characterConfig.residue.position.z = positionParam.z;
-            }else{
-                if(characterConfig.currentAnimation != characterTypeConfig.dieAnimationIndex){
-                    characterConfig.animationGroups[characterConfig.currentAnimation].reset();
-                    characterConfig.animationGroups[characterConfig.currentAnimation].stop();
-                    characterConfig.animationGroups[characterTypeConfig.dieAnimationIndex].play(animationPlayFlag);
-                    characterConfig.currentAnimation = characterTypeConfig.dieAnimationIndex;
-                }
-            }
-            characterConfig.action = 'die';
-            
-            tg.hideMeshFromVisiblePlane(characterConfig.parentMesh);
-            break;
-        case 'spawn':
-            if(!isCharacter){
-                break;
-            }
-            characterConfig.action = 'spawn';
-            if(characterConfig.currentAnimation != characterTypeConfig.idleAnimationIndex){
-                characterConfig.animationGroups[characterConfig.currentAnimation].reset();
-                characterConfig.animationGroups[characterConfig.currentAnimation].stop();
-                characterConfig.animationGroups[characterTypeConfig.idleAnimationIndex].play(animationPlayFlag);
-                characterConfig.currentAnimation = characterTypeConfig.idleAnimationIndex;
-            }
-            tg.showMeshToVisiblePlane(characterConfig.parentMesh);
-            break;
-        default:
-            // console.log('ERROR:Unknown action:' + currentAction + ' for character:' + characterConfig.id);
+
+    if(botObject.animationAction == 'die'){
+        console.log('spawn....', botObject.id);
+        animationObject = botObject.animations[tg.animationmanager.actionToAnimationMap['spawn']];
+        botObject.controlMesh.position.y = 0;
+    } else {
+        animationObject = botObject.animations[tg.animationmanager.actionToAnimationMap[currentAction]];
     }
-    // characterConfig.animation = animationName;
-    // characterConfig.isAnimated = true;
-    // characterConfig.animStartTime = Date.now();
-    // characterConfig.gridCoordinate = tg.getGridCoordinateFromPointerPosition(characterConfig.mesh.position);
+
+    // if(currentAction == 'fight'){
+    //     console.log('fight:', botObject.id);
+    // }
+    if(currentAction == 'die'){
+        console.log('die:', botObject.id);
+        botObject.controlMesh.position.y = tg.worldItems.uiConfig.hiddenY;
+    }
+
+    botObject.animationAction = currentAction;
+
+    botObject.animationGroups[animationObject.index].stop();
+    botObject.animationGroups[animationObject.index].reset();
+    if(animationObject.type == 'interval'){ // play a part of the animation.
+        botObject.animationGroups[animationObject.index].start(animationPlayFlag,1,animationObject.from,animationObject.to);
+    } else { // play entire animation
+        botObject.animationGroups[animationObject.index].play(animationPlayFlag);
+    }
+
+
 };
 
 

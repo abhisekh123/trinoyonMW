@@ -122,16 +122,17 @@ tg.bot.processLoadedModel = function (
     // parentMesh.isPickable = true;
     // botObject = {};
     const botObject = {};
-
+    botObject.id = characterID;
     // botObject.parentMesh = parentMesh;
     botObject.characterName = characterName;
     botObject.controlMesh = newMeshes[0];
-    botObject.currentAnimation = characterConfig.idleAnimationIndex;
+    // botObject.currentAnimation = characterConfig.idleAnimationIndex;
     botObject.animationGroups = animationGroups;
     botObject.defaultRotation = Math.PI;
     botObject.intermediatePositionArray = [];
     botObject.intermediatePositionArrayIndex = 0;
-    botObject.action = 'idle';
+    botObject.animationAction = 'goto'; // initialise action.
+    botObject.animations = characterConfig.animations;
     botObject.life = characterConfig.life;
     botObject.fullLife = characterConfig.life;
     botObject.team = team;
@@ -170,14 +171,11 @@ tg.bot.processLoadedModel = function (
     botObject.controlMesh.position.y = 0;
     botObject.controlMesh.position.z = positionParam.z;
     botObject.controlMesh.addRotation(0, rotationParam, 0);
-    // parentMesh.position.x = positionParam.x;
-    // parentMesh.position.y = 0;
-    // parentMesh.position.z = positionParam.z;
-    // parentMesh.addRotation(rotationParam.rx, rotationParam.ry, rotationParam.rz);
 
-    animationGroups[characterConfig.idleAnimationIndex].play(true);
-    // animationGroups[animationIndex].play(true);
-    // // console.log('skeleton.animations:', skeleton.animations);
+    // botObject.currentAnimation = 'goto';
+
+    // animationGroups[characterConfig.idleAnimationIndex].play(true);
+    tg.animationmanager.startCharacterAnimation(botObject, 'ready');
 
     const outputPlaneScale = characterConfig.headerScale;
     //data reporter
@@ -204,6 +202,8 @@ tg.bot.processLoadedModel = function (
 
     botObject.outputplane = outputplane;
 
+
+
     tg.am.updateNewAssetLoaded(1);
 }
 
@@ -226,3 +226,6 @@ tg.bot.processLoadedModel = function (
 // animationGroups[0].start(true,10,5,6,false);
 // scene.createDefaultCameraOrLight(true, true, true);
 // scene.createDefaultEnvironment();
+// currentScene.animationGroups[0].start(true,1,5,6);
+// currentScene.animationGroups[0].stop()
+// currentScene.animationGroups[0].reset()
