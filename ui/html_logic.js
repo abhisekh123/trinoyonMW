@@ -77,6 +77,9 @@ tg.hl.selectSelfBot = function(botIndex){
     // // tg.am.cameraTarget.position.x = 0;
     // tg.am.chosenMarker.parent = botObject.controlMesh;
     tg.bot.userPlayerConfig.selectedBot = botObject;
+    if(tg.bot.userPlayerConfig.clearSelectionTimer != null){
+        clearTimeout(tg.bot.userPlayerConfig.clearSelectionTimer);
+    }
     tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
         tg.hl.clearSelfBotSelection();
     }, tg.worldItems.uiConfig.clearSelectionTimerInterval);
@@ -98,6 +101,7 @@ tg.hl.clearSelfBotSelection = function(){
     // // tg.am.cameraTarget.position.x = 0;
     
     tg.bot.userPlayerConfig.selectedBot = null;
+    tg.bot.userPlayerConfig.clearSelectionTimer = null;
     // tg.bot.userPlayerConfig.team
     // tg.am.dynamicItems.bots[characterID]
     // botObject.id
