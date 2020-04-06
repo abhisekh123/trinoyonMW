@@ -277,6 +277,22 @@ tg.static.addStaticItems = function () {
 
     tg.camera.lockedTarget = tg.am.cameraTarget;
 
+    // chosenMarker
+    var chosenMarker = BABYLON.MeshBuilder.CreateBox("chosenMarker", {
+        height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 4,
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit
+    }, tg.scene);
+    // so that all position are positive and it is easier to map 
+    // ground position from ai grid position.
+    chosenMarker.position.x = 0;
+    chosenMarker.position.y = tg.worldItems.uiConfig.hiddenY;
+    chosenMarker.position.z = 0;
+    // ground.isPickable = true;
+    chosenMarker.material = tg.am.material_semitransparent_chosen;
+    // ground.material = materialGround;
+    tg.am.chosenMarker = chosenMarker;
+
     // tg.am.staticItems = {};
     tg.am.staticItems.boxes = [];// return;
     for (var i = 0; i < tg.worldItems.obstacles.length; ++i) {

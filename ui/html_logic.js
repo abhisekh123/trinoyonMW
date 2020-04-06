@@ -61,3 +61,45 @@ tg.hl.updateFooterIconImageForPlayerTeamBots = function(){
     }
 };
 
+tg.hl.selectSelfBot = function(botIndex){
+    console.log('selectSelfBot:', botIndex);
+    // alert('selectSelfBot');
+    const botId =  tg.bot.userPlayerConfig.botObjectList[botIndex].id;
+    const botObject = tg.am.dynamicItems.bots[botId];
+    tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
+    tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
+
+    
+    // tg.am.chosenMarker.position.x = 0;
+    tg.am.chosenMarker.position.y = 0;
+    // tg.am.chosenMarker.position.z = 0;
+
+    // // tg.am.cameraTarget.position.x = 0;
+    // tg.am.chosenMarker.parent = botObject.controlMesh;
+    tg.bot.userPlayerConfig.selectedBot = botObject;
+    tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
+        tg.hl.clearSelfBotSelection();
+    }, tg.worldItems.uiConfig.clearSelectionTimerInterval);
+    // tg.bot.userPlayerConfig.team
+    // tg.am.dynamicItems.bots[characterID]
+    // botObject.id
+    document.getElementById("tc").focus();
+};
+
+tg.hl.clearSelfBotSelection = function(){
+    console.log('clearSelfBotSelection');
+    
+    // tg.am.chosenMarker.parent = null;
+
+    // tg.am.chosenMarker.position.x = 0;
+    tg.am.chosenMarker.position.y = tg.worldItems.uiConfig.hiddenY;
+    // tg.am.chosenMarker.position.z = 0;
+
+    // // tg.am.cameraTarget.position.x = 0;
+    
+    tg.bot.userPlayerConfig.selectedBot = null;
+    // tg.bot.userPlayerConfig.team
+    // tg.am.dynamicItems.bots[characterID]
+    // botObject.id
+};
+

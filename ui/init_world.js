@@ -22,8 +22,14 @@ tg.newRefreshFunction = function() {
     
     if(tg.isGameLive == true){
         var gridSide = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+
+        if(tg.bot.userPlayerConfig.selectedBot != null){
+            tg.am.chosenMarker.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
+            tg.am.chosenMarker.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
+        }
         
         if ((tg.input.keyMap["s"] || tg.input.keyMap["S"])) {
+            tg.am.cameraTarget.parent = null;
             console.log('w');
             tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.cameraTargetMovementStep;
             if(tg.am.cameraTarget.position.z > gridSide){
@@ -32,6 +38,7 @@ tg.newRefreshFunction = function() {
         };
 
         if ((tg.input.keyMap["w"] || tg.input.keyMap["W"])) {
+            tg.am.cameraTarget.parent = null;
             console.log('s');
             tg.am.cameraTarget.position.z -= tg.worldItems.uiConfig.cameraTargetMovementStep;
             if(tg.am.cameraTarget.position.z < 0){
@@ -40,6 +47,7 @@ tg.newRefreshFunction = function() {
         };
 
         if ((tg.input.keyMap["d"] || tg.input.keyMap["D"])) {
+            tg.am.cameraTarget.parent = null;
             console.log('a');
             tg.am.cameraTarget.position.x -= tg.worldItems.uiConfig.cameraTargetMovementStep;
             if(tg.am.cameraTarget.position.x < 0){
@@ -47,6 +55,7 @@ tg.newRefreshFunction = function() {
             }
         };
         if ((tg.input.keyMap["a"] || tg.input.keyMap["A"])) {
+            tg.am.cameraTarget.parent = null;
             console.log('d');
             tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.cameraTargetMovementStep;
             if(tg.am.cameraTarget.position.x > gridSide){

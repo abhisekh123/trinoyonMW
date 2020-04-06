@@ -19,6 +19,8 @@ tg.bot.reloadBots = function(playerConfigArray, playerSelfIndex, actionOnComplet
         console.log('playerBotArray:', playerBotArray);
         if(i == playerSelfIndex){
             tg.bot.userPlayerConfig = playerConfigArray[i];
+            tg.bot.userPlayerConfig.selectedBot = null;
+            tg.bot.userPlayerConfig.clearSelectionTimer = null;
             tg.hl.updateFooterIconImageForPlayerTeamBots();
         }
         for (let j = 0; j < playerBotArray.length; j++) {
