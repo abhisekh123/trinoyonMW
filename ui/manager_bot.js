@@ -1,6 +1,6 @@
 
 tg.bot = {};
-tg.bot.selfOwnedBots = null;
+tg.bot.userPlayerConfig = null;
 
 tg.bot.reloadBots = function(playerConfigArray, playerSelfIndex, actionOnComplete) {
     console.log('start tg.bot.reloadBots');
@@ -18,7 +18,7 @@ tg.bot.reloadBots = function(playerConfigArray, playerSelfIndex, actionOnComplet
         const playerBotArray = playerConfigArray[i].botObjectList;
         console.log('playerBotArray:', playerBotArray);
         if(i == playerSelfIndex){
-            tg.bot.selfOwnedBots = playerBotArray;
+            tg.bot.userPlayerConfig = playerConfigArray[i];
             tg.hl.updateFooterIconImageForPlayerTeamBots();
         }
         for (let j = 0; j < playerBotArray.length; j++) {
@@ -96,6 +96,22 @@ tg.bot.processLoadedModel = function (
     const rotationParam = botConfig.rotation;
     const characterName = botConfig.type;
     const characterID = botConfig.id;
+    // const selfBots =  tg.bot.userPlayerConfig.botObjectList;
+
+    var markerMaterial = null;
+    var markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 10;
+    if(team != tg.bot.userPlayerConfig.team){ // enemy
+        markerMaterial = tg.am.material_enemy_marker;
+        markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 10;
+    } else { // fiendly
+        if(playerID == tg.bot.userPlayerConfig.id){ // self
+            markerMaterial = tg.am.material_self_marker;
+            markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 11;
+        } else { // team
+            markerMaterial = tg.am.material_friend_marker;
+            markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 9;
+        }
+    }
     
     // console.log('--------->' + characterName);
     var characterConfig = tg.itemConfigs.items[characterName];
@@ -202,7 +218,15 @@ tg.bot.processLoadedModel = function (
 
     botObject.outputplane = outputplane;
 
-
+    var markerBox = BABYLON.MeshBuilder.CreateBox(characterID + 'markerBox', {
+        height: markerHeight * 1/scale,
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit * 1/scale,
+        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit * 1/scale,
+    }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
+    markerBox.position.y = 0;
+    markerBox.parent = botObject.controlMesh;
+    console.log('markerMaterial:', markerMaterial);
+    markerBox.material = markerMaterial;
 
     tg.am.updateNewAssetLoaded(1);
 }

@@ -99,6 +99,34 @@ tg.am.createMaterials = function () {
     // tg.material_semitransparent_red = material_semitransparent_red;
     // tg.material_semitransparent_chosen = material_semitransparent_chosen;
     // tg.material_character_parent = material_character_parent;
+    
+
+    var material_enemy_marker = new BABYLON.StandardMaterial('material_enemy_marker', tg.scene);
+    // material_enemy_marker.diffuseColor = BABYLON.Color3.Blue();
+    material_enemy_marker.diffuseColor = new BABYLON.Color3(0.4, 0.2, 0.2);
+    material_enemy_marker.backFaceCulling = false;
+    material_enemy_marker.needDepthPrePass = true;
+    material_enemy_marker.alpha = 0.7;
+
+    tg.am.material_enemy_marker = material_enemy_marker;
+
+    var material_friend_marker = new BABYLON.StandardMaterial('material_friend_marker', tg.scene);
+    // material_friend_marker.diffuseColor = BABYLON.Color3.Blue();
+    material_friend_marker.diffuseColor = new BABYLON.Color3(0.2, 0.4, 0.2);
+    material_friend_marker.backFaceCulling = false;
+    material_friend_marker.needDepthPrePass = true;
+    material_friend_marker.alpha = 0.7;
+
+    tg.am.material_friend_marker = material_friend_marker;
+
+    var material_self_marker = new BABYLON.StandardMaterial('material_self_marker', tg.scene);
+    // material_self_marker.diffuseColor = BABYLON.Color3.Blue();
+    material_self_marker.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    material_self_marker.backFaceCulling = false;
+    material_self_marker.needDepthPrePass = true;
+    material_self_marker.alpha = 0.7;
+
+    tg.am.material_self_marker = material_self_marker;
 
     console.log('complete creating materials');
 }

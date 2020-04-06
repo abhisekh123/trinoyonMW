@@ -48,7 +48,7 @@ tg.hl.countDownHandler_idle = function(){
 };
 
 tg.hl.updateFooterIconImageForPlayerTeamBots = function(){
-    const selfBots =  tg.bot.selfOwnedBots;
+    const selfBots =  tg.bot.userPlayerConfig.botObjectList;
     console.log('start updateFooterIconImageForPlayerTeamBots:', selfBots);
     // tg.itemConfigs
     for (let j = 1; j < selfBots.length; j++) {
