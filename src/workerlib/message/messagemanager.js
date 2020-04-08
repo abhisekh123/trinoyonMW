@@ -4,6 +4,7 @@ const snapshotmanager = require('../state/snapshotmanager');
 // const gameManager = require('../control/gamemanager');
 const gameRoomAssetManager = require('../control/gameroomassetmanager');
 const messageFactory = require('../../factory/messagefactory');
+const aiUtility = require('../control/ai/aiutility');
 // const utilityFunctions = require('../../utils/utilityfunctions');
 // const environmentState = require('../../../dist/server/state/environmentstate');
 
@@ -164,6 +165,10 @@ module.exports = {
      * GET DATA TO BE SENT
      */
 
+    updateBotAction: function(currentMessage){
+
+        aiUtility.completeBotMovementActionFormalities(botConfig, nearestPosition, 'goto', gameRoom, null);
+    },
 
 
 

@@ -14,6 +14,9 @@ module.exports = {
     },
 
     processAI: function(playerConfigParam, gameRoom){
+        // console.log(playerConfigParam.id + ' selectedTeamPlayer.isAIDriven:', playerConfigParam.isAIDriven);
+        
+        // console.log('playerConfigParam:', playerConfigParam);
         var areAllBotsIdle = this.areAllBotsIdle(playerConfigParam);
         if(areAllBotsIdle == true){
             var leaderBotConfig = playerConfigParam.botObjectList[0];

@@ -62,10 +62,10 @@ module.exports = {
         for (var i = 0; i < gameRoom.players_1.length; ++i) {
             const playerConfig = gameRoom.players_1[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
-                const botConfig = playerConfig.botObjectList[j];
-                if(botConfig.isActive == false){
-                    continue;
-                }
+                // const botConfig = playerConfig.botObjectList[j];
+                // if(botConfig.isActive == false){
+                //     continue;
+                // }
                 this.processBotAction(playerConfig, gameRoom, j);
             }
         }
@@ -76,10 +76,10 @@ module.exports = {
         for (var i = 0; i < gameRoom.players_2.length; ++i) {
             const playerConfig = gameRoom.players_2[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
-                const botConfig = playerConfig.botObjectList[j];
-                if(botConfig.isActive == false){
-                    continue;
-                }
+                // const botConfig = playerConfig.botObjectList[j];
+                // if(botConfig.isActive == false){
+                //     continue;
+                // }
                 this.processBotAction(playerConfig, gameRoom, j);
             }
         }

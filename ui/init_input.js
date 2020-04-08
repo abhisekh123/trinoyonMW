@@ -19,4 +19,18 @@ function initInput() {
     tg.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
         tg.input.keyMap[evt.sourceEvent.key] = evt.sourceEvent.type == "keydown";
     }));
+
+    tg.scene.onPointerDown = function (evt, pickResult) {
+        // We try to pick an object
+        if (pickResult.hit) {
+            console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
+            console.log('pickResult.pickedPoint:', pickResult.pickedPoint);
+            if(tg.bot.userPlayerConfig.selectedBot != null){
+                var gridX = Math.floor(pickResult.pickedPoint.x / tg.worldItems.uiConfig.playerDimensionBaseUnit);
+                var gridZ = Math.floor(pickResult.pickedPoint.z / tg.worldItems.uiConfig.playerDimensionBaseUnit);
+
+                tg.network.sendUserInstruction({x: gridX, z: gridZ});
+            }
+        }
+    };
 }

@@ -200,8 +200,11 @@ module.exports = {
         return{
             id: itemConfig.id,
 
-            action: itemConfig.action,
-            actionData: itemConfig.actionData,
+            // action: itemConfig.action,
+            // actionData: itemConfig.actionData,
+
+            action: 'ready',
+            actionData: null,
 
             // deathTimestamp: workerState.currentTime,
             activityTimeStamp: workerState.currentTime,

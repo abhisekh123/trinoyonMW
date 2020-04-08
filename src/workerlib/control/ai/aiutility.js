@@ -74,6 +74,7 @@ module.exports = {
         }
         
         aiUtility_route.planBotRoute(botConfig, path); // set timestamp to each path position.
+        // console.log('botConfig.id:', botConfig.id);
         // console.log('completeBotMovementActionFormalities path:', path);
         actionData = {
             path: path,
@@ -91,6 +92,7 @@ module.exports = {
      * this function will either set movement action or will retain the bot unchanged.
      */
     goNearRoutine: function(visibility, range, botConfig, gameRoom, targetConfig){
+        // console.log('goNearRoutine for:', botConfig.id);
         var distance = routeManager.getDistanceBetweenPoints(
             botConfig.position[0],
             botConfig.position[2],
@@ -156,7 +158,7 @@ module.exports = {
                 nearestPosition.z
             );
             if(distance < botConfig.sight){
-                this.completeBotMovementActionFormalities(botConfig, nearestPosition, 'goto', gameRoom, targetConfig);
+                this.completeBotMovementActionFormalities(botConfig, nearestPosition, 'goto', gameRoom, null);
             }else{
                 this.completeBotMovementActionFormalities(botConfig, nearestPosition, 'march', gameRoom, targetConfig);
             }

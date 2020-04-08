@@ -161,6 +161,11 @@ module.exports = {
             }
         }
 
+        for(j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // search for the next empty slot
+            const selectedTeamPlayer = selectedTeam[j];
+            console.log('selected team player:', selectedTeamPlayer);
+        }
+
         return true;
     },
 

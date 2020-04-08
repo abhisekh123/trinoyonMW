@@ -25,8 +25,13 @@ module.exports = {
 
     processAI: function(playerConfig, botIndex, gameRoom, timeSlice){
         // console.log('processAI start');
+        // console.log(playerConfig.id + ' selectedTeamPlayer.isAIDriven:', playerConfig.isAIDriven);
+
         var hostileConfig = null;
         const botConfig = playerConfig.botObjectList[botIndex];
+        if(botConfig.isActive == false){
+            return 0;
+        }
         // console.log('processAI:' + botConfig.id + ' at position:', botConfig.position);
         
         // botConfig.attack = botTypeItemConfig.attack;
@@ -72,8 +77,15 @@ module.exports = {
             aiUtility.goNearRoutine(this.worldConfig.constants.DONTCARE, this.worldConfig.closeProximity, botConfig, gameRoom, heroConfig);
         } else {
             
-            aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, botConfig.range, botConfig, gameRoom, hostileConfig);
-            
+            if(playerConfig.isAIDriven == true){
+                // console.log('playerConfig:==', playerConfig);
+                aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, botConfig.range, botConfig, gameRoom, hostileConfig);
+                // aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, botConfig.range, botConfig, gameRoom, hostileConfig);
+            }else{ // skip this step for user controlled bots.
+                // console.log('playerConfig:==', playerConfig);
+                return 0;
+            }
+            // aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, botConfig.range, botConfig, gameRoom, hostileConfig);
         }
 
         

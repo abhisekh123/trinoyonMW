@@ -65,19 +65,19 @@ module.exports = {
             case 'march':
                 // newPositionX = botConfig.actionData.path[botConfig.actionData.path.length - 1][0];
                 // newPositionZ = botConfig.actionData.path[botConfig.actionData.path.length - 1][1];
-                console.log('==>' + action + ' botid:' + botConfig.id + ' position:' + actionData.path[actionData.path.length - 1]);
+                // console.log('==>' + action + ' botid:' + botConfig.id + ' position:' + actionData.path[actionData.path.length - 1]);
                 newPositionX = actionData.path[actionData.path.length - 1][0];
                 newPositionZ = actionData.path[actionData.path.length - 1][1];
                 break;
             case 'fight':
             case 'ready':
             // case 'spawn':
-                console.log('==>' + action + ' botid:' + botConfig.id + ' position:' + botConfig.position);
+                // console.log('==>' + action + ' botid:' + botConfig.id + ' position:' + botConfig.position);
                 newPositionX = botConfig.position[0];
                 newPositionZ = botConfig.position[2];
                 break;
             case 'die':
-                console.log('==>' + action + ' botid:' + botConfig.id + ' position:' + botConfig.position);
+                // console.log('==>' + action + ' botid:' + botConfig.id + ' position:' + botConfig.position);
                 // botConfig.action = null;
                 botConfig.activityTimeStamp = workerState.currentTime; // time of death
                 botConfig.isActive = false;
