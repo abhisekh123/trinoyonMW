@@ -1,10 +1,11 @@
 
 const mainThreadStub = require('../mainthreadstub');
-const snapshotmanager = require('../state/snapshotmanager');
+// const snapshotmanager = require('../state/snapshotmanager');
 // const gameManager = require('../control/gamemanager');
 const gameRoomAssetManager = require('../control/gameroomassetmanager');
 const messageFactory = require('../../factory/messagefactory');
 const aiUtility = require('../control/ai/aiutility');
+const workerState = require('../state/workerstate');
 // const utilityFunctions = require('../../utils/utilityfunctions');
 // const environmentState = require('../../../dist/server/state/environmentstate');
 
@@ -165,9 +166,52 @@ module.exports = {
      * GET DATA TO BE SENT
      */
 
-    updateBotAction: function(currentMessage){
+    updateBotAction: function(userMessageObject){
+        console.log('update bot action:')
+        var userId = userMessageObject.userId;
+        
+        var userPlayerObject = workerState.userToPlayerMap[userId];
 
-        aiUtility.completeBotMovementActionFormalities(botConfig, nearestPosition, 'goto', gameRoom, null);
+        if(userPlayerObject == null || userPlayerObject == undefined){
+            console.error('user not found ', userMessageObject);
+            return;
+        }
+
+        var botConfig = null;
+        var gameRoom = null;
+
+        for(var i = 0; i < userPlayerObject.botObjectList.length; ++i){ // search botObject
+            if(userPlayerObject.botObjectList[i].id == userMessageObject.botId){
+                botConfig = userPlayerObject.botObjectList[i];
+                break;
+            }
+        }
+
+        if(botConfig != null){ // if found
+            gameRoom = workerState.gameRoomArray[userPlayerObject.gameId];
+        }else{
+            console.error('bot not found ', userMessageObject);
+            return;
+        }
+
+        if(gameRoom != null){ // if found
+            console.log('botConfig:', botConfig);
+            aiUtility.completeBotMovementActionFormalities(
+                botConfig, 
+                userMessageObject.destinationPosition, 
+                'goto', 
+                gameRoom, 
+                null
+            );
+            console.log('botConfig after:', botConfig);
+        }else{
+            console.error('gameRoom not found ', userMessageObject);
+            return;
+        }
+
+
+
+        
     },
 
 

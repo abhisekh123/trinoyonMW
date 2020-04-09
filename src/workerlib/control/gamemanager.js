@@ -160,8 +160,10 @@ module.exports = {
         gameRoom.isActive = true;
         snapShotManager.setNewSnapshotObject(gameRoom);
         messageManager.broadcastGameConfigToPlayers(gameRoom);
-    },
 
+        console.log('game started:', workerState.userToPlayerMap);
+    },
+    
     tryStartingNewGames: function() {
         // test time stamp to see if it is too early.
         const timeNow = utilityFunctions.getCurrentTime();

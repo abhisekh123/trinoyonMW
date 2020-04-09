@@ -161,37 +161,37 @@ module.exports = {
             }
         }
 
-        for(j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // search for the next empty slot
-            const selectedTeamPlayer = selectedTeam[j];
-            console.log('selected team player:', selectedTeamPlayer);
-        }
+        // for(j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // search for the next empty slot
+        //     const selectedTeamPlayer = selectedTeam[j];
+        //     console.log('selected team player:', selectedTeamPlayer);
+        // }
 
         return true;
     },
 
 
-    admitUsersToGame: function(usersToJoin, chosenPlayers){
-        if(usersToJoin.length != chosenPlayers.length){
-            console.log('ERROR: usersToJoin.length != chosenPlayers.length.');
-            return;
-        }
+    // admitUsersToGame: function(usersToJoin, chosenPlayers){
+    //     if(usersToJoin.length != chosenPlayers.length){
+    //         console.log('ERROR: usersToJoin.length != chosenPlayers.length.');
+    //         return;
+    //     }
 
-        const timeNow = utilityFunctions.getCurrentTime();
+    //     const timeNow = utilityFunctions.getCurrentTime();
 
-        for(var j = 0; j < usersToJoin.length; ++j){
-            const player = chosenPlayers[j];
-            player.userId = usersToJoin[j];
-            player.isConnected = true;
-            player.lastCommunication = timeNow;
-            player.joinTime = timeNow;
-            player.isAIDriven = false;
+    //     for(var j = 0; j < usersToJoin.length; ++j){
+    //         const player = chosenPlayers[j];
+    //         player.userId = usersToJoin[j];
+    //         player.isConnected = true;
+    //         player.lastCommunication = timeNow;
+    //         player.joinTime = timeNow;
+    //         player.isAIDriven = false;
 
-            workerState.userToPlayerMap[usersToJoin[j]] = {
-                playerId: player.id,
-                gameId: player.gameId
-            };
-        }
-    },
+    //         workerState.userToPlayerMap[usersToJoin[j]] = {
+    //             playerId: player.id,
+    //             gameId: player.gameId
+    //         };
+    //     }
+    // },
 
     removePlayer: function(userId){
         var playerID = this.getPlayerID(userId);
@@ -221,7 +221,6 @@ module.exports = {
 
         selectedTeamPlayer.isConnected = true;
         selectedTeamPlayer.lastCommunication = 0;
-        selectedTeamPlayer.joinTime = 0;
         selectedTeamPlayer.isAIDriven = false;
 
         console.log('selectedTeamPlayer:', selectedTeamPlayer);
@@ -229,6 +228,8 @@ module.exports = {
         for(var i = 0; i < selectedTeamPlayer.botList.length; ++i){
             this.setBotObjectAttributes(selectedTeamPlayer.botList[i], selectedTeamPlayer.botObjectList[i + 1]);
         }
+
+        workerState.userToPlayerMap[newUserToAdmit] = selectedTeamPlayer;
     },
 
     /**
@@ -255,7 +256,7 @@ module.exports = {
         for(var i = 0; i < gameRoom.players_1.length; ++i){
             const player = gameRoom.players_1[i];
             // player.userId = null;
-            player.isConnected = true;
+            // player.isConnected = true;
             player.lastCommunication = gameRoom.startTime;
             player.joinTime = gameRoom.startTime;
             // player.isAIDriven = true;
@@ -266,7 +267,7 @@ module.exports = {
         for(var i = 0; i < gameRoom.players_2.length; ++i){
             const player = gameRoom.players_2[i];
             // player.userId = null;
-            player.isConnected = true;
+            // player.isConnected = true;
             player.lastCommunication = gameRoom.startTime;
             player.joinTime = gameRoom.startTime;
             // player.isAIDriven = true;

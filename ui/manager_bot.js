@@ -227,7 +227,7 @@ tg.bot.processLoadedModel = function (
     }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
     markerBox.position.y = 0;
     markerBox.parent = botObject.controlMesh;
-    console.log('markerMaterial:', markerMaterial);
+    // console.log('markerMaterial:', markerMaterial);
     markerBox.material = markerMaterial;
 
     tg.am.updateNewAssetLoaded(1);

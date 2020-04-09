@@ -10,8 +10,8 @@ tg.network.requestGameAdmit = function() {
 tg.network.sendUserInstruction = function(destinationPosition) {
     var message = tg.getEmptyMessagePacket('action');
     
-    message.selection = tg.bot.userPlayerConfig.selectedBot.id;
-    message.destination = destinationPosition;
+    message.botId = tg.bot.userPlayerConfig.selectedBot.id;
+    message.destinationPosition = destinationPosition;
     tg.sendMessageToWS(message);
 };
 

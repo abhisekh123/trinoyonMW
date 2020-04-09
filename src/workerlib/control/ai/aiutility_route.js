@@ -155,8 +155,8 @@ module.exports = {
 
     planBotRoute: function(botConfig, path){ // each path element : [posX, posZ, time to travel, rotation]
         if(path.length < 2){ // TODO: check if path can be length 1.
-            console.error('ERROR:Path smaller than 2', botConfig);
-            console.log('path:', path);
+            console.error('ERROR:Path smaller than 2', botConfig.id);
+            // console.log('path:', path);
             return;
         }
         // var currentTime = workerState.currentTime;
