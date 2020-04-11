@@ -50,6 +50,25 @@ tg.static.loadStaticModel = function (
 
     buildingObject.residue = residue;
 
+    // projectile mesh
+    var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + itemID, {
+        height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
+        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10
+    }, tg.scene);
+
+    projectile.position.x = positionParam.x;
+    projectile.position.y = tg.worldItems.uiConfig.hiddenY;
+    projectile.position.z = positionParam.z;
+    projectile.material = tg.am.material_semitransparent_projectile;
+
+    buildingObject.projectile = projectile;
+    buildingObject.isProjectileActive = false;
+    buildingObject.projectileData = {
+        path: null,
+        endTime: 0
+    };
+
     //data reporter
     var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);
     outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
@@ -83,6 +102,7 @@ tg.static.loadStaticModel = function (
     buildingObject.headerBoard = outputplane;
 
     tg.am.staticItems.buildings[itemID] = buildingObject;
+    tg.am.staticItems.buildingsArray.push(buildingObject);
 
     tg.am.updateNewAssetLoaded(1);
 
@@ -129,7 +149,6 @@ tg.static.loadGLTFAssetsForStaticItems = function (actionOnComplete) {
     console.log('load gltf assets for static items.');
     var staticItemCount = 0;
     tg.am.onLoadComplete = actionOnComplete;
-    tg.am.staticItems.buildings = {};
 
     // 2 is added to account for base meshes.
     tg.am.totalAssetsToBeLoaded = 2 + tg.worldItems.defenceBottom.length + tg.worldItems.defenceTop.length;

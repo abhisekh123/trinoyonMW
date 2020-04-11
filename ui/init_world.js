@@ -13,13 +13,44 @@ function createAmbience() {
     tg.light2 = light;
 
     // tg.camera.target = tg.am.ground.position;
-}
+};
+
+
+function initialiseAngleMatrix() {
+    var angleMatrix = new Array();
+    // for each point in the grid, find seq of points forming straight line from point (x,z) to (26, 26)
+    for(var i = 0; i < tg.worldItems.uiConfig.neighbourhoodBoxSide; ++i){ // x axis
+        angleMatrix[i] = new Array();
+        for(var j = 0; j < tg.worldItems.uiConfig.neighbourhoodBoxSide; ++j){ // z axis
+            if(i==tg.worldItems.maxRange && j==tg.worldItems.maxRange){
+                angleMatrix[i][j] = 0;
+                continue;
+            }
+            
+            // angle with positive z axis(away from camera). negetive for left side(x < 0)
+            angleMatrix[i][j] = roundTo2Decimal(Math.atan2((i - tg.worldItems.maxRange), (j - tg.worldItems.maxRange))); 
+        }
+    }
+    tg.angleMatrix = angleMatrix;
+};
+
+function initialiseDistanceMatrix() {
+    var distanceMatrix = new Array(tg.worldItems.gridSide);
+    for(var i = 0; i < tg.worldItems.gridSide; ++i){ // x axis
+        distanceMatrix[i] = new Array(tg.worldItems.gridSide);
+        for(var k = 0; k < tg.worldItems.gridSide; ++k){ // z axis
+            distanceMatrix[i][k] = roundTo2Decimal(Math.sqrt(Math.pow(i, 2) + Math.pow(k, 2)));
+        }
+    }
+    tg.distanceMatrix = distanceMatrix;
+};
 
 
 
 // custom function exevuted in render loop.
 tg.newRefreshFunction = function() {
-    
+    tg.currentTime = getCurrentTime ();
+    // console.log(tg.currentTime);
     if(tg.isGameLive == true){
         var gridSide = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit;
 
@@ -63,12 +94,42 @@ tg.newRefreshFunction = function() {
             }
         };
 
+        for(var i = 0; i < tg.am.dynamicItems.botsArray.length; ++i){
+            if(tg.am.dynamicItems.botsArray[i].isProjectileActive){
+                tg.updateProjectileState(tg.am.dynamicItems.botsArray[i]);
+            }
+            
+        }
+        for(var i = 0; i < tg.am.staticItems.buildingsArray.length; ++i){
+            if(tg.am.staticItems.buildingsArray[i].isProjectileActive){
+                tg.updateProjectileState(tg.am.staticItems.buildingsArray[i]);
+            }
+            
+        }
         
     }
-}
+};
+
+tg.updateProjectileState = function(configParam) {
+    if(configParam.projectileData.endTime < tg.currentTime){
+        console.log('clear projectile position for:', configParam.id);
+        configParam.isProjectileActive = false;
+        configParam.projectile.position.y = tg.worldItems.uiConfig.hiddenY;
+        return;
+    }
+    for(var i = 0; i < configParam.projectileData.path.length; ++i){
+        if(configParam.projectileData.path[i].endTime < tg.currentTime){
+            console.log('update projectile position for:', configParam.id);
+            configParam.projectile.position.x = configParam.projectileData.path[i].x;
+            configParam.projectile.position.z = configParam.projectileData.path[i].z;
+        }
+    }
+};
 
 function entrypoint() {
     tg.refreshUI = tg.newRefreshFunction;
+    initialiseAngleMatrix();
+    initialiseDistanceMatrix();
     tg.pn.init();
     createAmbience();
     tg.am.init();

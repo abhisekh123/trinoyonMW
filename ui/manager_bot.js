@@ -174,6 +174,7 @@ tg.bot.processLoadedModel = function (
     }
 
     tg.am.dynamicItems.bots[characterID] = botObject;
+    tg.am.dynamicItems.botsArray.push(botObject);
 
     for (var i = 0; i < characterConfig.bannedMeshes.length; ++i) {
         newMeshes[characterConfig.bannedMeshes[i]].isVisible = false;
@@ -230,6 +231,25 @@ tg.bot.processLoadedModel = function (
     // console.log('markerMaterial:', markerMaterial);
     markerBox.material = markerMaterial;
 
+    // projectile mesh
+    var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + characterID, {
+        height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
+        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10
+    }, tg.scene);
+
+    projectile.position.x = positionParam.x;
+    projectile.position.y = tg.worldItems.uiConfig.hiddenY;
+    projectile.position.z = positionParam.z;
+    projectile.material = tg.am.material_semitransparent_projectile;
+
+    botObject.projectile = projectile;
+    botObject.isProjectileActive = false;
+    botObject.projectileData = {
+        path: null,
+        endTime: 0
+    };
+    
     tg.am.updateNewAssetLoaded(1);
 }
 

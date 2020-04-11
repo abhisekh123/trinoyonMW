@@ -24,7 +24,9 @@ var worldItems = {
         playerDimensionBaseUnit: 10,
         hiddenY: -10, //value of y coordinate when object is hidden 
         cameraTargetMovementStep: 2,
-        clearSelectionTimerInterval: 5000
+        clearSelectionTimerInterval: 5000,
+        projectilePathTimeResolution: 10, // time in miliseconds to transit from one plan path to another. 
+        projectilePathDistanceResolution: 1, // distance between each planned path for projectile (in floor/world unit, not grid unit)
     },
     
     maxRange: 10,

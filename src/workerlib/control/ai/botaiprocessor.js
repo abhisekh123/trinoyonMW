@@ -24,6 +24,20 @@ module.exports = {
     },
 
     processAI: function(playerConfig, botIndex, gameRoom, timeSlice){
+        const botConfig = playerConfig.botObjectList[botIndex];
+        if(botConfig.isActive == false){
+            return 0;
+        }
+
+        if(botConfig.action == 'goto'){
+            // console.log('processAI: action goto');
+            // no thinking involved. just keep going.
+            timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
+            return timeSlice;
+        }
+    },
+
+    processAI_old: function(playerConfig, botIndex, gameRoom, timeSlice){
         // console.log('processAI start');
         // console.log(playerConfig.id + ' selectedTeamPlayer.isAIDriven:', playerConfig.isAIDriven);
 

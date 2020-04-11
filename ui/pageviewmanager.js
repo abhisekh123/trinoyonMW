@@ -66,7 +66,7 @@ tg.pv.startGamePlay = function(gameJSON){
         }
         characterConfig.life = characters[i].life;
         characterConfig.isActive = characters[i].isActive;
-        tg.startCharacterAnimation(characterConfig, characters[i].action, false);
+        // tg.startCharacterAnimation(characterConfig, characters[i].action, false);
     }
     // // console.log(gameJSON.objects);
     let objects = gameJSON.objects;

@@ -22,6 +22,10 @@ tg.animationmanager.startCharacterAnimation = function(botObject, currentAction)
         animationPlayFlag = false;
     }
 
+    if(currentAction == 'fight'){
+        
+    }
+
     if(botObject.animationAction == 'die'){
         // console.log('spawn....', botObject.id);
         animationObject = botObject.animations[tg.animationmanager.actionToAnimationMap['spawn']];

@@ -43,6 +43,20 @@ tg.stopClock = function() {
     // tg.clockUpdateEventHandler = null;
 }
 
+tg.getDistanceBetweenPoints = function (startX, startZ, endX, endZ) {
+    // check if all the coordinate values are within acceptable range(ie inside grid)
+    if (startX < 0 || endX < 0 || startZ < 0 || endZ < 0
+        || startX > tg.worldItems.gridSide 
+        || endX > tg.worldItems.gridSide 
+        || startZ > tg.worldItems.gridSide 
+        || endZ > tg.worldItems.gridSide
+    ) {
+        return -1;
+    }
+
+    return tg.distanceMatrix[Math.abs(endX - startX)][Math.abs(endZ - startZ)];
+}
+
 function entrypoint(){
     initClient();
     tg.network.initNetworkManager();
@@ -51,3 +65,5 @@ function entrypoint(){
     console.log(packet);
     tg.sendMessageToWS(packet);
 }
+
+

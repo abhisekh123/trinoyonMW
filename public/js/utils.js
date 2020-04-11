@@ -24,7 +24,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
         type: contentType
     });
     return blob;
-}
+};
 
 function base64StringToBlob(base64String){
     var blob = b64toBlob(data, {
@@ -32,4 +32,24 @@ function base64StringToBlob(base64String){
     });
     var blobUrl = URL.createObjectURL(blob);
     return blobUrl;
+};
+
+function getGridPositionFromFloorPosition(positionValue){
+    return Math.floor(positionValue / tg.worldItems.uiConfig.playerDimensionBaseUnit);
+}
+
+function getFloorPositionFromGridPosition(positionValue){
+    return positionValue * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+}
+
+function getCurrentTime () {
+    // const d = new Date();
+    // const n = d.getTime();
+    // return n;
+    // return this.dateObject.getTime();
+    return Date.now();
+};
+
+function roundTo2Decimal (floatValue) {
+    return (Math.round(floatValue * 100) / 100);
 }

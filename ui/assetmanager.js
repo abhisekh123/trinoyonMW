@@ -77,6 +77,13 @@ tg.am.createMaterials = function () {
 
     tg.am.material_semitransparent_red = material_semitransparent_red;
 
+
+    var material_semitransparent_projectile = new BABYLON.StandardMaterial('material_semitransparent_projectile', tg.scene);
+    material_semitransparent_projectile.diffuseColor = new BABYLON.Color3(1, 0.65, 0);
+    material_semitransparent_projectile.emissiveColor = new BABYLON.Color3(1, 0.65, 0);
+
+    tg.am.material_semitransparent_projectile = material_semitransparent_projectile;
+
     var material_semitransparent_chosen = new BABYLON.StandardMaterial('material_semitransparent_chosen', tg.scene);
     material_semitransparent_chosen.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.9);
     material_semitransparent_chosen.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
@@ -133,8 +140,12 @@ tg.am.createMaterials = function () {
 
 tg.am.init = function(){
     tg.am.staticItems = {};
+    tg.am.staticItems.buildings = {};
+    tg.am.staticItems.buildingsArray = [];
+
     tg.am.dynamicItems = {};
     tg.am.dynamicItems.bots = {};
+    tg.am.dynamicItems.botsArray = [];
 
     tg.am.createMaterials();
     tg.static.addStaticItems();
