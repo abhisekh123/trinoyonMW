@@ -36,6 +36,7 @@ module.exports = {
                 break;
             case 'ready':
             // case 'spawn':
+                botConfig.activityTimeStamp = workerState.currentTime;
             case 'fight':
                 currentPositionX = botConfig.position[0];
                 currentPositionZ = botConfig.position[2];
@@ -44,7 +45,8 @@ module.exports = {
                 // botConfig.action = null;
                 botConfig.isActive = true;
                 botConfig.life = botConfig.fullLife;
-                botConfig.activityTimeStamp += botConfig.respawnTime;
+                // botConfig.activityTimeStamp += botConfig.respawnTime;
+                botConfig.activityTimeStamp = workerState.currentTime;
                 botConfig.position[0] = botConfig.spawnPosition[0];
                 botConfig.position[2] = botConfig.spawnPosition[2];
                 botConfig.positionUpdateTimeStamp = botConfig.activityTimeStamp;
@@ -100,6 +102,7 @@ module.exports = {
 
         botConfig.action = action;
         botConfig.actionData = actionData;
+        // botConfig.activityTimeStamp = workerState.currentTime;
     },
 
     // for events like 'die'

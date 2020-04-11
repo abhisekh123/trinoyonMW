@@ -314,6 +314,7 @@ module.exports = {
         for(var i = 0; i < playerObject.botObjectList.length; ++i){
             playerObject.botObjectList[i].id = playerID + '_' + i;
             playerObject.botObjectList[i].team = playerTeam;
+            playerObject.botObjectList[i].player = playerID;
         }
 
         return playerObject;

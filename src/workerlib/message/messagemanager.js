@@ -195,7 +195,8 @@ module.exports = {
         }
 
         if(gameRoom != null){ // if found
-            console.log('botConfig:', botConfig);
+            // console.log('botConfig:', botConfig);
+            // botConfig.activityTimeStamp = workerState.currentTime;
             aiUtility.completeBotMovementActionFormalities(
                 botConfig, 
                 userMessageObject.destinationPosition, 
@@ -203,7 +204,7 @@ module.exports = {
                 gameRoom, 
                 null
             );
-            console.log('botConfig after:', botConfig);
+            // console.log('botConfig after:', botConfig);
         }else{
             console.error('gameRoom not found ', userMessageObject);
             return;

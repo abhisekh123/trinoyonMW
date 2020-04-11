@@ -157,7 +157,9 @@ module.exports = {
                 nearestPosition.x,
                 nearestPosition.z
             );
-            if(distance < botConfig.sight){
+
+            // if target is too near or we are going near a bot of same player
+            if(distance < botConfig.sight || botConfig.player == targetConfig.player){
                 this.completeBotMovementActionFormalities(botConfig, nearestPosition, 'goto', gameRoom, null);
             }else{
                 this.completeBotMovementActionFormalities(botConfig, nearestPosition, 'march', gameRoom, targetConfig);

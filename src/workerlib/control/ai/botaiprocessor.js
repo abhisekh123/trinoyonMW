@@ -24,6 +24,35 @@ module.exports = {
     },
 
     processAI: function(playerConfig, botIndex, gameRoom, timeSlice){
+
+        /**
+         * if goto
+         *  continue action 
+         *  return ts-upd 
+         * endif
+         * 
+         * find closest hostile-all
+         * 
+         * if (ready) and (hostile in range)
+         *  attack hostile
+         *  return ts-upd (consume all time and should return 0)
+         * endif
+         * 
+         * if (not hero) and (should go near hero)
+         *  gonear hero - goto action
+         * else if (hostile in sight)
+         *  gonear hostile
+         * endif
+         * 
+         * if (goto)
+         *  return ts
+         * endif
+         * if (march)
+         *  continue action
+         *  return ts-upd
+         * endif
+         */
+
         const botConfig = playerConfig.botObjectList[botIndex];
         if(botConfig.isActive == false){
             return 0;
@@ -35,6 +64,32 @@ module.exports = {
             timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
             return timeSlice;
         }
+
+        /**
+         * march routine start. At end of this routine, only possible outcome is march instruction.
+         */
+        var distanceBetweenBotAndHero = 0;
+        if(botIndex != 0){
+            var heroConfig = playerConfig.botObjectList[0];
+            distanceBetweenBotAndHero = routeManager.getDistanceBetweenPoints(
+                botConfig.position[0],
+                botConfig.position[2],
+                heroConfig.position[0],
+                heroConfig.position[2]
+            );
+            if(this.shouldBotGoNearLeader(botConfig, distanceBetweenBotAndHero)){
+                aiUtility.goNearRoutine(this.worldConfig.constants.DONTCARE, this.worldConfig.closeProximity, botConfig, gameRoom, heroConfig);
+                return timeSlice;
+            }
+        }
+
+        var hostileConfig = routeManager.findClosestHostile(botConfig, gameRoom, this.worldConfig.constants.ALL);
+        var distanceBetweenBotAndHostile = routeManager.getDistanceBetweenPoints(
+            botConfig.position[0],
+            botConfig.position[2],
+            hostileConfig.position[0],
+            hostileConfig.position[2]
+        );
     },
 
     processAI_old: function(playerConfig, botIndex, gameRoom, timeSlice){
