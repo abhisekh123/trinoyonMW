@@ -37,7 +37,7 @@ module.exports = {
             case 'ready':
             // case 'spawn':
                 botConfig.activityTimeStamp = workerState.currentTime;
-            case 'fight':
+            // case 'fight':
                 currentPositionX = botConfig.position[0];
                 currentPositionZ = botConfig.position[2];
                 break;
@@ -71,7 +71,7 @@ module.exports = {
                 newPositionX = actionData.path[actionData.path.length - 1][0];
                 newPositionZ = actionData.path[actionData.path.length - 1][1];
                 break;
-            case 'fight':
+            // case 'fight':
             case 'ready':
             // case 'spawn':
                 // console.log('==>' + action + ' botid:' + botConfig.id + ' position:' + botConfig.position);

@@ -3,7 +3,7 @@
     // linear movement in 0.5 sec
     // aim in 0.5 sec
 
-    // 4 possible action state: got, march, fight, ready
+    // 4 possible action state: got, march, fight(not supported for now), ready
 
     var itemConfigs = {
         items:{

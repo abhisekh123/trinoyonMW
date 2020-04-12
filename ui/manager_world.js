@@ -30,7 +30,7 @@ tg.world.handleNewMatchTerminatedTrigger = function() {
 };
 
 tg.world.getBuildingOrBot = function(idParam){
-    const configObject = tg.am.dynamicItems.bots[idParam];
+    var configObject = tg.am.dynamicItems.bots[idParam];
     if(configObject == undefined){
         // console.log('unknown item:', updateItemKey);
         configObject = tg.am.staticItems.buildings[idParam];
@@ -96,13 +96,17 @@ tg.world.updateWorld = function(updateParam){
                     continue;
                 }
 
+                if(sourceConfig.type != 'base' && sourceConfig.type != 'tower'){
+                    tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
+                }
+
                 sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;
                 sourceConfig.projectile.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
                 sourceConfig.projectile.position.z = sourceConfig.controlMesh.position.z;
 
                 sourceConfig.isProjectileActive = true;
-                console.log('source position:', sourceConfig.controlMesh.position);
-                console.log('destination position:', destinationConfig.controlMesh.position);
+                // console.log('source position:', sourceConfig.controlMesh.position);
+                // console.log('destination position:', destinationConfig.controlMesh.position);
 
                 var pathData = tg.world.planProjectilePath(
                     sourceConfig.controlMesh.position.x,
@@ -110,6 +114,7 @@ tg.world.updateWorld = function(updateParam){
                     destinationConfig.controlMesh.position.x,
                     destinationConfig.controlMesh.position.z,
                 );
+                console.log('sourceConfig.id:', sourceConfig.id);
                 console.log('tg.currentTime:', tg.currentTime);
                 console.log('pathData:', pathData);
                 var endTime = tg.currentTime;

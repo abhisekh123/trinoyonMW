@@ -7,7 +7,7 @@ tg.animationmanager.actionToAnimationMap = {
     'march': 'runAnimation',
     'die': 'dieAnimation',
     'spawn': 'spawnAnimation',
-    'fight': 'attackAnimation',
+    'attack': 'attackAnimation',
 };
 
 tg.animationmanager.startCharacterAnimation = function(botObject, currentAction){
@@ -18,13 +18,13 @@ tg.animationmanager.startCharacterAnimation = function(botObject, currentAction)
     
     var animationObject = null;
     var animationPlayFlag = true;
-    if(currentAction == 'die'){
+    if(currentAction == 'die' || currentAction == 'attack'){
         animationPlayFlag = false;
     }
 
-    if(currentAction == 'fight'){
-        
-    }
+    // if(currentAction == 'attack'){
+    //     console.log('attack');
+    // }
 
     if(botObject.animationAction == 'die'){
         // console.log('spawn....', botObject.id);
@@ -40,9 +40,8 @@ tg.animationmanager.startCharacterAnimation = function(botObject, currentAction)
     if(currentAction == 'die'){
         // console.log('die:', botObject.id);
         botObject.controlMesh.position.y = tg.worldItems.uiConfig.hiddenY;
+        // botObject.projectile.position.y = tg.worldItems.uiConfig.hiddenY;
     }
-
-    botObject.animationAction = currentAction;
 
     botObject.animationGroups[animationObject.index].stop();
     botObject.animationGroups[animationObject.index].reset();
@@ -52,7 +51,11 @@ tg.animationmanager.startCharacterAnimation = function(botObject, currentAction)
         botObject.animationGroups[animationObject.index].play(animationPlayFlag);
     }
 
-
+    if(currentAction != 'attack'){
+        botObject.animationAction = currentAction;
+    } else {
+        botObject.animationAction = 'ready';
+    }
 };
 
 

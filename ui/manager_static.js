@@ -35,7 +35,7 @@ tg.static.loadStaticModel = function (
         fullLife: buildingTypeConfig.life,
         isActive: true,
     };
-
+    buildingObject.controlMesh = newMeshes[0];
     // mesh that remains when the building gets destroyed
     var residue = BABYLON.MeshBuilder.CreateBox("residue_" + itemID, {
         height: 2 * tg.worldItems.uiConfig.playerDimensionBaseUnit,

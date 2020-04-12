@@ -50,6 +50,8 @@ function initialiseDistanceMatrix() {
 // custom function exevuted in render loop.
 tg.newRefreshFunction = function() {
     tg.currentTime = getCurrentTime ();
+    tg.hl.divFps.innerHTML = tg.engine.getFps().toFixed() + " fps";
+
     // console.log(tg.currentTime);
     if(tg.isGameLive == true){
         var gridSide = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit;
@@ -111,6 +113,8 @@ tg.newRefreshFunction = function() {
 };
 
 tg.updateProjectileState = function(configParam) {
+    console.log('updateProjectileState for:', configParam.id);
+    console.log('tg.currentTime:', tg.currentTime);
     if(configParam.projectileData.endTime < tg.currentTime){
         console.log('clear projectile position for:', configParam.id);
         configParam.isProjectileActive = false;
@@ -118,10 +122,11 @@ tg.updateProjectileState = function(configParam) {
         return;
     }
     for(var i = 0; i < configParam.projectileData.path.length; ++i){
-        if(configParam.projectileData.path[i].endTime < tg.currentTime){
+        if(configParam.projectileData.path[i].time > tg.currentTime){
             console.log('update projectile position for:', configParam.id);
             configParam.projectile.position.x = configParam.projectileData.path[i].x;
             configParam.projectile.position.z = configParam.projectileData.path[i].z;
+            break;
         }
     }
 };

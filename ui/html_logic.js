@@ -3,6 +3,7 @@
  */
 
 tg.hl = {};
+tg.hl.divFps = document.getElementById("fps");
 
 // tg.hl.
 console.log('sdf');

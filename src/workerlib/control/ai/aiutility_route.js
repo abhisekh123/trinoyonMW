@@ -19,34 +19,34 @@ module.exports = {
 
     findClosestHostileAttackedByTeamMate: function(botIndex, playerConfig){
         var hostileConfig = null;
-        // console.log(this.worldConfig);
-        var minDist = this.worldConfig.gridSide + 1;
+        // // console.log(this.worldConfig);
+        // var minDist = this.worldConfig.gridSide + 1;
 
-        const botConfig = playerConfig.botObjectList[botIndex];
+        // const botConfig = playerConfig.botObjectList[botIndex];
         
-        for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
-            if(j == botIndex){
-                continue;
-            }
-            const teamBotConfig = playerConfig.botObjectList[j];
-            if(teamBotConfig.isActive == false){
-                continue;
-            }
-            if(teamBotConfig.action == 'fight'){
-                // if the bot is in fighting mode, find how far away is his target
-                var dist = routeManager.getDistanceBetweenPoints(
-                    botConfig.position[0],
-                    botConfig.position[2],
-                    teamBotConfig.actionData.position[0],
-                    teamBotConfig.actionData.position[2]
-                );
-                if(dist < minDist){
-                    minDist = dist;
-                    hostileConfig = teamBotConfig.actionData;
-                }
-            }
+        // for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
+        //     if(j == botIndex){
+        //         continue;
+        //     }
+        //     const teamBotConfig = playerConfig.botObjectList[j];
+        //     if(teamBotConfig.isActive == false){
+        //         continue;
+        //     }
+        //     if(teamBotConfig.action == 'fight'){
+        //         // if the bot is in fighting mode, find how far away is his target
+        //         var dist = routeManager.getDistanceBetweenPoints(
+        //             botConfig.position[0],
+        //             botConfig.position[2],
+        //             teamBotConfig.actionData.position[0],
+        //             teamBotConfig.actionData.position[2]
+        //         );
+        //         if(dist < minDist){
+        //             minDist = dist;
+        //             hostileConfig = teamBotConfig.actionData;
+        //         }
+        //     }
             
-        }
+        // }
         return hostileConfig;
     },
 
