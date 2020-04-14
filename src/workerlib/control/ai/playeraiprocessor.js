@@ -2,6 +2,7 @@ const workerState = require('../../state/workerstate');
 const routeManager = require('../../route/routemanager');
 // const botActionProcessor = require('../action/botactionprocessor');
 const aiUtility = require('./aiutility');
+const utilityFunctions = require('../../../utils/utilityfunctions');
 
 module.exports = {
 
@@ -31,51 +32,26 @@ module.exports = {
              */
             // console.log('123',this.worldConfig.constants);
             // console.log('123',this.worldConfig.constants.BUILDINGS);
-            var nearestTarget = routeManager.findClosestHostile(leaderBotConfig, gameRoom, this.worldConfig.constants.BUILDINGS);
+            var nearestTarget = routeManager.findClosestHostile(leaderBotConfig, gameRoom, this.worldConfig.constants.BOTS);
             // // console.log(playerConfig.id);
             // console.log('nearestTarget:', nearestTarget);
             if(nearestTarget == null){
-                console.error('ERROR:@playerAI, nearestTarget is null for player:', playerConfigParam.id);
-                return;
+                // console.error('ERROR:@playerAI, nearestTarget is null for player:', playerConfigParam.id);
+                // return;
+                var randomPosition = {
+                    x: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
+                    z: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
+                };
+                aiUtility.goNearDesignatedPosition(
+                    leaderBotConfig, 
+                    randomPosition, 
+                    'march', 
+                    gameRoom, 
+                );
             }else{
-            //     (visibilityFlag != this.worldConfig.constants.VISIBLE) 
-            // && (visibilityFlag != this.worldConfig.constants.INVISIBLE) 
-            // && (visibilityFlag != this.worldConfig.constants.DONTCARE)
+
                 aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, leaderBotConfig.range, leaderBotConfig, gameRoom, nearestTarget);
-                // var distanceBetweenTargetAndLeader = routeManager.getDistanceBetweenPoints(
-                //     leaderBotConfig.position[0],
-                //     leaderBotConfig.position[2],
-                //     nearestTarget.position[0],
-                //     nearestTarget.position[2]
-                // );
-                // // if nearesr target already in range
-                // if(distanceBetweenTargetAndLeader <= leaderBotConfig.range){ //this should not happen
-                //     console.error('ERROR: distanceBetweenTargetAndLeader <= leaderBotConfig.range');
-                //     return;
-                // }
-                // // var leaderConfig = workerState.botMap[playerConfig.leaderBotID];
-                // console.log('nearest target:', nearestTarget.id);
-                // var nearestPosition = routeManager.findClosestWalkablePosition(
-                //     nearestTarget, 
-                //     this.worldConfig.gridSide, 
-                //     gameRoom
-                // );
-                // console.log('nearest position:', nearestPosition);
-                // if(nearestPosition == null){
-                //     console.log('nearestPosition == null .... surprise!');
-                //     return;
-                // }
-                // console.log('player ai processor, leaderConfig:', leaderBotConfig);
-                // console.log('nearest position:', nearestPosition);
-                // aiUtility.completeBotMovementActionFormalities(leaderBotConfig, nearestPosition, 'march', gameRoom);
-                // var path = routeManager.findPath(
-                //     leaderBotConfig.position[0], 
-                //     leaderBotConfig.position[2], 
-                //     nearestPosition.x, 
-                //     nearestPosition.z);
-                // // // console.log('path:', path);
-                // // // console.log('4');
-                // botActionProcessor.instructBot(leaderBotConfig, 'march', path);
+                
             }
         }
     },

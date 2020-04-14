@@ -97,10 +97,13 @@ tg.newRefreshFunction = function() {
         };
 
         for(var i = 0; i < tg.am.dynamicItems.botsArray.length; ++i){
+            // update bot projectile
             if(tg.am.dynamicItems.botsArray[i].isProjectileActive){
                 tg.updateProjectileState(tg.am.dynamicItems.botsArray[i]);
             }
-            
+            if(tg.am.dynamicItems.botsArray[i].plannedPath != null){
+                tg.updateBotPosition(tg.am.dynamicItems.botsArray[i]);
+            }
         }
         for(var i = 0; i < tg.am.staticItems.buildingsArray.length; ++i){
             if(tg.am.staticItems.buildingsArray[i].isProjectileActive){
@@ -112,23 +115,40 @@ tg.newRefreshFunction = function() {
     }
 };
 
+tg.updateBotPosition = function(configParam) {
+    console.log('updateBotPosition for:', configParam.id);
+    console.log('tg.currentTime:', tg.currentTime);
+    
+    if(tg.moveMeshAlongPath(configParam.controlMesh, configParam.plannedPath) == true){
+        configParam.plannedPath = null;
+    }
+};
+
 tg.updateProjectileState = function(configParam) {
     console.log('updateProjectileState for:', configParam.id);
     console.log('tg.currentTime:', tg.currentTime);
-    if(configParam.projectileData.endTime < tg.currentTime){
+    if(configParam.isProjectileActive == true && configParam.projectileData.endTime < tg.currentTime){
         console.log('clear projectile position for:', configParam.id);
         configParam.isProjectileActive = false;
         configParam.projectile.position.y = tg.worldItems.uiConfig.hiddenY;
         return;
     }
-    for(var i = 0; i < configParam.projectileData.path.length; ++i){
-        if(configParam.projectileData.path[i].time > tg.currentTime){
+    if(tg.moveMeshAlongPath(configParam.projectile, configParam.projectileData.path) == true){
+        configParam.isProjectileActive = false;
+        configParam.projectile.position.y = tg.worldItems.uiConfig.hiddenY;
+    }
+};
+
+tg.moveMeshAlongPath = function(meshParam, pathParam){
+    for(var i = 0; i < pathParam.length; ++i){
+        if(pathParam[i].time > tg.currentTime){
             console.log('update projectile position for:', configParam.id);
-            configParam.projectile.position.x = configParam.projectileData.path[i].x;
-            configParam.projectile.position.z = configParam.projectileData.path[i].z;
-            break;
+            meshParam.position.x = pathParam[i].x;
+            meshParam.position.z = pathParam[i].z;
+            return false;
         }
     }
+    return true; // mesh completed movement
 };
 
 function entrypoint() {

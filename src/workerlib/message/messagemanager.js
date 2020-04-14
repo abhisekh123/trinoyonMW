@@ -47,28 +47,7 @@ module.exports = {
         var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1);
         var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2);
 
-        // for(var i = 0; i < gameRoom.players_1.length; ++i){
-        //     const player = gameRoom.players_1[i];
-        //     if(player.isAIDriven){
-        //         continue;
-        //     }
-        //     payload.playerIDList.push({
-        //         id: player.userId,
-        //         index: i
-        //     });
-        // }
 
-        // // players 2
-        // for(var i = 0; i < gameRoom.players_2.length; ++i){
-        //     const player = gameRoom.players_2[i];
-        //     if(player.isAIDriven){
-        //         continue;
-        //     }
-        //     payload.playerIDList.push({
-        //         id: player.userId,
-        //         index: i
-        //     });
-        // }
 
         console.log('sending game config');
         // send config to players in team  1
@@ -197,12 +176,11 @@ module.exports = {
         if(gameRoom != null){ // if found
             // console.log('botConfig:', botConfig);
             // botConfig.activityTimeStamp = workerState.currentTime;
-            aiUtility.completeBotMovementActionFormalities(
+            aiUtility.goNearDesignatedPosition(
                 botConfig, 
                 userMessageObject.destinationPosition, 
                 'goto', 
                 gameRoom, 
-                null
             );
             // console.log('botConfig after:', botConfig);
         }else{

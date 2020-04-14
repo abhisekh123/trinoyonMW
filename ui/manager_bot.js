@@ -156,6 +156,8 @@ tg.bot.processLoadedModel = function (
     botObject.team = team;
     botObject.playerID = playerID;
     botObject.timeTakenToCover1Tile = 1000 / characterConfig.speed; // in milliSeconds
+    botObject.plannedPath = null;
+    botObject.plannedPathTimeStamp = 0;
 
     var hpBarConfig = tg.ui3d.gethpbar(characterID);
     botObject.hpBarConfig = hpBarConfig;

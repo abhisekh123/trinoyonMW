@@ -8,8 +8,94 @@ tg.rm.init = function () {
     tg.rm.initPathMap();
 };
 
-tg.rm.planBotRoute = function(){
+tg.rm.planBotRoute = function(botObject, updateItemConfig){
+    
+    if(updateItemConfig.actionData.path.length < 2){
+        return {
+            x: updateItemConfig.position[0],
+            z: updateItemConfig.position[2],
+            timeFactor: 0,
+        };
+    }
 
+    var midPointArray = [];
+    var incomingPath = [];
+
+    // convert path from array to z,x coordinate object
+    for(var i = 0; i < updateItemConfig.actionData.path.length; ++i){
+        incomingPath.push({
+            x: updateItemConfig.actionData.path[i][0],
+            z: updateItemConfig.actionData.path[i][1],
+        });
+    }
+
+    // generate and populate mid point array
+    for(var i = 1; i < incomingPath.length; ++i){
+        midPointArray.push({
+            start: incomingPath[i - 1],
+            end: incomingPath[i]
+        })
+    }
+
+    // var plannedPathArrayIndex = 0;
+    var plannedPathArray = []; // this is the final planned path to be returned
+    // initialise to starting position
+    var plannedPositionRunner = { // this object maintains state of the last item in plannedPathArray
+        x: incomingPath[0].x,
+        z: incomingPath[0].z,
+        time: tg.currentTime
+    }
+
+    // time taken for bot to travel from one planned path to next one.
+    var timeToTravelToNextPlannedPathPosition = botObject.timeTakenToCover1Tile / (1 / tg.worldItems.uiConfig.plannedPathResolution);
+    
+    // plan path from start to first mid point
+    var pathGuideArray = tg.rm.planTerminalSubPath(incomingPath[0], midPointArray[0]);
+    for(var i = 0; i < pathGuideArray.length; ++ i){
+        plannedPositionRunner.x += pathGuideArray[i].x;
+        plannedPositionRunner.z += pathGuideArray[i].z;
+        plannedPositionRunner.time += timeToTravelToNextPlannedPathPosition;
+
+        // creating seperate object to help garbage collection.
+        plannedPathArray.push({
+            x: plannedPositionRunner.x,
+            z: plannedPositionRunner.z,
+            time: plannedPositionRunner.time,
+        });
+    }
+
+    // plan path between each mid point to next one
+    for(var i = 1; i < midPointArray.length; ++ i){
+        pathGuideArray = tg.rm.planIntermediateSubPath(
+            midPointArray[i - 1], 
+            midPointArray[i]
+        );
+        plannedPositionRunner.x += pathGuideArray[i].x;
+        plannedPositionRunner.z += pathGuideArray[i].z;
+        plannedPositionRunner.time += timeToTravelToNextPlannedPathPosition;
+        plannedPathArray.push({
+            x: plannedPositionRunner.x,
+            z: plannedPositionRunner.z,
+            time: plannedPositionRunner.time,
+        });
+    }
+
+
+    // plan path from last mid point to last path position
+    pathGuideArray = tg.rm.planTerminalSubPath(
+        midPointArray[midPointArray.length - 1], 
+        incomingPath[incomingPath.length - 1]
+    );
+    for(var i = 0; i < pathGuideArray.length; ++ i){
+        plannedPositionRunner.x += pathGuideArray[i].x;
+        plannedPositionRunner.z += pathGuideArray[i].z;
+        plannedPositionRunner.time += timeToTravelToNextPlannedPathPosition;
+        plannedPathArray.push({
+            x: plannedPositionRunner.x,
+            z: plannedPositionRunner.z,
+            time: plannedPositionRunner.time,
+        });
+    }
 };
 
 // between two consecutive midpoints.
@@ -20,17 +106,17 @@ tg.rm.planIntermediateSubPath = function(midPointSource, midPointDestination){
         var directionFirstHalf = tg.rm.getDirection(midPointSource.start, midPointSource.end);
         var directionSecondHalf = tg.rm.getDirection(midPointDestination.start, midPointDestination.end);
         var path = tg.rm.pathMap[directionFirstHalf][directionSecondHalf];
-        for(var i = 0; i < path.length; ++ i){
-            path[i].x += start.x;
-            path[i].z += start.z;
-        }
+        // for(var i = 0; i < path.length; ++ i){
+        //     path[i].x += start.x;
+        //     path[i].z += start.z;
+        // }
         return path;
     } else {
         var path = tg.rm.pathMap[direction].fullPath;
-        for(var i = 0; i < path.length; ++ i){
-            path[i].x += start.x;
-            path[i].z += start.z;
-        }
+        // for(var i = 0; i < path.length; ++ i){
+        //     path[i].x += start.x;
+        //     path[i].z += start.z;
+        // }
         return path;
     }
 };
@@ -43,10 +129,10 @@ tg.rm.planTerminalSubPath = function(start, end){
         return [];
     } else {
         var path = tg.rm.pathMap[direction].halfPath;
-        for(var i = 0; i < path.length; ++ i){
-            path[i].x += start.x;
-            path[i].z += start.z;
-        }
+        // for(var i = 0; i < path.length; ++ i){
+        //     path[i].x += start.x;
+        //     path[i].z += start.z;
+        // }
         return path;
     }
 };

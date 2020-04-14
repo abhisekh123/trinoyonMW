@@ -7,6 +7,8 @@ function initClient(){
     tg.clockTickInterval = 1000;
     tg.clock = setInterval(tg.clockUpdateEventHandler, tg.clockTickInterval);
     tg.clockTimeElapsed = 0;
+
+    tg.debugMode = false;
     // setTimeout(tg.stopClock, 4000);
 }
 

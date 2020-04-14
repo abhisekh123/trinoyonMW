@@ -27,6 +27,7 @@ var worldItems = {
         clearSelectionTimerInterval: 5000,
         projectilePathTimeResolution: 60, // time in miliseconds to transit from one plan path to another. 
         projectilePathDistanceResolution: 1, // distance between each planned path for projectile (in floor/world unit, not grid unit)
+        plannedPathResolution: 8, // number of position to be planned for each distance of one tile
     },
     
     maxRange: 10,

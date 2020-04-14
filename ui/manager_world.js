@@ -73,9 +73,21 @@ tg.world.updateWorld = function(updateParam){
             //     console.log(botObject.id + ' +++ bot spawn:', botObject.controlMesh.position);
             //     botObject.controlMesh.position.y = 0;
             // }
+            if(tg.debugMode == true){
+                botObject.controlMesh.position.x = (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+                botObject.controlMesh.position.z = (updateItemConfig.position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+            }else{
+                if(updateItemConfig.action == 'march' || updateItemConfig.action == 'goto'){
+                    if(botObject.plannedPathTimeStamp != updateItemConfig.actionData.timeStamp){
+                        // path was updated. so need fresh planning.
+                        botObject.plannedPath = tg.rm.planBotRoute(botObject, updateItemConfig);
+                    }
+                } else {
+                    botObject.controlMesh.position.x = (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+                    botObject.controlMesh.position.z = (updateItemConfig.position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+                }
+            }
             
-            botObject.controlMesh.position.x = (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
-            botObject.controlMesh.position.z = (updateItemConfig.position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
             botObject.life = updateItemConfig.life;
             tg.animationmanager.startCharacterAnimation(botObject, updateItemConfig.action);
             // if(updateItemConfig.action == 'fight'){

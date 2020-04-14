@@ -85,6 +85,24 @@ module.exports = {
         // this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z, gameRoom);
     },
 
+    goNearDesignatedPosition: function(botConfig, positionObject, action, gameRoom){
+        var closestWalkablePosition = routeManager.findClosestWalkablePosition(
+            this.worldConfig.constants.DONTCARE,
+            this.worldConfig.maxRange,
+            botConfig,
+            {position: [positionObject.x, 0, positionObject.z]},
+            gameRoom
+        );
+
+        this.completeBotMovementActionFormalities(
+            botConfig, 
+            closestWalkablePosition, 
+            action, 
+            gameRoom, 
+            null
+        );
+    },
+
     /**
      * visibility: 1(visible), 0(dont care), -1(invisible)
      * range: positive(in range), 0(dont care), negetive(outside range)
