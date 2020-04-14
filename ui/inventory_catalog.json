@@ -10,6 +10,7 @@
         "world_config_key": "world_config.js",
         "item_config_key": "item_config.js",
         "manager_audio_key": "manager_audio.js",
+        "manager_route_key": "manager_route.js",
         "manager_bot_key": "manager_bot.js",
         "manager_animation_key": "manager_animation.js",
         "manager_effect_key": "manager_effect.js",

@@ -155,6 +155,7 @@ tg.bot.processLoadedModel = function (
     botObject.fullLife = characterConfig.life;
     botObject.team = team;
     botObject.playerID = playerID;
+    botObject.timeTakenToCover1Tile = 1000 / characterConfig.speed; // in milliSeconds
 
     var hpBarConfig = tg.ui3d.gethpbar(characterID);
     botObject.hpBarConfig = hpBarConfig;

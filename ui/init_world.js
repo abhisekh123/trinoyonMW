@@ -138,6 +138,8 @@ function entrypoint() {
     tg.pn.init();
     createAmbience();
     tg.am.init();
+    tg.rm.init();
+    console.log('tg.rm.pathMap:', tg.rm.pathMap);
 
     // tg.scene.registerAfterRender(function () {
     //     tg.updateCharacterStateBeforeRender();

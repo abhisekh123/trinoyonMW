@@ -342,8 +342,8 @@ module.exports = {
         // times are in miliseconds. but speed is in meter/second
         botObject.diagonalTime = utilityFunctions.roundTo2Decimal((1.414 * 1000) / botObject.speed);
         botObject.adjacentTime = utilityFunctions.roundTo2Decimal((1 * 1000) / botObject.speed);
-        botObject.strideDistance = botTypeItemConfig.strideDistance;
-        botObject.strideTime = botTypeItemConfig.strideTime;
+        // botObject.strideDistance = botTypeItemConfig.strideDistance;
+        // botObject.strideTime = botTypeItemConfig.strideTime;
 
         botObject.sight = botTypeItemConfig.sight;
         botObject.range = botTypeItemConfig.range;

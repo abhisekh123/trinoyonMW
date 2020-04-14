@@ -42,8 +42,8 @@
                 attack: 1,
                 life:10,
                 speed:1, //one tile per 1000 ms.
-                strideDistance: 0.5,
-                strideTime: 0.25,
+                // strideDistance: 0.5,
+                // strideTime: 0.25,
                 sight: 4,
                 range: 2,
                 parentMesh: null,
@@ -91,8 +91,8 @@
                 attack: 1,
                 life:10,
                 speed:1, //one tile per 1000 ms.
-                strideDistance: 0.5,
-                strideTime: 0.25,
+                // strideDistance: 0.5,
+                // strideTime: 0.25,
                 sight: 4,
                 range: 2,
                 parentMesh: null,
@@ -156,8 +156,8 @@
                 attack: 1,
                 life:10,
                 speed:1, //one tile per 1000 ms.
-                strideDistance: 0.5,
-                strideTime: 0.25,
+                // strideDistance: 0.5,
+                // strideTime: 0.25,
                 sight: 5,
                 range: 4,
                 parentMesh: null,

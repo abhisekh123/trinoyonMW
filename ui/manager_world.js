@@ -46,7 +46,7 @@ tg.world.getBuildingOrBot = function(idParam){
 tg.world.updateWorld = function(updateParam){
     // console.log('tg.world.updateWorld:', updateParam);
     if(tg.isGameLive == true){
-        // console.log('tg.world.updateWorld:', updateParam);
+        console.log('tg.world.updateWorld:', updateParam);
         const itemStateMap = updateParam.playerConfig.itemState;
         const eventsArray = updateParam.playerConfig.eventsArray;
         // if(updateParam.playerConfig.eventsArray.length>0){
