@@ -61,6 +61,10 @@ module.exports = {
                 console.log('ERROR: Unknown botConfig.action:', botConfig.action);
                 break;
         }
+
+
+        botConfig.action = action;
+        botConfig.actionData = actionData;
         
         switch (action) {
             case 'goto':
@@ -70,6 +74,8 @@ module.exports = {
                 // console.log('==>' + action + ' botid:' + botConfig.id + ' position:' + actionData.path[actionData.path.length - 1]);
                 newPositionX = actionData.path[actionData.path.length - 1][0];
                 newPositionZ = actionData.path[actionData.path.length - 1][1];
+                // console.log('set new action:', action);
+                snapShotManager.updateBotSnapshotAction(gameRoom, botConfig);
                 break;
             // case 'fight':
             case 'ready':
@@ -100,8 +106,6 @@ module.exports = {
             this.updateBotPositionInGridMatrix(botConfig, newPositionX, newPositionZ, gameRoom);
         }
 
-        botConfig.action = action;
-        botConfig.actionData = actionData;
         // botConfig.activityTimeStamp = workerState.currentTime;
     },
 
@@ -184,7 +188,8 @@ module.exports = {
                 botConfig.activityTimeStamp = pathPosition[2];
                 botConfig.positionUpdateTimeStamp = botConfig.activityTimeStamp;
                 // console.log('bot:' + botConfig.id + ' moved to:', botConfig.position);
-                snapShotManager.updateBotSnapshot(gameRoom, botConfig);
+                // console.log('botConfig.actionData:', botConfig.actionData.pathTimeStamp);
+                snapShotManager.updateBotSnapshotState(gameRoom, botConfig);
                 this.updateBotGraphEntry(gameRoom, botConfig);
                 // console.log('return 0 at index:', i);
                 return 0;
@@ -198,7 +203,8 @@ module.exports = {
         botConfig.positionUpdateTimeStamp = botConfig.activityTimeStamp;
         this.addActionToBot(botConfig, 'ready', null, gameRoom);
         timeSlice = workerState.currentTime - pathPosition[2];
-        snapShotManager.updateBotSnapshot(gameRoom, botConfig);
+        // console.log('bot:' + botConfig.id + ' completed movement to:', botConfig.position);
+        snapShotManager.updateBotSnapshotState(gameRoom, botConfig);
         this.updateBotGraphEntry(gameRoom, botConfig);
         // TODO: update snapshot
         return timeSlice;

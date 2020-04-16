@@ -587,3 +587,322 @@ function updateWorld(jsonParam) {
     }
 };
 
+
+tg.rm.initPathMap_old = function () {
+    tg.rm.pathMap.right = {};
+    tg.rm.pathMap.right.fullPath = [{
+            x: 0.125,
+            z: 0,
+            timeFactor: 0.125,
+        },
+        {
+            x: 0.25,
+            z: 0,
+            timeFactor: 0.25,
+        },
+        {
+            x: 0.375,
+            z: 0,
+            timeFactor: 0.375,
+        },
+        {
+            x: 0.5,
+            z: 0,
+            timeFactor: 0.5,
+        },
+        {
+            x: 0.625,
+            z: 0,
+            timeFactor: 0.625,
+        },
+        {
+            x: 0.75,
+            z: 0,
+            timeFactor: 0.75,
+        },
+        {
+            x: 0.875,
+            z: 0,
+            timeFactor: 0.875,
+        },
+        {
+            x: 1,
+            z: 0,
+            timeFactor: 1
+        },
+    ];
+    tg.rm.pathMap.right.halfPath = [{
+            x: 0.125,
+            z: 0,
+            timeFactor: 0.125,
+        },
+        {
+            x: 0.25,
+            z: 0,
+            timeFactor: 0.25,
+        },
+        {
+            x: 0.375,
+            z: 0,
+            timeFactor: 0.375,
+        },
+        {
+            x: 0.5,
+            z: 0,
+            timeFactor: 0.5,
+        },
+    ];
+
+
+    tg.rm.pathMap.left = {};
+    tg.rm.pathMap.left.fullPath = [{
+            x: -0.125,
+            z: 0,
+            timeFactor: 0.125,
+        },
+        {
+            x: -0.25,
+            z: 0,
+            timeFactor: 0.25,
+        },
+        {
+            x: -0.375,
+            z: 0,
+            timeFactor: 0.375,
+        },
+        {
+            x: -0.5,
+            z: 0,
+            timeFactor: 0.5,
+        },
+        {
+            x: -0.625,
+            z: 0,
+            timeFactor: 0.625,
+        },
+        {
+            x: -0.75,
+            z: 0,
+            timeFactor: 0.75,
+        },
+        {
+            x: -0.875,
+            z: 0,
+            timeFactor: 0.875,
+        },
+        {
+            x: -1,
+            z: 0,
+            timeFactor: 1
+        },
+    ];
+    tg.rm.pathMap.left.halfPath = [{
+            x: -0.125,
+            z: 0,
+            timeFactor: 0.125,
+        },
+        {
+            x: -0.25,
+            z: 0,
+            timeFactor: 0.25,
+        },
+        {
+            x: -0.375,
+            z: 0,
+            timeFactor: 0.375,
+        },
+        {
+            x: -0.5,
+            z: 0,
+            timeFactor: 0.5,
+        },
+    ];
+
+    tg.rm.pathMap.up = {};
+    tg.rm.pathMap.up.fullPath = [{
+            x: 0,
+            z: 0.125,
+            timeFactor: 0.125,
+        },
+        {
+            x: 0,
+            z: 0.25,
+            timeFactor: 0.25,
+        },
+        {
+            x: 0,
+            z: 0.375,
+            timeFactor: 0.375,
+        },
+        {
+            x: 0,
+            z: 0.5,
+            timeFactor: 0.5,
+        },
+        {
+            x: 0,
+            z: 0.625,
+            timeFactor: 0.625,
+        },
+        {
+            x: 0,
+            z: 0.75,
+            timeFactor: 0.75,
+        },
+        {
+            x: 0,
+            z: 0.875,
+            timeFactor: 0.875,
+        },
+        {
+            x: 0,
+            z: 1,
+            timeFactor: 1
+        },
+    ];
+    tg.rm.pathMap.up.halfPath = [{
+            x: 0,
+            z: 0.125,
+            timeFactor: 0.125,
+        },
+        {
+            x: 0,
+            z: 0.25,
+            timeFactor: 0.25,
+        },
+        {
+            x: 0,
+            z: 0.375,
+            timeFactor: 0.375,
+        },
+        {
+            x: 0,
+            z: 0.5,
+            timeFactor: 0.5,
+        },
+    ];
+
+    tg.rm.pathMap.down = {};
+    tg.rm.pathMap.down.fullPath = [{
+            x: 0,
+            z: -0.125,
+            timeFactor: 0.125,
+        },
+        {
+            x: 0,
+            z: -0.25,
+            timeFactor: 0.25,
+        },
+        {
+            x: 0,
+            z: -0.375,
+            timeFactor: 0.375,
+        },
+        {
+            x: 0,
+            z: -0.5,
+            timeFactor: 0.5,
+        },
+        {
+            x: 0,
+            z: -0.625,
+            timeFactor: 0.625,
+        },
+        {
+            x: 0,
+            z: -0.75,
+            timeFactor: 0.75,
+        },
+        {
+            x: 0,
+            z: -0.875,
+            timeFactor: 0.875,
+        },
+        {
+            x: 0,
+            z: -1,
+            timeFactor: 1
+        },
+    ];
+    tg.rm.pathMap.down.halfPath = [{
+            x: 0,
+            z: -0.125,
+            timeFactor: 0.125,
+        },
+        {
+            x: 0,
+            z: -0.25,
+            timeFactor: 0.25,
+        },
+        {
+            x: 0,
+            z: -0.375,
+            timeFactor: 0.375,
+        },
+        {
+            x: 0,
+            z: -0.5,
+            timeFactor: 0.5,
+        },
+    ];
+
+    tg.rm.pathMap.right.up = tg.rm.getCurvedPath({
+        x: 1,
+        z: 0
+    }, {
+        x: 1,
+        z: 1
+    }, );
+    tg.rm.pathMap.right.down = tg.rm.getCurvedPath({
+        x: 1,
+        z: 0
+    }, {
+        x: 1,
+        z: -1
+    }, );
+
+    tg.rm.pathMap.left.up = tg.rm.getCurvedPath({
+        x: -1,
+        z: 0
+    }, {
+        x: -1,
+        z: 1
+    }, );
+    tg.rm.pathMap.left.down = tg.rm.getCurvedPath({
+        x: -1,
+        z: 0
+    }, {
+        x: -1,
+        z: -1
+    }, );
+
+    tg.rm.pathMap.up.right = tg.rm.getCurvedPath({
+        x: 0,
+        z: 1
+    }, {
+        x: 1,
+        z: 1
+    }, );
+    tg.rm.pathMap.up.left = tg.rm.getCurvedPath({
+        x: 0,
+        z: 1
+    }, {
+        x: -1,
+        z: 1
+    }, );
+
+    tg.rm.pathMap.down.right = tg.rm.getCurvedPath({
+        x: 0,
+        z: -1
+    }, {
+        x: 1,
+        z: -1
+    }, );
+    tg.rm.pathMap.down.left = tg.rm.getCurvedPath({
+        x: 0,
+        z: -1
+    }, {
+        x: -1,
+        z: -1
+    }, );
+};

@@ -103,6 +103,8 @@ tg.newRefreshFunction = function() {
             }
             if(tg.am.dynamicItems.botsArray[i].plannedPath != null){
                 tg.updateBotPosition(tg.am.dynamicItems.botsArray[i]);
+            }else{
+                // console.log('planned path is null for bot:', tg.am.dynamicItems.botsArray[i].id);
             }
         }
         for(var i = 0; i < tg.am.staticItems.buildingsArray.length; ++i){
@@ -116,19 +118,20 @@ tg.newRefreshFunction = function() {
 };
 
 tg.updateBotPosition = function(configParam) {
-    console.log('updateBotPosition for:', configParam.id);
-    console.log('tg.currentTime:', tg.currentTime);
+    // console.log('updateBotPosition for:', configParam.id);
+    // console.log('tg.currentTime:', tg.currentTime);
     
     if(tg.moveMeshAlongPath(configParam.controlMesh, configParam.plannedPath) == true){
+        // console.log('setting path to null for bot:', configParam.id);
         configParam.plannedPath = null;
     }
 };
 
 tg.updateProjectileState = function(configParam) {
-    console.log('updateProjectileState for:', configParam.id);
-    console.log('tg.currentTime:', tg.currentTime);
+    // console.log('updateProjectileState for:', configParam.id);
+    // console.log('tg.currentTime:', tg.currentTime);
     if(configParam.isProjectileActive == true && configParam.projectileData.endTime < tg.currentTime){
-        console.log('clear projectile position for:', configParam.id);
+        // console.log('clear projectile position for:', configParam.id);
         configParam.isProjectileActive = false;
         configParam.projectile.position.y = tg.worldItems.uiConfig.hiddenY;
         return;
@@ -140,11 +143,17 @@ tg.updateProjectileState = function(configParam) {
 };
 
 tg.moveMeshAlongPath = function(meshParam, pathParam){
+    // console.log('moveMeshAlongPath');
     for(var i = 0; i < pathParam.length; ++i){
         if(pathParam[i].time > tg.currentTime){
-            console.log('update projectile position for:', configParam.id);
+            // console.log('update mesh position for:', meshParam.id);
             meshParam.position.x = pathParam[i].x;
             meshParam.position.z = pathParam[i].z;
+            var axis = new BABYLON.Vector3(0, 1, 0);
+            // axis.normalize();
+            var quaternion = new BABYLON.Quaternion.RotationAxis(axis, pathParam[i].rotation);
+            meshParam.rotationQuaternion = quaternion;
+            // meshParam.rotation.y = pathParam[i].rotation;
             return false;
         }
     }

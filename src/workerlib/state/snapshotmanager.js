@@ -16,8 +16,8 @@ module.exports = {
     // },
 
     // for actions like goto, march
-    updateBotSnapshot: function(gameRoom, botConfig){
-        // console.log('updateBotSnapshot, id:', botConfig.id);
+    updateBotSnapshotAction: function(gameRoom, botConfig){
+        // console.log('updateBotSnapshotAction, id:', botConfig.id);
         // console.log('position:', botConfig.position);
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
@@ -26,15 +26,51 @@ module.exports = {
         switch (botSnapshotObject.action) {
             case 'march':
             case 'goto':
-                botSnapshotObject.actionData = {
-                    path: botConfig.actionData.path,
-                    timeStamp: botConfig.actionData.timestamp,
+                
+                if(
+                    botSnapshotObject.actionData != undefined &&
+                    botSnapshotObject.actionData != null &&
+                    botSnapshotObject.actionData.pathTimeStamp != undefined && 
+                    botSnapshotObject.actionData.pathTimeStamp != null
+                ){
+                    // console.log('updateBotSnapshot', botConfig.actionData.pathTimeStamp);
+                    if(botConfig.actionData.pathTimeStamp != botSnapshotObject.actionData.pathTimeStamp){
+                        botSnapshotObject.actionData = {
+                            path: botConfig.actionData.path,
+                            pathTimeStamp: botConfig.actionData.pathTimeStamp,
+                        }
+                    }
+                } else {
+                    // console.log('updateBotSnapshot::', botConfig.actionData.pathTimeStamp);
+                    botSnapshotObject.actionData = {
+                        path: botConfig.actionData.path,
+                        pathTimeStamp: botConfig.actionData.pathTimeStamp,
+                    }
                 }
                 break;
-        
             default:
                 break;
         }
+        // botSnapshotObject.actionData = botConfig.actionData;
+        // botSnapshotObject.actionData = null;
+
+        // botSnapshotObject.deathTimestamp = workerState.currentTime;
+        botSnapshotObject.activityTimeStamp = botConfig.activityTimeStamp;
+        botSnapshotObject.isActive = botConfig.isActive;
+        botSnapshotObject.life = botConfig.life;
+
+        botSnapshotObject.position[0] = botConfig.position[0];
+        botSnapshotObject.position[1] = botConfig.position[1];
+        botSnapshotObject.position[2] = botConfig.position[2];
+    },
+
+    updateBotSnapshotState: function(gameRoom, botConfig){
+        // console.log('updateBotSnapshotState, id:', botConfig.id);
+        // console.log('position:', botConfig.position);
+        var snapShotObject = gameRoom.snapShot;
+        var botSnapshotObject = snapShotObject.itemState[botConfig.id];
+
+        
         // botSnapshotObject.actionData = botConfig.actionData;
         // botSnapshotObject.actionData = null;
 
@@ -116,7 +152,7 @@ module.exports = {
         // }
         
         botSnapshotObject.action = 'ready';
-        // botSnapshotObject.actionData = null;
+        botSnapshotObject.actionData = null;
 
         // botSnapshotObject.deathTimestamp = workerState.currentTime;
         botSnapshotObject.activityTimeStamp = workerState.currentTime;
@@ -219,24 +255,6 @@ module.exports = {
             ],
         };
     },
-
-    // getGeneric_Building_SnapshotObject: function(buildingConfig){
-    //     return{
-    //         id: buildingConfig.id,
-
-    //         deathTimestamp: workerState.currentTime,
-    //         activityTimeStamp: workerState.currentTime,
-    //         life: buildingConfig.life,
-    //         team: buildingConfig.team,
-
-    //         isActive: buildingConfig.isActive,
-    //         position: [
-    //             buildingConfig.position[0],
-    //             buildingConfig.position[1],
-    //             buildingConfig.position[2]
-    //         ],
-    //     };
-    // },
 
 
     /**

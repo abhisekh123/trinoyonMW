@@ -98,9 +98,9 @@ module.exports = {
         }
 
         // test the non hero bots if they are away from hero bot.
-        if(botIndex != 0 && this.shouldBotGoNearLeader(botConfig, distanceBetweenBotAndHero)){
+        if(botIndex != 0 && heroConfig.isActive == true && this.shouldBotGoNearLeader(botConfig, distanceBetweenBotAndHero)){
             aiUtility.goNearRoutine(this.worldConfig.constants.DONTCARE, this.worldConfig.closeProximity, botConfig, gameRoom, heroConfig);
-        } else if(distanceBetweenBotAndHostile <= botConfig.sight){
+        } else if(hostileConfig != null && distanceBetweenBotAndHostile <= botConfig.sight){
             aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, botConfig.range, botConfig, gameRoom, hostileConfig);
             // if(playerConfig.isAIDriven == true){
             // }

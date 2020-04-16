@@ -76,11 +76,12 @@ module.exports = {
         aiUtility_route.planBotRoute(botConfig, path); // set timestamp to each path position.
         // console.log('botConfig.id:', botConfig.id);
         // console.log('completeBotMovementActionFormalities path:', path);
-        actionData = {
+        var actionData = {
             path: path,
-            timeStamp: workerState.currentTime,
+            pathTimeStamp: workerState.currentTime,
             targetConfig: targetConfig
         }
+        // console.log('completeBotMovementActionFormalities actionData:', actionData);
         actionManager.actionUtility.addActionToBot(botConfig, action, actionData, gameRoom);
         // this.updateBotPositionInGridMatrix(botConfig, positionObject.x, positionObject.z, gameRoom);
     },
@@ -93,6 +94,8 @@ module.exports = {
             {position: [positionObject.x, 0, positionObject.z]},
             gameRoom
         );
+
+        // console.log('goNearDesignatedPosition closest position:', closestWalkablePosition);
 
         this.completeBotMovementActionFormalities(
             botConfig, 
@@ -118,7 +121,7 @@ module.exports = {
             targetConfig.position[2]
         );
         if(botConfig.action == 'march'){
-            if(botConfig.actionData.targetConfig.id == targetConfig.id){
+            if(botConfig.actionData.targetConfig != null && botConfig.actionData.targetConfig.id == targetConfig.id){
                 if(targetConfig.type == 'base' || targetConfig.type == 'tower'){
                     if(distance < botConfig.sight){
                         botConfig.action = 'goto';
@@ -128,7 +131,7 @@ module.exports = {
                     return;
                 }
                 // the bot is already moving towards the given target.
-                if(botConfig.actionData.timeStamp >= targetConfig.positionUpdateTimeStamp){
+                if(botConfig.actionData.pathTimeStamp >= targetConfig.positionUpdateTimeStamp){
                     // the target bot did not move after the input bot started march
                     // so do nothing. let the bot continue moving.
                     if(distance < botConfig.sight){

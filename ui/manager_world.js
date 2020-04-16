@@ -46,7 +46,7 @@ tg.world.getBuildingOrBot = function(idParam){
 tg.world.updateWorld = function(updateParam){
     // console.log('tg.world.updateWorld:', updateParam);
     if(tg.isGameLive == true){
-        console.log('tg.world.updateWorld:', updateParam);
+        // console.log('tg.world.updateWorld:', updateParam);
         const itemStateMap = updateParam.playerConfig.itemState;
         const eventsArray = updateParam.playerConfig.eventsArray;
         // if(updateParam.playerConfig.eventsArray.length>0){
@@ -78,9 +78,11 @@ tg.world.updateWorld = function(updateParam){
                 botObject.controlMesh.position.z = (updateItemConfig.position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
             }else{
                 if(updateItemConfig.action == 'march' || updateItemConfig.action == 'goto'){
-                    if(botObject.plannedPathTimeStamp != updateItemConfig.actionData.timeStamp){
+                    if(botObject.plannedPathTimeStamp != updateItemConfig.actionData.pathTimeStamp){
                         // path was updated. so need fresh planning.
                         botObject.plannedPath = tg.rm.planBotRoute(botObject, updateItemConfig);
+                        botObject.plannedPathTimeStamp = updateItemConfig.actionData.pathTimeStamp;
+                        // console.log('completed setting planned path for bot:', botObject.id);
                     }
                 } else {
                     botObject.controlMesh.position.x = (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
@@ -102,9 +104,9 @@ tg.world.updateWorld = function(updateParam){
                 
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 var destinationConfig = tg.world.getBuildingOrBot(eventsArray[index].tid);
-                console.log('set projectile position for:', sourceConfig.id);
+                // console.log('set projectile position for:', sourceConfig.id);
                 if(sourceConfig == null || destinationConfig == null){
-                    console.log('sourceConfig == null || destinationConfig == null');
+                    // console.log('sourceConfig == null || destinationConfig == null');
                     continue;
                 }
 
@@ -126,9 +128,9 @@ tg.world.updateWorld = function(updateParam){
                     destinationConfig.controlMesh.position.x,
                     destinationConfig.controlMesh.position.z,
                 );
-                console.log('sourceConfig.id:', sourceConfig.id);
-                console.log('tg.currentTime:', tg.currentTime);
-                console.log('pathData:', pathData);
+                // console.log('sourceConfig.id:', sourceConfig.id);
+                // console.log('tg.currentTime:', tg.currentTime);
+                // console.log('pathData:', pathData);
                 var endTime = tg.currentTime;
                 if(pathData.length > 0){
                     endTime = pathData[pathData.length - 1].time;
@@ -152,9 +154,9 @@ tg.world.planProjectilePath = function(startX, startZ, endX, endZ){
     distance = getFloorPositionFromGridPosition(distance);
     // console.log('distance after:', distance);
 
-    if(distance > 0){
-        console.log('distance > 0');
-    }
+    // if(distance > 0){
+    //     console.log('distance > 0');
+    // }
 
     var factorX = (endX - startX) / distance;
     var factorZ = (endZ - startZ) / distance;
@@ -165,7 +167,8 @@ tg.world.planProjectilePath = function(startX, startZ, endX, endZ){
         var projectilePathElement = {
             x: (startX + (pathRunner * factorX)),
             z: (startZ + (pathRunner * factorZ)),
-            time: time
+            time: time,
+            rotation: 0
         }
         projectilePath.push(projectilePathElement);
         pathRunner += tg.worldItems.uiConfig.projectilePathDistanceResolution;

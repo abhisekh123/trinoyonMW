@@ -1,6 +1,5 @@
 
 const mainThreadStub = require('../mainthreadstub');
-// const snapshotmanager = require('../state/snapshotmanager');
 // const gameManager = require('../control/gamemanager');
 const gameRoomAssetManager = require('../control/gameroomassetmanager');
 const messageFactory = require('../../factory/messagefactory');
@@ -20,7 +19,6 @@ module.exports = {
             
             // console.log('---returning:', newMessageObject);
             console.log('player admitted successfully.');
-            // newMessageObject.gameConfig = snapshotmanager.getGameConfig(gameId);
         }else{
             // TODO
             newMessageObject.type = 'request_game_admit_nack';
@@ -28,15 +26,6 @@ module.exports = {
 
         mainThreadStub.postMessage(newMessageObject, '');
     },
-
-    // sendMessage: function(message){
-    //     mainThreadStub.postMessage(message, '');
-    // },
-    // broadcastGameUpdatesToPlayers: function(){
-    //     var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
-    //     mainThreadStub.postMessage(responseJSONString, '');
-    // },
-
     
 
     broadcastGameConfigToPlayers: function(gameRoom){
@@ -96,7 +85,9 @@ module.exports = {
      */
 
     getGameUpdateJSON: function(gameRoom){
+        console.log('getGameUpdateJSON');
         const updatePacket = {
+            // test: '123',
             gameStartTime: gameRoom.snapShot.gameStartTime,
             snapshotStartTime: gameRoom.snapShot.startTime,
             currentTime: gameRoom.snapShot.currentTime,

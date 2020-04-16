@@ -19,9 +19,11 @@ module.exports = {
     engineLoop: function(){
         // console.log('=========>refreshWorld');
         // var messageList = mainThreadStub.messagebuffer;
+        var totalActiveGameRoomCount = 0;
 
         // game will be simulated till this time in the current iteration.
         var currentTime = utilityFunctions.getCurrentTime();
+        console.log('++++current time', currentTime);
         var totalTimeToSimulate = currentTime - workerState.timePreviousGameLoopStart;
         // this will be incremented stepwise in the while loop.
         workerState.currentTime = workerState.timePreviousGameLoopStart;
@@ -39,6 +41,7 @@ module.exports = {
                 if(gameRoom.isActive == false){
                     continue;
                 }
+                ++totalActiveGameRoomCount;
                 // console.log('updating snapshot for gameRoom:', gameRoom);
                 snapShotManager.startNewSnapshotLoop(
                     workerState.timePreviousGameLoopStart,
@@ -50,9 +53,9 @@ module.exports = {
         }
 
 
-        // console.log('=========>refreshWorld2, totalTimeToSimulate:', totalTimeToSimulate);
+        console.log('=========>refreshWorld2, totalTimeToSimulate:' + totalTimeToSimulate + ' (totalActiveGameRoomCount)=' + totalActiveGameRoomCount);
         while (totalTimeToSimulate > 0){
-            // console.log('--))start do loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
+            // console.log('--))start while loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
             if (totalTimeToSimulate <= workerState.gameLoopInterval) {
                 workerState.timeIntervalToSimulateInEachGame = totalTimeToSimulate;
                 workerState.currentTime += totalTimeToSimulate;
@@ -73,7 +76,7 @@ module.exports = {
             // }
             
             gameManager.processGames(currentTime);
-            console.log('end while loop, totalTimeToSimulate:', totalTimeToSimulate);
+            // console.log('end while loop, totalTimeToSimulate:', totalTimeToSimulate);
         } 
         workerState.timePreviousGameLoopStart = currentTime;
         workerState.currentTime = currentTime;
@@ -94,8 +97,9 @@ module.exports = {
 
         // time taken to compute current snapshot for each game
         // will be used to schedule next iteration of engine loop
+        console.log('*******current time', utilityFunctions.getCurrentTime());
         let timeElapsed = utilityFunctions.getCurrentTime() - workerState.timePreviousGameLoopStart;
-        // // console.log('refreshWorld time duration:' + timeElapsed);
+        console.log('refreshWorld cycle duration:' + timeElapsed);
         if(timeElapsed > workerState.gameLoopInterval){
             setTimeout((()=>{this.engineLoop()}), 0);
         }else{

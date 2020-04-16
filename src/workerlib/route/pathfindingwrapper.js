@@ -12,10 +12,10 @@ module.exports = {
     init: function(){
         this.worldConfig = workerState.getWorldConfig();
         this.itemConfig = workerState.getItemConfig();
-        workerState.finder = new PF.AStarFinder({
+        workerState.finder = new PF.BestFirstFinder({
             allowDiagonal: false,
             dontCrossCorners: true,
-            heuristic: PF.Heuristic.chebyshev
+            heuristic: PF.Heuristic.euclidean
         });
 
         this.prepareGrid();

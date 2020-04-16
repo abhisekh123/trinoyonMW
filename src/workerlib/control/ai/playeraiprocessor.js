@@ -21,8 +21,8 @@ module.exports = {
         var areAllBotsIdle = this.areAllBotsIdle(playerConfigParam);
         if(areAllBotsIdle == true){
             var leaderBotConfig = playerConfigParam.botObjectList[0];
-            console.log('-- playerAi. all bots idle for player:' 
-            + playerConfigParam.id + ' at position:', leaderBotConfig.position);
+            // console.log('-- playerAi. all bots idle for player:' 
+            // + playerConfigParam.id + ' at position:', leaderBotConfig.position);
             
             
             // console.log('-- playerAi. leaderBotConfig position:', leaderBotConfig.position);
@@ -36,12 +36,13 @@ module.exports = {
             // // console.log(playerConfig.id);
             // console.log('nearestTarget:', nearestTarget);
             if(nearestTarget == null){
-                // console.error('ERROR:@playerAI, nearestTarget is null for player:', playerConfigParam.id);
+                
                 // return;
                 var randomPosition = {
                     x: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
                     z: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
                 };
+                // console.log('@playerAI, nearestTarget is null for player:' + playerConfigParam.id + ' random position:', randomPosition);
                 aiUtility.goNearDesignatedPosition(
                     leaderBotConfig, 
                     randomPosition, 

@@ -10,19 +10,19 @@ tg.animationmanager.actionToAnimationMap = {
     'attack': 'attackAnimation',
 };
 
-tg.animationmanager.startCharacterAnimation = function(botObject, currentAction){
-    if(botObject.animationAction == currentAction){
+tg.animationmanager.startCharacterAnimation = function(botObject, newAction){
+    if(botObject.animationAction == newAction){
         // same action. nothing to do.
         return;
     }
     
     var animationObject = null;
     var animationPlayFlag = true;
-    if(currentAction == 'die' || currentAction == 'attack'){
+    if(newAction == 'die' || newAction == 'attack'){
         animationPlayFlag = false;
     }
 
-    // if(currentAction == 'attack'){
+    // if(newAction == 'attack'){
     //     console.log('attack');
     // }
 
@@ -31,13 +31,10 @@ tg.animationmanager.startCharacterAnimation = function(botObject, currentAction)
         animationObject = botObject.animations[tg.animationmanager.actionToAnimationMap['spawn']];
         botObject.controlMesh.position.y = 0;
     } else {
-        animationObject = botObject.animations[tg.animationmanager.actionToAnimationMap[currentAction]];
+        animationObject = botObject.animations[tg.animationmanager.actionToAnimationMap[newAction]];
     }
 
-    // if(currentAction == 'fight'){
-    //     console.log('fight:', botObject.id);
-    // }
-    if(currentAction == 'die'){
+    if(newAction == 'die'){
         // console.log('die:', botObject.id);
         botObject.controlMesh.position.y = tg.worldItems.uiConfig.hiddenY;
         // botObject.projectile.position.y = tg.worldItems.uiConfig.hiddenY;
@@ -51,8 +48,8 @@ tg.animationmanager.startCharacterAnimation = function(botObject, currentAction)
         botObject.animationGroups[animationObject.index].play(animationPlayFlag);
     }
 
-    if(currentAction != 'attack'){
-        botObject.animationAction = currentAction;
+    if(newAction != 'attack'){
+        botObject.animationAction = newAction;
     } else {
         botObject.animationAction = 'ready';
     }
