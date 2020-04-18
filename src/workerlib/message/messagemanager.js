@@ -166,13 +166,18 @@ module.exports = {
 
         if(gameRoom != null){ // if found
             // console.log('botConfig:', botConfig);
-            // botConfig.activityTimeStamp = workerState.currentTime;
-            aiUtility.goNearDesignatedPosition(
-                botConfig, 
-                userMessageObject.destinationPosition, 
-                'goto', 
-                gameRoom, 
+            var nearestPosition = routeManager.findNearestWalkablePositionInNeighbourhood(
+                userMessageObject.destinationPosition, gameRoom, this.worldConfig.maxRange
             );
+            // console.log('@playerAI, nearestTarget is null for player:' + playerConfigParam.id + ' random position:', randomPosition);
+            if(nearestPosition != null){
+                aiUtility.goNearDesignatedPosition(
+                    botConfig, 
+                    nearestPosition, 
+                    'goto', 
+                    gameRoom, 
+                );
+            }
             // console.log('botConfig after:', botConfig);
         }else{
             console.error('gameRoom not found ', userMessageObject);

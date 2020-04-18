@@ -42,13 +42,17 @@ module.exports = {
                     x: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
                     z: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
                 };
+                var nearestPosition = routeManager.findNearestWalkablePositionInNeighbourhood(randomPosition, gameRoom, this.worldConfig.maxRange);
                 // console.log('@playerAI, nearestTarget is null for player:' + playerConfigParam.id + ' random position:', randomPosition);
-                aiUtility.goNearDesignatedPosition(
-                    leaderBotConfig, 
-                    randomPosition, 
-                    'march', 
-                    gameRoom, 
-                );
+                if(nearestPosition != null){
+                    aiUtility.goNearDesignatedPosition(
+                        leaderBotConfig, 
+                        nearestPosition, 
+                        'march', 
+                        gameRoom, 
+                    );
+                }
+                
             }else{
 
                 aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, leaderBotConfig.range, leaderBotConfig, gameRoom, nearestTarget);

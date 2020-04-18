@@ -1645,5 +1645,67 @@ module.exports = {
     },
 
 
+    // find point(x, y) closest to position such that (x, y) in in range of targetPosition.
+    findClosestVisiblePositionInRange: function (sourceConfig, targetConfig, range, gameRoom) {
+        var minDistance = this.worldConfig.gridSide + 1;
+        var closestPosition = {
+            x: 0,
+            y: 0
+        }
+        var foundSuitablePosition = false;
+
+        for (var i = -range; i < range; ++i) { // x-axis
+            for (var j = -range; j < range; ++j) { // z-axis
+                var actualPositionX = i + targetConfig.position[0];
+                var actualPositionZ = j + targetConfig.position[2];
+                var objectOccupyintThePosition = this.getObjectOccupyingThePosition(
+                    actualPositionX,
+                    actualPositionZ,
+                    gameRoom
+                );
+                if (objectOccupyintThePosition != null) { // already some bot / building is occupying the position
+                    continue;
+                }
+
+                var distanceBetweenTargetAndNewPosition = this.getDistanceBetweenPoints(
+                    targetConfig.position[0],
+                    targetConfig.position[2],
+                    actualPositionX,
+                    actualPositionZ
+                );
+                if (distanceBetweenTargetAndNewPosition < range) {
+                    var visibility = customRoutingUtility.testVisibility(
+                        targetConfig.position[0],
+                        targetConfig.position[2],
+                        actualPositionX,
+                        actualPositionZ
+                    );
+                    if (visibility == true) {
+                        var distanceBetweenSourceAndNewPosition = this.getDistanceBetweenPoints(
+                            sourceConfig.position[0],
+                            sourceConfig.position[2],
+                            actualPositionX,
+                            actualPositionZ
+                        );
+
+                        if (distanceBetweenSourceAndNewPosition < minDistance) {
+                            minDistance = distanceBetweenSourceAndNewPosition;
+                            closestPosition.x = actualPositionX;
+                            closestPosition.z = actualPositionZ;
+                            foundSuitablePosition = true;
+                        }
+                    }
+                }
+
+            }
+        }
+        if (foundSuitablePosition == true) {
+            return closestPosition;
+        } else {
+            return null;
+        }
+    },
+
+
 }
 
