@@ -140,23 +140,44 @@ module.exports = {
             var buildingConfig = gameRoom.buildingArray_2[i];
             this.processBuildingLifeCycle(buildingConfig, gameRoom);
         }
+
+        // process ai
+        for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+            var buildingConfig = gameRoom.buildingArray_1[i];
+            if(buildingConfig.isActive == false){
+                continue;
+            }
+            if (buildingConfig.type == 'base') {
+                aiManager.Base.processAI(buildingConfig, gameRoom);
+            } else {
+                aiManager.Tower.processAI(buildingConfig, gameRoom);
+            }
+
+            snapShotManager.updateBuildingState(gameRoom, buildingConfig);
+        }
+
+        for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+            var buildingConfig = gameRoom.buildingArray_2[i];
+            if(buildingConfig.isActive == false){
+                continue;
+            }
+            if (buildingConfig.type == 'base') {
+                aiManager.Base.processAI(buildingConfig, gameRoom);
+            } else {
+                aiManager.Tower.processAI(buildingConfig, gameRoom);
+            }
+
+            snapShotManager.updateBuildingState(gameRoom, buildingConfig);
+        }
     },
 
 
     processBuildingLifeCycle: function (buildingConfig, gameRoom) {
-        // life:this.itemConfig.items.base.life,
-        //     attack:this.itemConfig.items.base.attack,
-        //     type:'base',
-        //     isActive: true,
-        //     team:1,
         if (buildingConfig.team == 0) {
             // nothing to do for now
             return;
         }
         if (buildingConfig.life <= 0 && buildingConfig.isActive) { // bots that died in last cycle.
-            // this.processBot(i, timeSlice);
-            // var botConfig = this.botArray[i];
-            // // console.log('5');
             if (buildingConfig.type == 'base') {
                 console.log('base destroyed.');
                 this.terminateGame(gameRoom, {
@@ -165,26 +186,14 @@ module.exports = {
                 // this.resetGame(gameRoom);
                 return;
             }
-            // console.log('building:' + workerstate.buildingArray[i].id + ' DIED.');
             buildingConfig.isActive = false;
             buildingConfig.team = 0;
-
+            buildingConfigParam.ownershipClaimStartTimestamp = null;
+            buildingConfigParam.mostResentOwnershipClaimingTeam = null;
+            buildingConfigParam.life = 0;
             snapShotManager.add_BuildingTeamChange_Event(gameRoom, buildingConfig);
-            // var update = {};
-            // update.action = 'die';
-            // update.botType = workerstate.buildingArray[i].type;
-            // update.x = workerstate.buildingArray[i].position.x;
-            // update.z = workerstate.buildingArray[i].position.z;
-            // this.latestSnapshot[workerstate.buildingArray[i].id] = update;
-            // this.isStateUpdated = true;
             return;
         }
-        if (buildingConfig.type == 'base') {
-            aiManager.Base.processAI(buildingConfig, gameRoom);
-        } else {
-            aiManager.Tower.processAI(buildingConfig, gameRoom);
-        }
-
     },
 
     // PLAYERS

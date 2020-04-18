@@ -38,17 +38,13 @@ module.exports = {
     // TODO: HAVE FLAG : HOSTILE TYPE: BUILDINGS, HERO AND BUILDING, EVERYTHING?
     // TODO: need refinement. search only for hero bot. Or dont consider bots / players at all
     // used for movement of player to nearesrt enemy hero or building. used by player AI
-    findClosestHostile: function (botConfigParam, gameRoom, hostileTypeFlag) {
-        var playerTeam = botConfigParam.team;
-        // var globalIndex = botConfigParam.globalIndex;
-        // var defenseList = null;
-        // var base = null;
+    findClosestHostile: function (configParam, gameRoom, hostileTypeFlag) {
+        var playerTeam = configParam.team;
         var enemyPlayerList = null;
         // console.log('hostileFlag:', hostileTypeFlag);
         // console.log('findClosestHostile->ID:', botConfigParam);
-        // var leaderConfig = workerstate.botMap[botConfigParam.leaderBotID];
 
-        var leaderPosition = botConfigParam.position;
+        var leaderPosition = configParam.position;
 
         // console.log('leader position:', leaderPosition, ' team:' + playerTeam, ' playerid:' + botConfigParam.playerID);
 
@@ -60,29 +56,19 @@ module.exports = {
         // find closest enemy player bots
         if(hostileTypeFlag == this.worldConfig.constants.ALL || hostileTypeFlag == this.worldConfig.constants.BOTS){
             if (playerTeam == 1) { // top team = 1
-                // defenseList = workerstate.getWorldConfig().defenceTop;
-                // base = workerstate.getWorldConfig().topBase
                 enemyPlayerList = gameRoom.players_2;
             } else { // bottom team = 2
-                // defenseList = workerstate.getWorldConfig().defenceBottom;
-                // base = workerstate.getWorldConfig().bottomBase;
                 enemyPlayerList = gameRoom.players_1;
             }
             for (var playerIndex = 0; playerIndex < enemyPlayerList.length; ++playerIndex) {
                 const playerConfig = enemyPlayerList[playerIndex];
                 
-                // skip inactive player and players controlled by real people and players in the same team
-                // if(!playerConfig.isActive || playerConfig.team == botConfigParam.team){
-                //     // TODO: Add logic to spawn new AI player / admit new player here.
-                //     continue;
-                // }
     
                 for (var i = 0; i < playerConfig.botObjectList.length; ++i) {
                     var botConfig = playerConfig.botObjectList[i];
                     if(botConfig.isActive == false){
                         continue;
                     }
-                    // var currentBotGlobalIndex = botConfig.globalIndex;
                     if(!this.checkIfBotIsVisibleToEnemyTeam(botConfig, gameRoom)){ // skip bots invisible to team
                         continue;
                     }
@@ -129,16 +115,10 @@ module.exports = {
                 if (distance < minDistance) {
                     minDistance = distance;
                     target = buildingConfig;
-                    // if(i == 0){
-                    //     targetType = 'base';
-                    // }else{
-                    //     targetType = 'static';
-                    // }
     
                 }
             }
             // console.log('min distance:', minDistance);
-            // gameRoom.buildingArray_2
             for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
                 var buildingConfig = gameRoom.buildingArray_2[i];
                 if (buildingConfig.team == 0 || buildingConfig.team == playerTeam) {
@@ -155,11 +135,6 @@ module.exports = {
                 if (distance < minDistance) {
                     minDistance = distance;
                     target = buildingConfig;
-                    // if(i == 0){
-                    //     targetType = 'base';
-                    // }else{
-                    //     targetType = 'static';
-                    // }
     
                 }
             }
@@ -172,10 +147,6 @@ module.exports = {
             return null;
         } else {
             return target;
-            // {
-            //     target: target,
-            //     targetType: targetType
-            // }
         }
 
     },

@@ -204,7 +204,7 @@
                 sight: 3,
                 range: 3,
                 attackinterval: 1000,
-                captureTime: 3000 // 3 seconds
+                intervalToCompleteOwnershipClaim: 3000 // 3 seconds
             },
             base:{
                 life:1000,
@@ -214,6 +214,7 @@
                 sight: 3,
                 range: 3,
                 attackinterval: 1000,
+                intervalToCompleteOwnershipClaim: 3000 // 3 seconds
             },
         },
         

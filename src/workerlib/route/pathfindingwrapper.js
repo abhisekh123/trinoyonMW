@@ -130,6 +130,9 @@ module.exports = {
             isActive: true,
             team:1,
             id:'base1',
+            ownershipClaimStartTimestamp: 0,
+            mostResentOwnershipClaimingTeam: null,
+            intervalToCompleteOwnershipClaim: this.itemConfig.items.base.intervalToCompleteOwnershipClaim,
             position: [
                 this.worldConfig.topBase[0],
                 0,
@@ -158,6 +161,9 @@ module.exports = {
                 isActive: true,
                 team:1,
                 id:towerID,
+                ownershipClaimStartTimestamp: 0,
+                mostResentOwnershipClaimingTeam: null,
+                intervalToCompleteOwnershipClaim: this.itemConfig.items.tower.intervalToCompleteOwnershipClaim,
                 position: [
                     this.worldConfig.defenceTop[i][0],
                     0,
@@ -185,6 +191,9 @@ module.exports = {
             isActive: true,
             team:2,
             id:'base2',
+            ownershipClaimStartTimestamp: 0,
+            mostResentOwnershipClaimingTeam: null,
+            intervalToCompleteOwnershipClaim: this.itemConfig.items.base.intervalToCompleteOwnershipClaim,
             position: [
                 this.worldConfig.bottomBase[0],
                 0,
@@ -200,6 +209,7 @@ module.exports = {
             this.worldConfig.defenceBottom[i].push(towerID);
             workerState.buildingMap_2[towerID] = {
                 life:this.itemConfig.items.tower.life,
+                fullLife:this.itemConfig.items.tower.life,
                 attack:this.itemConfig.items.tower.attack,
                 range:this.itemConfig.items.tower.range,
                 sight:this.itemConfig.items.tower.sight,
@@ -212,6 +222,9 @@ module.exports = {
                 type:'tower',
                 team:2,
                 id:towerID,
+                ownershipClaimStartTimestamp: null,
+                mostResentOwnershipClaimingTeam: null,
+                intervalToCompleteOwnershipClaim: this.itemConfig.items.tower.intervalToCompleteOwnershipClaim,
                 position: [
                     this.worldConfig.defenceBottom[i][0],
                     0,
