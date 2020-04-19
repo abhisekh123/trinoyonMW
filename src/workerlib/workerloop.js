@@ -67,13 +67,7 @@ module.exports = {
             }
 
             // console.log('workerState.timeIntervalToSimulateInEachGame', workerState.timeIntervalToSimulateInEachGame);
-            // for (var i = 0; i < this.maxBotCount; ++i) {
-            //     if (workerstate.botArray[i].isActive == true) {
-            //         this.processBot(i, timeSlice);
-            //         // var botConfig = this.botArray[i];
-            //     }
-            //     // this.processBot(i, timeSlice); /// process all bots : active, inactive.
-            // }
+            
             
             gameManager.processGames(currentTime);
             // console.log('end while loop, totalTimeToSimulate:', totalTimeToSimulate);
@@ -125,15 +119,12 @@ module.exports = {
             console.error('!!!!!!ERROR:this.maxBotCount != world_config.commonConfig.maxBotPerPlayer * world_config.commonConfig.maxPlayerCount');
         }
         // console.log('13');
-        //populating world with bots
-        // this.initializeWorldByPopulatingWithBots();
         // // console.log(workerstate);
         // // console.log("workerstate: %j", workerstate);
         
         // console.log('complete world init.');
         workerState.timePreviousGameLoopStart = utilityFunctions.getCurrentTime();
         this.isGameRunning = true;
-        // this.engineLoop();
         setTimeout((()=>{this.engineLoop()}), workerState.gameLoopInterval);
         console.log('server is up and ready to serve the humanity.');
     },

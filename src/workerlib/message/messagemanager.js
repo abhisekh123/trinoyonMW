@@ -53,6 +53,25 @@ module.exports = {
         // responseJSONString.update = gameRoom;
     },
 
+    broadcastGameResultToPlayers: function(gameRoom){
+        const payload = gameRoom.statistics;
+        var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1);
+        var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2);
+        
+        // console.log('sending game update');
+        // send config to players in team  1
+        payload.playerIDList = playerArrayTeam1;
+        // console.log('sending game update to team 1', payload);
+        var responseJSON = mainThreadStub.getResponseEmptyPacket('result', payload);
+        mainThreadStub.postMessage(responseJSON, '');
+
+        // send config to players in team  2
+        payload.playerIDList = playerArrayTeam2;
+        // console.log('sending game update to team 2', payload);
+        var responseJSON = mainThreadStub.getResponseEmptyPacket('result', payload);
+        mainThreadStub.postMessage(responseJSON, '');
+    },
+
     broadcastGameUpdatesToPlayers: function(gameRoom){
         const payload = {};
         // payload.playerIDList = [];
@@ -75,10 +94,6 @@ module.exports = {
         mainThreadStub.postMessage(responseJSON, '');
     },
 
-    broadcastGameResultToPlayers: function(gameRoom){
-        var responseJSONString = mainThreadStub.getResponseEmptyPacket('update', this.latestSnapshot);
-        mainThreadStub.postMessage(responseJSONString, '');
-    },
 
     /**
      * LOGICAL FUNCTIONS FOR BROADCAST

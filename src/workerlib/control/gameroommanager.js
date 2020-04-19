@@ -7,6 +7,7 @@ const gameRoomAssetManager = require('./gameroomassetmanager');
 const aiManager = require('./ai/aimanager');
 const actionManager = require('./action/actionmanager');
 const snapShotManager = require('../state/snapshotmanager');
+const messageManager = require('../message/messagemanager');
 
 module.exports = {
     worldConfig: null,
@@ -122,7 +123,7 @@ module.exports = {
 
         if (botConfig.life <= 0 && botConfig.isActive == true) { // bots that died in last cycle.
             actionManager.actionUtility.addActionToBot(botConfig, 'die', null, gameRoom);
-            gameRoom.statistics[botConfig.team].death++;
+            gameRoom.statistics.performance[botConfig.team].death++;
             return;
         }
     },
@@ -181,9 +182,7 @@ module.exports = {
         if (buildingConfig.life <= 0 && buildingConfig.isActive) { // bots that died in last cycle.
             if (buildingConfig.type == 'base') {
                 console.log('base destroyed.');
-                this.terminateGame(gameRoom, {
-                    loosingTeam: buildingConfig.team
-                });
+                this.terminateGame(gameRoom);
                 // this.resetGame(gameRoom);
                 return;
             }
@@ -193,7 +192,7 @@ module.exports = {
             buildingConfig.mostResentOwnershipClaimingTeam = null;
             buildingConfig.life = 0;
             snapShotManager.add_BuildingTeamChange_Event(gameRoom, buildingConfig);
-            gameRoom.statistics[buildingConfig.team].death++;
+            gameRoom.statistics.performance[buildingConfig.team].death++;
             return;
         }
     },
@@ -346,43 +345,130 @@ module.exports = {
 
     },
 
-    terminateGame: function(gameRoom, gameResultObject) { // either base destroyed or time completed.
+    updateGameResult: function(gameRoom){
+        
+        var teamFlag = 0;
+        var tempCounter = 0;
+        // return;
+        // gameRoomManager.resetGame(gameRoom);
+
+        // check if any base got destroyed
+        for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+            var buildingConfig = gameRoom.buildingArray_1[i];
+            
+            if (buildingConfig.type == 'base') {
+                if(buildingConfig.isActive == false){
+                    teamFlag = 1;
+                    ++tempCounter;
+                    break;
+                }
+            }
+        }
+        for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+            var buildingConfig = gameRoom.buildingArray_2[i];
+            
+            if (buildingConfig.type == 'base') {
+                if(buildingConfig.isActive == false){
+                    teamFlag = 2;
+                    ++tempCounter;
+                    break;
+                }
+            }
+        }
+
+        if(tempCounter == 2){ // if both base were destroyed
+            gameRoom.statistics.winningTeam = 0;
+            return;
+        }else if (tempCounter == 1){ // one base was destroyed
+            gameRoom.statistics.winningTeam = teamFlag;
+            return;
+        } else {
+            // no base was destroyed.
+
+            // compare towers owned
+            var towerCountTeam1 = 0;
+            var towerCountTeam2 = 0;
+            for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+                var buildingConfig = gameRoom.buildingArray_1[i];
+                if (buildingConfig.type == 'tower') {
+                    if(buildingConfig.team == 1){
+                        ++towerCountTeam1;
+                    } else if(buildingConfig.team == 2){
+                        ++towerCountTeam2;
+                    }
+                }
+            }
+            for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+                var buildingConfig = gameRoom.buildingArray_2[i];
+                
+                if (buildingConfig.type == 'tower') {
+                    if(buildingConfig.team == 1){
+                        ++towerCountTeam1;
+                    } else if(buildingConfig.team == 2){
+                        ++towerCountTeam2;
+                    }
+                }
+            }
+
+            if(towerCountTeam1 != towerCountTeam2){
+                if(towerCountTeam1 > towerCountTeam2){
+                    gameRoom.statistics.winningTeam = 1;
+                    return;
+                } else {
+                    gameRoom.statistics.winningTeam = 2;
+                    return;
+                }
+            } else { // both team own equal number of towers
+                // compare kill count
+                if(gameRoom.statistics.performance[1].death != gameRoom.statistics.performance[2].death){
+                    if(gameRoom.statistics.performance[1].death < gameRoom.statistics.performance[2].death){
+                        gameRoom.statistics.winningTeam = 1;
+                        return;
+                    } else {
+                        gameRoom.statistics.winningTeam = 2;
+                        return;
+                    }
+                } else { // both team have equal kills
+                    // compare damage
+                    if(gameRoom.statistics.performance[1].damage != gameRoom.statistics.performance[2].damage){
+                        if(gameRoom.statistics.performance[1].damage > gameRoom.statistics.performance[2].damage){
+                            gameRoom.statistics.winningTeam = 1;
+                            return;
+                        } else {
+                            gameRoom.statistics.winningTeam = 2;
+                            return;
+                        }
+                    } else {
+                        // maracle. every thing is similar. is it real?
+                        gameRoom.statistics.winningTeam = 2;
+                        return;
+                    }
+                }
+            }
+        }
+    },
+
+    terminateGame: function(gameRoom) { // either base destroyed or time completed.
         console.log('###################################');
         console.log('###################################');
         console.log('###################################');
         gameRoom.isActive = false;
-        return;
-        // gameRoomManager.resetGame(gameRoom);
-
-
-        // old code
-        var loosingTeam = itemConfigParam.team;
-        var update = {};
-        update.action = 'over';
-        update.loosingTeam = loosingTeam;
-        update.x = 0;
-        update.z = 0;
-        this.latestSnapshot[itemConfigParam.id] = update;
-        this.isStateUpdated = true;
-        // this.isGameRunning = false;
-        this.sendSnapshotUpdateToMain();
-
-        // reset game
-        gameRoomAssetManager.reset();
-
-        for (let index = 0; index < workerstate.getWorldConfig().characters.length; index++) {
-            const characterConfig = workerstate.getWorldConfig().characters[index];
-            var botObject = workerstate.botArray[index];
-            botObject.payload.position[0] = characterConfig.position.x;
-            botObject.payload.position[2] = characterConfig.position.z;
-            botObject.life = characterConfig.life;
-        }
-
-        for (let index = 0; index < workerstate.buildingArray.length; index++) {
-            var buildingType = workerstate.buildingArray[index].type;
-            var buildingItemConfig = workerstate.getItemConfig().buildings[buildingType];
-            workerstate.buildingArray[i].life = buildingItemConfig.life;;
-            workerstate.buildingArray[i].isActive = true;
-        }
+        this.updateGameResult(gameRoom);
+        messageManager.broadcastGameResultToPlayers(gameRoom);
+        this.clearGameRoom;
     },
+
+    clearGameRoom: function(gameRoom){
+
+    }
+    // gameRoom.statistics = {
+    //     team1: { // team 1 stats
+    //         death: 0, // total number of bot death
+    //         damage: 0 // total damage dealt to opposing team
+    //     },
+    //     team2: { // team 2 stats
+    //         death: 0, 
+    //         damage: 0
+    //     }
+    // }
 }
