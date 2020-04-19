@@ -135,6 +135,31 @@ tg.am.createMaterials = function () {
 
     tg.am.material_self_marker = material_self_marker;
 
+    // materials for hp bars : completely opaque
+    var material_self_hpbar = new BABYLON.StandardMaterial('material_self_hpbar', tg.scene);
+    material_self_hpbar.diffuseColor = new BABYLON.Color3(0.1, 0.4, 0.1);
+    tg.am.material_self_hpbar = material_self_hpbar;
+
+    var material_self_hpbarcontainer = new BABYLON.StandardMaterial('material_self_hpbarcontainer', tg.scene);
+    material_self_hpbarcontainer.diffuseColor = new BABYLON.Color3(0.2, 0.3, 0.2);
+    tg.am.material_self_hpbarcontainer = material_self_hpbarcontainer;
+
+    var material_friend_hpbar = new BABYLON.StandardMaterial('material_friend_hpbar', tg.scene);
+    material_friend_hpbar.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.4);
+    tg.am.material_friend_hpbar = material_friend_hpbar;
+
+    var material_friend_hpbarcontainer = new BABYLON.StandardMaterial('material_friend_hpbarcontainer', tg.scene);
+    material_friend_hpbarcontainer.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.3);
+    tg.am.material_friend_hpbarcontainer = material_friend_hpbarcontainer;
+
+    var material_enemy_hpbar = new BABYLON.StandardMaterial('material_enemy_hpbar', tg.scene);
+    material_enemy_hpbar.diffuseColor = new BABYLON.Color3(0.4, 0.1, 0.1);
+    tg.am.material_enemy_hpbar = material_enemy_hpbar;
+
+    var material_enemy_hpbarcontainer = new BABYLON.StandardMaterial('material_enemy_hpbarcontainer', tg.scene);
+    material_enemy_hpbarcontainer.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.2);
+    tg.am.material_enemy_hpbarcontainer = material_enemy_hpbarcontainer;
+
     console.log('complete creating materials');
 }
 

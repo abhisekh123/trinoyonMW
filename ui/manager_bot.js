@@ -54,7 +54,6 @@ tg.bot.loadCharacters = function (
             particleSystems,
             skeletons,
             animationGroups,
-            // animationIndexParam
         ) {
             console.log('load character with id:' + botConfig.id);
             tg.bot.processLoadedModel(newMeshes,
@@ -65,11 +64,6 @@ tg.bot.loadCharacters = function (
                     y: 0,
                     z: (botConfig.position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
                 },
-                // characterConfig.scale,
-                // characterConfig.idleAnimationIndex,
-                // botConfig.rotation,
-                // botConfig.type,
-                // botConfig.id,
                 botConfig,
                 team,
                 playerID
@@ -85,11 +79,6 @@ tg.bot.processLoadedModel = function (
     skeletons,
     animationGroups,
     positionParam,
-    // scale,
-    // animationIndex,
-    // rotationParam,
-    // characterName,
-    // characterID,
     botConfig,
     team,
     playerID
@@ -100,18 +89,19 @@ tg.bot.processLoadedModel = function (
     const characterID = botConfig.id;
     // const selfBots =  tg.bot.userPlayerConfig.botObjectList;
 
-    var markerMaterial = null;
-    var markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 10;
+    var hpBarMaterial = null;
+    var hpBarContainerMaterial = null;
+    // var markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 10;
     if(team != tg.bot.userPlayerConfig.team){ // enemy
-        markerMaterial = tg.am.material_enemy_marker;
-        markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 10;
+        hpBarMaterial = tg.am.material_enemy_hpbar;
+        hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
     } else { // fiendly
         if(playerID == tg.bot.userPlayerConfig.id){ // self
-            markerMaterial = tg.am.material_self_marker;
-            markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 11;
+            hpBarMaterial = tg.am.material_self_hpbar;
+            hpBarContainerMaterial = tg.am.material_self_hpbarcontainer;
         } else { // team
-            markerMaterial = tg.am.material_friend_marker;
-            markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 9;
+            hpBarMaterial = tg.am.material_friend_hpbar;
+            hpBarContainerMaterial = tg.am.material_friend_hpbarcontainer;
         }
     }
     
@@ -151,6 +141,8 @@ tg.bot.processLoadedModel = function (
     botObject.intermediatePositionArrayIndex = 0;
     botObject.animationAction = 'goto'; // initialise action.
     botObject.animations = characterConfig.animations;
+    botObject.projectileShootY = characterConfig.projectileShootY;
+    botObject.projectileReceiveY = characterConfig.projectileReceiveY;
     botObject.life = characterConfig.life;
     botObject.fullLife = characterConfig.life;
     botObject.team = team;
@@ -158,23 +150,24 @@ tg.bot.processLoadedModel = function (
     botObject.timeTakenToCover1Tile = 1000 / characterConfig.speed; // in milliSeconds
     botObject.plannedPath = null;
     botObject.plannedPathTimeStamp = 0;
-
-    var hpBarConfig = tg.ui3d.gethpbar(characterID);
+    hpBarMaterial = tg.am.material_enemy_hpbar;
+    hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
+    var hpBarConfig = tg.ui3d.gethpbar(characterID, hpBarMaterial, hpBarContainerMaterial);
     botObject.hpBarConfig = hpBarConfig;
     // botObject.controlMesh.scaling = new BABYLON.Vector3(1/scale, 1/scale, 1/scale);
     hpBarConfig.healthBarContainer.parent = botObject.controlMesh;
     // var refreshWorldInterval = worldItems.refreshWorldInterval;
-    var refreshWorldPerIntervalUI = worldItems.refreshWorldPerIntervalUI;
-    for (var i = 0; i < refreshWorldPerIntervalUI; ++i) {
-        botObject.intermediatePositionArray[i] = {
-            position: {
-                x: 0,
-                y: 0,
-                z: 0
-            },
-            time: 0
-        }
-    }
+    // var refreshWorldPerIntervalUI = worldItems.refreshWorldPerIntervalUI;
+    // for (var i = 0; i < refreshWorldPerIntervalUI; ++i) {
+    //     botObject.intermediatePositionArray[i] = {
+    //         position: {
+    //             x: 0,
+    //             y: 0,
+    //             z: 0
+    //         },
+    //         time: 0
+    //     }
+    // }
 
     tg.am.dynamicItems.bots[characterID] = botObject;
     tg.am.dynamicItems.botsArray.push(botObject);
@@ -224,34 +217,41 @@ tg.bot.processLoadedModel = function (
 
     botObject.outputplane = outputplane;
 
-    var markerBox = BABYLON.MeshBuilder.CreateBox(characterID + 'markerBox', {
-        height: markerHeight * 1/scale,
-        width: tg.worldItems.uiConfig.playerDimensionBaseUnit * 1/scale,
-        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit * 1/scale,
-    }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
-    markerBox.position.y = 0;
-    markerBox.parent = botObject.controlMesh;
-    // console.log('markerMaterial:', markerMaterial);
-    markerBox.material = markerMaterial;
+    // var markerBox = BABYLON.MeshBuilder.CreateBox(characterID + 'markerBox', {
+    //     height: markerHeight * 1/scale,
+    //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit * 1/scale,
+    //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit * 1/scale,
+    // }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
+    // markerBox.position.y = 0;
+    // markerBox.parent = botObject.controlMesh;
+    // // console.log('markerMaterial:', markerMaterial);
+    // markerBox.material = markerMaterial;
 
     // projectile mesh
-    var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + characterID, {
-        height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
-        width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
-        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10
-    }, tg.scene);
-
-    projectile.position.x = positionParam.x;
-    projectile.position.y = tg.worldItems.uiConfig.hiddenY;
-    projectile.position.z = positionParam.z;
-    projectile.material = tg.am.material_semitransparent_projectile;
-
-    botObject.projectile = projectile;
-    botObject.isProjectileActive = false;
-    botObject.projectileData = {
-        path: null,
-        endTime: 0
-    };
+    if(botObject.weaponType == 'melee'){
+        botObject.projectile = null;
+        botObject.isProjectileActive = false;
+        botObject.projectileData = null;
+    } else {
+        var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + characterID, {
+            height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
+            width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
+            depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10
+        }, tg.scene);
+    
+        projectile.position.x = positionParam.x;
+        projectile.position.y = tg.worldItems.uiConfig.hiddenY;
+        projectile.position.z = positionParam.z;
+        projectile.material = tg.am.material_semitransparent_projectile;
+    
+        botObject.projectile = projectile;
+        botObject.isProjectileActive = false;
+        botObject.projectileData = {
+            path: null,
+            endTime: 0
+        };
+    }
+    
     
     tg.am.updateNewAssetLoaded(1);
 }

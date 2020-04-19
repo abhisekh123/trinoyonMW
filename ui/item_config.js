@@ -9,11 +9,6 @@
         items:{
             lion:{
                 bannedMeshes:[],
-                // idleAnimationIndex:0,
-                // runAnimationIndex:5,
-                // dieAnimationIndex:6,
-                // spawnAnimationIndex:4,
-                // attackAnimationIndex:8,
                 animations: {
                     idleAnimation:{
                         type: 'flat',
@@ -37,13 +32,14 @@
                     },
                 },
                 
+                weaponType: 'melee',
+                projectileShootY: null,
+                projectileReceiveY: 0,
 
                 attackinterval: 1000,
                 attack: 1,
                 life:10,
                 speed:1, //one tile per 1000 ms.
-                // strideDistance: 0.5,
-                // strideTime: 0.25,
                 sight: 4,
                 range: 2,
                 parentMesh: null,
@@ -57,12 +53,6 @@
             },
             swordman:{
                 bannedMeshes:[6],
-                // bannedMeshes:[],
-                // idleAnimationIndex:0,
-                // runAnimationIndex:16,
-                // dieAnimationIndex:9,
-                // spawnAnimationIndex:7,
-                // attackAnimationIndex:2,
                 animations: {
                     idleAnimation:{
                         type: 'flat',
@@ -86,13 +76,14 @@
                     },
                 },
                 
+                weaponType: 'melee',
+                projectileShootY: null,
+                projectileReceiveY: 0,
 
                 attackinterval: 1000,
                 attack: 1,
                 life:10,
                 speed:1, //one tile per 1000 ms.
-                // strideDistance: 0.5,
-                // strideTime: 0.25,
                 sight: 4,
                 range: 2,
                 parentMesh: null,
@@ -105,14 +96,7 @@
                 headerPositionY: 3.5,
             },
             archer:{
-                // bannedMeshes:[9],
                 bannedMeshes:[],
-                // idleAnimationIndex:0,
-                // runAnimationIndex:0,
-                // dieAnimationIndex:0,
-                // spawnAnimationIndex:0,
-                // attackAnimationIndex:0,
-                // animation interval : 0 to 19.16666603088379
 
                 animations: {
                     idleAnimation:{
@@ -147,17 +131,14 @@
                     },
                 },
                 
-                // idleAnimationIndex:55,
-                // runAnimationIndex:63,
-                // dieAnimationIndex:58,
-                // spawnAnimationIndex:62,
-                // attackAnimationIndex:57,
+                weaponType: 'arrow',
+                projectileShootY: 0,
+                projectileReceiveY: 0,
+
                 attackinterval: 1000,
                 attack: 1,
                 life:10,
                 speed:1, //one tile per 1000 ms.
-                // strideDistance: 0.5,
-                // strideTime: 0.25,
                 sight: 5,
                 range: 4,
                 parentMesh: null,
@@ -169,6 +150,32 @@
                 iconurl: 'static/img/archer_icon.png',
                 headerScale: 0.5,
                 headerPositionY: 16,
+            },
+            tower:{
+                life:1000,
+                attack:2,
+                file: 'tower_gloom',
+                scale: 0.05,
+                sight: 3,
+                range: 3,
+                attackinterval: 1000,
+                weaponType: 'fireball',
+                projectileShootY: 5,
+                projectileReceiveY: 5,
+                intervalToCompleteOwnershipClaim: 3000 // 3 seconds
+            },
+            base:{
+                life:1000,
+                attack:2,
+                file: 'defense_tower',
+                scale: 2,
+                sight: 3,
+                range: 3,
+                attackinterval: 1000,
+                weaponType: 'fireball',
+                projectileShootY: 5,
+                projectileReceiveY: 5,
+                intervalToCompleteOwnershipClaim: 3000 // 3 seconds
             },
             // boy:{
             //     bannedMeshes:[9],
@@ -196,26 +203,6 @@
             //     headerScale: 1,
             //     headerPositionY: 1,
             // },
-            tower:{
-                life:1000,
-                attack:2,
-                file: 'tower_gloom',
-                scale: 0.05,
-                sight: 3,
-                range: 3,
-                attackinterval: 1000,
-                intervalToCompleteOwnershipClaim: 3000 // 3 seconds
-            },
-            base:{
-                life:1000,
-                attack:2,
-                file: 'defense_tower',
-                scale: 2,
-                sight: 3,
-                range: 3,
-                attackinterval: 1000,
-                intervalToCompleteOwnershipClaim: 3000 // 3 seconds
-            },
         },
         
     };

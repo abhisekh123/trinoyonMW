@@ -59,6 +59,7 @@ tg.rm.planBotRoute = function(botObject, updateItemConfig){
         // creating seperate object to help garbage collection.
         plannedPathArray.push({
             x: plannedPositionRunner.x + pathGuideArray[i].x,
+            y: 0,
             z: plannedPositionRunner.z + pathGuideArray[i].z,
             time: plannedPositionRunner.time,
             rotation: pathGuideArray[i].rotation
@@ -79,6 +80,7 @@ tg.rm.planBotRoute = function(botObject, updateItemConfig){
             plannedPositionRunner.time += timeToTravelToNextPlannedPathPosition;
             plannedPathArray.push({
                 x: plannedPositionRunner.x + pathGuideArray[j].x,
+                y: 0,
                 z: plannedPositionRunner.z + pathGuideArray[j].z,
                 time: plannedPositionRunner.time,
                 rotation: pathGuideArray[j].rotation
@@ -100,6 +102,7 @@ tg.rm.planBotRoute = function(botObject, updateItemConfig){
         plannedPositionRunner.time += timeToTravelToNextPlannedPathPosition;
         plannedPathArray.push({
             x: plannedPositionRunner.x + pathGuideArray[i].x,
+            y: 0,
             z: plannedPositionRunner.z + pathGuideArray[i].z,
             time: plannedPositionRunner.time,
             rotation: pathGuideArray[i].rotation

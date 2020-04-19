@@ -148,6 +148,7 @@ tg.moveMeshAlongPath = function(meshParam, pathParam){
         if(pathParam[i].time > tg.currentTime){
             // console.log('update mesh position for:', meshParam.id);
             meshParam.position.x = pathParam[i].x;
+            meshParam.position.y = pathParam[i].y;
             meshParam.position.z = pathParam[i].z;
             var axis = new BABYLON.Vector3(0, 1, 0);
             // axis.normalize();

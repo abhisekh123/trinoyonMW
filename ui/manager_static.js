@@ -14,6 +14,20 @@ tg.static.loadStaticModel = function (
     if(itemID == 'base2'){
         console.log('...');
     }
+
+    var hpBarMaterial = null;
+    var hpBarContainerMaterial = null;
+    var isFriendly = false;
+    // var markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 10;
+    if(team != tg.bot.userPlayerConfig.team){ // enemy
+        hpBarMaterial = tg.am.material_enemy_hpbar;
+        hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
+    } else { // fiendly
+        isFriendly = true;
+        hpBarMaterial = tg.am.material_friend_hpbar;
+        hpBarContainerMaterial = tg.am.material_friend_hpbarcontainer;
+    }
+
     newMeshes[0].position.x = positionParam.x;
     newMeshes[0].position.y = positionParam.y;
     newMeshes[0].position.z = positionParam.z;
@@ -36,8 +50,48 @@ tg.static.loadStaticModel = function (
         isActive: true,
     };
     buildingObject.controlMesh = newMeshes[0];
-    // mesh that remains when the building gets destroyed
-    var residue = BABYLON.MeshBuilder.CreateBox("residue_" + itemID, {
+
+    buildingObject.projectileShootY = buildingTypeConfig.projectileShootY;
+    buildingObject.projectileReceiveY = buildingTypeConfig.projectileReceiveY;
+
+
+    // marker mesh indicating team
+    var residue = BABYLON.MeshBuilder.CreateBox("residue_enemy_" + itemID, {
+        height: 2 * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit
+    }, tg.scene);
+
+    residue.position.x = positionParam.x;
+    if(isFriendly){
+        residue.position.y = tg.worldItems.uiConfig.hiddenY;
+    } else {
+        residue.position.y = 0;
+    }
+    
+    residue.position.z = positionParam.z;
+    residue.material = tg.am.material_semitransparent_red;
+
+    buildingObject.markerMeshTeamEnemy = residue;
+
+    residue = BABYLON.MeshBuilder.CreateBox("residue_friendly_" + itemID, {
+        height: 2 * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit
+    }, tg.scene);
+
+    residue.position.x = positionParam.x;
+    if(isFriendly){
+        residue.position.y = 0;
+    } else {
+        residue.position.y = tg.worldItems.uiConfig.hiddenY;
+    }
+    residue.position.z = positionParam.z;
+    residue.material = tg.am.material_semitransparent_blue;
+
+    buildingObject.markerMeshTeamFriendly = residue;
+
+    residue = BABYLON.MeshBuilder.CreateBox("residue_neutral_" + itemID, {
         height: 2 * tg.worldItems.uiConfig.playerDimensionBaseUnit,
         width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
         depth: tg.worldItems.uiConfig.playerDimensionBaseUnit
@@ -46,9 +100,9 @@ tg.static.loadStaticModel = function (
     residue.position.x = positionParam.x;
     residue.position.y = tg.worldItems.uiConfig.hiddenY;
     residue.position.z = positionParam.z;
-    residue.material = tg.am.material_semitransparent_red;
+    residue.material = tg.am.material_semitransparent_chosen;
 
-    buildingObject.residue = residue;
+    buildingObject.markerMeshTeamNeutral = residue;
 
     // projectile mesh
     var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + itemID, {
@@ -83,7 +137,9 @@ tg.static.loadStaticModel = function (
     outputplane.material.backFaceCulling = false;
 
     //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
-    outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
+    // outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
+    
+    outputplaneTexture.drawText(positionParam.x + ',' + positionParam.z, null, 140, "bold 80px verdana", "white");
 
     outputplaneTexture.hasAlpha = true;
     outputplane.position.x = positionParam.x;
@@ -92,7 +148,7 @@ tg.static.loadStaticModel = function (
     // outputplane.parent = parentMesh;
 
 
-    var hpBarConfig = tg.ui3d.gethpbar(itemID);
+    var hpBarConfig = tg.ui3d.gethpbar(itemID, hpBarMaterial, hpBarContainerMaterial);
     buildingObject.hpBarConfig = hpBarConfig;
     // hpBarConfig.healthBarContainer.parent = botObject.controlMesh;
     hpBarConfig.healthBarContainer.position.x = positionParam.x;
@@ -327,6 +383,29 @@ tg.static.addStaticItems = function () {
         box.material = tg.am.boxMaterial;
         // box.material = groundMaterial;
         tg.am.staticItems.boxes.push(box);
+
+        //data reporter
+        var outputplane = BABYLON.Mesh.CreatePlane("box_" + i, 25, tg.scene, false);
+        outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+        outputplane.material = new BABYLON.StandardMaterial("boxmaterial_" + i, tg.scene);
+        // outputplane.position = new BABYLON.Vector3(0, 0, 25);
+        // outputplane.scaling.y = 0.4;
+
+        var outputplaneTexture = new BABYLON.DynamicTexture("boxdynamictexture_" + i, 512, tg.scene, true);
+        outputplane.material.diffuseTexture = outputplaneTexture;
+        outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+        outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+        outputplane.material.backFaceCulling = false;
+
+        //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
+        // outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
+        
+        outputplaneTexture.drawText(box.position.x + ',' + box.position.z, null, 140, "bold 80px verdana", "white");
+
+        outputplaneTexture.hasAlpha = true;
+        outputplane.position.x = box.position.x;
+        outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 2 + box.position.y;
+        outputplane.position.z = box.position.z;
     }
 
     tg.am.markerMeshes = {};

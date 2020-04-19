@@ -103,6 +103,9 @@ tg.world.updateWorld = function(updateParam){
                 // console.log('attack event', eventsArray[index]);
                 
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
+                if(sourceConfig.projectile == null){ // source config has melee attack
+                    continue;
+                }
                 var destinationConfig = tg.world.getBuildingOrBot(eventsArray[index].tid);
                 // console.log('set projectile position for:', sourceConfig.id);
                 if(sourceConfig == null || destinationConfig == null){
@@ -127,6 +130,8 @@ tg.world.updateWorld = function(updateParam){
                     sourceConfig.controlMesh.position.z,
                     destinationConfig.controlMesh.position.x,
                     destinationConfig.controlMesh.position.z,
+                    sourceConfig.projectileShootY,
+                    destinationConfig.projectileReceiveY
                 );
                 // console.log('sourceConfig.id:', sourceConfig.id);
                 // console.log('tg.currentTime:', tg.currentTime);
@@ -143,7 +148,7 @@ tg.world.updateWorld = function(updateParam){
     }
 };
 
-tg.world.planProjectilePath = function(startX, startZ, endX, endZ){
+tg.world.planProjectilePath = function(startX, startZ, endX, endZ, startY, endY){
     var distance = tg.getDistanceBetweenPoints(
         getGridPositionFromFloorPosition(startX), 
         getGridPositionFromFloorPosition(startZ), 
@@ -160,12 +165,14 @@ tg.world.planProjectilePath = function(startX, startZ, endX, endZ){
 
     var factorX = (endX - startX) / distance;
     var factorZ = (endZ - startZ) / distance;
+    var factorY = (endY - startY) / distance;
     var projectilePath = [];
     var time = tg.currentTime;
     
     for(var pathRunner = 0; pathRunner < distance;){
         var projectilePathElement = {
             x: (startX + (pathRunner * factorX)),
+            y: (startY + (pathRunner * factorY)),
             z: (startZ + (pathRunner * factorZ)),
             time: time,
             rotation: 0
