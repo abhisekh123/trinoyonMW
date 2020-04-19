@@ -122,6 +122,7 @@ module.exports = {
 
         if (botConfig.life <= 0 && botConfig.isActive == true) { // bots that died in last cycle.
             actionManager.actionUtility.addActionToBot(botConfig, 'die', null, gameRoom);
+            gameRoom.statistics[botConfig.team].death++;
             return;
         }
     },
@@ -188,10 +189,11 @@ module.exports = {
             }
             buildingConfig.isActive = false;
             buildingConfig.team = 0;
-            buildingConfigParam.ownershipClaimStartTimestamp = null;
-            buildingConfigParam.mostResentOwnershipClaimingTeam = null;
-            buildingConfigParam.life = 0;
+            buildingConfig.ownershipClaimStartTimestamp = null;
+            buildingConfig.mostResentOwnershipClaimingTeam = null;
+            buildingConfig.life = 0;
             snapShotManager.add_BuildingTeamChange_Event(gameRoom, buildingConfig);
+            gameRoom.statistics[buildingConfig.team].death++;
             return;
         }
     },

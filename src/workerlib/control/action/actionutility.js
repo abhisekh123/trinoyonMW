@@ -214,7 +214,7 @@ module.exports = {
     processAttackAction: function (offenderConfig, defenderConfig, gameRoom) {
         defenderConfig.life -= offenderConfig.attack;
         offenderConfig.activityTimeStamp += offenderConfig.attackinterval;
-
+        gameRoom.statistics[offenderConfig.team].damage += offenderConfig.attack;
         // snapShotManager.updateBotSnapshot(gameRoom, offenderConfig);
         snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
     },

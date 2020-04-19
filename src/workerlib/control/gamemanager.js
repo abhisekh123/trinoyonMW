@@ -158,6 +158,16 @@ module.exports = {
         // console.log('gameRoom.players_2');
         // utilityFunctions.printEntireObjectNeatyle(gameRoom.players_2);
         gameRoom.isActive = true;
+        gameRoom.statistics = {
+            1: { // team 1 stats
+                death: 0, // total number of bot death
+                damage: 0 // total damage dealt to opposing team
+            },
+            2: { // team 2 stats
+                death: 0, 
+                damage: 0
+            }
+        }
         snapShotManager.setNewSnapshotObject(gameRoom);
         messageManager.broadcastGameConfigToPlayers(gameRoom);
 
