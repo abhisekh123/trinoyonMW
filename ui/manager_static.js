@@ -163,7 +163,25 @@ tg.static.loadStaticModel = function (
     tg.am.updateNewAssetLoaded(1);
 
     console.log('loadStaticModel end:', itemID);
-}
+};
+
+tg.static.updateTowerMarkerMesh = function(towerConfig, team){
+    if(team == 0){
+        towerConfig.markerMeshTeamEnemy.position.y = tg.worldItems.uiConfig.hiddenY;
+        towerConfig.markerMeshTeamNeutral.position.y = 0;
+        towerConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
+    }else{
+        if(team != tg.bot.userPlayerConfig.team){ // enemy
+            towerConfig.markerMeshTeamEnemy.position.y = 0;
+            towerConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
+            towerConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
+        } else { // fiendly
+            towerConfig.markerMeshTeamEnemy.position.y = tg.worldItems.uiConfig.hiddenY;
+            towerConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
+            towerConfig.markerMeshTeamFriendly.position.y = 0;
+        }
+    }
+};
 
 
 tg.static.loadGLTFAssetFileForStaticMeshes = function (

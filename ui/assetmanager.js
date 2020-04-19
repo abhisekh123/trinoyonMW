@@ -160,6 +160,14 @@ tg.am.createMaterials = function () {
     material_enemy_hpbarcontainer.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.2);
     tg.am.material_enemy_hpbarcontainer = material_enemy_hpbarcontainer;
 
+    var material_neutral_hpbar = new BABYLON.StandardMaterial('material_neutral_hpbar', tg.scene);
+    material_neutral_hpbar.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    tg.am.material_neutral_hpbar = material_neutral_hpbar;
+
+    var material_neutral_hpbarcontainer = new BABYLON.StandardMaterial('material_neutral_hpbarcontainer', tg.scene);
+    material_neutral_hpbarcontainer.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    tg.am.material_neutral_hpbarcontainer = material_neutral_hpbarcontainer;
+
     console.log('complete creating materials');
 }
 

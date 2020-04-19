@@ -143,6 +143,16 @@ tg.world.updateWorld = function(updateParam){
                 
                 sourceConfig.projectileData.path = pathData;
                 sourceConfig.projectileData.endTime = endTime;
+            } else if (eventsArray[index].event == 'cteam'){ // building change team event.
+                var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
+                tg.ui3d.updatehpbarForNewTeam(sourceConfig.hpBarConfig, eventsArray[index].team);
+                tg.static.updateTowerMarkerMesh(sourceConfig, eventsArray[index].team);
+                if(eventsArray[index].team == 0){
+                    tg.ui3d.updateHPBarPercentage(sourceConfig.hpBarConfig, 0);
+                }else{
+                    tg.ui3d.updateHPBarPercentage(sourceConfig.hpBarConfig, 100);
+                }
+                
             }
         }
     }

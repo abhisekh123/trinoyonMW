@@ -1,6 +1,6 @@
 tg.ui3d = {};
 
-tg.ui3d.gethpbar = function (idParam, hpBarMaterial, hpBarBackgroundMaterial) {
+tg.ui3d.gethpbar = function (idParam, hpBarMaterial, healthBarContainerMaterial) {
     var hpBarConfig = {};
 
     // var healthBarMaterial = new BABYLON.StandardMaterial("hbmat" + idParam, tg.scene);
@@ -14,7 +14,7 @@ tg.ui3d.gethpbar = function (idParam, hpBarMaterial, hpBarBackgroundMaterial) {
     // hpBarConfig.healthBarContainerMaterial = healthBarContainerMaterial;
 
     hpBarConfig.healthBarMaterial = hpBarMaterial;
-    hpBarConfig.healthBarContainerMaterial = hpBarBackgroundMaterial;
+    hpBarConfig.healthBarContainerMaterial = healthBarContainerMaterial;
 
     // var dynamicTexture = new BABYLON.DynamicTexture("dt" + idParam, 512, tg.scene, true);
     // dynamicTexture.hasAlpha = true;
@@ -51,7 +51,7 @@ tg.ui3d.gethpbar = function (idParam, hpBarMaterial, hpBarBackgroundMaterial) {
     // healthBarContainer.parent = player;
     
 
-    healthBar.material = healthBarMaterial;
+    healthBar.material = hpBarMaterial;
     healthBarContainer.material = healthBarContainerMaterial;
     
 
@@ -85,9 +85,28 @@ tg.ui3d.gethpbar = function (idParam, hpBarMaterial, hpBarBackgroundMaterial) {
     return hpBarConfig;
 }
 
-tg.ui3d.updatehpbarMaterial = function (hpBarConfig, hpBarMaterial, hpBarBackgroundMaterial) {
-    hpBarConfig.healthBar.material = healthBarMaterial;
-    hpBarConfig.healthBarContainer.material = healthBarContainerMaterial;
+tg.ui3d.updatehpbarForNewTeam = function(hpBarConfig, team){
+    var hpBarMaterial = null;
+    var hpBarContainerMaterial = null;
+
+    if(team == 0){
+        hpBarMaterial = tg.am.material_neutral_hpbar;
+        hpBarContainerMaterial = tg.am.material_neutral_hpbarcontainer;
+    } else {
+        if(team != tg.bot.userPlayerConfig.team){ // enemy
+            hpBarMaterial = tg.am.material_enemy_hpbar;
+            hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
+        } else { // fiendly
+            hpBarMaterial = tg.am.material_friend_hpbar;
+            hpBarContainerMaterial = tg.am.material_friend_hpbarcontainer;
+        }
+    }
+    tg.ui3d.updatehpbarMaterial(hpBarConfig, hpBarMaterial, hpBarContainerMaterial);
+}
+
+tg.ui3d.updatehpbarMaterial = function (hpBarConfig, hpBarMaterial, hpBarContainerMaterial) {
+    hpBarConfig.healthBar.material = hpBarMaterial;
+    hpBarConfig.healthBarContainer.material = hpBarContainerMaterial;
 }
 
 tg.ui3d.updateHPBarPercentage = function (hpBarConfig, healthPercentage) {
