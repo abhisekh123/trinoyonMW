@@ -17,38 +17,10 @@ module.exports = {
     },
 
 
-    findClosestHostileAttackedByTeamMate: function(botIndex, playerConfig){
-        var hostileConfig = null;
-        // // console.log(this.worldConfig);
-        // var minDist = this.worldConfig.gridSide + 1;
-
-        // const botConfig = playerConfig.botObjectList[botIndex];
-        
-        // for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
-        //     if(j == botIndex){
-        //         continue;
-        //     }
-        //     const teamBotConfig = playerConfig.botObjectList[j];
-        //     if(teamBotConfig.isActive == false){
-        //         continue;
-        //     }
-        //     if(teamBotConfig.action == 'fight'){
-        //         // if the bot is in fighting mode, find how far away is his target
-        //         var dist = routeManager.getDistanceBetweenPoints(
-        //             botConfig.position[0],
-        //             botConfig.position[2],
-        //             teamBotConfig.actionData.position[0],
-        //             teamBotConfig.actionData.position[2]
-        //         );
-        //         if(dist < minDist){
-        //             minDist = dist;
-        //             hostileConfig = teamBotConfig.actionData;
-        //         }
-        //     }
-            
-        // }
-        return hostileConfig;
-    },
+    // findClosestHostileAttackedByTeamMate: function(botIndex, playerConfig){
+    //     var hostileConfig = null;
+    //     return hostileConfig;
+    // },
 
 
     planBotRoute: function(botConfig, path){ // each path element : [posX, posZ, time to travel, rotation]
@@ -81,7 +53,7 @@ module.exports = {
                 // adjacent
                 pathTime += botConfig.diagonalTime;
             } else {
-                console.log('ERROR: unknown value for path planning:', diffCount);
+                console.error('ERROR: unknown value for path planning:', diffCount);
                 pathTime += botConfig.diagonalTime;
             }
             path[i].push(pathTime);

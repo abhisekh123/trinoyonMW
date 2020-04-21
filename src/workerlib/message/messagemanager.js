@@ -18,7 +18,7 @@ module.exports = {
             newMessageObject.type = 'request_game_admit_ack';
             
             // console.log('---returning:', newMessageObject);
-            console.log('player admitted successfully.');
+            // console.log('player admitted successfully.');
         }else{
             // TODO
             newMessageObject.type = 'request_game_admit_nack';
@@ -181,18 +181,13 @@ module.exports = {
 
         if(gameRoom != null){ // if found
             // console.log('botConfig:', botConfig);
-            var nearestPosition = routeManager.findNearestWalkablePositionInNeighbourhood(
-                userMessageObject.destinationPosition, gameRoom, this.worldConfig.maxRange
+
+            aiUtility.goNearDesignatedPosition(
+                botConfig, 
+                userMessageObject.destinationPosition, 
+                'goto', 
+                gameRoom, 
             );
-            // console.log('@playerAI, nearestTarget is null for player:' + playerConfigParam.id + ' random position:', randomPosition);
-            if(nearestPosition != null){
-                aiUtility.goNearDesignatedPosition(
-                    botConfig, 
-                    nearestPosition, 
-                    'goto', 
-                    gameRoom, 
-                );
-            }
             // console.log('botConfig after:', botConfig);
         }else{
             console.error('gameRoom not found ', userMessageObject);

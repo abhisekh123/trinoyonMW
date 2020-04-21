@@ -19,9 +19,6 @@ module.exports = {
         this.initialiseRooms();
     },
 
-    refreshVisibility: function(gameRoom){
-        // TODO : 
-    },
 
     /**
      * game progress / refresh
@@ -63,10 +60,6 @@ module.exports = {
         for (var i = 0; i < gameRoom.players_1.length; ++i) {
             const playerConfig = gameRoom.players_1[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
-                // const botConfig = playerConfig.botObjectList[j];
-                // if(botConfig.isActive == false){
-                //     continue;
-                // }
                 this.processBotAction(playerConfig, gameRoom, j);
             }
         }
@@ -77,10 +70,6 @@ module.exports = {
         for (var i = 0; i < gameRoom.players_2.length; ++i) {
             const playerConfig = gameRoom.players_2[i];
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
-                // const botConfig = playerConfig.botObjectList[j];
-                // if(botConfig.isActive == false){
-                //     continue;
-                // }
                 this.processBotAction(playerConfig, gameRoom, j);
             }
         }
@@ -96,14 +85,6 @@ module.exports = {
         var timeSlice = workerState.timeIntervalToSimulateInEachGame;
         while(timeSlice > 0){ 
             // console.log('timeSlice:', timeSlice);
-            // if(botConfig.action == 'march' || botConfig.action == 'goto'){
-            //     // console.log('action:' + botConfig.id);
-            //     timeSlice = actionManager.Bot.continuePerformingAction(botConfig, gameRoom, timeSlice);
-            // }else{// standing idle. This is executed for idle user bot.
-            //     // // console.log('else');
-            //     // timeSlice = 0;
-            //     timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
-            // }
             timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
             // console.log('timeSlice returned:', timeSlice);
         }
@@ -313,6 +294,7 @@ module.exports = {
         for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
             const building = gameRoom.buildingArray_1[i];
             building.life = workerState.buildingMap_1[building.id].life;
+            building.team = workerState.buildingMap_1[building.id].team;
             building.isActive = true;
         }
 
@@ -320,6 +302,7 @@ module.exports = {
         for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
             const building = gameRoom.buildingArray_2[i];
             building.life = workerState.buildingMap_2[building.id].life;
+            building.team = workerState.buildingMap_2[building.id].team;
             building.isActive = true;
         }
 
@@ -346,7 +329,7 @@ module.exports = {
     },
 
     updateGameResult: function(gameRoom){
-        
+        console.log('updateGameResult');
         var teamFlag = 0;
         var tempCounter = 0;
         // return;
@@ -455,12 +438,9 @@ module.exports = {
         gameRoom.isActive = false;
         this.updateGameResult(gameRoom);
         messageManager.broadcastGameResultToPlayers(gameRoom);
-        this.clearGameRoom;
+        this.resetGame(gameRoom);
     },
 
-    clearGameRoom: function(gameRoom){
-
-    }
     // gameRoom.statistics = {
     //     team1: { // team 1 stats
     //         death: 0, // total number of bot death

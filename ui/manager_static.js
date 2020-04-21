@@ -11,22 +11,22 @@ tg.static.loadStaticModel = function (
     team
 ) {
     console.log('loadStaticModel:', itemID);
-    if(itemID == 'base2'){
-        console.log('...');
-    }
+    // if(itemID == 'base2'){
+    //     console.log('...');
+    // }
 
-    var hpBarMaterial = null;
-    var hpBarContainerMaterial = null;
+    var hpBarMaterial = tg.am.material_neutral_hpbar;
+    var hpBarContainerMaterial = tg.am.material_neutral_hpbarcontainer;
     var isFriendly = false;
     // var markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 10;
-    if(team != tg.bot.userPlayerConfig.team){ // enemy
-        hpBarMaterial = tg.am.material_enemy_hpbar;
-        hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
-    } else { // fiendly
-        isFriendly = true;
-        hpBarMaterial = tg.am.material_friend_hpbar;
-        hpBarContainerMaterial = tg.am.material_friend_hpbarcontainer;
-    }
+    // if(team != tg.bot.userPlayerConfig.team){ // enemy
+    //     hpBarMaterial = tg.am.material_enemy_hpbar;
+    //     hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
+    // } else { // fiendly
+    //     isFriendly = true;
+    //     hpBarMaterial = tg.am.material_friend_hpbar;
+    //     hpBarContainerMaterial = tg.am.material_friend_hpbarcontainer;
+    // }
 
     newMeshes[0].position.x = positionParam.x;
     newMeshes[0].position.y = positionParam.y;
@@ -50,7 +50,7 @@ tg.static.loadStaticModel = function (
         isActive: true,
     };
     buildingObject.controlMesh = newMeshes[0];
-
+    buildingObject.team = team;
     buildingObject.projectileShootY = buildingTypeConfig.projectileShootY;
     buildingObject.projectileReceiveY = buildingTypeConfig.projectileReceiveY;
 
@@ -165,20 +165,29 @@ tg.static.loadStaticModel = function (
     console.log('loadStaticModel end:', itemID);
 };
 
-tg.static.updateTowerMarkerMesh = function(towerConfig, team){
+
+tg.static.updateBuildingTeam = function(buildingConfig, team){
+    buildingConfig.team = team;
+    tg.ui3d.updatehpbarForNewTeam(buildingConfig.hpBarConfig, team);
     if(team == 0){
-        towerConfig.markerMeshTeamEnemy.position.y = tg.worldItems.uiConfig.hiddenY;
-        towerConfig.markerMeshTeamNeutral.position.y = 0;
-        towerConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
+        tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, 0);
+    }else{
+        tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, 100);
+    }
+    // update marker mesh
+    if(team == 0){
+        buildingConfig.markerMeshTeamEnemy.position.y = tg.worldItems.uiConfig.hiddenY;
+        buildingConfig.markerMeshTeamNeutral.position.y = 0;
+        buildingConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
     }else{
         if(team != tg.bot.userPlayerConfig.team){ // enemy
-            towerConfig.markerMeshTeamEnemy.position.y = 0;
-            towerConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
-            towerConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
+            buildingConfig.markerMeshTeamEnemy.position.y = 0;
+            buildingConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
+            buildingConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
         } else { // fiendly
-            towerConfig.markerMeshTeamEnemy.position.y = tg.worldItems.uiConfig.hiddenY;
-            towerConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
-            towerConfig.markerMeshTeamFriendly.position.y = 0;
+            buildingConfig.markerMeshTeamEnemy.position.y = tg.worldItems.uiConfig.hiddenY;
+            buildingConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
+            buildingConfig.markerMeshTeamFriendly.position.y = 0;
         }
     }
 };
@@ -403,13 +412,14 @@ tg.static.addStaticItems = function () {
         tg.am.staticItems.boxes.push(box);
 
         //data reporter
-        var outputplane = BABYLON.Mesh.CreatePlane("box_" + i, 25, tg.scene, false);
+        var outputplane = BABYLON.Mesh.CreatePlane("box_" + i, 5, tg.scene, false);
         outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
         outputplane.material = new BABYLON.StandardMaterial("boxmaterial_" + i, tg.scene);
+        // outputplane.material = tg.am.material_friend_hpbar;
         // outputplane.position = new BABYLON.Vector3(0, 0, 25);
         // outputplane.scaling.y = 0.4;
 
-        var outputplaneTexture = new BABYLON.DynamicTexture("boxdynamictexture_" + i, 512, tg.scene, true);
+        var outputplaneTexture = new BABYLON.DynamicTexture("boxdynamictexture_" + i, 128, tg.scene, true);
         outputplane.material.diffuseTexture = outputplaneTexture;
         outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
         outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
@@ -417,13 +427,15 @@ tg.static.addStaticItems = function () {
 
         //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
         // outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
-        
-        outputplaneTexture.drawText(box.position.x + ',' + box.position.z, null, 140, "bold 80px verdana", "white");
+        // console.log(box.position.x + ',' + box.position.z);
+        outputplaneTexture.drawText(box.position.x + ',' + box.position.z, 0, 30, "bold 20px verdana", "white");
 
-        outputplaneTexture.hasAlpha = true;
+        // outputplaneTexture.hasAlpha = true;
         outputplane.position.x = box.position.x;
-        outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 2 + box.position.y;
+        outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2 + box.position.y;
         outputplane.position.z = box.position.z;
+        // console.log('box' + i + ':', box.position);
+        // console.log('outputplane' + i + ':', outputplane.position);
     }
 
     tg.am.markerMeshes = {};

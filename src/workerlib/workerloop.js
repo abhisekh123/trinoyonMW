@@ -35,7 +35,7 @@ module.exports = {
 
         if(totalTimeToSimulate > 0){ 
             // console.log('total time to simulate:', totalTimeToSimulate);
-            // reset the snapshot objects for all game rooms
+            // reset the snapshot objects for all game rooms (clear events)
             for(var i = 0; i < environmentState.maxGameCount; ++i){ // intialise each game room
                 const gameRoom = workerState.gameRoomArray[i];
                 if(gameRoom.isActive == false){
@@ -69,7 +69,7 @@ module.exports = {
             // console.log('workerState.timeIntervalToSimulateInEachGame', workerState.timeIntervalToSimulateInEachGame);
             
             
-            gameManager.processGames(currentTime);
+            gameManager.processGames();
             // console.log('end while loop, totalTimeToSimulate:', totalTimeToSimulate);
         } 
         workerState.timePreviousGameLoopStart = currentTime;

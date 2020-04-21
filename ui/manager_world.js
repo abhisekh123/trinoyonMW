@@ -12,8 +12,18 @@ tg.world.startNewMatch = function(playerConfigArray, playerIndex){
 
     // clear old bots and load new bots
     tg.bot.reloadBots(playerConfigArray, playerIndex, 'show_match_page');
-    
+    tg.world.updateBuildingTeamMarker();
     tg.pn.showMatchStartingLoader();
+};
+
+
+tg.world.updateBuildingTeamMarker = function(){
+    console.log('updateBuildingTeamMarker');
+    for (var i = 0; i < tg.am.staticItems.buildingsArray.length; ++i) {
+        var buildingConfig = tg.am.staticItems.buildingsArray[i];
+        tg.static.updateBuildingTeam(buildingConfig, buildingConfig.team);
+    }
+
 };
 
 // method that triggers when all the assets for the current match has been loaded.
@@ -145,14 +155,8 @@ tg.world.updateWorld = function(updateParam){
                 sourceConfig.projectileData.endTime = endTime;
             } else if (eventsArray[index].event == 'cteam'){ // building change team event.
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
-                tg.ui3d.updatehpbarForNewTeam(sourceConfig.hpBarConfig, eventsArray[index].team);
-                tg.static.updateTowerMarkerMesh(sourceConfig, eventsArray[index].team);
-                if(eventsArray[index].team == 0){
-                    tg.ui3d.updateHPBarPercentage(sourceConfig.hpBarConfig, 0);
-                }else{
-                    tg.ui3d.updateHPBarPercentage(sourceConfig.hpBarConfig, 100);
-                }
-                
+                // sourceConfig.team = eventsArray[index].team;
+                tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
             }
         }
     }

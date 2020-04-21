@@ -81,9 +81,7 @@ module.exports = {
                     // console.log('distance:', distance);
                     if (distance < minDistance) {
                         minDistance = distance;
-                        // target = [botPosition[0], botPosition[2]]
                         target = botConfig;
-                        // targetType = 'bot';
                     }
                 }
     
@@ -143,12 +141,12 @@ module.exports = {
         // console.log('min distance:', minDistance);
         // console.log('target:', target);
         // console.log('after comparing defenseList, minDistance:', minDistance, ' target:', target);
-        if (target == null) {
-            return null;
-        } else {
-            return target;
-        }
-
+        // if (target == null) {
+        //     return null;
+        // } else {
+        //     return target;
+        // }
+        return target;
     },
 
     // TODO: remove repeatative codes.
@@ -285,7 +283,7 @@ module.exports = {
     findNearestWalkablePositionInNeighbourhood: function(positionParam, gameRoom, rangeParam){
         console.log('findNearestWalkablePositionInNeighbourhood for:', positionParam);
 
-        var objectAtPosition = routeManager.getObjectOccupyingThePosition(
+        var objectAtPosition = this.getObjectOccupyingThePosition(
             positionParam.x,
             positionParam.z,
             gameRoom
@@ -295,13 +293,13 @@ module.exports = {
             return positionParam;
         }
         
-        console.log('enemyTeam:', enemyTeam);
+        // console.log('enemyTeam:', enemyTeam);
         // increase widhth and check the perimeter
         for(var side = 1; side < rangeParam; ++side){
             positionRunnerStart = {x:positionParam.x - side, z:positionParam.z - side};// left-bottom
             var j = 0;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                objectAtPosition = routeManager.getObjectOccupyingThePosition(
+                objectAtPosition = this.getObjectOccupyingThePosition(
                     positionRunnerStart.x,
                     positionRunnerStart.z,
                     gameRoom
@@ -316,7 +314,7 @@ module.exports = {
 
             positionRunnerStart.x = positionRunnerStart.x - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
-                objectAtPosition = routeManager.getObjectOccupyingThePosition(
+                objectAtPosition = this.getObjectOccupyingThePosition(
                     positionRunnerStart.x,
                     positionRunnerStart.z,
                     gameRoom
@@ -331,7 +329,7 @@ module.exports = {
 
             positionRunnerStart.z = positionRunnerStart.z - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                objectAtPosition = routeManager.getObjectOccupyingThePosition(
+                objectAtPosition = this.getObjectOccupyingThePosition(
                     positionRunnerStart.x,
                     positionRunnerStart.z,
                     gameRoom
@@ -345,7 +343,7 @@ module.exports = {
 
             positionRunnerStart.x = positionRunnerStart.x + 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                objectAtPosition = routeManager.getObjectOccupyingThePosition(
+                objectAtPosition = this.getObjectOccupyingThePosition(
                     positionRunnerStart.x,
                     positionRunnerStart.z,
                     gameRoom

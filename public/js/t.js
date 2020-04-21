@@ -54,7 +54,7 @@ tg.connectToParent = function(parentEndPoint, keyIdentifier){
             // alert('could not join. game is full.');
         }else if(responseJSON.type == 'request_game_admit_nack'){
             // console.log('processing request_game_admit_nack.');
-            alert('could not join. game is full.');
+            alert('could not join. game is full. please try after some time.');
         }else if(responseJSON.type == 'request_game_admit_ack'){
             // console.log('processing request_game_admit_ack.');
             // tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.playButton);

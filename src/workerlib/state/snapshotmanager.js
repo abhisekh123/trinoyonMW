@@ -23,38 +23,8 @@ module.exports = {
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
 
         botSnapshotObject.action = botConfig.action;
-        switch (botSnapshotObject.action) {
-            case 'march':
-            case 'goto':
-                
-                if(
-                    botSnapshotObject.actionData != undefined &&
-                    botSnapshotObject.actionData != null &&
-                    botSnapshotObject.actionData.pathTimeStamp != undefined && 
-                    botSnapshotObject.actionData.pathTimeStamp != null
-                ){
-                    // console.log('updateBotSnapshot', botConfig.actionData.pathTimeStamp);
-                    if(botConfig.actionData.pathTimeStamp != botSnapshotObject.actionData.pathTimeStamp){
-                        botSnapshotObject.actionData = {
-                            path: botConfig.actionData.path,
-                            pathTimeStamp: botConfig.actionData.pathTimeStamp,
-                        }
-                    }
-                } else {
-                    // console.log('updateBotSnapshot::', botConfig.actionData.pathTimeStamp);
-                    botSnapshotObject.actionData = {
-                        path: botConfig.actionData.path,
-                        pathTimeStamp: botConfig.actionData.pathTimeStamp,
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-        // botSnapshotObject.actionData = botConfig.actionData;
-        // botSnapshotObject.actionData = null;
-
-        // botSnapshotObject.deathTimestamp = workerState.currentTime;
+        botSnapshotObject.actionData = botConfig.actionData;
+        
         botSnapshotObject.activityTimeStamp = botConfig.activityTimeStamp;
         botSnapshotObject.isActive = botConfig.isActive;
         botSnapshotObject.life = botConfig.life;
@@ -70,11 +40,6 @@ module.exports = {
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
 
-        
-        // botSnapshotObject.actionData = botConfig.actionData;
-        // botSnapshotObject.actionData = null;
-
-        // botSnapshotObject.deathTimestamp = workerState.currentTime;
         botSnapshotObject.activityTimeStamp = botConfig.activityTimeStamp;
         botSnapshotObject.isActive = true;
         botSnapshotObject.life = botConfig.life;
@@ -83,10 +48,6 @@ module.exports = {
         botSnapshotObject.position[1] = botConfig.position[1];
         botSnapshotObject.position[2] = botConfig.position[2];
     },
-
-    // updateSnapshot_building: function(gameRoom, buildingConfig){
-    // },
-
 
     processAttackEvent: function(gameRoom, sourceConfig, targetConfig){
 
@@ -103,28 +64,18 @@ module.exports = {
         var targetSnapshotObject = snapShotObject.itemState[targetConfig.id];
         var sourceSnapshotObject = snapShotObject.itemState[sourceConfig.id];
 
-        // botSnapshotObject.action = sourceConfig.action;
         sourceSnapshotObject.actionData = targetConfig.id;
         sourceSnapshotObject.activityTimeStamp = sourceConfig.activityTimeStamp;
 
         targetSnapshotObject.isActive = targetConfig.isActive;
         targetSnapshotObject.life = targetConfig.life;
-
-        // botSnapshotObject.position[0] = sourceConfig.position[0];
-        // botSnapshotObject.position[1] = sourceConfig.position[1];
-        // botSnapshotObject.position[2] = sourceConfig.position[2];
     },
 
     registerBotDieEvent: function(gameRoom, botConfig){
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
 
-        // if(botSnapshotObject == undefined){
-        //     botSnapshotObject = this.getGenericBotSnapshotObject();
-        //     snapShotObject[botConfig.id] = botSnapshotObject;
-        // }
-        
-        botSnapshotObject.action = 'die';
+        // botSnapshotObject.action = 'die';
         botSnapshotObject.actionData = null;
 
         // botSnapshotObject.deathTimestamp = workerState.currentTime;
@@ -144,11 +95,6 @@ module.exports = {
     registerBotSpawnEvent: function(gameRoom, botConfig){
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
-
-        // if(botSnapshotObject == undefined){
-        //     botSnapshotObject = this.getGenericBotSnapshotObject();
-        //     snapShotObject[botConfig.id] = botSnapshotObject;
-        // }
         
         botSnapshotObject.action = 'ready';
         botSnapshotObject.actionData = null;

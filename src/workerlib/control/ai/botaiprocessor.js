@@ -65,6 +65,7 @@ module.exports = {
             return timeSlice;
         }
 
+        // find closest hostile and calculate distance.
         var distanceBetweenBotAndHostile = this.worldConfig.gridSide + 1;
         var hostileConfig = routeManager.findClosestHostile(botConfig, gameRoom, this.worldConfig.constants.ALL);
         if(hostileConfig != null){
@@ -84,6 +85,7 @@ module.exports = {
         }
 
         /**
+         * by here either (march) or (ready + no bot in range)
          * march ai routine start. At end of this routine, only possible outcome is march instruction.
          */
         var distanceBetweenBotAndHero = this.worldConfig.gridSide + 1;
@@ -97,14 +99,13 @@ module.exports = {
             );
         }
 
+        
         // test the non hero bots if they are away from hero bot.
         if(botIndex != 0 && heroConfig.isActive == true && this.shouldBotGoNearLeader(botConfig, distanceBetweenBotAndHero)){
             aiUtility.goNearRoutine(this.worldConfig.constants.DONTCARE, this.worldConfig.closeProximity, botConfig, gameRoom, heroConfig);
         } else if(hostileConfig != null && distanceBetweenBotAndHostile <= botConfig.sight){
             aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, botConfig.range, botConfig, gameRoom, hostileConfig);
-            // if(playerConfig.isAIDriven == true){
-            // }
-            // aiUtility.goNearRoutine(this.worldConfig.constants.VISIBLE, botConfig.range, botConfig, gameRoom, hostileConfig);
+            
         }
         // march routine end.
 
@@ -115,6 +116,7 @@ module.exports = {
             return timeSlice;
         }
         // consume entire timeSlice doing nothing.
+        console.log('do nothing for bot:', botConfig.id);
         return 0;
     },
 

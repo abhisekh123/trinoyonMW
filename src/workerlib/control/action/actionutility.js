@@ -13,6 +13,10 @@ module.exports = {
 
     updateBotPositionInGridMatrix: function(botConfig, posX, posZ, gameRoom){
         // gameRoom.gridMatrix[botConfig.position[0]][botConfig.position[2]].object = null;
+        // TODO : remove the validation.
+        if(gameRoom.gridMatrix[posX][posZ].object != null && botConfig != null){
+            console.error('trying to use grid position already occupied');
+        }
         gameRoom.gridMatrix[posX][posZ].object = botConfig;
         // botConfig.position[0] = posX;
         // botConfig.position[2] = posZ;
@@ -28,7 +32,7 @@ module.exports = {
         var newPositionX = null;
         var newPositionZ = null;
 
-        switch (botConfig.action) {
+        switch (botConfig.action) { // process old action
             case 'goto':
             case 'march':
                 currentPositionX = botConfig.actionData.path[botConfig.actionData.path.length - 1][0];
@@ -41,7 +45,7 @@ module.exports = {
                 currentPositionX = botConfig.position[0];
                 currentPositionZ = botConfig.position[2];
                 break;
-            case 'die':
+            case 'die': // bot is getting spawned
                 // botConfig.action = null;
                 botConfig.isActive = true;
                 botConfig.life = botConfig.fullLife;
@@ -55,14 +59,14 @@ module.exports = {
                 snapShotManager.registerBotSpawnEvent(gameRoom, botConfig);
                 // nothing to do as the bot does not occupy any position in grid
                 break;
-            case null:
+            case null: // happens when the game starts
                 break;
             default:
                 console.log('ERROR: Unknown botConfig.action:', botConfig.action);
                 break;
         }
 
-
+        // set new action
         botConfig.action = action;
         botConfig.actionData = actionData;
         

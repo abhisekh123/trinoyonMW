@@ -31,14 +31,7 @@ module.exports = {
         gameRoomManager.init();
     },
 
-    processGames: function(currentTimeParam) {
-        var refreshVisibilityFlag = false;
-        // console.log('process games start');
-        //refresh visibility?
-        if((workerState.currentTime - workerState.timeLastrefReshVisibilityWasAttempted) > workerState.refreshVisibilityInterval){
-            workerState.timeLastrefReshVisibilityWasAttempted = workerState.currentTime;
-            refreshVisibilityFlag = true;
-        }
+    processGames: function() {
 
         // console.log(workerState.gameRoomArray);
 
@@ -49,7 +42,7 @@ module.exports = {
             if(gameRoom.isActive == true){
                 // console.log('process games id:', gameRoom.id);
                 if((workerState.currentTime - gameRoom.gameStartTime) > this.worldConfig.matchMaxTimeDuration){
-                    console.log('workerState.currentTime:', workerState.currentTime);
+                    console.log('terminating game at:workerState.currentTime = ', workerState.currentTime);
                     console.log('gameRoom.gameStartTime:', gameRoom.gameStartTime);
                     console.log('this.worldConfig.matchMaxTimeDuration:', this.worldConfig.matchMaxTimeDuration);
                     gameRoomManager.terminateGame(gameRoom);
@@ -66,9 +59,7 @@ module.exports = {
                 gameRoomManager.processPlayers(gameRoom); // send hero to new location of all bots are idle.
 
                 // console.log('completed processing bots.');
-                if(refreshVisibilityFlag == true){
-                    gameRoomManager.refreshVisibility(gameRoom);
-                }
+                
             }
         }
 

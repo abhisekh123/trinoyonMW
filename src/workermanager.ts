@@ -26,17 +26,21 @@ module.exports = {
         // 
         let jsonData = ev.data;
         switch(jsonData.type){
-            // case 'update': // TODO : send update to main.
-            // relay latest snapshot to all clients.
-                // // console.log('-->update from worker::' , ev.data);
-                // for(var i = 0; i < clientregistry.clientArrey.length; ++i){
-                //     if(clientregistry.clientArrey[i].isActive){
-                //         var ws = clientregistry.clientArrey[i].ws;
-                //         clientregistry.sendMessageToClient(ws, ev.data);
-                //     }
-                // }
-                // gameState.setGameBotState(ev.data);
-                // break;
+            case 'update': // TODO : send update to main.
+            case 'game_config': 
+                // console.log(jsonData.type + '::', jsonData);
+                var playerConfig = jsonData.payload.players;
+                var playerIDList = jsonData.payload.playerIDList;
+                var gameConfig = {
+                    type: jsonData.type,
+                    playerConfig,
+                    playerIndex: -1
+                };
+                for (var i = 0; i < playerIDList.length; ++i){
+                    gameConfig.playerIndex = playerIDList[i].index;
+                    clientBroadcaster.sendMessageToRecipientByUserID(playerIDList[i].id, JSON.stringify(gameConfig));
+                }
+                break;
             case 'request_game_admit_nack': // client has been granted admission to the game.
             case 'request_game_admit_ack': // client has been granted admission to the game.
                 var userIdList = jsonData.players;
@@ -48,25 +52,7 @@ module.exports = {
                 }
                 
                 break;
-            case 'update': // TODO : send update to main.
-            case 'game_config': 
-                // console.log(jsonData.type + '::', jsonData);
-                var playerConfig = jsonData.payload.players;
-                var playerIDList = jsonData.payload.playerIDList;
-                var gameConfig = {
-                    type: jsonData.type,
-                    playerConfig,
-                    playerIndex: -1
-                };
-                // gameConfig.playerConfig = playerConfig;
-                // delete jsonData.players;
-                // console.log('send ' + jsonData.type + ' for :' + playerIDList);
-                // let clientWS = clientregistry.clientArrey[userId].ws;
-                // clientregistry.sendMessageToClient(clientWS, ev.data);
-                for (var i = 0; i < playerIDList.length; ++i){
-                    gameConfig.playerIndex = playerIDList[i].index;
-                    clientBroadcaster.sendMessageToRecipientByUserID(playerIDList[i].id, JSON.stringify(gameConfig));
-                }
+            
                 // console.log('message sent to cilent');
             default:
                 // console.log('ERROR:@worker manager, got unknown message type:' , jsonData);

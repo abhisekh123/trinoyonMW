@@ -21,7 +21,7 @@ module.exports = {
             // else continue transport
             break;
             default:
-            console.log('unknown botConfig.action:', botConfig.action);
+            console.error('unknown botConfig.action:', botConfig.action);
             return 0;
         }
         return timeSlice;

@@ -31,14 +31,12 @@ export class RequestProcessor {
                 break;
             case 'request_game_admit':
                 console.log('got message with type:request_game_admit userID:', requestJSON.userId);
-                // this.sendMessagePacket('ack_request_game_admit', {} as any, ws);
                 
                 workermanager.postMessage(requestJSON);
                 break;
             case 'request_game_exit':
             case 'client_disconnected':
                 // console.log('got message with type:', requestJSON.type);
-                // this.sendMessagePacket('ack_request_game_exit', {} as any, ws);
                 const userId = userManager.removeUser(requestJSON.userId);
                 requestJSON.userId = userId;
                 workermanager.postMessage(requestJSON);

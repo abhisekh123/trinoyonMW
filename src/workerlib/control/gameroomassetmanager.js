@@ -22,19 +22,20 @@ module.exports = {
     
     removePlayer: function(userId){
         const playerID = playerManager.getPlayerID(userId);
-        const playerConfig = playerManager.playerArray[playerID];
+        // const playerConfig = playerManager.playerArray[playerID];
         const botStartIndex = playerID * this.maxBotPerPlayer;
 
         // // console.log('botStartIndex:' + botStartIndex);
         for(var j = 0; j < this.maxBotPerPlayer; ++j){
-            workerstate.botArray[j + botStartIndex].isActive = true;
-            workerstate.botArray[j + botStartIndex].teamColor = playerConfig.teamColor;
+            // workerstate.botArray[j + botStartIndex].isActive = true;
+            // workerstate.botArray[j + botStartIndex].teamColor = playerConfig.teamColor;
             workerstate.botArray[j + botStartIndex].isAIDriven = true;
         }
     },
 
 
     canAdmitNewPlayer: function(){
+        // TODO: add condition to check if server has started sutdown routine.
         const maxWaitingListSize = environmentState.maxGameCount * environmentState.maxPlayerPerTeam * 2;
         if(workerState.waitingUsersLinkedList.size < maxWaitingListSize){
             return true;
@@ -80,11 +81,11 @@ module.exports = {
 
         // iterate through user list
         if(workerState.waitingUsersLinkedList.isEmpty()){
-            // console.log('no pending admit request.');
+            console.log('no pending admit request.');
             return response;
         }
-        console.log('start processWaitingUserAdmitRequests');
-        workerState.waitingUsersLinkedList.printList();
+        // console.log('start processWaitingUserAdmitRequests');
+        // workerState.waitingUsersLinkedList.printList();
 
         workerState.waitingUsersLinkedList.pointToHead();
         let currentNode = workerState.waitingUsersLinkedList.getCurrentNode();
@@ -152,8 +153,9 @@ module.exports = {
         for(var i = 0; i < usersToJoin.length; ++i){ // for each requested user
             
             let newUserToAdmit = usersToJoin[i];
-            for(; j < environmentState.maxPlayerPerTeam; ++j){ // search for the next empty slot
+            for(; j < environmentState.maxPlayerPerTeam;){ // search for the next empty slot
                 const selectedTeamPlayer = selectedTeam[j];
+                ++j;
                 if(selectedTeamPlayer.userId == null){ // found an empty slot. admitting the new player.
                     this.completePlayerAdmissionFormalities(selectedTeamPlayer, newUserToAdmit, admitRequest.selection);
                     break;// process next player to join.
@@ -161,55 +163,18 @@ module.exports = {
             }
         }
 
-        // for(j = 0; j < environmentState.maxPlayerPerTeam; ++j){ // search for the next empty slot
-        //     const selectedTeamPlayer = selectedTeam[j];
-        //     console.log('selected team player:', selectedTeamPlayer);
-        // }
 
         return true;
     },
 
-
-    // admitUsersToGame: function(usersToJoin, chosenPlayers){
-    //     if(usersToJoin.length != chosenPlayers.length){
-    //         console.log('ERROR: usersToJoin.length != chosenPlayers.length.');
-    //         return;
-    //     }
-
-    //     const timeNow = utilityFunctions.getCurrentTime();
-
-    //     for(var j = 0; j < usersToJoin.length; ++j){
-    //         const player = chosenPlayers[j];
-    //         player.userId = usersToJoin[j];
-    //         player.isConnected = true;
-    //         player.lastCommunication = timeNow;
-    //         player.joinTime = timeNow;
-    //         player.isAIDriven = false;
-
-    //         workerState.userToPlayerMap[usersToJoin[j]] = {
-    //             playerId: player.id,
-    //             gameId: player.gameId
-    //         };
-    //     }
-    // },
 
     removePlayer: function(userId){
         var playerID = this.getPlayerID(userId);
         this.playerArray[playerID].isActive = false;
         this.playerMap[userId] = undefined;
         this.playerMap.delete(userId);
-        --this.connectedPlayerCount;
         return;
     },
-    
-
-
-    /**
-     * Bot life cycle
-     */
-
-    
-
 
     /**
      * update ds in the game regarding player admission.

@@ -51,10 +51,6 @@ module.exports = {
         
         let writeStream = fs.createWriteStream(this.worldConfig.strategyMatrixFileName);
 
-        // fileAppender.write('this.floor.breadth\n');
-        // fileAppender.write(this.floor.breadth + '\n');
-        // fileAppender.write('this.floor.length\n');
-        // fileAppender.write(this.floor.length.toString() + '\n');
 
         writeStream.write('this.floor.breadth\n');
         writeStream.write(this.worldConfig.gridSide + '\n');
@@ -209,6 +205,7 @@ module.exports = {
                 }
                 
                 // angle with positive z axis(away from camera). negetive for left side(x < 0)
+                // calculate angle from central point:(this.worldConfig.maxRange, this.worldConfig.maxRange) to (i, j)
                 angleMatrix[i][j] = utilityFunctions.roundTo2Decimal(Math.atan2((i - this.worldConfig.maxRange), (j - this.worldConfig.maxRange))); 
             }
         }
@@ -220,6 +217,7 @@ module.exports = {
         for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
             distanceMatrix[i] = new Array(this.worldConfig.gridSide);
             for(var k = 0; k < this.worldConfig.gridSide; ++k){ // z axis
+                // from (0,0) to (i,k)
                 distanceMatrix[i][k] = utilityFunctions.roundTo2Decimal(Math.sqrt(Math.pow(i, 2) + Math.pow(k, 2)));
             }
         }

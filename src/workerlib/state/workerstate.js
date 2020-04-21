@@ -45,8 +45,6 @@ module.exports = {
     timeLastGameCreationWasAttempted: 0,
     currentTime: 0,
     timeIntervalToSimulateInEachGame: 0, // time slice since last loop. Need to simulate each game for this interval.
-    refreshVisibilityInterval: 1500, // interval atwhich we refrsh visibility of enemy troops.
-    timeLastrefReshVisibilityWasAttempted: 0,
 
     // timeWhenLastAttemptWasMadeToProcessWaitingUsers: 0,
     // minInterval_AttemptToProcessWaitingUsers: 5000, // in miliseconds
