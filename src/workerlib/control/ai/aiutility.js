@@ -35,6 +35,12 @@ module.exports = {
 
     completeBotMovementActionFormalities: function(botConfig, positionObject, action, gameRoom, targetConfig){
         // console.log(positionObject);
+        if(botConfig.position[0] == positionObject.x && botConfig.position[2] == positionObject.z){
+            console.log(botConfig.id + ' completeBotMovementActionFormalities do nothing => start:' + botConfig.position[0] + '] , [' + botConfig.position[2]);
+            console.log('end:' + positionObject.x + '] , [' + positionObject.z);
+            actionManager.actionUtility.addActionToBot(botConfig, 'ready', null, gameRoom);
+            return;
+        }
         var path = routeManager.findPath(
             botConfig.position[0],
             botConfig.position[2],
@@ -52,7 +58,12 @@ module.exports = {
         var actionData = {
             path: path,
             pathTimeStamp: workerState.currentTime,
-            targetConfig: targetConfig.id
+            // targetConfig: targetConfig.id
+        }
+        if(targetConfig == null){
+            actionData.targetConfig = null;
+        }else{
+            actionData.targetConfig = targetConfig.id;
         }
         // console.log('completeBotMovementActionFormalities actionData:', actionData);
         actionManager.actionUtility.addActionToBot(botConfig, action, actionData, gameRoom);
@@ -60,22 +71,8 @@ module.exports = {
     },
 
     goNearDesignatedPosition: function(botConfig, positionObject, action, gameRoom){
-        // var closestWalkablePosition = routeManager.findClosestWalkablePosition(
-        //     this.worldConfig.constants.DONTCARE,
-        //     this.worldConfig.maxRange,
-        //     botConfig,
-        //     {position: [positionObject.x, 0, positionObject.z]},
-        //     gameRoom
-        // );
-        var nearestPosition = routeManager.findNearestWalkablePositionInNeighbourhood(randomPosition, gameRoom, this.worldConfig.maxRange);
-
-        // var closestWalkablePosition = routeManager.findClosestWalkablePosition(
-        //     this.worldConfig.constants.DONTCARE,
-        //     this.worldConfig.maxRange,
-        //     botConfig,
-        //     {position: [positionObject.x, 0, positionObject.z]},
-        //     gameRoom
-        // );
+        console.log('goNearDesignatedPosition for:' + botConfig.id + ' position:', positionObject);
+        var nearestPosition = routeManager.findNearestWalkablePositionInNeighbourhood(positionObject, gameRoom, this.worldConfig.maxRange);
 
         // console.log('goNearDesignatedPosition closest position:', closestWalkablePosition);
         if(nearestPosition != null){

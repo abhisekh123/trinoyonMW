@@ -69,7 +69,6 @@ module.exports = {
 
         for(var i = 0; i < playerConfigParam.botObjectList.length; ++i){
             var botConfig = playerConfigParam.botObjectList[i];
-            // if(botConfig.action == 'march' || botConfig.action == 'goto' || botConfig.action == 'fight'){
             if(botConfig.action == 'march' || botConfig.action == 'goto'){
                 return false;
             }

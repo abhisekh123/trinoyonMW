@@ -87,11 +87,9 @@ tg.bot.processLoadedModel = function (
     const rotationParam = botConfig.rotation;
     const characterName = botConfig.type;
     const characterID = botConfig.id;
-    // const selfBots =  tg.bot.userPlayerConfig.botObjectList;
 
     var hpBarMaterial = null;
     var hpBarContainerMaterial = null;
-    // var markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 10;
     if(team != tg.bot.userPlayerConfig.team){ // enemy
         hpBarMaterial = tg.am.material_enemy_hpbar;
         hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
@@ -113,7 +111,6 @@ tg.bot.processLoadedModel = function (
     }
 
     const scale = characterConfig.scale;
-    // const animationIndex = characterConfig.idleAnimationIndex;
 
 
     for (var i = 0; i < newMeshes.length; ++i) {
@@ -134,7 +131,6 @@ tg.bot.processLoadedModel = function (
     // botObject.parentMesh = parentMesh;
     botObject.type = characterName;
     botObject.controlMesh = newMeshes[0];
-    // botObject.currentAnimation = characterConfig.idleAnimationIndex;
     botObject.animationGroups = animationGroups;
     botObject.defaultRotation = Math.PI;
     botObject.intermediatePositionArray = [];
@@ -150,24 +146,17 @@ tg.bot.processLoadedModel = function (
     botObject.timeTakenToCover1Tile = 1000 / characterConfig.speed; // in milliSeconds
     botObject.plannedPath = null;
     botObject.plannedPathTimeStamp = 0;
-    hpBarMaterial = tg.am.material_enemy_hpbar;
-    hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
     var hpBarConfig = tg.ui3d.gethpbar(characterID, hpBarMaterial, hpBarContainerMaterial);
     botObject.hpBarConfig = hpBarConfig;
     // botObject.controlMesh.scaling = new BABYLON.Vector3(1/scale, 1/scale, 1/scale);
+    hpBarConfig.healthBarContainer.scaling = new BABYLON.Vector3(
+        characterConfig.hpBarScale, 
+        characterConfig.hpBarScale, 
+        characterConfig.hpBarScale
+    );
     hpBarConfig.healthBarContainer.parent = botObject.controlMesh;
-    // var refreshWorldInterval = worldItems.refreshWorldInterval;
-    // var refreshWorldPerIntervalUI = worldItems.refreshWorldPerIntervalUI;
-    // for (var i = 0; i < refreshWorldPerIntervalUI; ++i) {
-    //     botObject.intermediatePositionArray[i] = {
-    //         position: {
-    //             x: 0,
-    //             y: 0,
-    //             z: 0
-    //         },
-    //         time: 0
-    //     }
-    // }
+    hpBarConfig.healthBarContainer.position.y = characterConfig.hpBarPositionY;
+    
 
     tg.am.dynamicItems.bots[characterID] = botObject;
     tg.am.dynamicItems.botsArray.push(botObject);

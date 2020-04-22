@@ -23,7 +23,7 @@ module.exports = {
 
         // game will be simulated till this time in the current iteration.
         var currentTime = utilityFunctions.getCurrentTime();
-        console.log('++++current time', currentTime);
+        // console.log('++++current time', currentTime);
         var totalTimeToSimulate = currentTime - workerState.timePreviousGameLoopStart;
         // this will be incremented stepwise in the while loop.
         workerState.currentTime = workerState.timePreviousGameLoopStart;

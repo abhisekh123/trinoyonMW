@@ -116,7 +116,7 @@ module.exports = {
             return timeSlice;
         }
         // consume entire timeSlice doing nothing.
-        console.log('do nothing for bot:', botConfig.id);
+        // console.log('do nothing for bot:', botConfig.id);
         return 0;
     },
 

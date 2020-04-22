@@ -74,20 +74,16 @@ tg.world.updateWorld = function(updateParam){
                 tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, ((100 * buildingConfig.life) / buildingConfig.fullLife));
                 continue;
             }
-            // if(updateItemConfig.action == 'die'){
-            //     console.log(botObject.id + ' !!die bot:', botObject.controlMesh.position);
-            //     // botObject.controlMesh.position.y = tg.worldItems.uiConfig.hiddenY;
-            // }
 
-            // if(updateItemConfig.action == 'spawn'){
-            //     console.log(botObject.id + ' +++ bot spawn:', botObject.controlMesh.position);
-            //     botObject.controlMesh.position.y = 0;
-            // }
             if(tg.debugMode == true){
                 botObject.controlMesh.position.x = (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
                 botObject.controlMesh.position.z = (updateItemConfig.position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
             }else{
                 if(updateItemConfig.action == 'march' || updateItemConfig.action == 'goto'){
+                    // console.log('updateItemConfig:', updateItemConfig);
+                    if(updateItemConfig.actionData == null || updateItemConfig.actionData.pathTimeStamp == undefined){
+                        console.log('updateItemConfig:', updateItemConfig);
+                    }
                     if(botObject.plannedPathTimeStamp != updateItemConfig.actionData.pathTimeStamp){
                         // path was updated. so need fresh planning.
                         botObject.plannedPath = tg.rm.planBotRoute(botObject, updateItemConfig);

@@ -281,15 +281,15 @@ module.exports = {
     // here the itemConfig can be buildingConfig or botConfig.
     // we are taking rangeParam because it can be range as well as sight or something else.
     findNearestWalkablePositionInNeighbourhood: function(positionParam, gameRoom, rangeParam){
-        console.log('findNearestWalkablePositionInNeighbourhood for:', positionParam);
+        // console.log('findNearestWalkablePositionInNeighbourhood for:', positionParam);
 
-        var objectAtPosition = this.getObjectOccupyingThePosition(
-            positionParam.x,
-            positionParam.z,
-            gameRoom
-        );
+        // var objectAtPosition = this.getObjectOccupyingThePosition(
+        //     positionParam.x,
+        //     positionParam.z,
+        //     gameRoom
+        // );
         // if position in grid is unoccupied.
-        if( objectAtPosition == null){
+        if(this.isPositionWalkable(gameRoom, positionParam.x, positionParam.z)){
             return positionParam;
         }
         
@@ -299,13 +299,16 @@ module.exports = {
             positionRunnerStart = {x:positionParam.x - side, z:positionParam.z - side};// left-bottom
             var j = 0;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                objectAtPosition = this.getObjectOccupyingThePosition(
-                    positionRunnerStart.x,
-                    positionRunnerStart.z,
-                    gameRoom
-                );
-                // if position in grid is unoccupied.
-                if( objectAtPosition == null){
+                // objectAtPosition = this.getObjectOccupyingThePosition(
+                //     positionRunnerStart.x,
+                //     positionRunnerStart.z,
+                //     gameRoom
+                // );
+                // // if position in grid is unoccupied.
+                // if( objectAtPosition == null){
+                //     return positionRunnerStart;
+                // }
+                if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
                     return positionRunnerStart;
                 }
                 
@@ -314,28 +317,33 @@ module.exports = {
 
             positionRunnerStart.x = positionRunnerStart.x - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower right -> upper right
-                objectAtPosition = this.getObjectOccupyingThePosition(
-                    positionRunnerStart.x,
-                    positionRunnerStart.z,
-                    gameRoom
-                );
-                // if position in grid is unoccupied.
-                if( objectAtPosition == null){
+                // objectAtPosition = this.getObjectOccupyingThePosition(
+                //     positionRunnerStart.x,
+                //     positionRunnerStart.z,
+                //     gameRoom
+                // );
+                // // if position in grid is unoccupied.
+                // if( objectAtPosition == null){
+                //     return positionRunnerStart;
+                // }
+                if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
                     return positionRunnerStart;
                 }
-
                 positionRunnerStart.z = positionRunnerStart.z + j;
             }
 
             positionRunnerStart.z = positionRunnerStart.z - 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                objectAtPosition = this.getObjectOccupyingThePosition(
-                    positionRunnerStart.x,
-                    positionRunnerStart.z,
-                    gameRoom
-                );
-                // if position in grid is unoccupied.
-                if( objectAtPosition == null){
+                // objectAtPosition = this.getObjectOccupyingThePosition(
+                //     positionRunnerStart.x,
+                //     positionRunnerStart.z,
+                //     gameRoom
+                // );
+                // // if position in grid is unoccupied.
+                // if( objectAtPosition == null){
+                //     return positionRunnerStart;
+                // }
+                if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
                     return positionRunnerStart;
                 }
                 positionRunnerStart.x = positionRunnerStart.x - 1;
@@ -343,13 +351,16 @@ module.exports = {
 
             positionRunnerStart.x = positionRunnerStart.x + 1;
             for(j = 0; j <= (2 * side); ++j){ // lower left -> lower right
-                objectAtPosition = this.getObjectOccupyingThePosition(
-                    positionRunnerStart.x,
-                    positionRunnerStart.z,
-                    gameRoom
-                );
-                // if position in grid is unoccupied.
-                if( objectAtPosition == null){
+                // objectAtPosition = this.getObjectOccupyingThePosition(
+                //     positionRunnerStart.x,
+                //     positionRunnerStart.z,
+                //     gameRoom
+                // );
+                // // if position in grid is unoccupied.
+                // if( objectAtPosition == null){
+                //     return positionRunnerStart;
+                // }
+                if(this.isPositionWalkable(gameRoom, positionRunnerStart.x, positionRunnerStart.z)){
                     return positionRunnerStart;
                 }
                 positionRunnerStart.z = positionRunnerStart.z - 1;

@@ -11,6 +11,7 @@ tg.rm.init = function () {
 tg.rm.planBotRoute = function(botObject, updateItemConfig){
     // console.log('updateItemConfig:', updateItemConfig);
     if(updateItemConfig.actionData.path.length < 2){
+        console.error('updateItemConfig.actionData.path.length < 2');
         return {
             x: (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             z: (updateItemConfig.position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,

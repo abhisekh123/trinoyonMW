@@ -50,6 +50,8 @@
                 iconurl: 'static/img/lion_icon.png',
                 headerScale: 0.03,
                 headerPositionY: 1.8,
+                hpBarScale: 0.5,
+                hpBarPositionY: 2,
             },
             swordman:{
                 bannedMeshes:[6],
@@ -94,6 +96,8 @@
                 iconurl: 'static/img/swordsman_icon.png',
                 headerScale: 0.1,
                 headerPositionY: 3.5,
+                hpBarScale: 1,
+                hpBarPositionY: 5,
             },
             archer:{
                 bannedMeshes:[],
@@ -150,6 +154,8 @@
                 iconurl: 'static/img/archer_icon.png',
                 headerScale: 0.5,
                 headerPositionY: 16,
+                hpBarScale: 8,
+                hpBarPositionY: 40,
             },
             tower:{
                 life:1000,
@@ -162,7 +168,9 @@
                 weaponType: 'fireball',
                 projectileShootY: 5,
                 projectileReceiveY: 5,
-                intervalToCompleteOwnershipClaim: 3000 // 3 seconds
+                intervalToCompleteOwnershipClaim: 3000, // 3 seconds
+                hpBarScale: 4,
+                hpBarPositionY: 34,
             },
             base:{
                 life:1000,
@@ -175,7 +183,9 @@
                 weaponType: 'fireball',
                 projectileShootY: 5,
                 projectileReceiveY: 5,
-                intervalToCompleteOwnershipClaim: 3000 // 3 seconds
+                intervalToCompleteOwnershipClaim: 3000, // 3 seconds
+                hpBarScale: 4,
+                hpBarPositionY: 34,
             },
             // boy:{
             //     bannedMeshes:[9],

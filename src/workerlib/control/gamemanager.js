@@ -40,7 +40,7 @@ module.exports = {
             const gameRoom = workerState.gameRoomArray[i];
             
             if(gameRoom.isActive == true){
-                // console.log('process games id:', gameRoom.id);
+                console.log('process games id:' + gameRoom.id + ' time elapsed:' + (workerState.currentTime - gameRoom.gameStartTime) / 1000);
                 if((workerState.currentTime - gameRoom.gameStartTime) > this.worldConfig.matchMaxTimeDuration){
                     console.log('terminating game at:workerState.currentTime = ', workerState.currentTime);
                     console.log('gameRoom.gameStartTime:', gameRoom.gameStartTime);

@@ -23,6 +23,12 @@ module.exports = {
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
 
         botSnapshotObject.action = botConfig.action;
+        // if(botConfig.actionData == null){
+        //     console.error('_________________----------------------___________________');
+        //     console.error('_________________----------------------___________________');
+        //     console.error('_________________----------------------___________________');
+        //     console.error('_________________----------------------___________________');
+        // }
         botSnapshotObject.actionData = botConfig.actionData;
         
         botSnapshotObject.activityTimeStamp = botConfig.activityTimeStamp;
@@ -65,7 +71,8 @@ module.exports = {
         var sourceSnapshotObject = snapShotObject.itemState[sourceConfig.id];
 
         sourceSnapshotObject.actionData = targetConfig.id;
-        sourceSnapshotObject.activityTimeStamp = sourceConfig.activityTimeStamp;
+        sourceSnapshotObject.action = 'attack';
+        // sourceSnapshotObject.activityTimeStamp = sourceConfig.activityTimeStamp;
 
         targetSnapshotObject.isActive = targetConfig.isActive;
         targetSnapshotObject.life = targetConfig.life;
@@ -75,7 +82,7 @@ module.exports = {
         var snapShotObject = gameRoom.snapShot;
         var botSnapshotObject = snapShotObject.itemState[botConfig.id];
 
-        // botSnapshotObject.action = 'die';
+        botSnapshotObject.action = 'die';
         botSnapshotObject.actionData = null;
 
         // botSnapshotObject.deathTimestamp = workerState.currentTime;

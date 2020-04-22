@@ -100,7 +100,7 @@ module.exports = {
      */
 
     getGameUpdateJSON: function(gameRoom){
-        console.log('getGameUpdateJSON');
+        // console.log('getGameUpdateJSON');
         const updatePacket = {
             // test: '123',
             gameStartTime: gameRoom.snapShot.gameStartTime,

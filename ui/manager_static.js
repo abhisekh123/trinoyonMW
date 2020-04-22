@@ -11,22 +11,10 @@ tg.static.loadStaticModel = function (
     team
 ) {
     console.log('loadStaticModel:', itemID);
-    // if(itemID == 'base2'){
-    //     console.log('...');
-    // }
 
     var hpBarMaterial = tg.am.material_neutral_hpbar;
     var hpBarContainerMaterial = tg.am.material_neutral_hpbarcontainer;
     var isFriendly = false;
-    // var markerHeight = tg.worldItems.uiConfig.playerDimensionBaseUnit / 10;
-    // if(team != tg.bot.userPlayerConfig.team){ // enemy
-    //     hpBarMaterial = tg.am.material_enemy_hpbar;
-    //     hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
-    // } else { // fiendly
-    //     isFriendly = true;
-    //     hpBarMaterial = tg.am.material_friend_hpbar;
-    //     hpBarContainerMaterial = tg.am.material_friend_hpbarcontainer;
-    // }
 
     newMeshes[0].position.x = positionParam.x;
     newMeshes[0].position.y = positionParam.y;
@@ -118,26 +106,17 @@ tg.static.loadStaticModel = function (
 
     buildingObject.projectile = projectile;
     buildingObject.isProjectileActive = false;
-    buildingObject.projectileData = {
-        path: null,
-        endTime: 0
-    };
 
     //data reporter
     var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);
     outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
     outputplane.material = new BABYLON.StandardMaterial("outputplanematerial_" + itemID, tg.scene);
-    // outputplane.position = new BABYLON.Vector3(0, 0, 25);
-    // outputplane.scaling.y = 0.4;
 
     var outputplaneTexture = new BABYLON.DynamicTexture("dynamictexture_" + itemID, 512, tg.scene, true);
     outputplane.material.diffuseTexture = outputplaneTexture;
     outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
     outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
     outputplane.material.backFaceCulling = false;
-
-    //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
-    // outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
     
     outputplaneTexture.drawText(positionParam.x + ',' + positionParam.z, null, 140, "bold 80px verdana", "white");
 
@@ -151,9 +130,16 @@ tg.static.loadStaticModel = function (
     var hpBarConfig = tg.ui3d.gethpbar(itemID, hpBarMaterial, hpBarContainerMaterial);
     buildingObject.hpBarConfig = hpBarConfig;
     // hpBarConfig.healthBarContainer.parent = botObject.controlMesh;
-    hpBarConfig.healthBarContainer.position.x = positionParam.x;
-    hpBarConfig.healthBarContainer.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 3 + newMeshes[0].position.y;
-    hpBarConfig.healthBarContainer.position.z = positionParam.z;
+    // hpBarConfig.healthBarContainer.position.x = positionParam.x;
+    // hpBarConfig.healthBarContainer.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 3 + newMeshes[0].position.y;
+    // hpBarConfig.healthBarContainer.position.z = positionParam.z;
+
+    hpBarConfig.healthBarContainer.scaling = new BABYLON.Vector3(
+        buildingTypeConfig.hpBarScale, 
+        buildingTypeConfig.hpBarScale, 
+        buildingTypeConfig.hpBarScale
+    );
+    hpBarConfig.healthBarContainer.position.y = buildingTypeConfig.hpBarPositionY;
 
     buildingObject.headerBoard = outputplane;
 
