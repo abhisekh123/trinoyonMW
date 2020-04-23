@@ -245,25 +245,3 @@ tg.bot.processLoadedModel = function (
     tg.am.updateNewAssetLoaded(1);
 }
 
-
-// https://www.babylonjs-playground.com/#KTGKUQ#7
-// Start all animations on given targets
-// @param - loop defines if animations must loop
-// @param - speedRatio defines the ratio to apply to animation speed (1 by default)
-// @param - from defines the from key (optional)
-// @param - to defines the to key (optional)
-// @param - isAdditive defines the additive state for the resulting animatables (optional)
-// @returns - the current animation group
-// alert(animationGroups.length); // 8 
-// animationGroups.forEach(function (animationGroup) {
-//     animationGroup.start(false, 1, 131 / 30, 160 / 30);
-// });
-// alert(animationGroups[0].from); 0
-// alert(animationGroups[0].to); 6.9
-// alert(animationGroups[0].speedRatio);
-// animationGroups[0].start(true,10,5,6,false);
-// scene.createDefaultCameraOrLight(true, true, true);
-// scene.createDefaultEnvironment();
-// currentScene.animationGroups[0].start(true,1,5,6);
-// currentScene.animationGroups[0].stop()
-// currentScene.animationGroups[0].reset()

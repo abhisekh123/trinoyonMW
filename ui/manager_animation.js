@@ -16,6 +16,7 @@ tg.animationmanager.startCharacterAnimation = function(botObject, newAction){
         return;
     }
     
+    var currentAnimationObject = botObject.animations[tg.animationmanager.actionToAnimationMap[botObject.animationAction]]
     var animationObject = null;
     var animationPlayFlag = true;
     if(newAction == 'die' || newAction == 'attack'){
@@ -27,7 +28,8 @@ tg.animationmanager.startCharacterAnimation = function(botObject, newAction){
     // }
 
     if(botObject.animationAction == 'die'){
-        // console.log('spawn....', botObject.id);
+        console.log('spawn....', botObject.id);
+        animationPlayFlag = false;
         animationObject = botObject.animations[tg.animationmanager.actionToAnimationMap['spawn']];
         botObject.controlMesh.position.y = 0;
     } else {
@@ -35,17 +37,24 @@ tg.animationmanager.startCharacterAnimation = function(botObject, newAction){
     }
 
     if(newAction == 'die'){
-        // console.log('die:', botObject.id);
-        botObject.controlMesh.position.y = tg.worldItems.uiConfig.hiddenY;
+
+        console.log('die:', botObject.id);
+        // botObject.controlMesh.position.y = tg.worldItems.uiConfig.hiddenY;
         // botObject.projectile.position.y = tg.worldItems.uiConfig.hiddenY;
     }
 
-    botObject.animationGroups[animationObject.index].stop();
-    botObject.animationGroups[animationObject.index].reset();
+    botObject.animationGroups[currentAnimationObject.index].stop();
+    botObject.animationGroups[currentAnimationObject.index].reset();
     if(animationObject.type == 'interval'){ // play a part of the animation.
-        botObject.animationGroups[animationObject.index].start(animationPlayFlag,1,animationObject.from,animationObject.to);
+        botObject.animationGroups[animationObject.index].start(animationPlayFlag,animationObject.speed,animationObject.from,animationObject.to);
     } else { // play entire animation
-        botObject.animationGroups[animationObject.index].play(animationPlayFlag);
+        // botObject.animationGroups[animationObject.index].play(animationPlayFlag);
+        botObject.animationGroups[animationObject.index].start(
+            animationPlayFlag,
+            animationObject.speed,
+            botObject.animationGroups[animationObject.index].from,
+            botObject.animationGroups[animationObject.index].to
+        );
     }
 
     if(newAction != 'attack'){
@@ -56,3 +65,25 @@ tg.animationmanager.startCharacterAnimation = function(botObject, newAction){
 };
 
 
+// https://www.babylonjs-playground.com/#KTGKUQ#7
+// Start all animations on given targets
+// @param - loop defines if animations must loop
+// @param - speedRatio defines the ratio to apply to animation speed (1 by default)
+// @param - from defines the from key (optional)
+// @param - to defines the to key (optional)
+// @param - isAdditive defines the additive state for the resulting animatables (optional)
+// @returns - the current animation group
+// alert(animationGroups.length); // 8 
+// animationGroups.forEach(function (animationGroup) {
+//     animationGroup.start(false, 1, 131 / 30, 160 / 30);
+// });
+// alert(animationGroups[0].from); 0
+// alert(animationGroups[0].to); 6.9
+// alert(animationGroups[0].speedRatio);
+// animationGroups[0].start(true,10,5,6,false);
+// scene.createDefaultCameraOrLight(true, true, true);
+// scene.createDefaultEnvironment();
+// currentScene.animationGroups[0].start(true,1,5,6);
+// currentScene.animationGroups[0].stop()
+// currentScene.animationGroups[0].reset()
+// currentScene.animationGroups[0].stop();currentScene.animationGroups[0].reset();currentScene.animationGroups[1].start(true,1,5,6);

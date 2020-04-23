@@ -39,9 +39,10 @@ tg.am.createMaterials = function () {
     var boxMaterial = new BABYLON.StandardMaterial("material_box", tg.scene);
 
     boxMaterial.diffuseTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    boxMaterial.specularTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    boxMaterial.ambientTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    boxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    // boxMaterial.specularTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    // boxMaterial.ambientTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
 
     tg.am.boxMaterial = boxMaterial;
     // material for ground
@@ -50,6 +51,7 @@ tg.am.createMaterials = function () {
     groundMaterial.diffuseTexture = new BABYLON.Texture("static/img/stone_floor6.jpg", tg.scene);
     groundMaterial.diffuseTexture.uScale = tg.worldItems.gridSide / 2;
     groundMaterial.diffuseTexture.vScale = tg.worldItems.gridSide / 2;
+    groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 
     tg.am.groundMaterial = groundMaterial;
 

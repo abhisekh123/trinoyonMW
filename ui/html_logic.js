@@ -67,8 +67,8 @@ tg.hl.selectSelfBot = function(botIndex){
     // alert('selectSelfBot');
     const botId =  tg.bot.userPlayerConfig.botObjectList[botIndex].id;
     const botObject = tg.am.dynamicItems.bots[botId];
-    tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
-    tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
+    // tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
+    // tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
 
     
     // tg.am.chosenMarker.position.x = 0;

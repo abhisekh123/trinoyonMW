@@ -62,38 +62,91 @@ tg.newRefreshFunction = function() {
         }
         
         if ((tg.input.keyMap["s"] || tg.input.keyMap["S"])) {
-            tg.am.cameraTarget.parent = null;
-            console.log('w');
-            tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.cameraTargetMovementStep;
+            tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.forewardX;
+            tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.forewardZ;
+
             if(tg.am.cameraTarget.position.z > gridSide){
                 tg.am.cameraTarget.position.z = gridSide;
+            }
+            if(tg.am.cameraTarget.position.x > gridSide){
+                tg.am.cameraTarget.position.x = gridSide;
+            }
+            if(tg.am.cameraTarget.position.z < 0){
+                tg.am.cameraTarget.position.z = 0;
+            }
+            if(tg.am.cameraTarget.position.x < 0){
+                tg.am.cameraTarget.position.x = 0;
             }
         };
 
         if ((tg.input.keyMap["w"] || tg.input.keyMap["W"])) {
-            tg.am.cameraTarget.parent = null;
-            console.log('s');
-            tg.am.cameraTarget.position.z -= tg.worldItems.uiConfig.cameraTargetMovementStep;
+            tg.am.cameraTarget.position.x -= tg.worldItems.uiConfig.forewardX;
+            tg.am.cameraTarget.position.z -= tg.worldItems.uiConfig.forewardZ;
+
+            if(tg.am.cameraTarget.position.z > gridSide){
+                tg.am.cameraTarget.position.z = gridSide;
+            }
+            if(tg.am.cameraTarget.position.x > gridSide){
+                tg.am.cameraTarget.position.x = gridSide;
+            }
             if(tg.am.cameraTarget.position.z < 0){
                 tg.am.cameraTarget.position.z = 0;
+            }
+            if(tg.am.cameraTarget.position.x < 0){
+                tg.am.cameraTarget.position.x = 0;
             }
         };
 
         if ((tg.input.keyMap["d"] || tg.input.keyMap["D"])) {
-            tg.am.cameraTarget.parent = null;
-            console.log('a');
-            tg.am.cameraTarget.position.x -= tg.worldItems.uiConfig.cameraTargetMovementStep;
+            tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.sideX;
+            tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.sideZ;
+
+            if(tg.am.cameraTarget.position.z > gridSide){
+                tg.am.cameraTarget.position.z = gridSide;
+            }
+            if(tg.am.cameraTarget.position.x > gridSide){
+                tg.am.cameraTarget.position.x = gridSide;
+            }
+            if(tg.am.cameraTarget.position.z < 0){
+                tg.am.cameraTarget.position.z = 0;
+            }
             if(tg.am.cameraTarget.position.x < 0){
                 tg.am.cameraTarget.position.x = 0;
             }
         };
         if ((tg.input.keyMap["a"] || tg.input.keyMap["A"])) {
-            tg.am.cameraTarget.parent = null;
-            console.log('d');
-            tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.cameraTargetMovementStep;
+            tg.am.cameraTarget.position.x -= tg.worldItems.uiConfig.sideX;
+            tg.am.cameraTarget.position.z -= tg.worldItems.uiConfig.sideZ;
+
+            if(tg.am.cameraTarget.position.z > gridSide){
+                tg.am.cameraTarget.position.z = gridSide;
+            }
             if(tg.am.cameraTarget.position.x > gridSide){
                 tg.am.cameraTarget.position.x = gridSide;
             }
+            if(tg.am.cameraTarget.position.z < 0){
+                tg.am.cameraTarget.position.z = 0;
+            }
+            if(tg.am.cameraTarget.position.x < 0){
+                tg.am.cameraTarget.position.x = 0;
+            }
+        };
+
+        if ((tg.input.keyMap["q"] || tg.input.keyMap["Q"])) {
+            tg.camera.rotationOffset -= tg.worldItems.uiConfig.cameraTargetRotationStep;
+            if(tg.camera.rotationOffset > 360){
+                tg.camera.rotationOffset = 0;
+            }
+            tg.calculateCameraMovementSteps();
+        };
+
+        if ((tg.input.keyMap["e"] || tg.input.keyMap["E"])) {
+            tg.camera.rotationOffset += tg.worldItems.uiConfig.cameraTargetRotationStep;
+            
+            if(tg.camera.rotationOffset < 0){
+                tg.camera.rotationOffset = 360;
+            }
+            tg.calculateCameraMovementSteps();
         };
 
         for(var i = 0; i < tg.am.dynamicItems.botsArray.length; ++i){
@@ -115,6 +168,17 @@ tg.newRefreshFunction = function() {
         }
         
     }
+};
+
+tg.calculateCameraMovementSteps = function() {
+    var angle = (tg.camera.rotationOffset / 180) * Math.PI;
+    var cosValue = Math.cos(angle);
+    var sinValue = Math.sin(angle);
+
+    tg.worldItems.uiConfig.sideX = -tg.worldItems.uiConfig.cameraTargetMovementStep * cosValue;
+    tg.worldItems.uiConfig.sideZ = tg.worldItems.uiConfig.cameraTargetMovementStep * sinValue;
+    tg.worldItems.uiConfig.forewardX = tg.worldItems.uiConfig.cameraTargetMovementStep * sinValue;
+    tg.worldItems.uiConfig.forewardZ = tg.worldItems.uiConfig.cameraTargetMovementStep * cosValue;
 };
 
 tg.updateBotPosition = function(configParam) {

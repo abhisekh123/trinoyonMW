@@ -106,7 +106,7 @@ tg.world.updateWorld = function(updateParam){
 
         for (let index = 0; index < eventsArray.length; index++) {
             if(eventsArray[index].event == 'attack'){
-                // console.log('attack event', eventsArray[index]);
+                // console.log('attack event', eventsArray[index].id);
                 
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 if(sourceConfig.projectile == null){ // source config has melee attack
@@ -121,6 +121,8 @@ tg.world.updateWorld = function(updateParam){
 
                 if(sourceConfig.type != 'base' && sourceConfig.type != 'tower'){
                     tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
+                }else{
+                    console.log('building attack event:', eventsArray[index]);
                 }
 
                 sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;
@@ -150,6 +152,7 @@ tg.world.updateWorld = function(updateParam){
                 sourceConfig.projectileData.path = pathData;
                 sourceConfig.projectileData.endTime = endTime;
             } else if (eventsArray[index].event == 'cteam'){ // building change team event.
+                console.log('cteam event', eventsArray[index].id);
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 // sourceConfig.team = eventsArray[index].team;
                 tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
