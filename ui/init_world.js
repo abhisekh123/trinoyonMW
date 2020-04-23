@@ -189,6 +189,9 @@ tg.updateBotPosition = function(configParam) {
         // console.log('setting path to null for bot:', configParam.id);
         configParam.plannedPath = null;
     }
+    if(configParam.id == "player_0_0"){
+        console.log('configParam.controlMesh.position:', configParam.controlMesh.position);
+    }
 };
 
 tg.updateProjectileState = function(configParam) {

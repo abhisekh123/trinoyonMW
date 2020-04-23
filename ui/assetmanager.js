@@ -185,4 +185,4 @@ tg.am.init = function(){
     tg.am.createMaterials();
     tg.static.addStaticItems();
     tg.static.loadGLTFAssetsForStaticItems('show_home_page');
-}
+};

@@ -24,7 +24,7 @@ function initInput() {
         // We try to pick an object
         if (pickResult.hit) {
             // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
-            // console.log('pickResult.pickedPoint:', pickResult.pickedPoint);
+            console.log('pickResult.pickedPoint:', pickResult.pickedPoint);
             if(tg.bot.userPlayerConfig.selectedBot != null){
                 var gridX = Math.floor(pickResult.pickedPoint.x / tg.worldItems.uiConfig.playerDimensionBaseUnit);
                 var gridZ = Math.floor(pickResult.pickedPoint.z / tg.worldItems.uiConfig.playerDimensionBaseUnit);

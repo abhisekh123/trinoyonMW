@@ -1,5 +1,4 @@
 
-
 tg.rm = {};
 
 tg.rm.init = function () {
@@ -8,9 +7,11 @@ tg.rm.init = function () {
     tg.rm.initPathMap();
 };
 
-tg.rm.planBotRoute = function(botObject, updateItemConfig){
+
+
+tg.rm.planBotRoute = function (botObject, updateItemConfig) {
     // console.log('updateItemConfig:', updateItemConfig);
-    if(updateItemConfig.actionData.path.length < 2){
+    if (updateItemConfig.actionData.path.length < 2) {
         console.error('updateItemConfig.actionData.path.length < 2');
         return {
             x: (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
@@ -23,15 +24,17 @@ tg.rm.planBotRoute = function(botObject, updateItemConfig){
     var incomingPath = [];
 
     // convert path from array to z,x coordinate object
-    for(var i = 0; i < updateItemConfig.actionData.path.length; ++i){
+    for (var i = 0; i < updateItemConfig.actionData.path.length; ++i) {
         incomingPath.push({
             x: (updateItemConfig.actionData.path[i][0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             z: (updateItemConfig.actionData.path[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
         });
     }
 
+
+
     // generate and populate mid point array
-    for(var i = 1; i < incomingPath.length; ++i){
+    for (var i = 1; i < incomingPath.length; ++i) {
         midPointArray.push({
             start: incomingPath[i - 1],
             end: incomingPath[i]
@@ -49,12 +52,12 @@ tg.rm.planBotRoute = function(botObject, updateItemConfig){
 
     // time taken for bot to travel from one planned path to next one.
     var timeToTravelToNextPlannedPathPosition = botObject.timeTakenToCover1Tile / tg.worldItems.uiConfig.plannedPathResolution;
-    
+
     // plan path from start to first mid point
     var pathGuideArray = tg.rm.planTerminalSubPath(incomingPath[0], midPointArray[0].end);
     // console.log('pathGuideArray start:', pathGuideArray);
-    for(var i = 0; i < pathGuideArray.length; ++i){
-        
+    for (var i = 0; i < pathGuideArray.length; ++i) {
+
         plannedPositionRunner.time += timeToTravelToNextPlannedPathPosition;
 
         // creating seperate object to help garbage collection.
@@ -71,13 +74,15 @@ tg.rm.planBotRoute = function(botObject, updateItemConfig){
     plannedPositionRunner.z += pathGuideArray[pathGuideArray.length - 1].z;
 
     // plan path between each mid point to next one
-    for(var i = 1; i < midPointArray.length; ++i){
+    for (var i = 1; i < midPointArray.length; ++i) {
         pathGuideArray = tg.rm.planIntermediateSubPath(
-            midPointArray[i - 1], 
+            midPointArray[i - 1],
             midPointArray[i]
         );
+        // console.log('start x:' + ((midPointArray[i - 1].start.x + midPointArray[i - 1].end.x) / 2) + ' z:' + ((midPointArray[i - 1].start.z + midPointArray[i - 1].end.z) / 2));
+        // console.log('end x:' + ((midPointArray[i].start.x + midPointArray[i].end.x) / 2) + ' z:' + ((midPointArray[i].start.z + midPointArray[i].end.z) / 2));
         // console.log('pathGuideArray:' + i + ':', pathGuideArray);
-        for(var j = 0; j < pathGuideArray.length; ++j){
+        for (var j = 0; j < pathGuideArray.length; ++j) {
             plannedPositionRunner.time += timeToTravelToNextPlannedPathPosition;
             plannedPathArray.push({
                 x: plannedPositionRunner.x + pathGuideArray[j].x,
@@ -86,6 +91,7 @@ tg.rm.planBotRoute = function(botObject, updateItemConfig){
                 time: plannedPositionRunner.time,
                 rotation: pathGuideArray[j].rotation
             });
+            // console.log(j + 'th iteration :plannedPathArray.' + plannedPathArray.length + '=' , plannedPathArray[plannedPathArray.length - 1]);
         }
         // console.log('plannedPathArray:' + i + ':', plannedPathArray);
         plannedPositionRunner.x += pathGuideArray[pathGuideArray.length - 1].x;
@@ -99,7 +105,7 @@ tg.rm.planBotRoute = function(botObject, updateItemConfig){
         incomingPath[incomingPath.length - 1]
     );
     // console.log('pathGuideArray end:', pathGuideArray);
-    for(var i = 0; i < pathGuideArray.length; ++i){
+    for (var i = 0; i < pathGuideArray.length; ++i) {
         plannedPositionRunner.time += timeToTravelToNextPlannedPathPosition;
         plannedPathArray.push({
             x: plannedPositionRunner.x + pathGuideArray[i].x,
@@ -116,13 +122,18 @@ tg.rm.planBotRoute = function(botObject, updateItemConfig){
     // }
     // console.log('plannedPathArray end:', plannedPathArray);
     // botObject.plannedPath = plannedPathArray;
+    // if (botObject.id == 'player_0_0') {
+    //     console.log('++updateItemConfig.actionData.path:', updateItemConfig.actionData.path);
+    //     console.log('incomingPath:', incomingPath);
+    //     console.log('plannedPathArray:', plannedPathArray);
+    // }
     return plannedPathArray;
 };
 
 // between two consecutive midpoints.
-tg.rm.planIntermediateSubPath = function(midPointSource, midPointDestination){
+tg.rm.planIntermediateSubPath = function (midPointSource, midPointDestination) {
     var direction = tg.rm.getDirection(midPointSource.start, midPointDestination.end);
-    if(direction == null){ // curved path because the mid points are diagonal.
+    if (direction == null) { // curved path because the mid points are diagonal.
         // console.error('direction == null for terminal sub path.');
         var directionFirstHalf = tg.rm.getDirection(midPointSource.start, midPointSource.end);
         var directionSecondHalf = tg.rm.getDirection(midPointDestination.start, midPointDestination.end);
@@ -143,9 +154,9 @@ tg.rm.planIntermediateSubPath = function(midPointSource, midPointDestination){
 };
 
 // between start and first mid point or last midpoint and end.
-tg.rm.planTerminalSubPath = function(start, end){
+tg.rm.planTerminalSubPath = function (start, end) {
     var direction = tg.rm.getDirection(start, end);
-    if(direction == null){
+    if (direction == null) {
         console.error('direction == null for terminal sub path.');
         return [];
     } else {
@@ -158,16 +169,16 @@ tg.rm.planTerminalSubPath = function(start, end){
     }
 };
 
-tg.rm.getDirection = function(start, end){
-    if(start.x == end.x || start.z == end.z){
-        if(start.x != end.x){
-            if(start.x < end.x){
+tg.rm.getDirection = function (start, end) {
+    if (start.x == end.x || start.z == end.z) {
+        if (start.x != end.x) {
+            if (start.x < end.x) {
                 return 'right';
             } else {
                 return 'left';
             }
         } else {
-            if(start.z < end.z){
+            if (start.z < end.z) {
                 return 'up';
             } else {
                 return 'down';
@@ -183,7 +194,7 @@ tg.rm.initPathMap = function () {
     var intermediateValue = tg.worldItems.uiConfig.playerDimensionBaseUnit / tg.worldItems.uiConfig.plannedPathResolution;
     var tmpValue = 0;
 
-    for(var i = 0; i < tg.worldItems.uiConfig.plannedPathResolution; ++i){
+    for (var i = 0; i < tg.worldItems.uiConfig.plannedPathResolution; ++i) {
         tmpValue += intermediateValue;
         intermediateValueArray.push(tmpValue);
     }
@@ -205,7 +216,7 @@ tg.rm.initPathMap = function () {
     tg.rm.pathMap.down.halfPath = [];
 
     // half of the resolution for (first half) fullpath and halfpath
-    for(var i = 0; i < tg.worldItems.uiConfig.plannedPathResolution / 2; ++i){
+    for (var i = 0; i < tg.worldItems.uiConfig.plannedPathResolution / 2; ++i) {
         // right
         tg.rm.pathMap.right.fullPath.push({
             x: intermediateValueArray[i],
@@ -253,7 +264,7 @@ tg.rm.initPathMap = function () {
     }
 
     // remaining half of the resolution to fill up (remainig half) of full path.
-    for(var i = tg.worldItems.uiConfig.plannedPathResolution / 2; i < tg.worldItems.uiConfig.plannedPathResolution; ++i){
+    for (var i = tg.worldItems.uiConfig.plannedPathResolution / 2; i < tg.worldItems.uiConfig.plannedPathResolution; ++i) {
         // right
         tg.rm.pathMap.right.fullPath.push({
             x: intermediateValueArray[i],
@@ -281,63 +292,63 @@ tg.rm.initPathMap = function () {
     }
 
     tg.rm.pathMap.right.up = tg.rm.getCurvedPath({
-        x: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        x: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
         z: 0
     }, {
-        x: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        z: tg.worldItems.uiConfig.playerDimensionBaseUnit
+        x: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+        z: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, );
     tg.rm.pathMap.right.down = tg.rm.getCurvedPath({
-        x: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        x: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
         z: 0
     }, {
-        x: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit
+        x: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, );
 
     tg.rm.pathMap.left.up = tg.rm.getCurvedPath({
-        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
         z: 0
     }, {
-        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        z: tg.worldItems.uiConfig.playerDimensionBaseUnit
+        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+        z: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, );
     tg.rm.pathMap.left.down = tg.rm.getCurvedPath({
-        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
         z: 0
     }, {
-        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit
+        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, );
 
     tg.rm.pathMap.up.right = tg.rm.getCurvedPath({
         x: 0,
-        z: tg.worldItems.uiConfig.playerDimensionBaseUnit
+        z: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, {
-        x: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        z: tg.worldItems.uiConfig.playerDimensionBaseUnit
+        x: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+        z: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, );
     tg.rm.pathMap.up.left = tg.rm.getCurvedPath({
         x: 0,
-        z: tg.worldItems.uiConfig.playerDimensionBaseUnit
+        z: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, {
-        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        z: tg.worldItems.uiConfig.playerDimensionBaseUnit
+        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+        z: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, );
 
     tg.rm.pathMap.down.right = tg.rm.getCurvedPath({
         x: 0,
-        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit
+        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, {
-        x: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit
+        x: tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, );
     tg.rm.pathMap.down.left = tg.rm.getCurvedPath({
         x: 0,
-        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit
+        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, {
-        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit
+        x: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+        z: -tg.worldItems.uiConfig.playerDimensionBaseUnit / 2
     }, );
 }
 
@@ -386,7 +397,7 @@ tg.rm.getCurvedPath = function (pos1, pos2) {
         x: roundTo2Decimal((d.x + e.x) / 2),
         z: roundTo2Decimal((d.z + e.z) / 2),
     };
-    
+
     var v3 = { // 4
         x: roundTo2Decimal(c.x),
         z: roundTo2Decimal(c.z),
@@ -437,3 +448,44 @@ tg.rm.getCurvedPath = function (pos1, pos2) {
     path.push(v5);
     return path;
 };
+
+
+/**
+tg.rm.planBotRoute({
+    id: 'player_0_0',
+    timeTakenToCover1Tile: 1000
+}, {
+    actionData: {
+        path: [
+            [46, 4, 1587652521736],
+            [46, 5, 1587652522736],
+            [46, 6, 1587652523736],
+            [46, 7, 1587652524736],
+            [46, 8, 1587652525736],
+            [46, 9, 1587652526736],
+            [46, 10, 1587652527736],
+            [46, 11, 1587652528736],
+            [46, 12, 1587652529736],
+            [45, 12, 1587652530736],
+            [44, 12, 1587652531736],
+            [43, 12, 1587652532736],
+            [42, 12, 1587652533736],
+            [41, 12, 1587652534736],
+            [41, 13, 1587652535736],
+            [41, 14, 1587652536736],
+            [41, 15, 1587652537736],
+            [41, 16, 1587652538736],
+            [41, 17, 1587652539736],
+            [41, 18, 1587652540736],
+            [41, 19, 1587652541736],
+            [41, 20, 1587652542736],
+            [41, 21, 1587652543736],
+            [40, 21, 1587652544736],
+            [40, 22, 1587652545736],
+            [40, 23, 1587652546736],
+            [41, 23, 1587652547736],
+            [41, 24, 1587652548736]
+        ]
+    }
+});
+ */
