@@ -24,10 +24,12 @@ module.exports = {
                 );
             }
             if (distanceBetweenBotAndHostile <= buildingConfigParam.range) { // if a hostile is found in range
-                console.log(buildingConfigParam.id + '--attack -> hostiles in range:' + hostileConfig.id + ' at position:', hostileConfig.position);
+                // console.log(buildingConfigParam.id + '--attack -> hostiles in range:' + hostileConfig.id + ' at position:', hostileConfig.position);
                 aiUtility.attackHostile(buildingConfigParam, hostileConfig, gameRoom);
-                return 0; // consumed all remaining time to attack. Done for the current iteration.
+                // console.log('complete tower attack routine.');
+                return; // consumed all remaining time to attack. Done for the current iteration.
             }
+            buildingConfigParam.activityTimeStamp = workerState.currentTime;
         } else { // orphan towers
             var team1BotsInRange = false;
             var team2BotsInRange = false;

@@ -81,9 +81,9 @@ tg.world.updateWorld = function(updateParam){
             }else{
                 if(updateItemConfig.action == 'march' || updateItemConfig.action == 'goto'){
                     // console.log('updateItemConfig:', updateItemConfig);
-                    if(updateItemConfig.actionData == null || updateItemConfig.actionData.pathTimeStamp == undefined){
-                        console.log('updateItemConfig:', updateItemConfig);
-                    }
+                    // if(updateItemConfig.actionData == null || updateItemConfig.actionData.pathTimeStamp == undefined){
+                    //     console.log('updateItemConfig:', updateItemConfig);
+                    // }
                     if(botObject.plannedPathTimeStamp != updateItemConfig.actionData.pathTimeStamp){
                         // path was updated. so need fresh planning.
                         botObject.plannedPath = tg.rm.planBotRoute(botObject, updateItemConfig);
@@ -122,7 +122,7 @@ tg.world.updateWorld = function(updateParam){
                 if(sourceConfig.type != 'base' && sourceConfig.type != 'tower'){
                     tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
                 }else{
-                    console.log('building attack event:', eventsArray[index]);
+                    // console.log('building attack event:', eventsArray[index]);
                 }
 
                 sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;

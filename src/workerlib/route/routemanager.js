@@ -158,7 +158,7 @@ module.exports = {
      */
     // find point(x, y) closest walkable to botConfigParam within range to targetConfig.
     findClosestWalkablePosition: function (visibilityFlag, rangeParam, botConfigParam, targetConfig, gameRoom) {
-        console.log('findClosestWalkablePosition for:', botConfigParam.position);
+        // console.log('findClosestWalkablePosition for:', botConfigParam.position);
         if(
             (visibilityFlag != this.worldConfig.constants.VISIBLE) 
             && (visibilityFlag != this.worldConfig.constants.INVISIBLE) 
@@ -261,7 +261,7 @@ module.exports = {
             }
         }
         if(foundSuitablePosition == true){
-            console.log('findClosestWalkablePosition foundSuitablePosition == true');
+            // console.log('findClosestWalkablePosition foundSuitablePosition == true');
             return selectedPosition;
         } else {
             if(rangeParam < this.worldConfig.maxRange){
@@ -273,10 +273,10 @@ module.exports = {
                     targetConfig,
                     gameRoom
                 );
-                console.log('findClosestWalkablePosition rec result');
+                // console.log('findClosestWalkablePosition rec result');
                 return nearestPosition;
             }
-            console.log('findClosestWalkablePosition null');
+            // console.log('findClosestWalkablePosition null');
             return null; // no hostiles in range.
         }
     },

@@ -102,10 +102,14 @@ tg.static.loadStaticModel = function (
     projectile.position.x = positionParam.x;
     projectile.position.y = tg.worldItems.uiConfig.hiddenY;
     projectile.position.z = positionParam.z;
-    projectile.material = tg.am.material_semitransparent_projectile;
+    projectile.material = tg.am.material_semitransparent_towerprojectile;
 
     buildingObject.projectile = projectile;
     buildingObject.isProjectileActive = false;
+    buildingObject.projectileData = {
+        path: null,
+        endTime: 0
+    };
 
     //data reporter
     var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);

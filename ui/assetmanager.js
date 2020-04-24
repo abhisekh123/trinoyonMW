@@ -86,6 +86,12 @@ tg.am.createMaterials = function () {
 
     tg.am.material_semitransparent_projectile = material_semitransparent_projectile;
 
+    var material_semitransparent_towerprojectile = new BABYLON.StandardMaterial('material_semitransparent_towerprojectile', tg.scene);
+    material_semitransparent_towerprojectile.diffuseColor = new BABYLON.Color3(1, 0, 0);
+    material_semitransparent_towerprojectile.emissiveColor = new BABYLON.Color3(1, 0, 0);
+
+    tg.am.material_semitransparent_towerprojectile = material_semitransparent_towerprojectile;
+
     var material_semitransparent_chosen = new BABYLON.StandardMaterial('material_semitransparent_chosen', tg.scene);
     material_semitransparent_chosen.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.9);
     material_semitransparent_chosen.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);

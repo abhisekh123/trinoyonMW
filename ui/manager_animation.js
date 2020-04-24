@@ -28,7 +28,7 @@ tg.animationmanager.startCharacterAnimation = function(botObject, newAction){
     // }
 
     if(botObject.animationAction == 'die'){
-        console.log('spawn....', botObject.id);
+        // console.log('spawn....', botObject.id);
         animationPlayFlag = false;
         animationObject = botObject.animations[tg.animationmanager.actionToAnimationMap['spawn']];
         botObject.controlMesh.position.y = 0;
@@ -38,7 +38,7 @@ tg.animationmanager.startCharacterAnimation = function(botObject, newAction){
 
     if(newAction == 'die'){
 
-        console.log('die:', botObject.id);
+        // console.log('die:', botObject.id);
         // botObject.controlMesh.position.y = tg.worldItems.uiConfig.hiddenY;
         // botObject.projectile.position.y = tg.worldItems.uiConfig.hiddenY;
     }
