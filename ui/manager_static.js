@@ -151,7 +151,7 @@ tg.static.loadStaticModel = function (
     hpBarConfig.healthBarContainer.position.y = buildingTypeConfig.hpBarPositionY;
     hpBarConfig.healthBarContainer.position.z = positionParam.z;
 
-    buildingObject.headerBoard = outputplane;
+    // buildingObject.headerBoard = outputplane;
 
     tg.am.staticItems.buildings[itemID] = buildingObject;
     tg.am.staticItems.buildingsArray.push(buildingObject);
