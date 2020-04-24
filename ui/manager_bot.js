@@ -196,7 +196,7 @@ tg.bot.processLoadedModel = function (
     outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
     outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
     outputplane.material.backFaceCulling = false;
-
+    
     //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
     outputplaneTexture.drawText(characterID, null, 140, "bold 80px verdana", "white");
 

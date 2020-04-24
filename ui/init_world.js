@@ -11,8 +11,6 @@ function createAmbience() {
     light.groundColor = new BABYLON.Color3(1, 1, 1);
 
     tg.light2 = light;
-
-    // tg.camera.target = tg.am.ground.position;
 };
 
 
@@ -137,6 +135,7 @@ tg.newRefreshFunction = function() {
             if(tg.camera.rotationOffset > 360){
                 tg.camera.rotationOffset = 0;
             }
+            // tg.camera2.rotationOffset = tg.camera.rotationOffset;
             tg.calculateCameraMovementSteps();
         };
 
@@ -146,6 +145,7 @@ tg.newRefreshFunction = function() {
             if(tg.camera.rotationOffset < 0){
                 tg.camera.rotationOffset = 360;
             }
+            // tg.camera2.rotationOffset = tg.camera.rotationOffset;
             tg.calculateCameraMovementSteps();
         };
 

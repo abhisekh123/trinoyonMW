@@ -54,10 +54,15 @@ function initialiseCamera() {
     
     tg.camera.attachControl(tg.canvas, true);
 
+    // tg.camera2 = new BABYLON.ArcRotateCamera("camera2",  3 * Math.PI / 8, 3 * Math.PI / 8, 400, new BABYLON.Vector3(0, 10, -10), tg.scene);
+    // tg.camera2.attachControl(tg.canvas, true);
+    // tg.camera2.position = new BABYLON.Vector3(0, 500, 500);
+    // // Two Viewports
+    // tg.camera.viewport = new BABYLON.Viewport(0, 0, 1, 1);
+    // tg.camera2.viewport = new BABYLON.Viewport(0, 0.8, 0.2, 0.2);
 
-    // tg.cameraSavedPosition.x = tg.camera.position.x;
-    // tg.cameraSavedPosition.y = tg.camera.position.y;
-    // tg.cameraSavedPosition.z = tg.camera.position.z;
+    // tg.scene.activeCameras.push(tg.camera);
+    // tg.scene.activeCameras.push(tg.camera2);
 }
 
 

@@ -25,6 +25,7 @@ tg.static.loadStaticModel = function (
     for (var i = 0; i < newMeshes.length; ++i) {
         // // console.log(i + '->' + newMeshes[i].name);
         newMeshes[i].isPickable = false;
+        newMeshes[i].freezeWorldMatrix();
     }
 
     var buildingTypeConfig = tg.itemConfigs.items[itemType];
@@ -59,6 +60,7 @@ tg.static.loadStaticModel = function (
     
     residue.position.z = positionParam.z;
     residue.material = tg.am.material_semitransparent_red;
+    residue.freezeWorldMatrix();
 
     buildingObject.markerMeshTeamEnemy = residue;
 
@@ -76,7 +78,7 @@ tg.static.loadStaticModel = function (
     }
     residue.position.z = positionParam.z;
     residue.material = tg.am.material_semitransparent_blue;
-
+    residue.freezeWorldMatrix();
     buildingObject.markerMeshTeamFriendly = residue;
 
     residue = BABYLON.MeshBuilder.CreateBox("residue_neutral_" + itemID, {
@@ -89,7 +91,7 @@ tg.static.loadStaticModel = function (
     residue.position.y = tg.worldItems.uiConfig.hiddenY;
     residue.position.z = positionParam.z;
     residue.material = tg.am.material_semitransparent_chosen;
-
+    residue.freezeWorldMatrix();
     buildingObject.markerMeshTeamNeutral = residue;
 
     // projectile mesh
@@ -103,6 +105,7 @@ tg.static.loadStaticModel = function (
     projectile.position.y = tg.worldItems.uiConfig.hiddenY;
     projectile.position.z = positionParam.z;
     projectile.material = tg.am.material_semitransparent_towerprojectile;
+    projectile.freezeWorldMatrix();
 
     buildingObject.projectile = projectile;
     buildingObject.isProjectileActive = false;
@@ -111,24 +114,25 @@ tg.static.loadStaticModel = function (
         endTime: 0
     };
 
-    //data reporter
-    var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);
-    outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
-    outputplane.material = new BABYLON.StandardMaterial("outputplanematerial_" + itemID, tg.scene);
+    // //data reporter
+    // var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);
+    // outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+    // outputplane.material = new BABYLON.StandardMaterial("outputplanematerial_" + itemID, tg.scene);
 
-    var outputplaneTexture = new BABYLON.DynamicTexture("dynamictexture_" + itemID, 512, tg.scene, true);
-    outputplane.material.diffuseTexture = outputplaneTexture;
-    outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-    outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-    outputplane.material.backFaceCulling = false;
+    // var outputplaneTexture = new BABYLON.DynamicTexture("dynamictexture_" + itemID, 512, tg.scene, true);
+    // outputplane.material.diffuseTexture = outputplaneTexture;
+    // outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+    // outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    // outputplane.material.backFaceCulling = false;
     
-    outputplaneTexture.drawText(positionParam.x + ',' + positionParam.z, null, 140, "bold 80px verdana", "white");
+    // outputplaneTexture.drawText(positionParam.x + ',' + positionParam.z, null, 140, "bold 80px verdana", "white");
 
-    outputplaneTexture.hasAlpha = true;
-    outputplane.position.x = positionParam.x;
-    outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 4 + newMeshes[0].position.y;
-    outputplane.position.z = positionParam.z;
-    // outputplane.parent = parentMesh;
+    // outputplaneTexture.hasAlpha = true;
+    // outputplane.position.x = positionParam.x;
+    // outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 4 + newMeshes[0].position.y;
+    // outputplane.position.z = positionParam.z;
+    // // outputplane.parent = parentMesh;
+    // outputplane.freezeWorldMatrix();
 
 
     var hpBarConfig = tg.ui3d.gethpbar(itemID, hpBarMaterial, hpBarContainerMaterial);
@@ -352,6 +356,7 @@ tg.static.addStaticItems = function () {
     ground.material = tg.am.groundMaterial;
     // ground.material = materialGround;
     tg.am.ground = ground;
+    ground.freezeWorldMatrix();
 
     // cameraTarget
     var cameraTarget = BABYLON.MeshBuilder.CreateBox("cameraTarget", {
@@ -366,10 +371,12 @@ tg.static.addStaticItems = function () {
     cameraTarget.position.z = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
     // ground.isPickable = true;
     cameraTarget.material = tg.am.material_semitransparent_chosen;
+    // cameraTarget.freezeWorldMatrix();
     // ground.material = materialGround;
     tg.am.cameraTarget = cameraTarget;
 
     tg.camera.lockedTarget = tg.am.cameraTarget;
+    // tg.camera2.lockedTarget = tg.am.ground;
 
     // chosenMarker
     var chosenMarker = BABYLON.MeshBuilder.CreateBox("chosenMarker", {
@@ -400,34 +407,35 @@ tg.static.addStaticItems = function () {
         box.position.z = (tg.worldItems.obstacles[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
         box.isPickable = false;
         box.material = tg.am.boxMaterial;
+        box.freezeWorldMatrix();
         // box.material = groundMaterial;
         tg.am.staticItems.boxes.push(box);
 
-        //data reporter
-        var outputplane = BABYLON.Mesh.CreatePlane("box_" + i, 5, tg.scene, false);
-        outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
-        outputplane.material = new BABYLON.StandardMaterial("boxmaterial_" + i, tg.scene);
-        // outputplane.material = tg.am.material_friend_hpbar;
-        // outputplane.position = new BABYLON.Vector3(0, 0, 25);
-        // outputplane.scaling.y = 0.4;
+        // //data reporter
+        // var outputplane = BABYLON.Mesh.CreatePlane("box_" + i, 5, tg.scene, false);
+        // outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+        // outputplane.material = new BABYLON.StandardMaterial("boxmaterial_" + i, tg.scene);
+        // // outputplane.material = tg.am.material_friend_hpbar;
+        // // outputplane.position = new BABYLON.Vector3(0, 0, 25);
+        // // outputplane.scaling.y = 0.4;
 
-        var outputplaneTexture = new BABYLON.DynamicTexture("boxdynamictexture_" + i, 128, tg.scene, true);
-        outputplane.material.diffuseTexture = outputplaneTexture;
-        outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-        outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-        outputplane.material.backFaceCulling = false;
+        // var outputplaneTexture = new BABYLON.DynamicTexture("boxdynamictexture_" + i, 128, tg.scene, true);
+        // outputplane.material.diffuseTexture = outputplaneTexture;
+        // outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+        // outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+        // outputplane.material.backFaceCulling = false;
 
-        //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
-        // outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
-        // console.log(box.position.x + ',' + box.position.z);
-        outputplaneTexture.drawText(box.position.x + ',' + box.position.z, 0, 30, "bold 20px verdana", "white");
+        // //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
+        // // outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
+        // // console.log(box.position.x + ',' + box.position.z);
+        // outputplaneTexture.drawText(box.position.x + ',' + box.position.z, 0, 30, "bold 20px verdana", "white");
 
-        // outputplaneTexture.hasAlpha = true;
-        outputplane.position.x = box.position.x;
-        outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2 + box.position.y;
-        outputplane.position.z = box.position.z;
-        // console.log('box' + i + ':', box.position);
-        // console.log('outputplane' + i + ':', outputplane.position);
+        // // outputplaneTexture.hasAlpha = true;
+        // outputplane.position.x = box.position.x;
+        // outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2 + box.position.y;
+        // outputplane.position.z = box.position.z;
+        // // console.log('box' + i + ':', box.position);
+        // // console.log('outputplane' + i + ':', outputplane.position);
     }
 
     tg.am.markerMeshes = {};
