@@ -21,14 +21,14 @@ module.exports = {
         customRoutingUtility.init();
     },
 
-    checkIfBotIsVisibleToEnemyTeam: function(botConfig, gameRoom){
-        var botTeam = botConfig.team;
-        // gameRoom.botGraph = [];
-        for(var i = 0; i < gameRoom.botGraph.length; ++i){ // each row
-            if(gameRoom.allBotObjects[i].team == botTeam){ // skip team member bots
+    checkIfBotIsVisibleToEnemyTeam: function(itemConfig, gameRoom){
+        var botTeam = itemConfig.team;
+        for(var i = 0; i < gameRoom.proximityGraph.length; ++i){ // each row
+            if(gameRoom.allDynamicObjects[i].team == botTeam){ // skip team member bots
                 continue;
             }
-            if(gameRoom.botGraph[i][botConfig.globalIndex].visibility == true){ // if bot is visible to anyone.
+            // if allDynamicObjects[i] can see itemConfig.
+            if(gameRoom.proximityGraph[i][itemConfig.globalIndex].visibility == true){ 
                 return true;
             }
         }

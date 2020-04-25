@@ -160,7 +160,7 @@ module.exports = {
             // nothing to do for now
             return;
         }
-        if (buildingConfig.life <= 0 && buildingConfig.isActive) { // bots that died in last cycle.
+        if (buildingConfig.life <= 0 && buildingConfig.isActive) { // building that got destroyed in the last cycle.
             if (buildingConfig.type == 'base') {
                 console.log('base destroyed.');
                 this.terminateGame(gameRoom);
@@ -172,6 +172,7 @@ module.exports = {
             buildingConfig.ownershipClaimStartTimestamp = null;
             buildingConfig.mostResentOwnershipClaimingTeam = null;
             buildingConfig.life = 0;
+            actionManager.actionUtility.clearProximityGraphEntry(gameRoom, buildingConfig);
             snapShotManager.add_BuildingTeamChange_Event(gameRoom, buildingConfig);
             gameRoom.statistics.performance[buildingConfig.team].death++;
             return;

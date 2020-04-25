@@ -66,24 +66,27 @@ module.exports = {
         // console.log('process games end');
     },
 
-    createNewBotGraph: function(gameRoom){
+    createNewProximityGraph: function(gameRoom){
         // console.log('============================================');
         // console.log('============================================');
         // console.log('============================================');
-        // console.log('createNewBotGraph start');
+        // console.log('createNewProximityGraph start');
         // console.log('============================================');
         // console.log('============================================');
         // console.log('============================================');
-        var totalBotCount = 0;
+        // var totalItemCount = 0;
         gameRoom.allBotObjects = [];
+        gameRoom.allBuildingObjects = [];
+        gameRoom.allDynamicObjects = [];
         var indexCounter = 0;
         // players 1
         for (var i = 0; i < gameRoom.players_1.length; ++i) {
             const player = gameRoom.players_1[i];
             
-            totalBotCount += player.botObjectList.length;
+            // totalItemCount += player.botObjectList.length;
             for (var j = 0; j < player.botObjectList.length; ++j) {
                 gameRoom.allBotObjects.push(player.botObjectList[j]);
+                gameRoom.allDynamicObjects.push(player.botObjectList[j]);
                 player.botObjectList[j].globalIndex = indexCounter;
                 ++indexCounter;
             }
@@ -92,43 +95,63 @@ module.exports = {
         // players 2
         for (var i = 0; i < gameRoom.players_2.length; ++i) {
             const player = gameRoom.players_2[i];
-            totalBotCount += player.botObjectList.length;
+            // totalItemCount += player.botObjectList.length;
             for (var j = 0; j < player.botObjectList.length; ++j) {
                 gameRoom.allBotObjects.push(player.botObjectList[j]);
+                gameRoom.allDynamicObjects.push(player.botObjectList[j]);
                 player.botObjectList[j].globalIndex = indexCounter;
                 ++indexCounter;
             }
         }
 
+        // indexCounter = 0;
+        for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+            var buildingConfig = gameRoom.buildingArray_1[i];
+            gameRoom.allBuildingObjects.push(buildingConfig);
+            gameRoom.allDynamicObjects.push(buildingConfig);
+            buildingConfig.globalIndex = indexCounter;
+            ++indexCounter;
+            // ++totalItemCount;
+        }
+
+        for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+            var buildingConfig = gameRoom.buildingArray_2[i];
+            gameRoom.allBuildingObjects.push(buildingConfig);
+            gameRoom.allDynamicObjects.push(buildingConfig);
+            buildingConfig.globalIndex = indexCounter;
+            ++indexCounter;
+            // ++totalItemCount;
+        }
+
         // console.log('total bot count:' + totalBotCount);
 
-        gameRoom.botGraph = [];
+        gameRoom.proximityGraph = [];
         var distance = 0;
-        for(var i = 0; i < totalBotCount; ++i){ // row
-            gameRoom.botGraph[i] = [];
-            var sourceBot = gameRoom.allBotObjects[i];
-            for(var j = 0; j < totalBotCount; ++j){ // col
-                var destinationBot = gameRoom.allBotObjects[j];
-                if(sourceBot.team == destinationBot.team || i == j){
+        for(var i = 0; i < indexCounter; ++i){ // row
+            gameRoom.proximityGraph[i] = [];
+            var sourceConfig = gameRoom.allDynamicObjects[i];
+            for(var j = 0; j < indexCounter; ++j){ // col
+                var destinationConfig = gameRoom.allDynamicObjects[j];
+                if(sourceConfig.team == destinationConfig.team || i == j){
                     distance = this.worldConfig.gridSide + 1;
                 } else {
                     distance = routeManager.getDistanceBetweenPoints(
-                        sourceBot.position[0],
-                        sourceBot.position[2],
-                        destinationBot.position[0],
-                        destinationBot.position[2],
+                        sourceConfig.position[0],
+                        sourceConfig.position[2],
+                        destinationConfig.position[0],
+                        destinationConfig.position[2],
                     );
                 }
                 // console.log('i:', i);
                 // console.log('j:', j);
                 // console.log('distance:', distance);
-                gameRoom.botGraph[i][j] = {
+                gameRoom.proximityGraph[i][j] = {
                     distance: distance,
                     visibility: false,
                 }
             }
         }
-        // console.log('gameRoom.botGraph.length:', gameRoom.botGraph.length);
+        // console.log('gameRoom.proximityGraph.length:', gameRoom.proximityGraph.length);
     },
 
     startNewGame: function(gameRoom, startTime) {
@@ -137,7 +160,7 @@ module.exports = {
         gameRoom.gameStartTime = startTime;
         // ,,, reset ai players
         gameRoomAssetManager.resetAllBotPositionToStartingPosition(gameRoom);
-        this.createNewBotGraph(gameRoom);
+        this.createNewProximityGraph(gameRoom);
         // console.log(gameRoom);
         // utilityFunctions.printEntireObjectNeatyle(gameRoom);
         // console.log('gameRoom.buildingArray_1');

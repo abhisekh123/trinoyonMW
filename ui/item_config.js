@@ -38,14 +38,14 @@
                 },
                 
                 weaponType: 'melee',
-                projectileShootY: null,
-                projectileReceiveY: 0,
+                projectileShootY: 0.75,
+                projectileReceiveY: 0.75,
 
                 attackinterval: 1000,
                 attack: 1,
                 life:60,
-                speed:1, //one tile per 1000 ms.
-                sight: 4,
+                speed:2, //one tile per 1000 ms.
+                sight: 6,
                 range: 2,
                 parentMesh: null,
                 file:'digimon_3d_leomonice_leomon',
@@ -88,14 +88,14 @@
                 },
                 
                 weaponType: 'melee',
-                projectileShootY: null,
-                projectileReceiveY: 0,
+                projectileShootY: 0.75,
+                projectileReceiveY: 0.75,
 
                 attackinterval: 1000,
                 attack: 1,
                 life:40,
-                speed:1, //one tile per 1000 ms.
-                sight: 4,
+                speed:2, //one tile per 1000 ms.
+                sight: 6,
                 range: 2,
                 parentMesh: null,
                 file:'low_poly_knight_animated',
@@ -149,14 +149,14 @@
                 },
                 
                 weaponType: 'arrow',
-                projectileShootY: 0,
-                projectileReceiveY: 0,
+                projectileShootY: 0.75,
+                projectileReceiveY: 0.75,
 
                 attackinterval: 1000,
                 attack: 1,
                 life:30,
-                speed:1, //one tile per 1000 ms.
-                sight: 5,
+                speed:2, //one tile per 1000 ms.
+                sight: 6,
                 range: 4,
                 parentMesh: null,
                 // file:'low_poly_character_rpg_kit_animation',
@@ -170,31 +170,31 @@
                 hpBarPositionY: 40,
             },
             tower:{
-                life:1000,
+                life:100,
                 attack:2,
                 file: 'tower_gloom',
                 scale: 0.05,
-                sight: 5,
+                sight: 6,
                 range: 4,
                 attackinterval: 1000,
                 weaponType: 'fireball',
-                projectileShootY: 5,
-                projectileReceiveY: 5,
+                projectileShootY: 2,
+                projectileReceiveY: 0.75,
                 intervalToCompleteOwnershipClaim: 3000, // 3 seconds
                 hpBarScale: 10,
                 hpBarPositionY: 34,
             },
             base:{
-                life:1000,
+                life:100,
                 attack:2,
                 file: 'defense_tower',
                 scale: 2,
-                sight: 5,
+                sight: 6,
                 range: 4,
                 attackinterval: 1000,
                 weaponType: 'fireball',
-                projectileShootY: 5,
-                projectileReceiveY: 5,
+                projectileShootY: 2,
+                projectileReceiveY: 0.75,
                 intervalToCompleteOwnershipClaim: 3000, // 3 seconds
                 hpBarScale: 10,
                 hpBarPositionY: 20,

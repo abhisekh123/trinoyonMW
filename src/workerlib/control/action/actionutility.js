@@ -54,6 +54,7 @@ module.exports = {
                 botConfig.position[0] = botConfig.spawnPosition[0];
                 botConfig.position[2] = botConfig.spawnPosition[2];
                 botConfig.positionUpdateTimeStamp = botConfig.activityTimeStamp;
+                this.updateProximityGraphEntry(gameRoom, botConfig);
 
                 // TODO : update bot position in the grid. For now consider repawn position as special.
                 snapShotManager.registerBotSpawnEvent(gameRoom, botConfig);
@@ -93,7 +94,7 @@ module.exports = {
                 // botConfig.action = null;
                 botConfig.activityTimeStamp = workerState.currentTime; // time of death
                 botConfig.isActive = false;
-                this.clearBotGraphEntry(gameRoom, botConfig);
+                this.clearProximityGraphEntry(gameRoom, botConfig);
                 snapShotManager.registerBotDieEvent(gameRoom, botConfig);
                 // nothing to do as the bot does not occupy any position in grid
                 break;
@@ -114,57 +115,57 @@ module.exports = {
     },
 
     // for events like 'die'
-    clearBotGraphEntry: function(gameRoom, botConfig) {
-        var globalIndex = botConfig.globalIndex;
+    clearProximityGraphEntry: function(gameRoom, itemConfig) {
+        var globalIndex = itemConfig.globalIndex;
         for (var i = 0; i < gameRoom.allBotObjects.length; i++) {
             if(i == globalIndex){
                 continue;
             }
             var currentBot = gameRoom.allBotObjects[i];
-            if(currentBot.team == botConfig.team){
+            if(currentBot.team == itemConfig.team){
                 continue;
             }
 
-            gameRoom.botGraph[globalIndex][i].distance = null;
-            gameRoom.botGraph[globalIndex][i].visibility = false;
+            gameRoom.proximityGraph[globalIndex][i].distance = null;
+            gameRoom.proximityGraph[globalIndex][i].visibility = false;
 
-            gameRoom.botGraph[i][globalIndex].distance = null;
-            gameRoom.botGraph[i][globalIndex].visibility = false;
+            gameRoom.proximityGraph[i][globalIndex].distance = null;
+            gameRoom.proximityGraph[i][globalIndex].visibility = false;
         }
     },
 
-    updateBotGraphEntry: function(gameRoom, botConfig) {
-        // console.log('updateBotGraphEntry:', botConfig);
-        var globalIndex = botConfig.globalIndex;
+    updateProximityGraphEntry: function(gameRoom, itemConfig) {
+        // console.log('updateProximityGraphEntry:', itemConfig);
+        var globalIndex = itemConfig.globalIndex;
         var visibility = false;
         // console.log('gameRoom.allBotObjects.length:', gameRoom.allBotObjects.length);
-        // console.log('gameRoom.botGraph.length:', gameRoom.botGraph.length);
+        // console.log('gameRoom.proximityGraph.length:', gameRoom.proximityGraph.length);
         for (var i = 0; i < gameRoom.allBotObjects.length; i++) {
             // console.log('i:', i);
-            // console.log('gameRoom.botGraph[globalIndex].length:', gameRoom.botGraph[globalIndex].length);
-            // console.log('gameRoom.botGraph[i].length:', gameRoom.botGraph[i].length);
+            // console.log('gameRoom.proximityGraph[globalIndex].length:', gameRoom.proximityGraph[globalIndex].length);
+            // console.log('gameRoom.proximityGraph[i].length:', gameRoom.proximityGraph[i].length);
             if(i == globalIndex){
                 continue;
             }
             var currentBot = gameRoom.allBotObjects[i];
-            if(currentBot.team == botConfig.team){
+            if(currentBot.team == itemConfig.team){
                 continue;
             }
             var distance = routeManager.getDistanceBetweenPoints(
-                botConfig.position[0],
-                botConfig.position[2],
+                itemConfig.position[0],
+                itemConfig.position[2],
                 currentBot.position[0],
                 currentBot.position[2],
             );
             
             // if input bot can see currentBot
-            if(distance <= botConfig.sight){
+            if(distance <= itemConfig.sight){
                 visibility = true;
             }else{
                 visibility = false;
             }
-            gameRoom.botGraph[globalIndex][i].distance = distance;
-            gameRoom.botGraph[globalIndex][i].visibility = visibility;
+            gameRoom.proximityGraph[globalIndex][i].distance = distance;
+            gameRoom.proximityGraph[globalIndex][i].visibility = visibility;
 
             // if currentBot can see input bot
             if(distance <= currentBot.sight){
@@ -173,8 +174,8 @@ module.exports = {
                 visibility = false;
             }
             
-            gameRoom.botGraph[i][globalIndex].distance = distance;
-            gameRoom.botGraph[i][globalIndex].visibility = visibility;
+            gameRoom.proximityGraph[i][globalIndex].distance = distance;
+            gameRoom.proximityGraph[i][globalIndex].visibility = visibility;
         }
     },
 
@@ -194,7 +195,7 @@ module.exports = {
                 // console.log('bot:' + botConfig.id + ' moved to:', botConfig.position);
                 // console.log('botConfig.actionData:', botConfig.actionData.pathTimeStamp);
                 snapShotManager.updateBotSnapshotState(gameRoom, botConfig);
-                this.updateBotGraphEntry(gameRoom, botConfig);
+                this.updateProximityGraphEntry(gameRoom, botConfig);
                 // console.log('return 0 at index:', i);
                 return 0;
             }
@@ -209,7 +210,7 @@ module.exports = {
         timeSlice = workerState.currentTime - pathPosition[2];
         // console.log('bot:' + botConfig.id + ' completed movement to:', botConfig.position);
         snapShotManager.updateBotSnapshotState(gameRoom, botConfig);
-        this.updateBotGraphEntry(gameRoom, botConfig);
+        this.updateProximityGraphEntry(gameRoom, botConfig);
         // TODO: update snapshot
         return timeSlice;
     },

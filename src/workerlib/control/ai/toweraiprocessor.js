@@ -2,6 +2,7 @@ const workerState = require('../../state/workerstate');
 const routeManager = require('../../route/routemanager');
 const snapShotManager = require('../../state/snapshotmanager');
 const aiUtility = require('./aiutility');
+const actionManager = require('../action/actionmanager');
 
 module.exports = {
     // baseMap: {}
@@ -13,6 +14,7 @@ module.exports = {
     },
     processAI: function (buildingConfigParam, gameRoom) {
         if (buildingConfigParam.team != 0) { // active buildings(owned by team.)
+            
             var hostileConfig = routeManager.findClosestHostile(buildingConfigParam, gameRoom, this.worldConfig.constants.BOTS);
             var distanceBetweenBotAndHostile = this.worldConfig.gridSide + 1;
             if (hostileConfig != null) {
@@ -22,14 +24,25 @@ module.exports = {
                     hostileConfig.position[0],
                     hostileConfig.position[2]
                 );
+                // if(buildingConfigParam.id == 'tower7'){
+                //     console.log(buildingConfigParam.id + ' found hostile ' + hostileConfig.id + ' distance:' + distanceBetweenBotAndHostile);
+                //     console.log('building position:' + buildingConfigParam.position + ' hostileConfig.position:' + hostileConfig.position);
+                // }
+                
             }
+
             if (distanceBetweenBotAndHostile <= buildingConfigParam.range) { // if a hostile is found in range
-                // console.log(buildingConfigParam.id + '--attack -> hostiles in range:' + hostileConfig.id + ' at position:', hostileConfig.position);
+                // if(buildingConfigParam.id == 'tower7'){
+                //     console.log(buildingConfigParam.id + '--attack -> hostiles in range:' + hostileConfig.id + ' at position:', hostileConfig.position);
+                // }
+                
                 aiUtility.attackHostile(buildingConfigParam, hostileConfig, gameRoom);
                 // console.log('complete tower attack routine.');
                 return; // consumed all remaining time to attack. Done for the current iteration.
+            }else{
+                buildingConfigParam.activityTimeStamp = workerState.currentTime;
             }
-            buildingConfigParam.activityTimeStamp = workerState.currentTime;
+            
         } else { // orphan towers
             var team1BotsInRange = false;
             var team2BotsInRange = false;
@@ -72,7 +85,7 @@ module.exports = {
                         buildingConfigParam.ownershipClaimStartTimestamp = null;
                         buildingConfigParam.mostResentOwnershipClaimingTeam = null;
                         buildingConfigParam.life = buildingConfigParam.fullLife;
-
+                        actionManager.actionUtility.updateProximityGraphEntry(gameRoom, buildingConfigParam)
                         snapShotManager.add_BuildingTeamChange_Event(gameRoom, buildingConfig);
                     } else { // in progress. update count down .. i.e. life
                         buildingConfigParam.life = buildingConfigParam.fullLife * (

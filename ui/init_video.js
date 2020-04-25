@@ -10,7 +10,8 @@ function createScene() {
 
     // Create the scene space
     tg.scene = new BABYLON.Scene(tg.engine);
-
+    tg.scene.autoClear = false; // Color buffer
+    tg.scene.autoClearDepthAndStencil = false; // Depth and stencil, obviously
     // Register a render loop to repeatedly render the scene
     tg.engine.runRenderLoop(function () { 
         tg.refreshUI();

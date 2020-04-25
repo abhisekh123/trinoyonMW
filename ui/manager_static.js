@@ -40,8 +40,8 @@ tg.static.loadStaticModel = function (
     };
     buildingObject.controlMesh = newMeshes[0];
     buildingObject.team = team;
-    buildingObject.projectileShootY = buildingTypeConfig.projectileShootY;
-    buildingObject.projectileReceiveY = buildingTypeConfig.projectileReceiveY;
+    buildingObject.projectileShootY = buildingTypeConfig.projectileShootY * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+    buildingObject.projectileReceiveY = buildingTypeConfig.projectileReceiveY * tg.worldItems.uiConfig.playerDimensionBaseUnit;
 
 
     // marker mesh indicating team
@@ -60,7 +60,7 @@ tg.static.loadStaticModel = function (
     
     residue.position.z = positionParam.z;
     residue.material = tg.am.material_semitransparent_red;
-    residue.freezeWorldMatrix();
+    // residue.freezeWorldMatrix();
 
     buildingObject.markerMeshTeamEnemy = residue;
 
@@ -78,7 +78,7 @@ tg.static.loadStaticModel = function (
     }
     residue.position.z = positionParam.z;
     residue.material = tg.am.material_semitransparent_blue;
-    residue.freezeWorldMatrix();
+    // residue.freezeWorldMatrix();
     buildingObject.markerMeshTeamFriendly = residue;
 
     residue = BABYLON.MeshBuilder.CreateBox("residue_neutral_" + itemID, {
@@ -91,7 +91,7 @@ tg.static.loadStaticModel = function (
     residue.position.y = tg.worldItems.uiConfig.hiddenY;
     residue.position.z = positionParam.z;
     residue.material = tg.am.material_semitransparent_chosen;
-    residue.freezeWorldMatrix();
+    // residue.freezeWorldMatrix();
     buildingObject.markerMeshTeamNeutral = residue;
 
     // projectile mesh
@@ -105,7 +105,7 @@ tg.static.loadStaticModel = function (
     projectile.position.y = tg.worldItems.uiConfig.hiddenY;
     projectile.position.z = positionParam.z;
     projectile.material = tg.am.material_semitransparent_towerprojectile;
-    projectile.freezeWorldMatrix();
+    // projectile.freezeWorldMatrix();
 
     buildingObject.projectile = projectile;
     buildingObject.isProjectileActive = false;
@@ -114,24 +114,25 @@ tg.static.loadStaticModel = function (
         endTime: 0
     };
 
-    // //data reporter
-    // var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);
-    // outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
-    // outputplane.material = new BABYLON.StandardMaterial("outputplanematerial_" + itemID, tg.scene);
+    //data reporter
+    var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);
+    outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+    outputplane.material = new BABYLON.StandardMaterial("outputplanematerial_" + itemID, tg.scene);
 
-    // var outputplaneTexture = new BABYLON.DynamicTexture("dynamictexture_" + itemID, 512, tg.scene, true);
-    // outputplane.material.diffuseTexture = outputplaneTexture;
-    // outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-    // outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-    // outputplane.material.backFaceCulling = false;
+    var outputplaneTexture = new BABYLON.DynamicTexture("dynamictexture_" + itemID, 512, tg.scene, true);
+    outputplane.material.diffuseTexture = outputplaneTexture;
+    outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+    outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    outputplane.material.backFaceCulling = false;
     
+    outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
     // outputplaneTexture.drawText(positionParam.x + ',' + positionParam.z, null, 140, "bold 80px verdana", "white");
 
-    // outputplaneTexture.hasAlpha = true;
-    // outputplane.position.x = positionParam.x;
-    // outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 4 + newMeshes[0].position.y;
-    // outputplane.position.z = positionParam.z;
-    // // outputplane.parent = parentMesh;
+    outputplaneTexture.hasAlpha = true;
+    outputplane.position.x = positionParam.x;
+    outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 4 + newMeshes[0].position.y;
+    outputplane.position.z = positionParam.z;
+    // outputplane.parent = parentMesh;
     // outputplane.freezeWorldMatrix();
 
 

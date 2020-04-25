@@ -150,6 +150,9 @@ tg.newRefreshFunction = function() {
         };
 
         for(var i = 0; i < tg.am.dynamicItems.botsArray.length; ++i){
+            if(tg.am.dynamicItems.botsArray[i].isProjectileActive && tg.am.dynamicItems.botsArray[i].plannedPath != null){
+                console.log('bot had movement and active projectile:', tg.am.dynamicItems.botsArray[i].id);
+            }
             // update bot projectile
             if(tg.am.dynamicItems.botsArray[i].isProjectileActive){
                 tg.updateProjectileState(tg.am.dynamicItems.botsArray[i]);
@@ -217,16 +220,23 @@ tg.moveMeshAlongPath = function(meshParam, pathParam){
             meshParam.position.x = pathParam[i].x;
             meshParam.position.y = pathParam[i].y;
             meshParam.position.z = pathParam[i].z;
-            var axis = new BABYLON.Vector3(0, 1, 0);
-            // axis.normalize();
-            var quaternion = new BABYLON.Quaternion.RotationAxis(axis, pathParam[i].rotation);
-            meshParam.rotationQuaternion = quaternion;
+            // var axis = new BABYLON.Vector3(0, 1, 0);
+            // // axis.normalize();
+            // var quaternion = new BABYLON.Quaternion.RotationAxis(axis, pathParam[i].rotation);
+            // meshParam.rotationQuaternion = quaternion;
+            tg.world.rotateMesh(
+                new BABYLON.Vector3(0, 1, 0), 
+                meshParam, 
+                pathParam[i].rotation
+            );
             // meshParam.rotation.y = pathParam[i].rotation;
             return false;
         }
     }
     return true; // mesh completed movement
 };
+
+
 
 function entrypoint() {
     tg.refreshUI = tg.newRefreshFunction;

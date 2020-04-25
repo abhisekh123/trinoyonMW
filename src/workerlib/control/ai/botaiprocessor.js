@@ -117,6 +117,8 @@ module.exports = {
         }
         // consume entire timeSlice doing nothing.
         // console.log('do nothing for bot:', botConfig.id);
+        
+        botConfig.activityTimeStamp = workerState.currentTime;
         return 0;
     },
 
