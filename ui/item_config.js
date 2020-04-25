@@ -170,7 +170,7 @@
                 hpBarPositionY: 40,
             },
             tower:{
-                life:100,
+                life:10,
                 attack:2,
                 file: 'tower_gloom',
                 scale: 0.05,

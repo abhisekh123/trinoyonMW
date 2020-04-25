@@ -89,6 +89,8 @@ tg.world.updateWorld = function (updateParam) {
                         botObject.plannedPathTimeStamp = updateItemConfig.actionData.pathTimeStamp;
                         // console.log('completed setting planned path for bot:', botObject.id);
                     }
+                } else if(updateItemConfig.action == 'attack'){
+
                 } else {
                     botObject.controlMesh.position.x = (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
                     botObject.controlMesh.position.z = (updateItemConfig.position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
@@ -132,8 +134,8 @@ tg.world.updateWorld = function (updateParam) {
                     new BABYLON.Vector3(0, 1, 0), 
                     sourceConfig.controlMesh, 
                     roundTo2Decimal(Math.atan2(
-                        (destinationConfig.controlMesh.position[0] - sourceConfig.controlMesh.position[0]), 
-                        (destinationConfig.controlMesh.position[2] - sourceConfig.controlMesh.position[2])
+                        (destinationConfig.controlMesh.position.x - sourceConfig.controlMesh.position.x), 
+                        (destinationConfig.controlMesh.position.z - sourceConfig.controlMesh.position.z)
                     ))
                 );
 

@@ -28,8 +28,22 @@ module.exports = {
         switch(jsonData.type){
             case 'update': // TODO : send update to main.
             case 'game_config': 
+            
                 // console.log(jsonData.type + '::', jsonData);
                 var playerConfig = jsonData.payload.players;
+                var playerIDList = jsonData.payload.playerIDList;
+                var gameConfig = {
+                    type: jsonData.type,
+                    playerConfig,
+                    playerIndex: -1
+                };
+                for (var i = 0; i < playerIDList.length; ++i){
+                    gameConfig.playerIndex = playerIDList[i].index;
+                    clientBroadcaster.sendMessageToRecipientByUserID(playerIDList[i].id, JSON.stringify(gameConfig));
+                }
+                break;
+            case 'result':
+                var playerConfig = jsonData.payload.result;
                 var playerIDList = jsonData.payload.playerIDList;
                 var gameConfig = {
                     type: jsonData.type,

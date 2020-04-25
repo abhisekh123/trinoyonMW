@@ -127,9 +127,9 @@ module.exports = {
         // process ai
         for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_1[i];
-            if(buildingConfig.isActive == false){
-                continue;
-            }
+            // if(buildingConfig.isActive == false){
+            //     continue;
+            // }
             if (buildingConfig.type == 'base') {
                 aiManager.Base.processAI(buildingConfig, gameRoom);
             } else {
@@ -141,9 +141,9 @@ module.exports = {
 
         for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_2[i];
-            if(buildingConfig.isActive == false){
-                continue;
-            }
+            // if(buildingConfig.isActive == false){
+            //     continue;
+            // }
             if (buildingConfig.type == 'base') {
                 aiManager.Base.processAI(buildingConfig, gameRoom);
             } else {

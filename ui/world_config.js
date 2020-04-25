@@ -30,7 +30,7 @@ var worldItems = {
         sideX: 2,
         sideZ: 0,
         clearSelectionTimerInterval: 9000,
-        projectilePathTimeResolution: 20, // time in miliseconds to transit from one plan path to another. 
+        projectilePathTimeResolution: 10, // time in miliseconds to transit from one plan path to another. 
         projectilePathDistanceResolution: 1, // distance between each planned path for projectile (in floor/world unit, not grid unit)
         plannedPathResolution: 8, // (SHOULD BE EVEN NUMBER) number of position to be planned for each distance of one tile
     },
