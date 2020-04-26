@@ -5,8 +5,8 @@ module.exports = {
     init: function () {
         console.log('trying to send email.');
         //Create reusable transporter object using the default SMTP transport 
-        // var transporter1 = nodemailer.createTransport(
-        //     'smtps://abhisekh.trinoyon%40gmail.com:Abh1sekh!@smtp.gmail.com');
+        var transporter1 = nodemailer.createTransport(
+            'smtps://abhisekh.trinoyon%40gmail.com:Abh1sekh!@smtp.gmail.com');
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -36,12 +36,12 @@ module.exports = {
             }
         });
 
-        //     transporter1.sendMail(mailOptions, function(error, info){
-        //         if(error){
-        //           return console.log(error);
-        //         }
-        //         console.log('Message sent: ' + info.response);
-        //   });
+        transporter1.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                return console.log(error);
+            }
+            console.log('Message sent: ' + info.response);
+        });
     },
 
 
