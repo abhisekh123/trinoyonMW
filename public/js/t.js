@@ -54,6 +54,7 @@ tg.connectToParent = function(parentEndPoint, keyIdentifier){
             // alert('could not join. game is full.');
         }else if(responseJSON.type == 'result'){
             console.log('processing result.', responseJSON);
+            tg.world.processResult(responseJSON.playerConfig);
             // tg.world.startNewMatch(responseJSON.playerConfig, responseJSON.playerIndex);
             // alert('could not join. game is full.');
         }else if(responseJSON.type == 'request_game_admit_nack'){

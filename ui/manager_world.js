@@ -15,6 +15,37 @@ tg.world.startNewMatch = function (playerConfigArray, playerIndex) {
     tg.pn.showMatchStartingLoader();
 };
 
+tg.world.processResult = function(resultObject){
+    tg.isGameLive = false;
+    tg.updateWorld = tg.world.updateWorldDormant;
+
+    var outCome = null;
+    var playerTeamPerformance = null;
+    var enemyTeamPerformance = null;
+    var playerTeamTowerCount = null;
+    var enemyTeamTowerCount = null;
+    if(tg.bot.userPlayerConfig.team == resultObject.winningTeam){
+        outCome = 'victory';
+    } else {
+        outCome = 'defeat';
+    }
+
+    if(tg.bot.userPlayerConfig.team == 1){
+        playerTeamPerformance = resultObject.performance[1];
+        playerTeamTowerCount = resultObject.towerCountTeam1;
+        enemyTeamTowerCount = resultObject.towerCountTeam2;
+        enemyTeamPerformance = resultObject.performance[2];
+    } else {
+        playerTeamPerformance = resultObject.performance[2];
+        playerTeamTowerCount = resultObject.towerCountTeam2;
+        enemyTeamTowerCount = resultObject.towerCountTeam1;
+        enemyTeamPerformance = resultObject.performance[1];
+    }
+
+    tg.hl.updateResult(outCome, playerTeamPerformance, enemyTeamPerformance, playerTeamTowerCount, enemyTeamTowerCount);
+    tg.pn.showMatchResultPage();
+};
+
 
 tg.world.updateBuildingTeamMarker = function () {
     console.log('updateBuildingTeamMarker');

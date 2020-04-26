@@ -195,6 +195,13 @@ canvas {
     cursor: pointer;
 }
 
+.result {
+    display: none;
+    height: 100%;
+    width: 100%;
+    color: #aaa;
+}
+
 .bot-selection-container {
     /* background-color: #333333; */
     position: relative;

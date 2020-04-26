@@ -7,7 +7,11 @@ tg.hl.divFps = document.getElementById("fps");
 
 // tg.hl.
 console.log('sdf');
-$('.button-home-start').click(function(){
+$('#button-result-exit').click(function(){
+    console.log('clicked button-result-exit');
+});
+
+$('#button-home-start').click(function(){
     console.log('clicked button-home-start');
     tg.network.requestGameAdmit();
 });
@@ -34,6 +38,16 @@ $('.bot-selection-option-container').click(function(element){
 
     console.log(tg.botSelection);
 });
+
+tg.hl.updateResult = function(outCome, playerTeamPerformance, enemyTeamPerformance, playerTeamTowerCount, enemyTeamTowerCount){
+    $('#game-result-header').html(outCome);
+    $('#team-owned-tower-count').html('Total tower owned count : ' + playerTeamTowerCount);
+    $('#team-total-kill-count').html('Total enemy killed : ' + enemyTeamPerformance.death);
+    $('#team-total-attack-damage').html('Total damage done to enemy : ' + playerTeamPerformance.damage);
+    $('#enemy-owned-tower-count').html('Total tower owned count : ' + enemyTeamTowerCount);
+    $('#enemy-total-kill-count').html('Total enemy killed : ' + playerTeamPerformance.death);
+    $('#enemy-total-attack-damage').html('Total damage done to enemy : ' + enemyTeamPerformance.damage);
+};
 
 tg.hl.setLoaderHeaderText = function(textParam){
     $('#load-indicator-header').html(textParam);

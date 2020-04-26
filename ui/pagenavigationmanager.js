@@ -29,6 +29,26 @@ tg.pn.showMatchStartingLoader = function(){
     tg.pv.setModalDimensionPercentage('50%', '90%');
 };
 
+tg.pn.showMatchResultPage = function(){
+    console.log('showMatchPage');
+    switch (tg.pn.currentPage) {
+        case 'game-play':
+            // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
+            $("#game-footer-menu").hide();
+            tg.pv.showModal();
+            break;
+    
+        default:
+            break;
+    }
+    $('#game-result-container').show();
+    // tg.hl.setLoaderHeaderText('Prepare To Fight!');
+    // $("#game-footer-menu").show();
+    tg.pn.currentPage = 'game-result';
+    // $("#game-header-map").show();
+    // tg.pv.setModalDimensionPercentage('10%', '90%');
+};
+
 tg.pn.showMatchPage = function(){
     console.log('showMatchPage');
     switch (tg.pn.currentPage) {
@@ -45,7 +65,8 @@ tg.pn.showMatchPage = function(){
     tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#game-footer-menu").show();
-    $("#game-header-map").show();
+    tg.pn.currentPage = 'game-play';
+    // $("#game-header-map").show();
     // tg.pv.setModalDimensionPercentage('10%', '90%');
 };
 

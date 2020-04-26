@@ -329,12 +329,42 @@ module.exports = {
 
     },
 
-    updateGameResult: function(gameRoom){
-        console.log('updateGameResult');
+    generateGameResult: function(gameRoom){
+        console.log('generateGameResult');
         var teamFlag = 0;
         var tempCounter = 0;
+        // var foundWinningTeam = false;
         // return;
         // gameRoomManager.resetGame(gameRoom);
+        // compare towers owned
+        var towerCountTeam1 = 0;
+        var towerCountTeam2 = 0;
+        for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+            var buildingConfig = gameRoom.buildingArray_1[i];
+            if (buildingConfig.type == 'tower') {
+                if(buildingConfig.team == 1){
+                    ++towerCountTeam1;
+                } else if(buildingConfig.team == 2){
+                    ++towerCountTeam2;
+                }
+            }
+        }
+        for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+            var buildingConfig = gameRoom.buildingArray_2[i];
+            
+            if (buildingConfig.type == 'tower') {
+                if(buildingConfig.team == 1){
+                    ++towerCountTeam1;
+                } else if(buildingConfig.team == 2){
+                    ++towerCountTeam2;
+                }
+            }
+        }
+
+        gameRoom.statistics.towerCountTeam1 = towerCountTeam1;
+        gameRoom.statistics.towerCountTeam2 = towerCountTeam2;
+
+        gameRoom.statistics.winningTeam = 0;
 
         // check if any base got destroyed
         for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
@@ -362,44 +392,25 @@ module.exports = {
 
         if(tempCounter == 2){ // if both base were destroyed
             gameRoom.statistics.winningTeam = 0;
+            // foundWinningTeam = true;
             return;
         }else if (tempCounter == 1){ // one base was destroyed
             gameRoom.statistics.winningTeam = teamFlag;
+            // foundWinningTeam = true;
             return;
         } else {
             // no base was destroyed.
 
-            // compare towers owned
-            var towerCountTeam1 = 0;
-            var towerCountTeam2 = 0;
-            for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
-                var buildingConfig = gameRoom.buildingArray_1[i];
-                if (buildingConfig.type == 'tower') {
-                    if(buildingConfig.team == 1){
-                        ++towerCountTeam1;
-                    } else if(buildingConfig.team == 2){
-                        ++towerCountTeam2;
-                    }
-                }
-            }
-            for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
-                var buildingConfig = gameRoom.buildingArray_2[i];
-                
-                if (buildingConfig.type == 'tower') {
-                    if(buildingConfig.team == 1){
-                        ++towerCountTeam1;
-                    } else if(buildingConfig.team == 2){
-                        ++towerCountTeam2;
-                    }
-                }
-            }
+            
 
             if(towerCountTeam1 != towerCountTeam2){
                 if(towerCountTeam1 > towerCountTeam2){
                     gameRoom.statistics.winningTeam = 1;
+                    // foundWinningTeam = true;
                     return;
                 } else {
                     gameRoom.statistics.winningTeam = 2;
+                    // foundWinningTeam = true;
                     return;
                 }
             } else { // both team own equal number of towers
@@ -407,9 +418,11 @@ module.exports = {
                 if(gameRoom.statistics.performance[1].death != gameRoom.statistics.performance[2].death){
                     if(gameRoom.statistics.performance[1].death < gameRoom.statistics.performance[2].death){
                         gameRoom.statistics.winningTeam = 1;
+                        // foundWinningTeam = true;
                         return;
                     } else {
                         gameRoom.statistics.winningTeam = 2;
+                        // foundWinningTeam = true;
                         return;
                     }
                 } else { // both team have equal kills
@@ -417,14 +430,17 @@ module.exports = {
                     if(gameRoom.statistics.performance[1].damage != gameRoom.statistics.performance[2].damage){
                         if(gameRoom.statistics.performance[1].damage > gameRoom.statistics.performance[2].damage){
                             gameRoom.statistics.winningTeam = 1;
+                            // foundWinningTeam = true;
                             return;
                         } else {
                             gameRoom.statistics.winningTeam = 2;
+                            // foundWinningTeam = true;
                             return;
                         }
                     } else {
                         // maracle. every thing is similar. is it real?
-                        gameRoom.statistics.winningTeam = 2;
+                        gameRoom.statistics.winningTeam = 0;
+                        // foundWinningTeam = true;
                         return;
                     }
                 }
@@ -437,7 +453,7 @@ module.exports = {
         console.log('###################################');
         console.log('###################################');
         gameRoom.isActive = false;
-        this.updateGameResult(gameRoom);
+        this.generateGameResult(gameRoom);
         messageManager.broadcastGameResultToPlayers(gameRoom);
         this.resetGame(gameRoom);
     },
