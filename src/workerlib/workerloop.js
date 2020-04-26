@@ -9,6 +9,7 @@ const utilityFunctions = require('../utils/utilityfunctions');
 const routeManager = require('./route/routemanager');
 const environmentState = require('../../dist/server/state/environmentstate');
 const snapShotManager = require('./state/snapshotmanager');
+const mailManager = require('./email/mailmanager');
 // const environmentState = require('../../../dist/server/state/environmentstate');
 // const bot_route_utility = require('./botRouteUtility');
 
@@ -103,6 +104,7 @@ module.exports = {
 
     
     init: function(){
+        mailManager.init();
         // console.log('1');
         workerState.init();
         // console.log('112');
