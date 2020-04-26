@@ -13,12 +13,10 @@ module.exports = {
                 user: 'abhisekh.trinoyon@gmail.com',
                 pass: 'Abh1sekh!'
             },
-            port: 465,
-            secure: true, // secure:true for port 465, secure:false for port 587
-            transportMethod: 'SMTP',
-            // tls: {
-            //     rejectUnauthorized: false
-            // }
+            // port: 465,
+            // secure: true, // secure:true for port 465, secure:false for port 587
+            // transportMethod: 'SMTP',
+            
         });
 
         var mailOptions = {
