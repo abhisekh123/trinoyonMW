@@ -258,7 +258,7 @@ export class DemoServer {
                 // console.log('a');
                 // console.log(request.session);
                 // console.log('b');
-                request.session.userId = incomingKey;
+                // request.session.userId = incomingKey;
                 sessionParser(request, {}, () => {
                     // console.log('ea');
                     // console.log(request.session);
