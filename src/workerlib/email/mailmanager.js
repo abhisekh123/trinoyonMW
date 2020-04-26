@@ -36,12 +36,12 @@ module.exports = {
             }
         });
 
-        transporter1.sendMail(mailOptions, function(error, info){
-            if(error){
-              return console.log(error);
-            }
-            console.log('Message sent: ' + info.response);
-      });
+        //     transporter1.sendMail(mailOptions, function(error, info){
+        //         if(error){
+        //           return console.log(error);
+        //         }
+        //         console.log('Message sent: ' + info.response);
+        //   });
     },
 
 
