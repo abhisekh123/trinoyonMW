@@ -128,7 +128,7 @@ tg.pn.showLandingPage = function(){
 
 
 tg.pn.init = function() {
-    tg.pv.init();
+    // tg.pv.init();
     tg.pv.showModal();
     tg.pn.showLandingPage();
 };

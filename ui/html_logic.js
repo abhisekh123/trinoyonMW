@@ -9,6 +9,9 @@ tg.hl.divFps = document.getElementById("fps");
 console.log('sdf');
 $('#button-result-exit').click(function(){
     console.log('clicked button-result-exit');
+    tg.engine.dispose();
+    tg.initVideo();
+    tg.initWorld();
 });
 
 $('#button-home-start').click(function(){

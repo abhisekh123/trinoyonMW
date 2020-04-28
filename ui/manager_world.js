@@ -205,6 +205,10 @@ tg.world.updateWorld = function (updateParam) {
     }
 };
 
+tg.world.refreshWorld = function(){
+    
+}
+
 tg.world.rotateMesh = function(axis, meshParam, angle){
     // axis.normalize();
     var quaternion = new BABYLON.Quaternion.RotationAxis(axis, angle);

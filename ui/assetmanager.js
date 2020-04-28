@@ -38,23 +38,35 @@ tg.am.createMaterials = function () {
     // material for crates
     var boxMaterial = new BABYLON.StandardMaterial("material_box", tg.scene);
 
-    boxMaterial.diffuseTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    boxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    // boxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     // boxMaterial.specularTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
     // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
     // boxMaterial.ambientTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    boxMaterial.disableLighting = true;
     boxMaterial.freeze();
     tg.am.boxMaterial = boxMaterial;
     // material for ground
     var groundMaterial = new BABYLON.StandardMaterial("material_ground", tg.scene);
 
-    groundMaterial.diffuseTexture = new BABYLON.Texture("static/img/stone_floor6.jpg", tg.scene);
-    groundMaterial.diffuseTexture.uScale = tg.worldItems.gridSide / 2;
-    groundMaterial.diffuseTexture.vScale = tg.worldItems.gridSide / 2;
-    groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor6.jpg", tg.scene);
+    groundMaterial.emissiveTexture.uScale = tg.worldItems.gridSide / 2;
+    groundMaterial.emissiveTexture.vScale = tg.worldItems.gridSide / 2;
+    // groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    groundMaterial.disableLighting = true;
     groundMaterial.freeze();
     tg.am.groundMaterial = groundMaterial;
 
+    var material_sky = new BABYLON.StandardMaterial('material_sky', tg.scene);
+    // material_sky.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.5);
+    material_sky.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.5);
+    material_sky.backFaceCulling = false;
+    material_sky.disableLighting = true;
+    // material_sky.needDepthPrePass = true;
+    // material_sky.alpha = 0.7;
+    // material_semitransparent_blue.freeze();
+    material_sky.freeze();
+    tg.material_sky = material_sky;
 
     // var materialGround = new BABYLON.StandardMaterial('ground_test', tg.scene);
     // materialGround.diffuseColor = new BABYLON.Color3(90/255, 90/255, 90/255);
@@ -62,52 +74,58 @@ tg.am.createMaterials = function () {
     // materialGround.alpha = 0.5;
 
     var material_semitransparent_blue = new BABYLON.StandardMaterial('material_semitransparent_blue', tg.scene);
-    material_semitransparent_blue.diffuseColor = BABYLON.Color3.Blue();
-    material_semitransparent_blue.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    material_semitransparent_blue.emissiveColor = BABYLON.Color3.Blue();
+    // material_semitransparent_blue.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
     material_semitransparent_blue.backFaceCulling = false;
     material_semitransparent_blue.needDepthPrePass = true;
     material_semitransparent_blue.alpha = 0.7;
+    material_semitransparent_blue.disableLighting = true;
     // material_semitransparent_blue.freeze();
     tg.am.material_semitransparent_blue = material_semitransparent_blue;
 
     var material_semitransparent_red = new BABYLON.StandardMaterial('material_semitransparent_red', tg.scene);
-    material_semitransparent_red.diffuseColor = BABYLON.Color3.Red();
-    material_semitransparent_red.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    material_semitransparent_red.emissiveColor = BABYLON.Color3.Red();
+    // material_semitransparent_red.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
     material_semitransparent_red.backFaceCulling = false;
     material_semitransparent_red.needDepthPrePass = true;
+    material_semitransparent_red.disableLighting = true;
     material_semitransparent_red.alpha = 0.5;
     // material_semitransparent_red.freeze();
     tg.am.material_semitransparent_red = material_semitransparent_red;
 
 
     var material_semitransparent_projectile = new BABYLON.StandardMaterial('material_semitransparent_projectile', tg.scene);
-    material_semitransparent_projectile.diffuseColor = new BABYLON.Color3(1, 0.65, 0);
+    // material_semitransparent_projectile.diffuseColor = new BABYLON.Color3(1, 0.65, 0);
     material_semitransparent_projectile.emissiveColor = new BABYLON.Color3(1, 0.65, 0);
-    // material_semitransparent_projectile.freeze();
+    material_semitransparent_projectile.disableLighting = true;
+    material_semitransparent_projectile.freeze();
     tg.am.material_semitransparent_projectile = material_semitransparent_projectile;
 
     var material_semitransparent_towerprojectile = new BABYLON.StandardMaterial('material_semitransparent_towerprojectile', tg.scene);
-    material_semitransparent_towerprojectile.diffuseColor = new BABYLON.Color3(1, 0, 0);
+    // material_semitransparent_towerprojectile.diffuseColor = new BABYLON.Color3(1, 0, 0);
     material_semitransparent_towerprojectile.emissiveColor = new BABYLON.Color3(1, 0, 0);
-    // material_semitransparent_towerprojectile.freeze();
+    material_semitransparent_towerprojectile.freeze();
+    material_semitransparent_towerprojectile.disableLighting = true;
     tg.am.material_semitransparent_towerprojectile = material_semitransparent_towerprojectile;
 
     var material_semitransparent_chosen = new BABYLON.StandardMaterial('material_semitransparent_chosen', tg.scene);
-    material_semitransparent_chosen.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.9);
-    material_semitransparent_chosen.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    material_semitransparent_chosen.emissiveColor = new BABYLON.Color3(0.7, 0.7, 0.9);
+    // material_semitransparent_chosen.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
     material_semitransparent_chosen.backFaceCulling = false;
     material_semitransparent_chosen.needDepthPrePass = true;
     material_semitransparent_chosen.alpha = 0.6;
+    material_semitransparent_chosen.disableLighting = true;
     // material_semitransparent_chosen.freeze();
     tg.am.material_semitransparent_chosen = material_semitransparent_chosen;
 
     var material_transparent = new BABYLON.StandardMaterial('material_transparent', tg.scene);
-    material_transparent.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    // material_transparent.diffuseColor = new BABYLON.Color3(0, 0, 0);
     material_transparent.emissiveColor = new BABYLON.Color3(0, 0, 0);
     material_transparent.backFaceCulling = false;
     material_transparent.needDepthPrePass = true;
     material_transparent.alpha = 0;
-    material_transparent.freeze();
+    material_transparent.disableLighting = true;
+    // material_transparent.freeze();
     tg.am.material_transparent = material_transparent;
 
     // tg.material_semitransparent_blue = material_semitransparent_blue;
@@ -118,69 +136,80 @@ tg.am.createMaterials = function () {
 
     var material_enemy_marker = new BABYLON.StandardMaterial('material_enemy_marker', tg.scene);
     // material_enemy_marker.diffuseColor = BABYLON.Color3.Blue();
-    material_enemy_marker.diffuseColor = new BABYLON.Color3(0.4, 0.2, 0.2);
+    material_enemy_marker.emissiveColor = new BABYLON.Color3(0.4, 0.2, 0.2);
     material_enemy_marker.backFaceCulling = false;
     material_enemy_marker.needDepthPrePass = true;
     material_enemy_marker.alpha = 0.7;
-    material_enemy_marker.freeze();
+    // material_enemy_marker.freeze();
+    material_enemy_marker.disableLighting = true;
     tg.am.material_enemy_marker = material_enemy_marker;
 
     var material_friend_marker = new BABYLON.StandardMaterial('material_friend_marker', tg.scene);
     // material_friend_marker.diffuseColor = BABYLON.Color3.Blue();
-    material_friend_marker.diffuseColor = new BABYLON.Color3(0.2, 0.4, 0.2);
+    material_friend_marker.emissiveColor = new BABYLON.Color3(0.2, 0.4, 0.2);
     material_friend_marker.backFaceCulling = false;
     material_friend_marker.needDepthPrePass = true;
     material_friend_marker.alpha = 0.7;
-    material_friend_marker.freeze();
+    // material_friend_marker.freeze();
+    material_friend_marker.disableLighting = true;
     tg.am.material_friend_marker = material_friend_marker;
 
     var material_self_marker = new BABYLON.StandardMaterial('material_self_marker', tg.scene);
     // material_self_marker.diffuseColor = BABYLON.Color3.Blue();
-    material_self_marker.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    material_self_marker.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
     material_self_marker.backFaceCulling = false;
     material_self_marker.needDepthPrePass = true;
     material_self_marker.alpha = 0.7;
-    material_self_marker.freeze();
+    // material_self_marker.freeze();
+    material_friend_marker.disableLighting = true;
     tg.am.material_self_marker = material_self_marker;
 
     // materials for hp bars : completely opaque
     var material_self_hpbar = new BABYLON.StandardMaterial('material_self_hpbar', tg.scene);
-    material_self_hpbar.diffuseColor = new BABYLON.Color3(0.1, 0.4, 0.1);
+    material_self_hpbar.emissiveColor = new BABYLON.Color3(0.1, 0.4, 0.1);
+    material_self_hpbar.disableLighting = true;
     material_self_hpbar.freeze();
     tg.am.material_self_hpbar = material_self_hpbar;
 
     var material_self_hpbarcontainer = new BABYLON.StandardMaterial('material_self_hpbarcontainer', tg.scene);
-    material_self_hpbarcontainer.diffuseColor = new BABYLON.Color3(0.2, 0.3, 0.2);
+    material_self_hpbarcontainer.emissiveColor = new BABYLON.Color3(0.2, 0.3, 0.2);
+    material_self_hpbarcontainer.disableLighting = true;
     material_self_hpbarcontainer.freeze();
     tg.am.material_self_hpbarcontainer = material_self_hpbarcontainer;
 
     var material_friend_hpbar = new BABYLON.StandardMaterial('material_friend_hpbar', tg.scene);
-    material_friend_hpbar.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.4);
+    material_friend_hpbar.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.4);
+    material_friend_hpbar.disableLighting = true;
     material_friend_hpbar.freeze();
     tg.am.material_friend_hpbar = material_friend_hpbar;
 
     var material_friend_hpbarcontainer = new BABYLON.StandardMaterial('material_friend_hpbarcontainer', tg.scene);
-    material_friend_hpbarcontainer.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.3);
+    material_friend_hpbarcontainer.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.3);
+    material_friend_hpbarcontainer.disableLighting = true;
     material_friend_hpbarcontainer.freeze();
     tg.am.material_friend_hpbarcontainer = material_friend_hpbarcontainer;
 
     var material_enemy_hpbar = new BABYLON.StandardMaterial('material_enemy_hpbar', tg.scene);
-    material_enemy_hpbar.diffuseColor = new BABYLON.Color3(0.4, 0.1, 0.1);
+    material_enemy_hpbar.emissiveColor = new BABYLON.Color3(0.4, 0.1, 0.1);
+    material_enemy_hpbar.disableLighting = true;
     material_enemy_hpbar.freeze();
     tg.am.material_enemy_hpbar = material_enemy_hpbar;
 
     var material_enemy_hpbarcontainer = new BABYLON.StandardMaterial('material_enemy_hpbarcontainer', tg.scene);
-    material_enemy_hpbarcontainer.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.2);
+    material_enemy_hpbarcontainer.emissiveColor = new BABYLON.Color3(0.3, 0.2, 0.2);
+    material_enemy_hpbarcontainer.disableLighting = true;
     material_enemy_hpbarcontainer.freeze();
     tg.am.material_enemy_hpbarcontainer = material_enemy_hpbarcontainer;
 
     var material_neutral_hpbar = new BABYLON.StandardMaterial('material_neutral_hpbar', tg.scene);
-    material_neutral_hpbar.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    material_neutral_hpbar.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    material_neutral_hpbar.disableLighting = true;
     material_neutral_hpbar.freeze();
     tg.am.material_neutral_hpbar = material_neutral_hpbar;
 
     var material_neutral_hpbarcontainer = new BABYLON.StandardMaterial('material_neutral_hpbarcontainer', tg.scene);
-    material_neutral_hpbarcontainer.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    material_neutral_hpbarcontainer.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    material_neutral_hpbarcontainer.disableLighting = true;
     material_neutral_hpbarcontainer.freeze();
     tg.am.material_neutral_hpbarcontainer = material_neutral_hpbarcontainer;
 

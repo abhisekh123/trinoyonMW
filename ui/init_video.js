@@ -4,7 +4,7 @@
 
 
 /******* Add the create scene function ******/
-function createScene() {
+tg.createScene = function() {
     tg.canvas = document.getElementById('tc'); // Get the canvas element 
     tg.engine = new BABYLON.Engine(tg.canvas, true); // Generate the BABYLON 3D engine
 
@@ -30,9 +30,9 @@ tg.refreshUI = function(){
     //placeholder function.will be replaced by other methods.
     console.log('refreshUI');
     
-}
+};
 
-function initialiseCamera() {
+tg.initialiseCamera = function() {
     // tg.camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, 
     //     new BABYLON.Vector3(44.5 * tg.playerDimensionBaseUnit, 3 * tg.playerDimensionBaseUnit, 100 * tg.playerDimensionBaseUnit), tg.scene);
     
@@ -64,19 +64,23 @@ function initialiseCamera() {
 
     // tg.scene.activeCameras.push(tg.camera);
     // tg.scene.activeCameras.push(tg.camera2);
-}
+};
 
 
-function initUI(){
+tg.initUI = function(){
     // alert('initVideo');
-    createScene(); //Call the createScene function
-    initialiseCamera();
+    tg.createScene();
+    tg.initialiseCamera();
     // createTextures();
-}
+};
+
+tg.initVideo = function(){
+    tg.initUI();
+    tg.input.init();
+    
+};
 
 function entrypoint(){
-    
-    initUI();
-    initInput();
+    tg.initVideo();
     tg.sendMessageToWS(tg.getEmptyMessagePacket('init_world'));
-}
+};

@@ -2,7 +2,7 @@
 
 
 
-function createAmbience() {
+tg.createAmbience = function() {
     
  
     var light = new BABYLON.HemisphericLight("hemiLight", new BABYLON.Vector3(0, 1, 0), tg.scene);
@@ -11,10 +11,22 @@ function createAmbience() {
     light.groundColor = new BABYLON.Color3(1, 1, 1);
 
     tg.light2 = light;
+
+    var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000 * tg.worldItems.uiConfig.playerDimensionBaseUnit, tg.scene);
+    skybox.position = new BABYLON.Vector3(((tg.worldItems.gridSide - 1) / 2) * tg.worldItems.uiConfig.playerDimensionBaseUnit, 
+        0, 
+        ((tg.worldItems.gridSide - 1) / 2) * tg.worldItems.uiConfig.playerDimensionBaseUnit
+    );
+    // var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+    // skyboxMaterial.backFaceCulling = false;
+    // skyboxMaterial.disableLighting = true;
+    skybox.material = tg.material_sky;
+    skybox.freezeWorldMatrix();
+    tg.skybox = skybox;
 };
 
 
-function initialiseAngleMatrix() {
+tg.initialiseAngleMatrix = function() {
     var angleMatrix = new Array();
     // for each point in the grid, find seq of points forming straight line from point (x,z) to (26, 26)
     for(var i = 0; i < tg.worldItems.uiConfig.neighbourhoodBoxSide; ++i){ // x axis
@@ -32,7 +44,7 @@ function initialiseAngleMatrix() {
     tg.angleMatrix = angleMatrix;
 };
 
-function initialiseDistanceMatrix() {
+tg.initialiseDistanceMatrix = function() {
     var distanceMatrix = new Array(tg.worldItems.gridSide);
     for(var i = 0; i < tg.worldItems.gridSide; ++i){ // x axis
         distanceMatrix[i] = new Array(tg.worldItems.gridSide);
@@ -236,16 +248,12 @@ tg.moveMeshAlongPath = function(meshParam, pathParam){
     return true; // mesh completed movement
 };
 
-
-
-function entrypoint() {
-    tg.refreshUI = tg.newRefreshFunction;
-    initialiseAngleMatrix();
-    initialiseDistanceMatrix();
-    tg.pn.init();
-    createAmbience();
+tg.initWorld = function(){
     tg.am.init();
-    tg.rm.init();
+    tg.refreshUI = tg.newRefreshFunction;
+    tg.pn.init();
+    tg.createAmbience();
+    
     console.log('tg.rm.pathMap:', tg.rm.pathMap);
 
     // tg.scene.registerAfterRender(function () {
@@ -253,4 +261,11 @@ function entrypoint() {
     // });
 
     tg.isGameLive = false;
-}
+};
+
+function entrypoint() {
+    tg.initialiseAngleMatrix();
+    tg.initialiseDistanceMatrix();
+    tg.rm.init();
+    tg.initWorld();
+};

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node ./dist/server/server.js --max-old-space-size=4096"
+    "start": "tsc && node ./dist/server/server.js --max-old-space-size=4096",
+    "build": "tsc",
+    "serverstart": "forever start ./dist/server/server.js --max-old-space-size=4096"
   },
   "author": "abhisekh",
   "license": "ISC",
@@ -17,6 +19,7 @@
     "eslint": "^6.8.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "forever": "^2.0.0",
     "nedb": "^1.8.0",
     "nedb-promise": "^2.0.1",
     "nodemailer": "^6.4.6",

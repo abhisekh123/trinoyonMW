@@ -17,24 +17,24 @@ tg.pv = {};
 
 
 
-tg.pv.init = function() {
-    tg.pv.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-    tg.pv.createButtons();
-    // tg.pv.showLandingPage();
-    tg.pv.createTexts();
-}
+// tg.pv.init = function() {
+//     tg.pv.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+//     tg.pv.createButtons();
+//     // tg.pv.showLandingPage();
+//     tg.pv.createTexts();
+// }
 
-tg.pv.createTexts = function(){
-    var loadingText = new BABYLON.GUI.TextBlock();
-    loadingText.textHorizontalAlignment = BABYLON.GUI.TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
-    loadingText.textWrapping = true;
-    loadingText.text = "Loading assets... \n 0% loaded.";
-    loadingText.color = "white";
-    loadingText.fontSize = 24;
-    loadingText.width = "30%";
-    // tg.advancedTexture.addControl(loadingText);
-    tg.pv.loadingText = loadingText;
-}
+// tg.pv.createTexts = function(){
+//     var loadingText = new BABYLON.GUI.TextBlock();
+//     loadingText.textHorizontalAlignment = BABYLON.GUI.TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
+//     loadingText.textWrapping = true;
+//     loadingText.text = "Loading assets... \n 0% loaded.";
+//     loadingText.color = "white";
+//     loadingText.fontSize = 24;
+//     loadingText.width = "30%";
+//     // tg.advancedTexture.addControl(loadingText);
+//     tg.pv.loadingText = loadingText;
+// };
 
 tg.pv.refreshAssetLoadedAlert = function (assetsAlreadyLoaded, totalAssetsToBeLoaded) {
     var loaderText = document.getElementById("loader-text");  
@@ -51,46 +51,46 @@ tg.pv.refreshAssetLoadedAlert = function (assetsAlreadyLoaded, totalAssetsToBeLo
 }
 
 
-tg.pv.createButtons = function(){
-    // play button
-    tg.pv.uiComponents = {};
-    tg.pv.uiComponents.buttons = {};
-    // init GUI
-    // tg.UIConfig.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-    var playButton = BABYLON.GUI.Button.CreateSimpleButton("button_play", "Play");
-    playButton.width = "150px"
-    playButton.height = "40px";
-    playButton.color = "white";
-    playButton.cornerRadius = 5;
-    playButton.background = "black";
+// tg.pv.createButtons = function(){
+//     // play button
+//     tg.pv.uiComponents = {};
+//     tg.pv.uiComponents.buttons = {};
+//     // init GUI
+//     // tg.UIConfig.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+//     var playButton = BABYLON.GUI.Button.CreateSimpleButton("button_play", "Play");
+//     playButton.width = "150px"
+//     playButton.height = "40px";
+//     playButton.color = "white";
+//     playButton.cornerRadius = 5;
+//     playButton.background = "black";
 
-    playButton.onPointerUpObservable.add(function() {
-        console.log('click play button.');
-        // tg.network.requestGameAdmit();
-        // Get the modal
+//     playButton.onPointerUpObservable.add(function() {
+//         console.log('click play button.');
+//         // tg.network.requestGameAdmit();
+//         // Get the modal
         
-        tg.pv.modal.style.display = "block";
-    });
-    tg.pv.uiComponents.buttons.playButton = playButton;
+//         tg.pv.modal.style.display = "block";
+//     });
+//     tg.pv.uiComponents.buttons.playButton = playButton;
 
 
-    // exit button
-    var exitGameButton = BABYLON.GUI.Button.CreateSimpleButton("button_exit", "Exit");
-    exitGameButton.width = "150px";
-    exitGameButton.height = "40px";
-    exitGameButton.color = "white";
-    exitGameButton.cornerRadius = 20;
-    exitGameButton.background = "green";
-    exitGameButton.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-    exitGameButton.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+//     // exit button
+//     var exitGameButton = BABYLON.GUI.Button.CreateSimpleButton("button_exit", "Exit");
+//     exitGameButton.width = "150px";
+//     exitGameButton.height = "40px";
+//     exitGameButton.color = "white";
+//     exitGameButton.cornerRadius = 20;
+//     exitGameButton.background = "green";
+//     exitGameButton.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+//     exitGameButton.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
 
-    exitGameButton.onPointerUpObservable.add(function() {
-        // tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.exitGameButton);
-        // showHomePage();
-        tg.sendMessageToWS(tg.getEmptyMessagePacket('request_game_exit'));
-    });
-    tg.pv.uiComponents.buttons.exitGameButton = exitGameButton;
-}
+//     exitGameButton.onPointerUpObservable.add(function() {
+//         // tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.exitGameButton);
+//         // showHomePage();
+//         tg.sendMessageToWS(tg.getEmptyMessagePacket('request_game_exit'));
+//     });
+//     tg.pv.uiComponents.buttons.exitGameButton = exitGameButton;
+// };
 
 
 tg.pv.showModal = function() {
