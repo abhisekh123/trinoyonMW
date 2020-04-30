@@ -241,13 +241,24 @@ module.exports = {
     },
 
     resetAllBotsOfPlayerToStartingState: function(player, position, rotation, gameStartTime){ // position : [x,z]
+        var relativeY = 1;
+        if(player.team == 2){
+            relativeY = -1;
+        }
+        var relativePositionArray = [
+            [0,0,0],
+            [-1,0,0],
+            [1,0,0],
+            [-1,0,relativeY],
+            [1,0,relativeY],
+        ];
         for(var i = 0; i < player.botObjectList.length; ++i){
-            player.botObjectList[i].position[0] = position[0];
-            player.botObjectList[i].position[2] = position[1];
+            player.botObjectList[i].position[0] = position[0] + relativePositionArray[i][0];
+            player.botObjectList[i].position[2] = position[1] + relativePositionArray[i][2];
 
             // update respawn position for future use
-            player.botObjectList[i].spawnPosition[0] = position[0];
-            player.botObjectList[i].spawnPosition[2] = position[1];
+            player.botObjectList[i].spawnPosition[0] = position[0] + relativePositionArray[i][0];
+            player.botObjectList[i].spawnPosition[2] = position[1] + relativePositionArray[i][2];
 
             player.botObjectList[i].rotation = rotation;
             player.botObjectList[i].activityTimeStamp = gameStartTime;

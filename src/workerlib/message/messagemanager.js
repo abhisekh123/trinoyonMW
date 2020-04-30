@@ -110,6 +110,7 @@ module.exports = {
             currentTime: gameRoom.snapShot.currentTime,
             eventsArray: gameRoom.snapShot.eventsArray,
             itemState: gameRoom.snapShot.itemState,
+            statistics: gameRoom.statistics,
         };
         return updatePacket;
     },

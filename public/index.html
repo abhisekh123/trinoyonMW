@@ -8,6 +8,7 @@
   <script src="static/js/jquery.js"></script>
   <script src="static/js/utils.js"></script>
   <script src="static/js/t.js"></script>
+  <script src="static/js/joy.js"></script>
   <link rel="stylesheet" href="static/css/style.css">
   <link rel="stylesheet" href="static/css/w3.css">
   <!-- <script src="static/js/babylon.gui.js"></script> -->
@@ -17,8 +18,16 @@
 </head>
 
 <body onload="initSystem()" class="parent-body">
+    <div id="joystick-parent" class="joystick-parent"></div>
+  <script type="text/javascript">
+    // Create JoyStick object into the DIV 'joyDiv'
+    // window.innerWidth;
+    // canvas.height = window.innerHeight;
+    var joy = new JoyStick('joystick-parent', {width: window.innerWidth, height: window.innerHeight/6});
+  </script>
+  
   <div id="fps">0</div>
-  <canvas id='tc' ></canvas>
+  <canvas id='tc'></canvas>
 
   <!-- The Modal -->
   <div id="menu-modal" class="modal center">
@@ -103,7 +112,7 @@
       </div>
     </div>
 
-    <div class="result" id="game-result-container">
+    <div class="result" id="game-result-container" class="game-result-container">
       <h1 class="menu-header" id="game-result-header">Draw!</h1>
       <strong>Your team performance</strong><br>
       <em id="team-owned-tower-count"></em><br>
@@ -120,7 +129,7 @@
 
   <div class="game-footer-menu" id="game-footer-menu">
     <div class="game-footer-bot-selection" id="game-footer-bot-selection_0" onclick="tg.hl.selectSelfBot(0)">
-      <img src="static/img/lion_icon.png" id="footer-image_0" class="footer-bot-image"/>
+      <img src="static/img/lion_icon.png" id="footer-image_0" class="footer-bot-image" />
     </div>
     <div class="game-footer-bot-selection" id="game-footer-bot-selection_1" onclick="tg.hl.selectSelfBot(1)">
       <img src="static/img/archer_icon.png" id="footer-image_1" class="footer-bot-image" />
@@ -135,12 +144,32 @@
       <img src="static/img/archer_icon.png" id="footer-image_4" class="footer-bot-image" />
     </div>
   </div>
-  <!-- match map menu. -->
-  <div class="game-header-map" id="game-header-map">
-    <canvas id="map-canvas" class="map-canvas"></canvas>
+  <!-- Modal content -->
+  <div class="game-header-menu" id="game-header-menu">
+    <table class="game-header-table">
+      <tr class="header-clock-row">
+        <td class="header-clock-left">TEAM</td>
+        <td class="header-clock-cell" id="header-clock-cell">00:00</td>
+        <td class="header-clock-right">ENEMY</td>
+      </tr>
+      <tr class="header-data-row">
+        <td class="header-cell-left" id="tower-team">0</td>
+        <td class="header-cell-center">TOWERS OWNED</td>
+        <td class="header-cell-right" id="tower-enemy">0</td>
+      </tr>
+      <tr class="header-data-row">
+        <td class="header-cell-left" id="kill-team">0</td>
+        <td class="header-cell-center">TOTAL KILLS</td>
+        <td class="header-cell-right" id="kill-enemy">0</td>
+      </tr>
+      <tr class="header-data-row">
+        <td class="header-cell-left" id="attack-team">0</td>
+        <td class="header-cell-center">TOTAL ATTACK</td>
+        <td class="header-cell-right" id="attack-enemy">0</td>
+      </tr>
+    </table>
   </div>
   <!-- Modal content -->
-
 
 </body>
 

@@ -167,6 +167,11 @@ module.exports = {
                 // this.resetGame(gameRoom);
                 return;
             }
+            if(buildingConfig.team == 1){
+                --gameRoom.statistics.towerCountTeam1;
+            } else {
+                --gameRoom.statistics.towerCountTeam2;
+            }
             buildingConfig.isActive = false;
             buildingConfig.team = 0;
             buildingConfig.ownershipClaimStartTimestamp = null;
@@ -337,32 +342,32 @@ module.exports = {
         // return;
         // gameRoomManager.resetGame(gameRoom);
         // compare towers owned
-        var towerCountTeam1 = 0;
-        var towerCountTeam2 = 0;
-        for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
-            var buildingConfig = gameRoom.buildingArray_1[i];
-            if (buildingConfig.type == 'tower') {
-                if(buildingConfig.team == 1){
-                    ++towerCountTeam1;
-                } else if(buildingConfig.team == 2){
-                    ++towerCountTeam2;
-                }
-            }
-        }
-        for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
-            var buildingConfig = gameRoom.buildingArray_2[i];
+        // var towerCountTeam1 = 0;
+        // var towerCountTeam2 = 0;
+        // for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
+        //     var buildingConfig = gameRoom.buildingArray_1[i];
+        //     if (buildingConfig.type == 'tower') {
+        //         if(buildingConfig.team == 1){
+        //             ++towerCountTeam1;
+        //         } else if(buildingConfig.team == 2){
+        //             ++towerCountTeam2;
+        //         }
+        //     }
+        // }
+        // for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
+        //     var buildingConfig = gameRoom.buildingArray_2[i];
             
-            if (buildingConfig.type == 'tower') {
-                if(buildingConfig.team == 1){
-                    ++towerCountTeam1;
-                } else if(buildingConfig.team == 2){
-                    ++towerCountTeam2;
-                }
-            }
-        }
+        //     if (buildingConfig.type == 'tower') {
+        //         if(buildingConfig.team == 1){
+        //             ++towerCountTeam1;
+        //         } else if(buildingConfig.team == 2){
+        //             ++towerCountTeam2;
+        //         }
+        //     }
+        // }
 
-        gameRoom.statistics.towerCountTeam1 = towerCountTeam1;
-        gameRoom.statistics.towerCountTeam2 = towerCountTeam2;
+        // gameRoom.statistics.towerCountTeam1 = towerCountTeam1;
+        // gameRoom.statistics.towerCountTeam2 = towerCountTeam2;
 
         gameRoom.statistics.winningTeam = 0;
 

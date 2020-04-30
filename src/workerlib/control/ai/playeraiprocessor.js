@@ -3,6 +3,7 @@ const routeManager = require('../../route/routemanager');
 // const botActionProcessor = require('../action/botactionprocessor');
 const aiUtility = require('./aiutility');
 const utilityFunctions = require('../../../utils/utilityfunctions');
+// const actionManager = require('../action/actionmanager');
 
 module.exports = {
 
@@ -16,11 +17,11 @@ module.exports = {
 
     processAI: function(playerConfigParam, gameRoom){
         // console.log(playerConfigParam.id + ' selectedTeamPlayer.isAIDriven:', playerConfigParam.isAIDriven);
-        
+        var leaderBotConfig = playerConfigParam.botObjectList[0];
         // console.log('playerConfigParam:', playerConfigParam);
         var areAllBotsIdle = this.areAllBotsIdle(playerConfigParam);
-        if(areAllBotsIdle == true){
-            var leaderBotConfig = playerConfigParam.botObjectList[0];
+        var isAnyBotVisible = routeManager.isAnyHostileInSight(leaderBotConfig, gameRoom);
+        if(areAllBotsIdle == true && isAnyBotVisible == false){
             // console.log('-- playerAi. all bots idle for player:' 
             // + playerConfigParam.id + ' at position:', leaderBotConfig.position);
             

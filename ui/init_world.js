@@ -144,8 +144,8 @@ tg.newRefreshFunction = function() {
 
         if ((tg.input.keyMap["q"] || tg.input.keyMap["Q"])) {
             tg.camera.rotationOffset -= tg.worldItems.uiConfig.cameraTargetRotationStep;
-            if(tg.camera.rotationOffset > 360){
-                tg.camera.rotationOffset = 0;
+            if(tg.camera.rotationOffset < 0){
+                tg.camera.rotationOffset = 359;
             }
             // tg.camera2.rotationOffset = tg.camera.rotationOffset;
             tg.calculateCameraMovementSteps();
@@ -154,8 +154,8 @@ tg.newRefreshFunction = function() {
         if ((tg.input.keyMap["e"] || tg.input.keyMap["E"])) {
             tg.camera.rotationOffset += tg.worldItems.uiConfig.cameraTargetRotationStep;
             
-            if(tg.camera.rotationOffset < 0){
-                tg.camera.rotationOffset = 360;
+            if(tg.camera.rotationOffset > 359){
+                tg.camera.rotationOffset = 0;
             }
             // tg.camera2.rotationOffset = tg.camera.rotationOffset;
             tg.calculateCameraMovementSteps();
@@ -250,9 +250,10 @@ tg.moveMeshAlongPath = function(meshParam, pathParam){
 
 tg.initWorld = function(){
     tg.am.init();
-    tg.refreshUI = tg.newRefreshFunction;
-    tg.pn.init();
     tg.createAmbience();
+    
+    tg.pn.init();
+    tg.refreshUI = tg.newRefreshFunction;
     
     console.log('tg.rm.pathMap:', tg.rm.pathMap);
 

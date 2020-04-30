@@ -60,6 +60,19 @@ tg.world.updateBuildingTeamMarker = function () {
 tg.world.handleNewMatchStartReadyTrigger = function () {
     console.log('all assets loaded');
     tg.isGameLive = true;
+
+    // Initialise camera settings.
+    const botId =  tg.bot.userPlayerConfig.botObjectList[0].id;
+    const botObject = tg.am.dynamicItems.bots[botId];
+    tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
+    tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
+    if(tg.bot.userPlayerConfig.team == 1){
+        tg.camera.rotationOffset = 180;
+    } else {
+        tg.camera.rotationOffset = 0;
+    }
+    tg.calculateCameraMovementSteps();
+
     tg.pn.showMatchPage();
     tg.updateWorld = tg.world.updateWorld;
 };
@@ -202,6 +215,25 @@ tg.world.updateWorld = function (updateParam) {
                 tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
             }
         }
+
+        // update score
+        $('#header-clock-cell').html(updateParam.playerConfig.statistics.timeRemaining);
+        if(tg.bot.userPlayerConfig.team == 1){
+            $('#tower-team').html(updateParam.playerConfig.statistics.towerCountTeam1);
+            $('#tower-enemy').html(updateParam.playerConfig.statistics.towerCountTeam2);
+            $('#kill-team').html(updateParam.playerConfig.statistics.performance[2].death);
+            $('#kill-enemy').html(updateParam.playerConfig.statistics.performance[1].death);
+            $('#attack-team').html(updateParam.playerConfig.statistics.performance[1].damage);
+            $('#attack-enemy').html(updateParam.playerConfig.statistics.performance[2].damage);
+        } else {
+            $('#tower-team').html(updateParam.playerConfig.statistics.towerCountTeam2);
+            $('#tower-enemy').html(updateParam.playerConfig.statistics.towerCountTeam1);
+            $('#kill-team').html(updateParam.playerConfig.statistics.performance[1].death);
+            $('#kill-enemy').html(updateParam.playerConfig.statistics.performance[2].death);
+            $('#attack-team').html(updateParam.playerConfig.statistics.performance[2].damage);
+            $('#attack-enemy').html(updateParam.playerConfig.statistics.performance[1].damage);
+        }
+        
     }
 };
 

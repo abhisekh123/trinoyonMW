@@ -35,6 +35,8 @@ tg.pn.showMatchResultPage = function(){
         case 'game-play':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
             $("#game-footer-menu").hide();
+            $("#game-header-menu").hide();
+            $("#joystick-parent").hide();
             tg.pv.showModal();
             break;
     
@@ -45,7 +47,6 @@ tg.pn.showMatchResultPage = function(){
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     // $("#game-footer-menu").show();
     tg.pn.currentPage = 'game-result';
-    // $("#game-header-map").show();
     // tg.pv.setModalDimensionPercentage('10%', '90%');
 };
 
@@ -65,8 +66,9 @@ tg.pn.showMatchPage = function(){
     tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#game-footer-menu").show();
+    $("#game-header-menu").show();
+    $("#joystick-parent").show();
     tg.pn.currentPage = 'game-play';
-    // $("#game-header-map").show();
     // tg.pv.setModalDimensionPercentage('10%', '90%');
 };
 

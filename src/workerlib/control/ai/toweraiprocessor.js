@@ -64,9 +64,9 @@ module.exports = {
                 }
             }
 
-            if (buildingConfigParam.id == 'tower9') {
-                console.log(buildingConfigParam.id + '--team1BotsInRange:' + team1BotsInRange + ' team2BotsInRange:' + team2BotsInRange);
-            }
+            // if (buildingConfigParam.id == 'tower9') {
+            //     console.log(buildingConfigParam.id + '--team1BotsInRange:' + team1BotsInRange + ' team2BotsInRange:' + team2BotsInRange);
+            // }
 
             // if bots of both team are present or no team bot is present. no team eligible to start claim process.
             if (team1BotsInRange == team2BotsInRange) {
@@ -85,28 +85,33 @@ module.exports = {
                 if (currentTeam == buildingConfigParam.mostResentOwnershipClaimingTeam) { // progress ownership claim process
                     if ((workerState.currentTime - buildingConfigParam.ownershipClaimStartTimestamp) >=
                         buildingConfigParam.intervalToCompleteOwnershipClaim) { // complete claim process
-                        if (buildingConfigParam.id == 'tower9') {
-                            console.log('complete ownership process');
-                        }
+                        // if (buildingConfigParam.id == 'tower9') {
+                        //     console.log('complete ownership process');
+                        // }
                         buildingConfigParam.team = currentTeam;
+                        if(buildingConfigParam.team == 1){
+                            ++gameRoom.statistics.towerCountTeam1;
+                        } else {
+                            ++gameRoom.statistics.towerCountTeam2;
+                        }
                         buildingConfigParam.ownershipClaimStartTimestamp = null;
                         buildingConfigParam.mostResentOwnershipClaimingTeam = null;
                         buildingConfigParam.life = buildingConfigParam.fullLife;
                         actionManager.actionUtility.updateProximityGraphEntry(gameRoom, buildingConfigParam)
                         snapShotManager.add_BuildingTeamChange_Event(gameRoom, buildingConfigParam);
                     } else { // in progress. update count down .. i.e. life
-                        if (buildingConfigParam.id == 'tower9') {
-                            console.log('ownership process in progress:' + buildingConfigParam.life);
-                        }
+                        // if (buildingConfigParam.id == 'tower9') {
+                        //     console.log('ownership process in progress:' + buildingConfigParam.life);
+                        // }
                         buildingConfigParam.life = buildingConfigParam.fullLife * (
                             (workerState.currentTime - buildingConfigParam.ownershipClaimStartTimestamp) /
                             buildingConfigParam.intervalToCompleteOwnershipClaim
                         );
                     }
                 } else { // start new claim process
-                    if (buildingConfigParam.id == 'tower9') {
-                        console.log('start ownership process in progress:' + currentTeam);
-                    }
+                    // if (buildingConfigParam.id == 'tower9') {
+                    //     console.log('start ownership process in progress:' + currentTeam);
+                    // }
                     buildingConfigParam.ownershipClaimStartTimestamp = workerState.currentTime;
                     buildingConfigParam.mostResentOwnershipClaimingTeam = currentTeam;
                     buildingConfigParam.life = 0;

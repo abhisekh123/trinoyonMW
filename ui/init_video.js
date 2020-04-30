@@ -42,7 +42,7 @@ tg.initialiseCamera = function() {
 	tg.camera.radius = 90;
 	
 	// // The goal height of camera above local origin (centre) of target
-	tg.camera.heightOffset = 55;
+	tg.camera.heightOffset = 35;
 	
 	// // The goal rotation of camera around local origin (centre) of target in x y plane
 	tg.camera.rotationOffset = 0;

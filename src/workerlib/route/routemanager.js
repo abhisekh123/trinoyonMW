@@ -21,6 +21,20 @@ module.exports = {
         customRoutingUtility.init();
     },
 
+    isAnyHostileInSight: function(itemConfig, gameRoom){
+        var botTeam = itemConfig.team;
+        for(var i = 0; i < gameRoom.proximityGraph.length; ++i){ // each row
+            if(gameRoom.allDynamicObjects[i].team == botTeam){ // skip team member bots
+                continue;
+            }
+            // if item can see any hostile.
+            if(gameRoom.proximityGraph[itemConfig.globalIndex][i].visibility == true){ 
+                return true;
+            }
+        }
+        return false;
+    },
+
     checkIfBotIsVisibleToEnemyTeam: function(itemConfig, gameRoom){
         var botTeam = itemConfig.team;
         for(var i = 0; i < gameRoom.proximityGraph.length; ++i){ // each row

@@ -40,13 +40,17 @@ module.exports = {
             const gameRoom = workerState.gameRoomArray[i];
             
             if(gameRoom.isActive == true){
-                console.log('process games id:' + gameRoom.id + ' time elapsed:' + (workerState.currentTime - gameRoom.gameStartTime) / 1000);
-                if((workerState.currentTime - gameRoom.gameStartTime) > this.worldConfig.matchMaxTimeDuration){
+                var timeElapsed = workerState.currentTime - gameRoom.gameStartTime;
+                console.log('process games id:' + gameRoom.id + ' time elapsed:' + timeElapsed / 1000);
+                if(timeElapsed > this.worldConfig.matchMaxTimeDuration){
                     console.log('terminating game at:workerState.currentTime = ', workerState.currentTime);
                     console.log('gameRoom.gameStartTime:', gameRoom.gameStartTime);
                     console.log('this.worldConfig.matchMaxTimeDuration:', this.worldConfig.matchMaxTimeDuration);
+                    gameRoom.statistics.timeRemaining = 0;
                     gameRoomManager.terminateGame(gameRoom);
                     continue;
+                } else {
+                    gameRoom.statistics.timeRemaining = this.worldConfig.matchMaxTimeDuration - timeElapsed;
                 }
                 // console.log('completed processing players.');
                 gameRoomManager.processBuildings(gameRoom); // attack if enemy in range
@@ -173,6 +177,9 @@ module.exports = {
         // utilityFunctions.printEntireObjectNeatyle(gameRoom.players_2);
         gameRoom.isActive = true;
         gameRoom.statistics = {
+            towerCountTeam1: this.worldConfig.defenceTop.length,
+            towerCountTeam2: this.worldConfig.defenceBottom.length,
+            timeRemaining: this.worldConfig.matchMaxTimeDuration,
             performance: [
                 {},// dummy entry so that array index match with team number (1 and 2)
                 { // team 1 stats
