@@ -33,6 +33,12 @@ var worldItems = {
         projectilePathTimeResolution: 10, // time in miliseconds to transit from one plan path to another. 
         projectilePathDistanceResolution: 1, // distance between each planned path for projectile (in floor/world unit, not grid unit)
         plannedPathResolution: 8, // (SHOULD BE EVEN NUMBER) number of position to be planned for each distance of one tile
+        maxCameraHeight: 60,
+        minCameraHeight: 30,
+        maxCameraRadius: 130,
+        minCameraRadius: 70,
+        cameraRadiusStep: 1,
+        cameraHeightStep: 0.5,
     },
     
     maxRange: 10,

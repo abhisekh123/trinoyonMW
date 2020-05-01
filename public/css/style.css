@@ -19,11 +19,76 @@ html,
 body {
     width: 100%;
     height: 100%;
+    position: fixed;
+    overscroll-behavior: none;
 }
+
+.footerrow
+{
+	/* display: inline-flex;
+    clear: both; */
+    /* width: 100%; */
+    display: none;
+    height: 0;
+    position: absolute;
+    bottom: 0;
+}
+.left-joystick
+{
+    position: fixed;
+    /* float: left; */
+    width: 200;
+    height: 200;
+    /* min-width: 300px; */
+    bottom: 15%;
+    left: 15%;
+    z-index: 2;
+}
+.right-joystick
+{
+    position: fixed;
+    /* float: left; */
+    width: 200;
+    height: 200;
+    right: 15%;
+    bottom: 15%;
+    z-index: 2;
+    /* min-width: 300px;*/
+    
+}
+.columnCetral
+{
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    width: 70%;
+    height: 20%;
+    /* min-width: 300px;*/
+    position: fixed;
+}
+
+
+/* #joy2Div
+{
+	width:200px;
+	height:200px;
+	margin:50px
+} */
+#joystick
+{
+	border: 1px solid #FF0000;
+}
+#joystick2
+{
+	border: 1px solid #0000FF;
+}
+
+
 
 /* just to be sure these are full screen*/
 canvas {
     display: block;
+    touch-action: none;
 }
 
 .parent-body {
@@ -237,14 +302,14 @@ canvas {
 
 
 .game-footer-menu {
-    display: none;
-    bottom: 0%;
-    width: 90%;
-    height: 15%;
-    position: absolute;
+    /* display: none; */
+    /* bottom: 0%; */
+    width: 100%;
+    height: 100%;
+    /* position: absolute;
     overflow: hidden;
     left: 50%;
-    transform: translate(-50%);
+    transform: translate(-50%); */
 }
 
 .game-footer-bot-selection {
@@ -272,19 +337,6 @@ canvas {
     position: absolute;
 }
 
-.joystick-parent {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 20%;
-    margin-bottom: 20px;
-    bottom: 0;
-}
-
-#joystick{
-    width: 100%;
-    height: 100%;
-}
 
 .header-clock-row {}
 
@@ -317,3 +369,19 @@ canvas {
 .game-result-container{
     text-align: center;
 }
+
+
+/* .joystick-parent {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    margin-bottom: 20px;
+    bottom: 0;
+}
+
+#joystick{
+    width: 100%;
+    height: 100%;
+} */
+

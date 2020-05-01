@@ -5,21 +5,95 @@
 tg.hl = {};
 tg.hl.divFps = document.getElementById("fps");
 
+tg.hl.addJoysticks = function () {
+    var joystickL = nipplejs.create({
+        zone: document.getElementById('left-joystick'),
+        mode: 'static',
+        position: {
+            left: '20%',
+            top: '50%'
+        },
+        color: 'green',
+        size: 200
+    });
+
+    var joystickR = nipplejs.create({
+        zone: document.getElementById('right-joystick'),
+        mode: 'static',
+        position: {
+            left: '80%',
+            top: '50%'
+        },
+        color: 'red',
+        size: 200
+    });
+
+    tg.video.leftJoystickAngle = 0;
+    tg.video.rightJoystickAngle = 0;
+
+    joystickL.on('move', function (evt, nipple) {
+        // console.log("left move", nipple);
+        tg.video.leftJoystickAngle = nipple.angle.radian;
+    });
+    joystickR.on('move', function (evt, nipple) {
+        // console.log("right move");
+        tg.video.rightJoystickAngle = nipple.angle.radian;
+    });
+
+    joystickL.on('start', function (evt, nipple) {
+        // console.log("left start", nipple);
+
+        tg.video.leftJoystickActive = true;
+        // tg.video.rightJoystickActive = false;
+    });
+    joystickR.on('start', function (evt, nipple) {
+        // console.log("right start");
+
+        // tg.video.leftJoystickActive = false;
+        tg.video.rightJoystickActive = true;
+    });
+
+    joystickL.on('end', function (evt, nipple) {
+        // console.log("left end", nipple);
+
+        tg.video.leftJoystickActive = false;
+        // tg.video.rightJoystickActive = false;
+    });
+    joystickR.on('end', function (evt, nipple) {
+        // console.log("right end");
+
+        // tg.video.leftJoystickActive = false;
+        tg.video.rightJoystickActive = false;
+    });
+
+
+    // tg.joystickL = joystickL;
+    // tg.joystickR = joystickR;
+
+    tg.joystickL = joystickL;
+    tg.joystickR = joystickR;
+};
+
+tg.hl.removeJoysticks = function () {
+    tg.joystickL.remove();
+    tg.joystickR.remove();
+};
+
 // tg.hl.
 console.log('sdf');
-$('#button-result-exit').click(function(){
+$('#button-result-exit').click(function () {
     console.log('clicked button-result-exit');
     tg.engine.dispose();
     tg.initVideo();
     tg.initWorld();
 });
 
-$('#button-home-start').click(function(){
+$('#button-home-start').click(function () {
     console.log('clicked button-home-start');
     tg.network.requestGameAdmit();
 });
 
-$('.bot-selection-option-container').click(function(element){
+$('.bot-selection-option-container').click(function (element) {
     element.preventDefault();
     var id = this.id;
     console.log('clicked bot-selection-option-container with id:', id);
@@ -42,7 +116,7 @@ $('.bot-selection-option-container').click(function(element){
     console.log(tg.botSelection);
 });
 
-tg.hl.updateResult = function(outCome, playerTeamPerformance, enemyTeamPerformance, playerTeamTowerCount, enemyTeamTowerCount){
+tg.hl.updateResult = function (outCome, playerTeamPerformance, enemyTeamPerformance, playerTeamTowerCount, enemyTeamTowerCount) {
     $('#game-result-header').html(outCome);
     $('#team-owned-tower-count').html('Total tower owned count : ' + playerTeamTowerCount);
     $('#team-total-kill-count').html('Total enemy killed : ' + enemyTeamPerformance.death);
@@ -52,21 +126,21 @@ tg.hl.updateResult = function(outCome, playerTeamPerformance, enemyTeamPerforman
     $('#enemy-total-attack-damage').html('Total damage done to enemy : ' + enemyTeamPerformance.damage);
 };
 
-tg.hl.setLoaderHeaderText = function(textParam){
+tg.hl.setLoaderHeaderText = function (textParam) {
     $('#load-indicator-header').html(textParam);
 };
 
-tg.hl.gameStartCountDownTickHandler = function(){
+tg.hl.gameStartCountDownTickHandler = function () {
     $('#load-estimate-time-elapsed').html('Time elapsed ' + tg.uu.convertSecondsMMSS(tg.clockTimeElapsed / 1000));
 };
 
-tg.hl.countDownHandler_idle = function(){
+tg.hl.countDownHandler_idle = function () {
     // do nothing
     console.log('countDownHandler_idle');
 };
 
-tg.hl.updateFooterIconImageForPlayerTeamBots = function(){
-    const selfBots =  tg.bot.userPlayerConfig.botObjectList;
+tg.hl.updateFooterIconImageForPlayerTeamBots = function () {
+    const selfBots = tg.bot.userPlayerConfig.botObjectList;
     console.log('start updateFooterIconImageForPlayerTeamBots:', selfBots);
     // tg.itemConfigs
     for (let j = 1; j < selfBots.length; j++) {
@@ -79,15 +153,15 @@ tg.hl.updateFooterIconImageForPlayerTeamBots = function(){
     }
 };
 
-tg.hl.selectSelfBot = function(botIndex){
+tg.hl.selectSelfBot = function (botIndex) {
     console.log('selectSelfBot:', botIndex);
     // alert('selectSelfBot');
-    const botId =  tg.bot.userPlayerConfig.botObjectList[botIndex].id;
+    const botId = tg.bot.userPlayerConfig.botObjectList[botIndex].id;
     const botObject = tg.am.dynamicItems.bots[botId];
     // tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
     // tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
 
-    
+
     // tg.am.chosenMarker.position.x = 0;
     tg.am.chosenMarker.position.y = 0;
     // tg.am.chosenMarker.position.z = 0;
@@ -95,7 +169,7 @@ tg.hl.selectSelfBot = function(botIndex){
     // // tg.am.cameraTarget.position.x = 0;
     // tg.am.chosenMarker.parent = botObject.controlMesh;
     tg.bot.userPlayerConfig.selectedBot = botObject;
-    if(tg.bot.userPlayerConfig.clearSelectionTimer != null){
+    if (tg.bot.userPlayerConfig.clearSelectionTimer != null) {
         clearTimeout(tg.bot.userPlayerConfig.clearSelectionTimer);
     }
     tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
@@ -107,9 +181,9 @@ tg.hl.selectSelfBot = function(botIndex){
     document.getElementById("tc").focus();
 };
 
-tg.hl.clearSelfBotSelection = function(){
+tg.hl.clearSelfBotSelection = function () {
     console.log('clearSelfBotSelection');
-    
+
     // tg.am.chosenMarker.parent = null;
 
     // tg.am.chosenMarker.position.x = 0;
@@ -117,11 +191,10 @@ tg.hl.clearSelfBotSelection = function(){
     // tg.am.chosenMarker.position.z = 0;
 
     // // tg.am.cameraTarget.position.x = 0;
-    
+
     tg.bot.userPlayerConfig.selectedBot = null;
     tg.bot.userPlayerConfig.clearSelectionTimer = null;
     // tg.bot.userPlayerConfig.team
     // tg.am.dynamicItems.bots[characterID]
     // botObject.id
 };
-

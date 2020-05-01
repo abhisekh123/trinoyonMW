@@ -8,7 +8,7 @@
   <script src="static/js/jquery.js"></script>
   <script src="static/js/utils.js"></script>
   <script src="static/js/t.js"></script>
-  <script src="static/js/joy.js"></script>
+  <script src="static/js/nipplejs.js"></script>
   <link rel="stylesheet" href="static/css/style.css">
   <link rel="stylesheet" href="static/css/w3.css">
   <!-- <script src="static/js/babylon.gui.js"></script> -->
@@ -18,14 +18,6 @@
 </head>
 
 <body onload="initSystem()" class="parent-body">
-    <div id="joystick-parent" class="joystick-parent"></div>
-  <script type="text/javascript">
-    // Create JoyStick object into the DIV 'joyDiv'
-    // window.innerWidth;
-    // canvas.height = window.innerHeight;
-    var joy = new JoyStick('joystick-parent', {width: window.innerWidth, height: window.innerHeight/6});
-  </script>
-  
   <div id="fps">0</div>
   <canvas id='tc'></canvas>
 
@@ -125,25 +117,7 @@
       <button id="button-result-exit">exit</button>
     </div>
   </div>
-  <!-- match footer menu. -->
 
-  <div class="game-footer-menu" id="game-footer-menu">
-    <div class="game-footer-bot-selection" id="game-footer-bot-selection_0" onclick="tg.hl.selectSelfBot(0)">
-      <img src="static/img/lion_icon.png" id="footer-image_0" class="footer-bot-image" />
-    </div>
-    <div class="game-footer-bot-selection" id="game-footer-bot-selection_1" onclick="tg.hl.selectSelfBot(1)">
-      <img src="static/img/archer_icon.png" id="footer-image_1" class="footer-bot-image" />
-    </div>
-    <div class="game-footer-bot-selection" id="game-footer-bot-selection_2" onclick="tg.hl.selectSelfBot(2)">
-      <img src="static/img/archer_icon.png" id="footer-image_2" class="footer-bot-image" />
-    </div>
-    <div class="game-footer-bot-selection" id="game-footer-bot-selection_3" onclick="tg.hl.selectSelfBot(3)">
-      <img src="static/img/archer_icon.png" id="footer-image_3" class="footer-bot-image" />
-    </div>
-    <div class="game-footer-bot-selection" id="game-footer-bot-selection_4" onclick="tg.hl.selectSelfBot(4)">
-      <img src="static/img/archer_icon.png" id="footer-image_4" class="footer-bot-image" />
-    </div>
-  </div>
   <!-- Modal content -->
   <div class="game-header-menu" id="game-header-menu">
     <table class="game-header-table">
@@ -171,6 +145,119 @@
   </div>
   <!-- Modal content -->
 
+
+  <!-- <div id="joystick-parent" class="joystick-parent"></div>
+  <script type="text/javascript">
+    // Create JoyStick object into the DIV 'joyDiv'
+    // window.innerWidth;
+    // canvas.height = window.innerHeight;
+    var joy = new JoyStick('joystick-parent', {width: window.innerWidth, height: window.innerHeight/6});
+  </script> -->
+
+  <!-- match footer menu. -->
+  <div class="footerrow" id="footerrow">
+    <div class="left-joystick" id="left-joystick">
+      <!-- <div id="joy1Div" class="joydiv"></div>
+      Posizione X:<input id="joy1PosizioneX" type="text" /><br />
+      Posizione Y:<input id="joy1PosizioneY" type="text" /><br />
+      Direzione:<input id="joy1Direzione" type="text" /><br />
+      X :<input id="joy1X" type="text" /></br>
+      Y :<input id="joy1Y" type="text" /> -->
+    </div>
+    <div class="columnCetral">
+      <div class="game-footer-menu" id="game-footer-menu">
+        <div class="game-footer-bot-selection" id="game-footer-bot-selection_0" onclick="tg.hl.selectSelfBot(0)">
+          <img src="static/img/lion_icon.png" id="footer-image_0" class="footer-bot-image" />
+        </div>
+        <div class="game-footer-bot-selection" id="game-footer-bot-selection_1" onclick="tg.hl.selectSelfBot(1)">
+          <img src="static/img/archer_icon.png" id="footer-image_1" class="footer-bot-image" />
+        </div>
+        <div class="game-footer-bot-selection" id="game-footer-bot-selection_2" onclick="tg.hl.selectSelfBot(2)">
+          <img src="static/img/archer_icon.png" id="footer-image_2" class="footer-bot-image" />
+        </div>
+        <div class="game-footer-bot-selection" id="game-footer-bot-selection_3" onclick="tg.hl.selectSelfBot(3)">
+          <img src="static/img/archer_icon.png" id="footer-image_3" class="footer-bot-image" />
+        </div>
+        <div class="game-footer-bot-selection" id="game-footer-bot-selection_4" onclick="tg.hl.selectSelfBot(4)">
+          <img src="static/img/archer_icon.png" id="footer-image_4" class="footer-bot-image" />
+        </div>
+      </div>
+    </div>
+
+    <div class="right-joystick" id="right-joystick">
+      <!-- <div id="joy2Div" class="joydiv"></div>
+      Posizione X:<input id="joy2PosizioneX" type="text" /></br>
+      Posizione Y:<input id="joy2PosizioneY" type="text" /></br>
+      Direzione:<input id="joy2Direzione" type="text" /></br>
+      X :<input id="joy2X" type="text" /></br>
+      Y :<input id="joy2Y" type="text" /> -->
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    
+
+    
+    // joystickL.on('dir', function (evt, nipple) {
+    //   console.log("left move", nipple.direction);
+    // });
+    // joystickR.on('dir', function (evt, nipple) {
+    //   console.log("right move");
+    // });
+    // Create JoyStick object into the DIV 'joy1Div'
+    // var Joy1 = new JoyStick('joy1Div');
+
+    // var joy1IinputPosX = document.getElementById("joy1PosizioneX");
+    // var joy1InputPosY = document.getElementById("joy1PosizioneY");
+    // var joy1Direzione = document.getElementById("joy1Direzione");
+    // var joy1X = document.getElementById("joy1X");
+    // var joy1Y = document.getElementById("joy1Y");
+
+    // setInterval(function () {
+    //   joy1IinputPosX.value = Joy1.GetPosX();
+    // }, 50);
+    // setInterval(function () {
+    //   joy1InputPosY.value = Joy1.GetPosY();
+    // }, 50);
+    // setInterval(function () {
+    //   joy1Direzione.value = Joy1.GetDir();
+    // }, 50);
+    // setInterval(function () {
+    //   joy1X.value = Joy1.GetX();
+    // }, 50);
+    // setInterval(function () {
+    //   joy1Y.value = Joy1.GetY();
+    // }, 50);
+
+    // // Create JoyStick object into the DIV 'joy2Div'
+    // var joy2Param = {
+    //   "title": "joystick2",
+    //   "autoReturnToCenter": true
+    // };
+    // var Joy2 = new JoyStick('joy2Div', joy2Param);
+
+    // var joy2IinputPosX = document.getElementById("joy2PosizioneX");
+    // var joy2InputPosY = document.getElementById("joy2PosizioneY");
+    // var joy2Direzione = document.getElementById("joy2Direzione");
+    // var joy2X = document.getElementById("joy2X");
+    // var joy2Y = document.getElementById("joy2Y");
+
+    // setInterval(function () {
+    //   joy2IinputPosX.value = Joy2.GetPosX();
+    // }, 50);
+    // setInterval(function () {
+    //   joy2InputPosY.value = Joy2.GetPosY();
+    // }, 50);
+    // setInterval(function () {
+    //   joy2Direzione.value = Joy2.GetDir();
+    // }, 50);
+    // setInterval(function () {
+    //   joy2X.value = Joy2.GetX();
+    // }, 50);
+    // setInterval(function () {
+    //   joy2Y.value = Joy2.GetY();
+    // }, 50);
+  </script>
 </body>
 
 </html>

@@ -2,7 +2,7 @@
  * init world and init persistant 3D components
  */
 
-
+tg.video = {};
 /******* Add the create scene function ******/
 tg.createScene = function() {
     tg.canvas = document.getElementById('tc'); // Get the canvas element 
@@ -53,7 +53,7 @@ tg.initialiseCamera = function() {
 	// //The speed at which acceleration is halted 
     // tg.camera.maxCameraSpeed = 5
     
-    tg.camera.attachControl(tg.canvas, true);
+    // tg.camera.attachControl(tg.canvas, true);
 
     // tg.camera2 = new BABYLON.ArcRotateCamera("camera2",  3 * Math.PI / 8, 3 * Math.PI / 8, 400, new BABYLON.Vector3(0, 10, -10), tg.scene);
     // tg.camera2.attachControl(tg.canvas, true);
@@ -84,3 +84,197 @@ function entrypoint(){
     tg.initVideo();
     tg.sendMessageToWS(tg.getEmptyMessagePacket('init_world'));
 };
+
+tg.video.leftJoystickActive = false;
+tg.video.rightJoystickActive = false;
+
+tg.video.cameraPan = function(angleParam){
+    console.log('camera pan:', angleParam);
+    tg.video.moveCameraSideway(Math.cos(angleParam));
+    tg.video.moveCameraStraight(-Math.sin(angleParam));
+};
+
+tg.video.cameraChangeView = function(angleParam){
+    console.log('camera view:', angleParam);
+    tg.video.cameraRotate(Math.cos(angleParam));
+    tg.video.cameraZoom(-Math.sin(angleParam));
+};
+
+tg.video.moveCameraSideway = function(factorParam){
+    tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.sideX * factorParam;
+    tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.sideZ * factorParam;
+
+    if(tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide){
+        tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
+    }
+    if(tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide){
+        tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
+    }
+    if(tg.am.cameraTarget.position.z < 0){
+        tg.am.cameraTarget.position.z = 0;
+    }
+    if(tg.am.cameraTarget.position.x < 0){
+        tg.am.cameraTarget.position.x = 0;
+    }
+};
+
+tg.video.moveCameraStraight = function(factorParam){
+    tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.forewardX * factorParam;
+    tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.forewardZ * factorParam;
+
+    if(tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide){
+        tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
+    }
+    if(tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide){
+        tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
+    }
+    if(tg.am.cameraTarget.position.z < 0){
+        tg.am.cameraTarget.position.z = 0;
+    }
+    if(tg.am.cameraTarget.position.x < 0){
+        tg.am.cameraTarget.position.x = 0;
+    }
+};
+
+tg.video.cameraRotate = function(factorParam){
+    tg.camera.rotationOffset += tg.worldItems.uiConfig.cameraTargetRotationStep * factorParam;
+    
+    if(tg.camera.rotationOffset > 359){
+        tg.camera.rotationOffset = 0;
+    }
+    if(tg.camera.rotationOffset < 0){
+        tg.camera.rotationOffset = 359;
+    }
+    // tg.camera2.rotationOffset = tg.camera.rotationOffset;
+    tg.calculateCameraMovementSteps();
+};
+
+
+tg.video.cameraZoom = function(factorParam){
+    tg.camera.radius += tg.worldItems.uiConfig.cameraRadiusStep * factorParam;
+    tg.camera.heightOffset += tg.worldItems.uiConfig.cameraHeightStep * factorParam;
+    
+    if(tg.camera.radius > tg.worldItems.uiConfig.maxCameraRadius){
+        tg.camera.radius = tg.worldItems.uiConfig.maxCameraRadius;
+    }
+    if(tg.camera.heightOffset > tg.worldItems.uiConfig.maxCameraHeight){
+        tg.camera.heightOffset = tg.worldItems.uiConfig.maxCameraHeight;
+    }
+    if(tg.camera.radius < tg.worldItems.uiConfig.minCameraRadius){
+        tg.camera.radius = tg.worldItems.uiConfig.minCameraRadius;
+    }
+    if(tg.camera.heightOffset < tg.worldItems.uiConfig.minCameraHeight){
+        tg.camera.heightOffset = tg.worldItems.uiConfig.minCameraHeight;
+    }
+};
+
+// tg.video.moveCameraLeft = function(){
+
+//     tg.am.cameraTarget.position.x -= tg.worldItems.uiConfig.sideX;
+//     tg.am.cameraTarget.position.z -= tg.worldItems.uiConfig.sideZ;
+
+//     if(tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide){
+//         tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
+//     }
+//     if(tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide){
+//         tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
+//     }
+//     if(tg.am.cameraTarget.position.z < 0){
+//         tg.am.cameraTarget.position.z = 0;
+//     }
+//     if(tg.am.cameraTarget.position.x < 0){
+//         tg.am.cameraTarget.position.x = 0;
+//     }
+// };
+// tg.video.moveCameraRight = function(){
+//     tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.sideX;
+//     tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.sideZ;
+
+//     if(tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide){
+//         tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
+//     }
+//     if(tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide){
+//         tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
+//     }
+//     if(tg.am.cameraTarget.position.z < 0){
+//         tg.am.cameraTarget.position.z = 0;
+//     }
+//     if(tg.am.cameraTarget.position.x < 0){
+//         tg.am.cameraTarget.position.x = 0;
+//     }
+
+// };
+// tg.video.moveCameraForeward = function(){
+//     tg.am.cameraTarget.position.x -= tg.worldItems.uiConfig.forewardX;
+//     tg.am.cameraTarget.position.z -= tg.worldItems.uiConfig.forewardZ;
+
+//     if(tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide){
+//         tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
+//     }
+//     if(tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide){
+//         tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
+//     }
+//     if(tg.am.cameraTarget.position.z < 0){
+//         tg.am.cameraTarget.position.z = 0;
+//     }
+//     if(tg.am.cameraTarget.position.x < 0){
+//         tg.am.cameraTarget.position.x = 0;
+//     }
+
+// };
+// tg.video.moveCameraBackward = function(){
+//     tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.forewardX;
+//     tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.forewardZ;
+
+//     if(tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide){
+//         tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
+//     }
+//     if(tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide){
+//         tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
+//     }
+//     if(tg.am.cameraTarget.position.z < 0){
+//         tg.am.cameraTarget.position.z = 0;
+//     }
+//     if(tg.am.cameraTarget.position.x < 0){
+//         tg.am.cameraTarget.position.x = 0;
+//     }
+
+// };
+// tg.video.rotateCameraLeft = function(){
+//     tg.camera.rotationOffset -= tg.worldItems.uiConfig.cameraTargetRotationStep;
+//     if(tg.camera.rotationOffset < 0){
+//         tg.camera.rotationOffset = 359;
+//     }
+//     // tg.camera2.rotationOffset = tg.camera.rotationOffset;
+//     tg.calculateCameraMovementSteps();
+// };
+// tg.video.rotateCameraRight = function(){
+//     tg.camera.rotationOffset += tg.worldItems.uiConfig.cameraTargetRotationStep;
+    
+//     if(tg.camera.rotationOffset > 359){
+//         tg.camera.rotationOffset = 0;
+//     }
+//     // tg.camera2.rotationOffset = tg.camera.rotationOffset;
+//     tg.calculateCameraMovementSteps();
+// };
+// tg.video.moveCameraNear = function(){
+//     tg.camera.radius -= tg.worldItems.uiConfig.cameraRadiusStep;
+//     tg.camera.heightOffset -= tg.worldItems.uiConfig.cameraHeightStep;
+//     if(tg.camera.radius < tg.worldItems.uiConfig.minCameraRadius){
+//         tg.camera.radius = tg.worldItems.uiConfig.minCameraRadius;
+//     }
+//     if(tg.camera.heightOffset < tg.worldItems.uiConfig.minCameraHeight){
+//         tg.camera.heightOffset = tg.worldItems.uiConfig.minCameraHeight;
+//     }
+// };
+// tg.video.moveCameraAway = function(){
+//     tg.camera.radius += tg.worldItems.uiConfig.cameraRadiusStep;
+//     tg.camera.heightOffset += tg.worldItems.uiConfig.cameraHeightStep;
+    
+//     if(tg.camera.radius > tg.worldItems.uiConfig.maxCameraRadius){
+//         tg.camera.radius = tg.worldItems.uiConfig.maxCameraRadius;
+//     }
+//     if(tg.camera.heightOffset > tg.worldItems.uiConfig.maxCameraHeight){
+//         tg.camera.heightOffset = tg.worldItems.uiConfig.maxCameraHeight;
+//     }
+// };

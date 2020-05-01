@@ -34,9 +34,10 @@ tg.pn.showMatchResultPage = function(){
     switch (tg.pn.currentPage) {
         case 'game-play':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
-            $("#game-footer-menu").hide();
+            tg.hl.removeJoysticks();
+            $("#footerrow").hide();
             $("#game-header-menu").hide();
-            $("#joystick-parent").hide();
+            // $("#joystick-parent").hide();
             tg.pv.showModal();
             break;
     
@@ -65,9 +66,13 @@ tg.pn.showMatchPage = function(){
 
     tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
-    $("#game-footer-menu").show();
+    $("#footerrow").show();
+
+    // tg.joystickL.add();
+    // tg.joystickR.add();
     $("#game-header-menu").show();
-    $("#joystick-parent").show();
+    tg.hl.addJoysticks();
+    // $("#joystick-parent").show();
     tg.pn.currentPage = 'game-play';
     // tg.pv.setModalDimensionPercentage('10%', '90%');
 };
