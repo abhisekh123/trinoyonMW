@@ -75,8 +75,8 @@ tg.hl.addJoysticks = function () {
 };
 
 tg.hl.removeJoysticks = function () {
-    tg.joystickL.remove();
-    tg.joystickR.remove();
+    tg.joystickL.destroy();
+    tg.joystickR.destroy();
 };
 
 // tg.hl.

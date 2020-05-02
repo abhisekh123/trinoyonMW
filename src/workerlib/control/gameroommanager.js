@@ -338,36 +338,7 @@ module.exports = {
         console.log('generateGameResult');
         var teamFlag = 0;
         var tempCounter = 0;
-        // var foundWinningTeam = false;
-        // return;
-        // gameRoomManager.resetGame(gameRoom);
-        // compare towers owned
-        // var towerCountTeam1 = 0;
-        // var towerCountTeam2 = 0;
-        // for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
-        //     var buildingConfig = gameRoom.buildingArray_1[i];
-        //     if (buildingConfig.type == 'tower') {
-        //         if(buildingConfig.team == 1){
-        //             ++towerCountTeam1;
-        //         } else if(buildingConfig.team == 2){
-        //             ++towerCountTeam2;
-        //         }
-        //     }
-        // }
-        // for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
-        //     var buildingConfig = gameRoom.buildingArray_2[i];
-            
-        //     if (buildingConfig.type == 'tower') {
-        //         if(buildingConfig.team == 1){
-        //             ++towerCountTeam1;
-        //         } else if(buildingConfig.team == 2){
-        //             ++towerCountTeam2;
-        //         }
-        //     }
-        // }
-
-        // gameRoom.statistics.towerCountTeam1 = towerCountTeam1;
-        // gameRoom.statistics.towerCountTeam2 = towerCountTeam2;
+        
 
         gameRoom.statistics.winningTeam = 0;
 
@@ -408,8 +379,8 @@ module.exports = {
 
             
 
-            if(towerCountTeam1 != towerCountTeam2){
-                if(towerCountTeam1 > towerCountTeam2){
+            if(gameRoom.statistics.towerCountTeam1 != gameRoom.statistics.towerCountTeam2){
+                if(gameRoom.statistics.towerCountTeam1 > gameRoom.statistics.towerCountTeam2){
                     gameRoom.statistics.winningTeam = 1;
                     // foundWinningTeam = true;
                     return;
