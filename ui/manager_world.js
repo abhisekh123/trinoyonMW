@@ -217,7 +217,7 @@ tg.world.updateWorld = function (updateParam) {
         }
 
         // update score
-        $('#header-clock-cell').html(updateParam.playerConfig.statistics.timeRemaining);
+        $('#header-clock-cell').html(tg.uu.convertSecondsMMSS(updateParam.playerConfig.statistics.timeRemaining / 1000));
         if(tg.bot.userPlayerConfig.team == 1){
             $('#tower-team').html(updateParam.playerConfig.statistics.towerCountTeam1);
             $('#tower-enemy').html(updateParam.playerConfig.statistics.towerCountTeam2);

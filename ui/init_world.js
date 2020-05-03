@@ -118,9 +118,9 @@ tg.newRefreshFunction = function() {
         };
 
         for(var i = 0; i < tg.am.dynamicItems.botsArray.length; ++i){
-            if(tg.am.dynamicItems.botsArray[i].isProjectileActive && tg.am.dynamicItems.botsArray[i].plannedPath != null){
-                console.log('bot had movement and active projectile:', tg.am.dynamicItems.botsArray[i].id);
-            }
+            // if(tg.am.dynamicItems.botsArray[i].isProjectileActive && tg.am.dynamicItems.botsArray[i].plannedPath != null){
+            //     console.log('bot had movement and active projectile:', tg.am.dynamicItems.botsArray[i].id);
+            // }
             // update bot projectile
             if(tg.am.dynamicItems.botsArray[i].isProjectileActive){
                 tg.updateProjectileState(tg.am.dynamicItems.botsArray[i]);

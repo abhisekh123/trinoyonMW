@@ -41,13 +41,11 @@ body {
     position: absolute;
     bottom: 0;
 }
-.left-joystick
+/* .left-joystick
 {
     position: fixed;
-    /* float: left; */
     width: 200;
     height: 200;
-    /* min-width: 300px; */
     bottom: 15%;
     left: 15%;
     z-index: 2;
@@ -55,15 +53,12 @@ body {
 .right-joystick
 {
     position: fixed;
-    /* float: left; */
     width: 200;
     height: 200;
     right: 15%;
     bottom: 15%;
     z-index: 2;
-    /* min-width: 300px;*/
-    
-}
+} */
 .columnCetral
 {
     bottom: 0;
@@ -82,14 +77,14 @@ body {
 	height:200px;
 	margin:50px
 } */
-#joystick
+/* #joystick
 {
 	border: 1px solid #FF0000;
 }
 #joystick2
 {
 	border: 1px solid #0000FF;
-}
+} */
 
 
 
@@ -376,6 +371,12 @@ canvas {
 
 .game-result-container{
     text-align: center;
+}
+
+.fullscreenbutton{
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 

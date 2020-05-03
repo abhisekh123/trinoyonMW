@@ -15,6 +15,7 @@ tg.pn.showMatchStartingLoader = function(){
         case 'startcountdown':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
             $("#game-start-countdown").hide();
+            tg.pv.refreshAssetLoadedAlert(0, 10);// reset loader percentage to 0.
             // $("#menu-home").hide();
             break;
     
@@ -135,7 +136,7 @@ tg.pn.showLandingPage = function(){
 
 
 tg.pn.init = function() {
-    // tg.pv.init();
+    tg.pv.init();
     tg.pv.showModal();
     tg.pn.showLandingPage();
 };

@@ -6,78 +6,263 @@ tg.hl = {};
 tg.hl.divFps = document.getElementById("fps");
 
 tg.hl.addJoysticks = function () {
-    var joystickL = nipplejs.create({
-        zone: document.getElementById('left-joystick'),
-        mode: 'static',
-        position: {
-            left: '20%',
-            top: '50%'
-        },
-        color: 'green',
-        size: 200
-    });
-
-    var joystickR = nipplejs.create({
-        zone: document.getElementById('right-joystick'),
-        mode: 'static',
-        position: {
-            left: '80%',
-            top: '50%'
-        },
-        color: 'red',
-        size: 200
-    });
-
+    console.log('addJoysticks');
     tg.video.leftJoystickAngle = 0;
     tg.video.rightJoystickAngle = 0;
+    let xAddPos = 0;
+    let yAddPos = 0;
+    let xAddRot = 0;
+    let yAddRot = 0;
+    let sideJoystickOffset = 50;
+    let bottomJoystickOffset = -150;
+    // let translateTransform;
 
-    joystickL.on('move', function (evt, nipple) {
-        // console.log("left move", nipple);
-        tg.video.leftJoystickAngle = nipple.angle.radian;
-    });
-    joystickR.on('move', function (evt, nipple) {
-        // console.log("right move");
-        tg.video.rightJoystickAngle = nipple.angle.radian;
-    });
 
-    joystickL.on('start', function (evt, nipple) {
-        // console.log("left start", nipple);
+    let leftThumbContainer = tg.hl.makeThumbArea("leftThumb", 2, "blue", null);
+    leftThumbContainer.height = "200px";
+    leftThumbContainer.width = "200px";
+    leftThumbContainer.isPointerBlocker = true;
+    leftThumbContainer.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    leftThumbContainer.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    leftThumbContainer.alpha = 0.4;
+    leftThumbContainer.left = sideJoystickOffset;
+    leftThumbContainer.top = bottomJoystickOffset;
 
+    let leftInnerThumbContainer = tg.hl.makeThumbArea("leftInnterThumb", 4, "blue", null);
+    leftInnerThumbContainer.height = "80px";
+    leftInnerThumbContainer.width = "80px";
+    leftInnerThumbContainer.isPointerBlocker = true;
+    leftInnerThumbContainer.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    leftInnerThumbContainer.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
+
+    let leftPuck = tg.hl.makeThumbArea("leftPuck", 0, "blue", "blue");
+    leftPuck.height = "60px";
+    leftPuck.width = "60px";
+    leftPuck.isPointerBlocker = true;
+    leftPuck.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    leftPuck.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
+
+    leftThumbContainer.onPointerDownObservable.add(function (coordinates) {
+        leftPuck.isVisible = true;
+        leftPuck.floatLeft = coordinates.x - (leftThumbContainer._currentMeasure.width * .5) - sideJoystickOffset;
+        leftPuck.left = leftPuck.floatLeft;
+        leftPuck.floatTop = tg.pv.advancedTexture._canvas.height - coordinates.y - (leftThumbContainer._currentMeasure.height * .5) + bottomJoystickOffset;
+        leftPuck.top = leftPuck.floatTop * -1;
+        leftPuck.isDown = true;
+        leftThumbContainer.alpha = 0.9;
         tg.video.leftJoystickActive = true;
-        // tg.video.rightJoystickActive = false;
     });
-    joystickR.on('start', function (evt, nipple) {
-        // console.log("right start");
 
-        // tg.video.leftJoystickActive = false;
+    leftThumbContainer.onPointerUpObservable.add(function (coordinates) {
+        xAddPos = 0;
+        yAddPos = 0;
+        leftPuck.isDown = false;
+        leftPuck.isVisible = false;
+        leftThumbContainer.alpha = 0.4;
+        tg.video.leftJoystickActive = false;
+    });
+
+
+    leftThumbContainer.onPointerMoveObservable.add(function (coordinates) {
+        if (leftPuck.isDown) {
+            xAddPos = coordinates.x - (leftThumbContainer._currentMeasure.width * .5) - sideJoystickOffset;
+            yAddPos = tg.pv.advancedTexture._canvas.height - coordinates.y - (leftThumbContainer._currentMeasure.height * .5) + bottomJoystickOffset;
+            leftPuck.floatLeft = xAddPos;
+            leftPuck.floatTop = yAddPos * -1;
+            leftPuck.left = leftPuck.floatLeft;
+            leftPuck.top = leftPuck.floatTop;
+            console.log('leftThumbContainer: xAddRot:' + xAddRot + " yAddRot:" + (yAddRot * -1));
+            var relativeX = coordinates.x - (leftThumbContainer._currentMeasure.width * .5) - sideJoystickOffset;;
+            
+            var relativeZ = tg.pv.advancedTexture._canvas.height - coordinates.y - (leftThumbContainer._currentMeasure.height * .5) + bottomJoystickOffset;
+            var angle = Math.atan2(relativeZ, relativeX);
+            console.log('left angle:' + angle + ' , ' + relativeX + ' , ' + relativeZ);
+            tg.video.leftJoystickAngle = Math.atan2(relativeZ, relativeX);
+        }
+    });
+
+    tg.pv.advancedTexture.addControl(leftThumbContainer);
+    leftThumbContainer.addControl(leftInnerThumbContainer);
+    leftThumbContainer.addControl(leftPuck);
+    leftPuck.isVisible = false;
+
+    let rightThumbContainer = tg.hl.makeThumbArea("rightThumb", 2, "red", null);
+    rightThumbContainer.height = "200px";
+    rightThumbContainer.width = "200px";
+    rightThumbContainer.isPointerBlocker = true;
+    rightThumbContainer.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+    rightThumbContainer.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    rightThumbContainer.alpha = 0.4;
+    rightThumbContainer.left = -sideJoystickOffset;
+    rightThumbContainer.top = bottomJoystickOffset;
+
+    let rightInnerThumbContainer = tg.hl.makeThumbArea("rightInnterThumb", 4, "red", null);
+    rightInnerThumbContainer.height = "80px";
+    rightInnerThumbContainer.width = "80px";
+    rightInnerThumbContainer.isPointerBlocker = true;
+    rightInnerThumbContainer.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    rightInnerThumbContainer.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
+
+    let rightPuck = tg.hl.makeThumbArea("rightPuck", 0, "red", "red");
+    rightPuck.height = "60px";
+    rightPuck.width = "60px";
+    rightPuck.isPointerBlocker = true;
+    rightPuck.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    rightPuck.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
+
+    rightThumbContainer.onPointerDownObservable.add(function (coordinates) {
+        rightPuck.isVisible = true;
+        rightPuck.floatLeft = tg.pv.advancedTexture._canvas.width - coordinates.x - (rightThumbContainer._currentMeasure.width * .5) - sideJoystickOffset;
+        rightPuck.left = rightPuck.floatLeft * -1;
+        rightPuck.floatTop = tg.pv.advancedTexture._canvas.height - coordinates.y - (rightThumbContainer._currentMeasure.height * .5) + bottomJoystickOffset;
+        rightPuck.top = rightPuck.floatTop * -1;
+        rightPuck.isDown = true;
+        rightThumbContainer.alpha = 0.9;
         tg.video.rightJoystickActive = true;
     });
 
-    joystickL.on('end', function (evt, nipple) {
-        // console.log("left end", nipple);
-
-        tg.video.leftJoystickActive = false;
-        // tg.video.rightJoystickActive = false;
-    });
-    joystickR.on('end', function (evt, nipple) {
-        // console.log("right end");
-
-        // tg.video.leftJoystickActive = false;
+    rightThumbContainer.onPointerUpObservable.add(function (coordinates) {
+        xAddRot = 0;
+        yAddRot = 0;
+        rightPuck.isDown = false;
+        rightPuck.isVisible = false;
+        rightThumbContainer.alpha = 0.4;
         tg.video.rightJoystickActive = false;
     });
 
 
-    // tg.joystickL = joystickL;
-    // tg.joystickR = joystickR;
+    rightThumbContainer.onPointerMoveObservable.add(function (coordinates) {
+        if (rightPuck.isDown) {
+            // console.log('coordinates:', coordinates);
+            // console.log('_transformedPosition', rightThumbContainer._transformedPosition);
+            xAddRot = tg.pv.advancedTexture._canvas.width - coordinates.x - (rightThumbContainer._currentMeasure.width * .5) - sideJoystickOffset;
+            yAddRot = tg.pv.advancedTexture._canvas.height - coordinates.y - (rightThumbContainer._currentMeasure.height * .5) + bottomJoystickOffset;
+            rightPuck.floatLeft = xAddRot * -1;
+            rightPuck.floatTop = yAddRot * -1;
+            rightPuck.left = rightPuck.floatLeft;
+            rightPuck.top = rightPuck.floatTop;
+            // console.log('rightThumbContainer: xAddRot:' + xAddRot + " yAddRot:" + xAddRot);
+            var relativeX = tg.pv.advancedTexture._canvas.width - coordinates.x - (rightThumbContainer._currentMeasure.width * .5) - sideJoystickOffset;
+            
+            var relativeZ = tg.pv.advancedTexture._canvas.height - coordinates.y - (rightThumbContainer._currentMeasure.height * .5) + bottomJoystickOffset;
+            var angle = Math.atan2(relativeZ, -relativeX);
+            console.log('right angle:' + angle + ' , ' + relativeX + ' , ' + relativeZ);
+            tg.video.rightJoystickAngle = Math.atan2(relativeZ, -relativeX);
+        }
+    });
 
-    tg.joystickL = joystickL;
-    tg.joystickR = joystickR;
+    //leftThumbContainer.left = 50;
+    tg.pv.advancedTexture.addControl(rightThumbContainer);
+    rightThumbContainer.addControl(rightInnerThumbContainer);
+    rightThumbContainer.addControl(rightPuck);
+    
+    rightPuck.isVisible = false;
+
+    tg.hl.rightThumbContainer = rightThumbContainer;
+    tg.hl.leftThumbContainer = leftThumbContainer;
 };
 
 tg.hl.removeJoysticks = function () {
-    tg.joystickL.destroy();
-    tg.joystickR.destroy();
+    tg.hl.rightThumbContainer.isVisible = false;
+    tg.hl.leftThumbContainer.isVisible = false;
+    // leftThumbContainer.removeControl(leftInnerThumbContainer);
+    // leftThumbContainer.removeControl(leftPuck);
+    // rightThumbContainer.removeControl(rightInnerThumbContainer);
+    // rightThumbContainer.removeControl(rightPuck);
+    // tg.pv.advancedTexture.removeControl(rightThumbContainer);
+    // tg.pv.advancedTexture.removeControl(leftThumbContainer);
 };
+
+tg.hl.makeThumbArea = function (name, thickness, color, background, curves) {
+    let rect = new BABYLON.GUI.Ellipse();
+    rect.name = name;
+    rect.thickness = thickness;
+    rect.color = color;
+    rect.background = background;
+    rect.paddingLeft = "0px";
+    rect.paddingRight = "0px";
+    rect.paddingTop = "0px";
+    rect.paddingBottom = "0px";
+    return rect;
+}
+
+// tg.hl.addJoysticks = function () {
+//     var joystickL = nipplejs.create({
+//         zone: document.getElementById('left-joystick'),
+//         mode: 'static',
+//         position: {
+//             left: '20%',
+//             top: '50%'
+//         },
+//         color: 'green',
+//         size: 200
+//     });
+
+//     var joystickR = nipplejs.create({
+//         zone: document.getElementById('right-joystick'),
+//         mode: 'static',
+//         position: {
+//             left: '80%',
+//             top: '50%'
+//         },
+//         color: 'red',
+//         size: 200
+//     });
+
+//     tg.video.leftJoystickAngle = 0;
+//     tg.video.rightJoystickAngle = 0;
+
+//     joystickL.on('move', function (evt, nipple) {
+//         // console.log("left move", nipple);
+//         tg.video.leftJoystickAngle = nipple.angle.radian;
+//     });
+//     joystickR.on('move', function (evt, nipple) {
+//         // console.log("right move");
+//         tg.video.rightJoystickAngle = nipple.angle.radian;
+//     });
+
+//     joystickL.on('start', function (evt, nipple) {
+//         // console.log("left start", nipple);
+
+//         tg.video.leftJoystickActive = true;
+//         // tg.video.rightJoystickActive = false;
+//     });
+//     joystickR.on('start', function (evt, nipple) {
+//         // console.log("right start");
+
+//         // tg.video.leftJoystickActive = false;
+//         tg.video.rightJoystickActive = true;
+//     });
+
+//     joystickL.on('end', function (evt, nipple) {
+//         // console.log("left end", nipple);
+
+//         tg.video.leftJoystickActive = false;
+//         // tg.video.rightJoystickActive = false;
+//     });
+//     joystickR.on('end', function (evt, nipple) {
+//         // console.log("right end");
+
+//         // tg.video.leftJoystickActive = false;
+//         tg.video.rightJoystickActive = false;
+//     });
+
+
+//     // tg.joystickL = joystickL;
+//     // tg.joystickR = joystickR;
+
+//     tg.joystickL = joystickL;
+//     tg.joystickR = joystickR;
+// };
+
+// tg.hl.removeJoysticks = function () {
+//     tg.joystickL.destroy();
+//     tg.joystickR.destroy();
+// };
 
 // tg.hl.
 console.log('sdf');

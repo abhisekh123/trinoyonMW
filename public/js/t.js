@@ -7,6 +7,7 @@ function resizeCanvas() {
     var canvas = document.getElementById('tc');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+     
 }
 
 tg.updateWorld = function(param){

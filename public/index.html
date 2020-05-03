@@ -20,6 +20,7 @@
 <body onload="initSystem()" class="parent-body" oncontextmenu="contextMenuFunction()">
     <div id="fps">0</div>
     <canvas id='tc'></canvas>
+    <!-- <button onclick="makeFullScreen()" class="fullscreenbutton">fullscreen</button> -->
 
     <!-- The Modal -->
     <div id="menu-modal" class="modal center">
@@ -153,6 +154,15 @@
             event.stopPropagation();
             return false;
         }
+
+        // makeFullScreen = function () {
+        //     console.log("makeFullScreen");
+        //     if (tg.canvas.webkitRequestFullScreen) {
+        //         tg.canvas.webkitRequestFullScreen();
+        //     } else {
+        //         tg.canvas.mozRequestFullScreen();
+        //     }
+        // }
     </script>
 
     <!-- match footer menu. -->

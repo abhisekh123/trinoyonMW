@@ -13,7 +13,6 @@ tg.bot.reloadBots = function(playerConfigArray, playerSelfIndex, actionOnComplet
     }
     tg.am.totalAssetsLoaded_tillNow = 0;
 
-
     for (let i = 0; i < playerConfigArray.length; i++) {
         const playerBotArray = playerConfigArray[i].botObjectList;
         console.log('playerBotArray:', playerBotArray);

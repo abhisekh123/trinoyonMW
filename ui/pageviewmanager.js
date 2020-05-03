@@ -1,6 +1,10 @@
+
+
 /**
  * Manages UI assets like text, buttons, etc
  */
+
+
 tg.pv = {};
 
  // html code
@@ -17,12 +21,12 @@ tg.pv = {};
 
 
 
-// tg.pv.init = function() {
-//     tg.pv.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-//     tg.pv.createButtons();
-//     // tg.pv.showLandingPage();
-//     tg.pv.createTexts();
-// }
+tg.pv.init = function() {
+    tg.pv.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+    // tg.pv.createButtons();
+    // tg.pv.showLandingPage();
+    // tg.pv.createTexts();
+}
 
 // tg.pv.createTexts = function(){
 //     var loadingText = new BABYLON.GUI.TextBlock();
