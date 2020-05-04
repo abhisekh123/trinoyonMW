@@ -98,7 +98,7 @@ module.exports = {
         if(timeElapsed > workerState.gameLoopInterval){
             setTimeout((()=>{this.engineLoop()}), 0);
         }else{
-            setTimeout((()=>{this.engineLoop()}), workerState.gameLoopInterval - timeElapsed);
+            setTimeout((()=>{this.engineLoop()}), workerState.gameLoopMaxTimeoutInterval - timeElapsed);
         }
     },
 

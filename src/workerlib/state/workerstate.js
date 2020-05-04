@@ -41,7 +41,8 @@ module.exports = {
 
     // time
     timePreviousGameLoopStart: 0,
-    gameLoopInterval: 500,
+    gameLoopInterval: 600,
+    gameLoopMaxTimeoutInterval: 500,
     timeLastGameCreationWasAttempted: 0,
     currentTime: 0,
     timeIntervalToSimulateInEachGame: 0, // time slice since last loop. Need to simulate each game for this interval.

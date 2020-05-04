@@ -34,11 +34,11 @@ var worldItems = {
         projectilePathDistanceResolution: 1, // distance between each planned path for projectile (in floor/world unit, not grid unit)
         plannedPathResolution: 8, // (SHOULD BE EVEN NUMBER) number of position to be planned for each distance of one tile
         maxCameraHeight: 60,
-        minCameraHeight: 30,
+        minCameraHeight: 40,
         maxCameraRadius: 130,
-        minCameraRadius: 70,
+        minCameraRadius: 50,
         cameraRadiusStep: 1,
-        cameraHeightStep: 0.5,
+        cameraHeightStep: 0.25,
     },
     
     maxRange: 10,
@@ -58,9 +58,9 @@ var worldItems = {
     tooAwayFromLeader: 10,
     closeProximity: 5,
 
-    refreshWorldInterval: 500, // refreshWorld() should run once every interval.
-    refreshWorldPerIntervalUI: 10,
-    processActionResolution: 200, // for each refreshWorld() delta time will be broken into interval of this.
+    // refreshWorldInterval: 500, // refreshWorld() should run once every interval.
+    // refreshWorldPerIntervalUI: 10,
+    // processActionResolution: 200, // for each refreshWorld() delta time will be broken into interval of this.
     matchMaxTimeDuration: 6 * 60 * 1000, // 6 minutes
     // topTeamCaracters:[[44,8], [46, 6], [42, 6]],
     // bottomTeamCaracters:[[44,80], [46, 82], [42, 82]],
