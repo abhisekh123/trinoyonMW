@@ -20,7 +20,7 @@
 <body onload="initSystem()" class="parent-body" oncontextmenu="contextMenuFunction()">
     <div id="fps">0</div>
     <canvas id='tc'></canvas>
-    <!-- <button onclick="makeFullScreen()" class="fullscreenbutton">fullscreen</button> -->
+    <button onclick="makeFullScreen()" class="fullscreenbutton">fullscreen</button>
 
     <!-- The Modal -->
     <div id="menu-modal" class="modal center">
@@ -155,14 +155,33 @@
             return false;
         }
 
-        // makeFullScreen = function () {
-        //     console.log("makeFullScreen");
-        //     if (tg.canvas.webkitRequestFullScreen) {
-        //         tg.canvas.webkitRequestFullScreen();
-        //     } else {
-        //         tg.canvas.mozRequestFullScreen();
-        //     }
-        // }
+        makeFullScreen = function () {
+            console.log("makeFullScreen");
+            // if (tg.canvas.webkitRequestFullScreen) {
+            //     alert('webkit');
+            //     tg.canvas.webkitRequestFullScreen();
+            //     alert('webkit done');
+            // } else {
+            //     alert('moz');
+            //     tg.canvas.mozRequestFullScreen();
+            // }
+            alert('webkit');
+            if (tg.canvas.requestFullscreen) {
+                alert('webkit 1');
+                tg.canvas.requestFullscreen();
+            } else if (tg.canvas.mozRequestFullScreen) { /* Firefox */
+                alert('webkit 2');
+                tg.canvas.mozRequestFullScreen();
+            } else if (tg.canvas.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                alert('webkit 3');
+                tg.canvas.webkitRequestFullscreen();
+            } else if (tg.canvas.msRequestFullscreen) { /* IE/Edge */
+                alert('webkit 4');
+                tg.canvas.msRequestFullscreen();
+            } else{
+                alert('webkit 5');
+            }
+        }
     </script>
 
     <!-- match footer menu. -->
