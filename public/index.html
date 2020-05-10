@@ -21,6 +21,8 @@
     <div id="fps">0</div>
     <canvas id='tc'></canvas>
     <button onclick="makeFullScreen()" class="fullscreenbutton">fullscreen</button>
+    <button onclick="showjoystick()" class="showjoystick">showjoystick</button>
+    <button onclick="hidejoystick()" class="hidejoystick">hidejoystick</button>
 
     <!-- The Modal -->
     <div id="menu-modal" class="modal center">
@@ -153,9 +155,16 @@
             event.preventDefault();
             event.stopPropagation();
             return false;
-        }
+        };
 
-        makeFullScreen = function () {
+        function showjoystick(){
+
+        };
+
+        function showjoystick(){
+
+        };
+        function makeFullScreen() {
             console.log("makeFullScreen");
             // if (tg.canvas.webkitRequestFullScreen) {
             //     alert('webkit');
@@ -181,7 +190,7 @@
             } else{
                 alert('webkit 5');
             }
-        }
+        };
     </script>
 
     <!-- match footer menu. -->

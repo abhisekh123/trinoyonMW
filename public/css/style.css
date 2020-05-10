@@ -379,6 +379,19 @@ canvas {
     left: 0;
 }
 
+.showjoystick{
+    position: fixed;
+    top: 0;
+    left: 10;
+}
+
+.hidejoystick{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 10;
+}
+
 
 /* .joystick-parent {
     display: none;
