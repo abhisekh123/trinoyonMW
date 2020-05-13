@@ -410,10 +410,11 @@ canvas {
 }
 
 .fullscreenbutton{
+    display: none;
     position: fixed;
     height: 32px;
     width: 45px;
-    top: 10;
+    top: 52;
     left: 10;
     background: url("fullscreen-icon.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
     /* line-height: 20px; */
@@ -423,8 +424,9 @@ canvas {
 }
 
 .showjoystick{
+    display: none;
     position: fixed;
-    top: 10;
+    top: 52;
     left: 65px;
     height: 32px;
     width: 45px;
@@ -437,7 +439,7 @@ canvas {
 
 .showControls{
     position: fixed;
-    top: 52;
+    top: 10;
     left: 10px;
     height: 32px;
     width: 100px;
@@ -446,7 +448,7 @@ canvas {
 .hidejoystick{
     display: none;
     position: fixed;
-    top: 10;
+    top: 52;
     left: 65px;
     height: 32px;
     width: 45px;

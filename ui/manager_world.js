@@ -131,6 +131,7 @@ tg.world.updateWorld = function (updateParam) {
                         // path was updated. so need fresh planning.
                         botObject.plannedPath = tg.rm.planBotRoute(botObject, updateItemConfig);
                         botObject.plannedPathTimeStamp = updateItemConfig.actionData.pathTimeStamp;
+                        tg.animationmanager.startCharacterAnimation(botObject, updateItemConfig.action);
                         // console.log('completed setting planned path for bot:', botObject.id);
                     }
                 } else if(updateItemConfig.action == 'attack'){
@@ -142,7 +143,7 @@ tg.world.updateWorld = function (updateParam) {
             }
 
             botObject.life = updateItemConfig.life;
-            tg.animationmanager.startCharacterAnimation(botObject, updateItemConfig.action);
+            
             // if(updateItemConfig.action == 'fight'){
             //     console.log('updateParam:', updateParam);
             // }
@@ -165,14 +166,13 @@ tg.world.updateWorld = function (updateParam) {
                 }
 
                 if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
+                    sourceConfig.plannedPath = null;
                     tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
                 } else {
                     // console.log('building attack event:', eventsArray[index]);
                 }
 
-                sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;
-                sourceConfig.projectile.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
-                sourceConfig.projectile.position.z = sourceConfig.controlMesh.position.z;
+                
 
                 tg.world.rotateMesh(
                     new BABYLON.Vector3(0, 1, 0), 
@@ -185,6 +185,9 @@ tg.world.updateWorld = function (updateParam) {
 
                 if (sourceConfig.weaponType != 'melee') {
                     sourceConfig.isProjectileActive = true;
+                    sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;
+                    sourceConfig.projectile.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
+                    sourceConfig.projectile.position.z = sourceConfig.controlMesh.position.z;
                     // console.log('source position:', sourceConfig.controlMesh.position);
                     // console.log('destination position:', destinationConfig.controlMesh.position);
 
@@ -237,9 +240,9 @@ tg.world.updateWorld = function (updateParam) {
     }
 };
 
-tg.world.refreshWorld = function(){
+// tg.world.refreshWorld = function(){
     
-}
+// }
 
 tg.world.rotateMesh = function(axis, meshParam, angle){
     // axis.normalize();

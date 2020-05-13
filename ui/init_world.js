@@ -159,6 +159,7 @@ tg.updateBotPosition = function(configParam) {
     if(tg.moveMeshAlongPath(configParam.controlMesh, configParam.plannedPath) == true){
         // console.log('setting path to null for bot:', configParam.id);
         configParam.plannedPath = null;
+        tg.animationmanager.startCharacterAnimation(configParam, 'ready');
     }
     // if(configParam.id == "player_0_0"){
     //     console.log('configParam.controlMesh.position:', configParam.controlMesh.position);
