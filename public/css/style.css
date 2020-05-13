@@ -348,25 +348,37 @@ canvas {
 .game-header-table {
     width: 100%;
     height: 100%;
+    border-spacing: 1px;
 }
 
 .game-header-menu {
     display: none;
     top: 0;
-    width: 50%;
-    height: 20%;
+    width: 30%;
+    height: 8%;
     left: 50%;
     transform: translate(-50%);
     position: absolute;
 }
 
 
-.header-clock-row {}
+.header-clock-row {
+    background: rgb(230,230,230);
+    height: 40;
+}
 
-.header-data-row {}
+.header-data-row {
+    background: rgb(230,230,230);
+    padding: 0;
+    border: 0;
+    margin: 0;
+    height: 9px;
+    font-size: 7px;
+}
 
 .header-clock-left {
     text-align: center;
+    color: green;
 }
 
 .header-clock-cell {
@@ -375,18 +387,22 @@ canvas {
 
 .header-clock-right {
     text-align: center;
+    color: red;
 }
 
 .header-cell-left {
     text-align: center;
+    color: green;
 }
 
 .header-cell-right {
     text-align: center;
+    color: red;
 }
 
 .header-cell-center {
     text-align: center;
+    
 }
 
 .game-result-container{
@@ -396,7 +412,7 @@ canvas {
 .fullscreenbutton{
     position: fixed;
     height: 32px;
-    width: 32px;
+    width: 45px;
     top: 10;
     left: 10;
     background: url("fullscreen-icon.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
@@ -409,9 +425,9 @@ canvas {
 .showjoystick{
     position: fixed;
     top: 10;
-    left: 52px;
+    left: 65px;
     height: 32px;
-    width: 32px;
+    width: 45px;
     background: url("touch-icon.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
     /* line-height: 20px; */
     vertical-align: center;
@@ -421,19 +437,19 @@ canvas {
 
 .showControls{
     position: fixed;
-    top: 10;
-    left: 94px;
+    top: 52;
+    left: 10px;
     height: 32px;
-    width: 9em;
+    width: 100px;
 }
 
 .hidejoystick{
     display: none;
     position: fixed;
     top: 10;
-    left: 52px;
+    left: 65px;
     height: 32px;
-    width: 32px;
+    width: 45px;
     background: url("laptop-icon.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
     /* line-height: 20px; */
     vertical-align: center;
