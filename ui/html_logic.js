@@ -177,6 +177,17 @@ tg.hl.removeJoysticks = function () {
     // tg.pv.advancedTexture.removeControl(leftThumbContainer);
 };
 
+tg.hl.showJoysticks = function () {
+    tg.hl.rightThumbContainer.isVisible = true;
+    tg.hl.leftThumbContainer.isVisible = true;
+    // leftThumbContainer.removeControl(leftInnerThumbContainer);
+    // leftThumbContainer.removeControl(leftPuck);
+    // rightThumbContainer.removeControl(rightInnerThumbContainer);
+    // rightThumbContainer.removeControl(rightPuck);
+    // tg.pv.advancedTexture.removeControl(rightThumbContainer);
+    // tg.pv.advancedTexture.removeControl(leftThumbContainer);
+};
+
 tg.hl.makeThumbArea = function (name, thickness, color, background, curves) {
     let rect = new BABYLON.GUI.Ellipse();
     rect.name = name;

@@ -73,6 +73,7 @@ tg.pn.showMatchPage = function(){
     // tg.joystickR.add();
     $("#game-header-menu").show();
     tg.hl.addJoysticks();
+    tg.hl.removeJoysticks();
     // $("#joystick-parent").show();
     tg.pn.currentPage = 'game-play';
     // tg.pv.setModalDimensionPercentage('10%', '90%');

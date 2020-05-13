@@ -3,8 +3,8 @@
     --color-menu-boundary: #222222;
     /* --blue: #00b; */
     /* --fullwidth: 100%; */
-    --font-size-header: 8vw;
-    --font-size-content: 5vw;
+    --font-size-header: 2.5vw;
+    --font-size-content: 1.5vw;
     --font-color-dark: #111111;
     --font-color-light: #cccccc;
 }
@@ -156,8 +156,9 @@ canvas {
     top: 40%;
 }
 
-#loader-text {
-    top: 70%;
+.loader-text {
+    /* top: 70%; */
+    height: 30%;
 }
 
 .center {
@@ -240,22 +241,39 @@ canvas {
     text-align: center;
     font-size: var(--font-size-header);
     color: var(--font-color-light);
+    height: 20%;
+    padding: 0;
+    margin: 0;
+};
+
+.load-indicator-header{
+    text-align: center;
+    font-size: var(--font-size-header);
+    color: var(--font-color-light);
+    height: 50%;
+    padding: 0;
+    margin: 0;
 }
 
 .home-grid-container {
     display: grid;
+    height: 80%;
     grid-template-columns: auto auto auto;
     grid-gap: 0px;
-    background-color: var(--color-menu-boundary);
-    padding: 0px;
+    /* background-color: var(--color-menu-boundary); */
+    padding: 0;
+
+    background-color: var(--color-menu-background);
+    text-align: center;
+    /* font-size: var(--font-size-content); */
 }
 
-.home-grid-container>div {
+/* .home-grid-container>div {
     background-color: var(--color-menu-background);
     text-align: center;
     padding: 0px 0;
     font-size: var(--font-size-content);
-}
+} */
 
 .button-home-start {
     grid-column-start: 1;
@@ -282,10 +300,12 @@ canvas {
     position: relative;
     cursor: pointer;
     height: 10vh;
+    border: 5px solid black;
 }
 
 .home-grid-header {
-    height: 11vh;
+    border: 5px solid dimgray;
+    height: 16%;
 }
 
 /* .check {
@@ -375,21 +395,50 @@ canvas {
 
 .fullscreenbutton{
     position: fixed;
-    top: 0;
-    left: 0;
+    height: 32px;
+    width: 32px;
+    top: 10;
+    left: 10;
+    background: url("fullscreen-icon.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
+    /* line-height: 20px; */
+    vertical-align: center;
+    /* background: url('../../img/Key.png')no-repeat; */
+    background-size: contain;
 }
 
 .showjoystick{
     position: fixed;
-    top: 0;
-    left: 10;
+    top: 10;
+    left: 52px;
+    height: 32px;
+    width: 32px;
+    background: url("touch-icon.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
+    /* line-height: 20px; */
+    vertical-align: center;
+    /* background: url('../../img/Key.png')no-repeat; */
+    background-size: contain;
+}
+
+.showControls{
+    position: fixed;
+    top: 10;
+    left: 94px;
+    height: 32px;
+    width: 9em;
 }
 
 .hidejoystick{
     display: none;
     position: fixed;
-    top: 0;
-    left: 10;
+    top: 10;
+    left: 52px;
+    height: 32px;
+    width: 32px;
+    background: url("laptop-icon.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
+    /* line-height: 20px; */
+    vertical-align: center;
+    /* background: url('../../img/Key.png')no-repeat; */
+    background-size: contain;
 }
 
 

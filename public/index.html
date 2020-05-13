@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Express HTML</title>
+    <title>Metal Wars</title>
     <script src="static/js/babylon.js"></script>
     <script src="static/js/babylon.glTF2FileLoader.js"></script>
     <!-- <script src="https://cdn.babylonjs.com/babylon.js"></script> -->
@@ -20,15 +20,16 @@
 <body onload="initSystem()" class="parent-body" oncontextmenu="contextMenuFunction()">
     <div id="fps">0</div>
     <canvas id='tc'></canvas>
-    <button onclick="makeFullScreen()" class="fullscreenbutton">fullscreen</button>
-    <button onclick="showjoystick()" class="showjoystick">showjoystick</button>
-    <button onclick="hidejoystick()" class="hidejoystick">hidejoystick</button>
+    <button onclick="makeFullScreen()" class="fullscreenbutton" id="fullscreenbutton"></button>
+    <button onclick="showjoystick()" class="showjoystick" id="showjoystick"></button>
+    <button onclick="hidejoystick()" class="hidejoystick" id="hidejoystick"></button>
+    <button onclick="showControls()" class="showControls" id="showControls">CONTROLS</button>
 
     <!-- The Modal -->
     <div id="menu-modal" class="modal center">
         <!-- loader -->
         <div class="load-indicator menu-text" id="load-indicator">
-            <h1 class="menu-header" id="load-indicator-header">Loading Game</h1>
+            <div class="load-indicator-header" id="load-indicator-header">Metal Wars</div>
             <div class="w3-light-grey">
                 <div id="loader-bar" class="w3-container w3-green" style="height:24px;width:0%"></div>
             </div>
@@ -37,7 +38,7 @@
 
         <!-- home -->
         <div class="menu-home" id="menu-home">
-            <h1 class="menu-header">Choose Your Team</h1>
+            <div class="menu-header">Choose Your Team</div>
 
             <div class="home-grid-container">
                 <div class="home-grid-header">Selected</div>
@@ -98,7 +99,7 @@
 
         <!-- start countdown for starting the game. -->
         <div class="load-indicator menu-text" id="game-start-countdown">
-            <h1 class="menu-header">Searchin opponents ...</h1>
+            <div class="menu-header">Searchin opponents ...</div>
             <div class="load-estimate center">
                 <div id="load-estimate" class="center menu-text">Estimated start time 00:00</div>
             </div>
@@ -108,7 +109,7 @@
         </div>
 
         <div class="result" id="game-result-container" class="game-result-container">
-            <h1 class="menu-header" id="game-result-header">Draw!</h1>
+            <div class="menu-header" id="game-result-header">Draw!</div>
             <strong>Your team performance</strong><br>
             <em id="team-owned-tower-count"></em><br>
             <em id="team-total-kill-count"></em><br>
@@ -157,12 +158,34 @@
             return false;
         };
 
-        function showjoystick(){
+        function showControls(){
+            alert(
+                'W - Foreward\t' + 
+                'A - Left\n' + 
+                'S - Reverse\t' + 
+                'D - Right\n\n' +
 
+                'Q - Left\t' + 
+                'E - Right\n' + 
+                'R - Near\t' + 
+                'F - Away\n\n' +
+                
+                'Click on player button to select troop.\n' + 
+                'Click on floor to send the troop to the location.\n' +
+                '\nThe aim is to send the right troop, at the right place, at the right time.'
+            );
+        }
+
+        function showjoystick(){
+            $("#hidejoystick").show();
+            $("#showjoystick").hide();
+            tg.hl.showJoysticks();
         };
 
-        function showjoystick(){
-
+        function hidejoystick(){
+            $("#hidejoystick").hide();
+            $("#showjoystick").show();
+            tg.hl.removeJoysticks();
         };
         function makeFullScreen() {
             console.log("makeFullScreen");

@@ -100,7 +100,8 @@ app.get("/ox", function (req, res) {
             if (environmentState.environment == 'server') {
                 URL = 'wss://trinoyon.com';
             } else {
-                URL = 'ws://192.168.1.4:8080';
+                // URL = 'ws://192.168.1.3:8080';
+                URL = 'ws://localhost:8080';
             }
             const userKey = getNewKey(req);
             respJSON.data = {

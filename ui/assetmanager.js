@@ -38,7 +38,8 @@ tg.am.createMaterials = function () {
     // material for crates
     var boxMaterial = new BABYLON.StandardMaterial("material_box", tg.scene);
 
-    boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    boxMaterial.emissiveColor = new BABYLON.Color3(0.2, 0.3, 0.3);
     // boxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     // boxMaterial.specularTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
     // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
@@ -49,10 +50,13 @@ tg.am.createMaterials = function () {
     // material for ground
     var groundMaterial = new BABYLON.StandardMaterial("material_ground", tg.scene);
 
-    groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor6.jpg", tg.scene);
-    groundMaterial.emissiveTexture.uScale = tg.worldItems.gridSide / 2;
-    groundMaterial.emissiveTexture.vScale = tg.worldItems.gridSide / 2;
-    // groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    // groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor6.jpg", tg.scene);
+    // groundMaterial.emissiveTexture.uScale = tg.worldItems.gridSide / 2;
+    // groundMaterial.emissiveTexture.vScale = tg.worldItems.gridSide / 2;
+    groundMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 0.3);
+    // material_sky.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.5);
+    // material_sky.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.5);
+
     groundMaterial.disableLighting = true;
     groundMaterial.freeze();
     tg.am.groundMaterial = groundMaterial;
