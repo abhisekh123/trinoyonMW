@@ -89,6 +89,7 @@ module.exports = {
                         //     console.log('complete ownership process');
                         // }
                         buildingConfigParam.team = currentTeam;
+                        buildingConfigParam.isActive = true;
                         if(buildingConfigParam.team == 1){
                             ++gameRoom.statistics.towerCountTeam1;
                         } else {

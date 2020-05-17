@@ -19,20 +19,6 @@ module.exports = {
         workerState.waitingUsersLinkedList = new linkedList();
     },
 
-    
-    removePlayer: function(userId){
-        const playerID = playerManager.getPlayerID(userId);
-        // const playerConfig = playerManager.playerArray[playerID];
-        const botStartIndex = playerID * this.maxBotPerPlayer;
-
-        // // console.log('botStartIndex:' + botStartIndex);
-        for(var j = 0; j < this.maxBotPerPlayer; ++j){
-            // workerstate.botArray[j + botStartIndex].isActive = true;
-            // workerstate.botArray[j + botStartIndex].teamColor = playerConfig.teamColor;
-            workerstate.botArray[j + botStartIndex].isAIDriven = true;
-        }
-    },
-
 
     canAdmitNewPlayer: function(){
         // TODO: add condition to check if server has started sutdown routine.
@@ -76,6 +62,9 @@ module.exports = {
         
     },
 
+    /**
+     * this method tries to admit as many waiting request possible to the input game room.
+     */
     processWaitingUserAdmitRequests: function(gameRoom) {
         var response = false;
 
@@ -167,15 +156,6 @@ module.exports = {
         return true;
     },
 
-
-    removePlayer: function(userId){
-        var playerID = this.getPlayerID(userId);
-        this.playerArray[playerID].isActive = false;
-        this.playerMap[userId] = undefined;
-        this.playerMap.delete(userId);
-        return;
-    },
-
     /**
      * update ds in the game regarding player admission.
      */
@@ -185,7 +165,7 @@ module.exports = {
         selectedTeamPlayer.hero = botSelection.hero;
 
         selectedTeamPlayer.isConnected = true;
-        selectedTeamPlayer.lastCommunication = 0;
+        selectedTeamPlayer.lastCommunication = workerState.currentTime;
         selectedTeamPlayer.isAIDriven = false;
 
         console.log('selectedTeamPlayer:', selectedTeamPlayer);
@@ -195,7 +175,43 @@ module.exports = {
         }
 
         workerState.userToPlayerMap[newUserToAdmit] = selectedTeamPlayer;
+        
     },
+
+    resetPlayer: function(gameRoomPlayerConfig){
+        if(gameRoomPlayerConfig.userId != null){
+            workerState.userToPlayerMap[gameRoomPlayerConfig.userId] = null;
+            gameRoomPlayerConfig.userId = null;
+        }
+        
+        gameRoomPlayerConfig.isConnected = false;
+        gameRoomPlayerConfig.lastCommunication = 0;
+        gameRoomPlayerConfig.joinTime = 0;
+        gameRoomPlayerConfig.isAIDriven = true;
+    },
+
+    processUserConnectionDropEvent: function(userId){
+        var playerConfig = workerState.userToPlayerMap[userId];
+        if(playerConfig == undefined || playerConfig == null){
+            // console.log('user not playing. nothng to do for disconnect event');
+            return;
+        }
+        playerConfig.isAIDriven = true;
+        playerConfig.isConnected = false;
+    },
+
+    processUserReconnectEvent: function(){
+        var playerConfig = workerState.userToPlayerMap[userId];
+        if(playerConfig == undefined || playerConfig == null){
+            // console.log('user not playing. nothng to do for disconnect event');
+            return;
+        }
+        playerConfig.isAIDriven = false;
+        playerConfig.isConnected = true;
+        playerConfig.lastCommunication = workerState.currentTime;
+        // TODO: send game config to player(incase browser page was refreshed ... tricky)
+    },
+
 
     /**
      * objects CRUD operation
@@ -266,9 +282,11 @@ module.exports = {
         }
     },
 
-    getGenericPlayerObject: function(playerID, playerTeam, gameId){
+    getGenericPlayerObject: function(playerIndex, playerTeam, gameId){
+        var playerID = 'player_' + playerIndex;
         const playerObject = {
             id: playerID,
+            index: playerIndex,
             userId: null,
             team: playerTeam,
             isConnected: false,

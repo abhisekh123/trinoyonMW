@@ -154,6 +154,7 @@ tg.video.cameraRotate = function (factorParam) {
 tg.video.cameraZoom = function (factorParam) {
     tg.camera.radius += tg.worldItems.uiConfig.cameraRadiusStep * factorParam;
     tg.camera.heightOffset += tg.worldItems.uiConfig.cameraHeightStep * factorParam;
+    tg.camera.fov += tg.worldItems.uiConfig.cameraFovStep * factorParam;
 
     if (tg.camera.radius > tg.worldItems.uiConfig.maxCameraRadius) {
         tg.camera.radius = tg.worldItems.uiConfig.maxCameraRadius;
@@ -166,6 +167,12 @@ tg.video.cameraZoom = function (factorParam) {
     }
     if (tg.camera.heightOffset < tg.worldItems.uiConfig.minCameraHeight) {
         tg.camera.heightOffset = tg.worldItems.uiConfig.minCameraHeight;
+    }
+    if (tg.camera.fov > tg.worldItems.uiConfig.maxCameraFov) {
+        tg.camera.fov = tg.worldItems.uiConfig.maxCameraFov;
+    }
+    if (tg.camera.fov < tg.worldItems.uiConfig.minCameraFov) {
+        tg.camera.fov = tg.worldItems.uiConfig.minCameraFov;
     }
 };
 

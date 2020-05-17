@@ -42,7 +42,7 @@
                 projectileReceiveY: 0.75,
 
                 attackinterval: 1000,
-                attack: 1,
+                attack: 2,
                 life:60,
                 speed:2, //one tile per 1000 ms.
                 sight: 6,
@@ -50,7 +50,7 @@
                 parentMesh: null,
                 file:'digimon_3d_leomonice_leomon',
                 scale:6,
-                respawnTime: 5000, // 3 seconds
+                respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/lion_icon.png',
                 headerScale: 0.03,
                 headerPositionY: 1.8,
@@ -100,7 +100,7 @@
                 parentMesh: null,
                 file:'low_poly_knight_animated',
                 scale:2.5,
-                respawnTime: 3000, // 3 seconds
+                respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/swordsman_icon.png',
                 headerScale: 0.1,
                 headerPositionY: 3.5,
@@ -153,8 +153,8 @@
                 projectileReceiveY: 0.75,
 
                 attackinterval: 1000,
-                attack: 1,
-                life:30,
+                attack: 3,
+                life:20,
                 speed:2, //one tile per 1000 ms.
                 sight: 6,
                 range: 4,
@@ -162,7 +162,7 @@
                 // file:'low_poly_character_rpg_kit_animation',
                 file: 'bow_trigger_game_character',
                 scale:0.3,
-                respawnTime: 3000, // 3 seconds
+                respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/archer_icon.png',
                 headerScale: 0.5,
                 headerPositionY: 16,
@@ -171,7 +171,7 @@
             },
             tower:{
                 life:10,
-                attack:2,
+                attack:4,
                 file: 'tower_gloom',
                 scale: 0.05,
                 sight: 6,

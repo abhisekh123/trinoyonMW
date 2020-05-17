@@ -58,9 +58,9 @@ module.exports = {
         // console.log('hostileFlag:', hostileTypeFlag);
         // console.log('findClosestHostile->ID:', botConfigParam);
 
-        var leaderPosition = configParam.position;
+        var positionParam = configParam.position;
 
-        // console.log('leader position:', leaderPosition, ' team:' + playerTeam, ' playerid:' + botConfigParam.playerID);
+        // console.log('leader position:', positionParam, ' team:' + playerTeam, ' playerid:' + botConfigParam.playerID);
 
         var minDistance = this.worldConfig.gridSide + 1;
 
@@ -90,7 +90,7 @@ module.exports = {
                     // console.log('testing for bot:', botConfig.id);
                     // console.log('position:', botConfig.position);
                     var distance = this.getDistanceBetweenPoints(
-                        leaderPosition[0], leaderPosition[2], botPosition[0], botPosition[2]
+                        positionParam[0], positionParam[2], botPosition[0], botPosition[2]
                     );
                     // console.log('distance:', distance);
                     if (distance < minDistance) {
@@ -98,9 +98,6 @@ module.exports = {
                         target = botConfig;
                     }
                 }
-    
-                // console.log('comparing with playerID:', playerConfig.playerID, ' tmpLeaderPosition:', tmpLeaderPosition);
-                // console.log('calculated distance:', distance);
             }
         }
 
@@ -121,7 +118,7 @@ module.exports = {
                 // console.log('testing for building:', buildingConfig.id);
                 // console.log('position:', buildingConfig.position);
                 var distance = this.getDistanceBetweenPoints(
-                    leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
+                    positionParam[0], positionParam[2], buildingConfig.position[0], buildingConfig.position[2]
                 );
                 // console.log('distance:', distance);
                 if (distance < minDistance) {
@@ -141,7 +138,7 @@ module.exports = {
                 // console.log('position:', buildingConfig.position);
                 // console.log('comparing with defenseList[i]:', defenseList[i]);
                 var distance = this.getDistanceBetweenPoints(
-                    leaderPosition[0], leaderPosition[2], buildingConfig.position[0], buildingConfig.position[2]
+                    positionParam[0], positionParam[2], buildingConfig.position[0], buildingConfig.position[2]
                 );
                 // console.log('distance:', distance);
                 if (distance < minDistance) {

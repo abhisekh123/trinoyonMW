@@ -338,6 +338,7 @@ canvas {
 .game-footer-bot-selection {
     float: left;
     width: 20%;
+    /* size: */
 }
 
 .footer-bot-image {

@@ -94,6 +94,10 @@ module.exports = {
         eventObject.id = botConfig.id;
         eventObject.event = 'die';
         eventObject.timestamp = workerState.currentTime;
+        
+        eventObject.position[0] = botConfig.position[0];
+        eventObject.position[1] = botConfig.position[1];
+        eventObject.position[2] = botConfig.position[2];
 
         this.addEventToSnapshot(eventObject, gameRoom);
 

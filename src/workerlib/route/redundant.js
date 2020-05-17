@@ -1745,5 +1745,27 @@ module.exports = {
             workerstate.buildingArray[i].isActive = true;
         }
     },
+
+
+    removePlayer: function(userId){
+        var playerID = this.getPlayerID(userId);
+        this.playerArray[playerID].isActive = false;
+        this.playerMap[userId] = undefined;
+        this.playerMap.delete(userId);
+        return;
+    },
+
+    removePlayer: function(userId){
+        const playerID = playerManager.getPlayerID(userId);
+        // const playerConfig = playerManager.playerArray[playerID];
+        const botStartIndex = playerID * this.maxBotPerPlayer;
+
+        // // console.log('botStartIndex:' + botStartIndex);
+        for(var j = 0; j < this.maxBotPerPlayer; ++j){
+            // workerstate.botArray[j + botStartIndex].isActive = true;
+            // workerstate.botArray[j + botStartIndex].teamColor = playerConfig.teamColor;
+            workerstate.botArray[j + botStartIndex].isAIDriven = true;
+        }
+    },
 }
 

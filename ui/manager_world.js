@@ -111,8 +111,13 @@ tg.world.updateWorld = function (updateParam) {
             const updateItemConfig = itemStateMap[updateItemKey];
             const botObject = tg.am.dynamicItems.bots[updateItemKey];
             if (botObject == undefined) {
-                // console.log('unknown item:', updateItemKey);
+                // console.log('building item:', updateItemKey);
                 const buildingConfig = tg.am.staticItems.buildings[updateItemKey];
+                // if(updateItemKey == 'tower7'){
+                //     console.log('building item:', buildingConfig);
+                //     console.log('building updateItemConfig:', updateItemConfig);
+                // }
+                
                 buildingConfig.life = updateItemConfig.life;
                 tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, ((100 * buildingConfig.life) / buildingConfig.fullLife));
                 continue;
@@ -155,9 +160,7 @@ tg.world.updateWorld = function (updateParam) {
                 // console.log('attack event', eventsArray[index].id);
 
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
-                if (sourceConfig.projectile == null) { // source config has melee attack
-                    continue;
-                }
+                
                 var destinationConfig = tg.world.getBuildingOrBot(eventsArray[index].tid);
                 // console.log('set projectile position for:', sourceConfig.id);
                 if (sourceConfig == null || destinationConfig == null) {
@@ -168,26 +171,41 @@ tg.world.updateWorld = function (updateParam) {
                 if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
                     sourceConfig.plannedPath = null;
                     tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
+                    tg.world.rotateMesh(
+                        new BABYLON.Vector3(0, 1, 0), 
+                        sourceConfig.controlMesh, 
+                        roundTo2Decimal(Math.atan2(
+                            (destinationConfig.controlMesh.position.x - sourceConfig.controlMesh.position.x), 
+                            (destinationConfig.controlMesh.position.z - sourceConfig.controlMesh.position.z)
+                        ))
+                    );
                 } else {
                     // console.log('building attack event:', eventsArray[index]);
                 }
 
+                // if (sourceConfig.projectile == null) { // source config has melee attack
+                //     continue;
+                // }
+
                 
-
-                tg.world.rotateMesh(
-                    new BABYLON.Vector3(0, 1, 0), 
-                    sourceConfig.controlMesh, 
-                    roundTo2Decimal(Math.atan2(
-                        (destinationConfig.controlMesh.position.x - sourceConfig.controlMesh.position.x), 
-                        (destinationConfig.controlMesh.position.z - sourceConfig.controlMesh.position.z)
-                    ))
-                );
-
+                // console.log('process attack:', sourceConfig);
                 if (sourceConfig.weaponType != 'melee') {
                     sourceConfig.isProjectileActive = true;
                     sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;
                     sourceConfig.projectile.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
                     sourceConfig.projectile.position.z = sourceConfig.controlMesh.position.z;
+
+                    // tg.world.rotateMesh(
+                    //     new BABYLON.Vector3(0, 1, 0), 
+                    //     sourceConfig.projectile, 
+                    //     roundTo2Decimal(Math.atan2(
+                    //         (destinationConfig.controlMesh.position.x - sourceConfig.controlMesh.position.x), 
+                    //         (destinationConfig.controlMesh.position.z - sourceConfig.controlMesh.position.z)
+                    //     ))
+                    // );
+                    // if(projectileMesh != undefined){
+                    // projectileMesh.rotationQuaternion = quaternion;
+                    // }
                     // console.log('source position:', sourceConfig.controlMesh.position);
                     // console.log('destination position:', destinationConfig.controlMesh.position);
 
@@ -216,6 +234,17 @@ tg.world.updateWorld = function (updateParam) {
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 // sourceConfig.team = eventsArray[index].team;
                 tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
+            } else { // die and spawn
+                var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
+                console.log('event:' + eventsArray[index].event + ' for bot:' + eventsArray[index].id);
+                tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
+
+                // if event is for dynamic object(bot), clear any goto action(if present)
+                if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
+                    sourceConfig.plannedPath = null;
+                    sourceConfig.controlMesh.position.x = (eventsArray[index].position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+                    sourceConfig.controlMesh.position.z = (eventsArray[index].position[2] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+                }
             }
         }
 
@@ -244,7 +273,7 @@ tg.world.updateWorld = function (updateParam) {
     
 // }
 
-tg.world.rotateMesh = function(axis, meshParam, angle){
+tg.world.rotateMesh = function(axis, meshParam, angle, projectileMesh){
     // axis.normalize();
     var quaternion = new BABYLON.Quaternion.RotationAxis(axis, angle);
     meshParam.rotationQuaternion = quaternion;

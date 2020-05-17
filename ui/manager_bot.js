@@ -215,7 +215,7 @@ tg.bot.processLoadedModel = function (
     // markerBox.parent = botObject.controlMesh;
     // // console.log('markerMaterial:', markerMaterial);
     // markerBox.material = markerMaterial;
-
+    botObject.weaponType = characterConfig.weaponType;
     // projectile mesh
     if(botObject.weaponType == 'melee'){
         botObject.projectile = null;
@@ -223,9 +223,9 @@ tg.bot.processLoadedModel = function (
         botObject.projectileData = null;
     } else {
         var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + characterID, {
-            height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
-            width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
-            depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10
+            height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20,
+            width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20,
+            depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20
         }, tg.scene);
     
         projectile.position.x = positionParam.x;

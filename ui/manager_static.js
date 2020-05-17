@@ -37,6 +37,7 @@ tg.static.loadStaticModel = function (
         life: buildingTypeConfig.life,
         fullLife: buildingTypeConfig.life,
         isActive: true,
+        weaponType: buildingTypeConfig.weaponType,
     };
     buildingObject.controlMesh = newMeshes[0];
     buildingObject.team = team;

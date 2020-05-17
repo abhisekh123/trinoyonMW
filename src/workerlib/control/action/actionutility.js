@@ -117,11 +117,11 @@ module.exports = {
     // for events like 'die'
     clearProximityGraphEntry: function(gameRoom, itemConfig) {
         var globalIndex = itemConfig.globalIndex;
-        for (var i = 0; i < gameRoom.allBotObjects.length; i++) {
+        for (var i = 0; i < gameRoom.allDynamicObjects.length; i++) {
             if(i == globalIndex){
                 continue;
             }
-            var currentBot = gameRoom.allBotObjects[i];
+            var currentBot = gameRoom.allDynamicObjects[i];
             if(currentBot.team == itemConfig.team){
                 continue;
             }
@@ -138,16 +138,16 @@ module.exports = {
         // console.log('updateProximityGraphEntry:', itemConfig);
         var globalIndex = itemConfig.globalIndex;
         var visibility = false;
-        // console.log('gameRoom.allBotObjects.length:', gameRoom.allBotObjects.length);
+        // console.log('gameRoom.allDynamicObjects.length:', gameRoom.allDynamicObjects.length);
         // console.log('gameRoom.proximityGraph.length:', gameRoom.proximityGraph.length);
-        for (var i = 0; i < gameRoom.allBotObjects.length; i++) {
+        for (var i = 0; i < gameRoom.allDynamicObjects.length; i++) {
             // console.log('i:', i);
             // console.log('gameRoom.proximityGraph[globalIndex].length:', gameRoom.proximityGraph[globalIndex].length);
             // console.log('gameRoom.proximityGraph[i].length:', gameRoom.proximityGraph[i].length);
             if(i == globalIndex){
                 continue;
             }
-            var currentBot = gameRoom.allBotObjects[i];
+            var currentBot = gameRoom.allDynamicObjects[i];
             if(currentBot.team == itemConfig.team){
                 continue;
             }

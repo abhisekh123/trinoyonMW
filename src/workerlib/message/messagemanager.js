@@ -143,7 +143,7 @@ module.exports = {
 
             playerIDList.push({
                 id: player.userId,
-                index: i
+                index: player.index
             });
         }
 
@@ -155,7 +155,7 @@ module.exports = {
      */
 
     updateBotAction: function(userMessageObject){
-        console.log('update bot action:')
+        console.log('update bot action:', userMessageObject);
         var userId = userMessageObject.userId;
         
         var userPlayerObject = workerState.userToPlayerMap[userId];
@@ -176,7 +176,13 @@ module.exports = {
         }
 
         if(botConfig != null){ // if found
-            gameRoom = workerState.gameRoomArray[userPlayerObject.gameId];
+            
+            if(botConfig.isActive == false){
+                console.error('bot found but is not active:', botConfig);
+                return;    
+            }else{
+                gameRoom = workerState.gameRoomArray[userPlayerObject.gameId];
+            }
         }else{
             console.error('bot not found ', userMessageObject);
             return;

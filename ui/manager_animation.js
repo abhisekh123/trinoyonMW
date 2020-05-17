@@ -16,7 +16,7 @@ tg.animationmanager.startCharacterAnimation = function(botObject, newAction){
         return;
     }
     
-    var currentAnimationObject = botObject.animations[tg.animationmanager.actionToAnimationMap[botObject.animationAction]]
+    var currentAnimationObject = botObject.animations[tg.animationmanager.actionToAnimationMap[botObject.animationAction]];
     var animationObject = null;
     var animationPlayFlag = true;
     if(newAction == 'die' || newAction == 'attack'){
@@ -42,10 +42,16 @@ tg.animationmanager.startCharacterAnimation = function(botObject, newAction){
         // botObject.controlMesh.position.y = tg.worldItems.uiConfig.hiddenY;
         // botObject.projectile.position.y = tg.worldItems.uiConfig.hiddenY;
     }
-
-    botObject.animationGroups[currentAnimationObject.index].stop();
-    botObject.animationGroups[currentAnimationObject.index].reset();
+    for(var i = 0; i < botObject.animationGroups.length; ++i){
+        botObject.animationGroups[i].stop();
+        botObject.animationGroups[i].reset();
+    }
+    // botObject.animationGroups[currentAnimationObject.index].stop();
+    // botObject.animationGroups[currentAnimationObject.index].reset();
     if(animationObject.type == 'interval'){ // play a part of the animation.
+        // if(newAction == 'attack'){
+        //     console.log('botObject.id:' + botObject.id + ' animationPlayFlag:' + animationPlayFlag);
+        // }
         botObject.animationGroups[animationObject.index].start(animationPlayFlag,animationObject.speed,animationObject.from,animationObject.to);
     } else { // play entire animation
         // botObject.animationGroups[animationObject.index].play(animationPlayFlag);

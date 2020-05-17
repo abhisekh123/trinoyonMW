@@ -24,7 +24,7 @@ module.exports = {
      * game progress / refresh
      */
 
-    
+
     // BOTS
 
     processBots: function (gameRoom) {
@@ -77,30 +77,30 @@ module.exports = {
     },
 
 
-    processBotAction: function(playerConfig, gameRoom, botIndex) {
+    processBotAction: function (playerConfig, gameRoom, botIndex) {
         // console.log('botaction for index:', botIndex);
         // const botConfig = playerConfig.botObjectList[botIndex];
         // try consuming the timeslice by performing action
         // deciding action does not consume time.
         var timeSlice = workerState.timeIntervalToSimulateInEachGame;
-        while(timeSlice > 0){ 
+        while (timeSlice > 0) {
             // console.log('timeSlice:', timeSlice);
             timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
             // console.log('timeSlice returned:', timeSlice);
         }
     },
 
-    processBotLifeCycle: function(botConfig, gameRoom) {
+    processBotLifeCycle: function (botConfig, gameRoom) {
         // if bot is inactive, check if can spawn. return.
-        if(botConfig.isActive == false){
+        if (botConfig.isActive == false) {
             // check if eligible to respawn
-            if((workerState.currentTime - botConfig.activityTimeStamp) > botConfig.respawnTime){
+            if ((workerState.currentTime - botConfig.activityTimeStamp) > botConfig.respawnTime) {
                 actionManager.actionUtility.addActionToBot(botConfig, 'ready', null, gameRoom);
                 return;
             }
         }
 
-        
+
 
         if (botConfig.life <= 0 && botConfig.isActive == true) { // bots that died in last cycle.
             actionManager.actionUtility.addActionToBot(botConfig, 'die', null, gameRoom);
@@ -167,7 +167,7 @@ module.exports = {
                 // this.resetGame(gameRoom);
                 return;
             }
-            if(buildingConfig.team == 1){
+            if (buildingConfig.team == 1) {
                 --gameRoom.statistics.towerCountTeam1;
             } else {
                 --gameRoom.statistics.towerCountTeam2;
@@ -214,16 +214,16 @@ module.exports = {
 
 
             var gridMatrix = new Array(this.worldConfig.gridSide);
-            for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
+            for (var i = 0; i < this.worldConfig.gridSide; ++i) { // x axis
                 gridMatrix[i] = new Array(this.worldConfig.gridSide);
-                for(var k = 0; k < this.worldConfig.gridSide; ++k){ // z axis
+                for (var k = 0; k < this.worldConfig.gridSide; ++k) { // z axis
                     gridMatrix[i][k] = {
-                        object: null, 
+                        object: null,
                     }
                 }
             }
             gameRoom.gridMatrix = gridMatrix;
-            
+
 
             // gameRoom.buildingArray_1 = utilityFunctions.cloneObject(
             //     utilityFunctions.getObjectValues(workerState.buildingMap_1)
@@ -260,13 +260,13 @@ module.exports = {
             gameRoom.players_2 = [];
             for (var j = 0; j < environmentState.maxPlayerPerTeam; ++j) { // populate room with generic players of team 1.
                 var team = 1;
-                var playerId = 'player_' + j;
-                gameRoom.players_1.push(gameRoomAssetManager.getGenericPlayerObject(playerId, team, gameId));
+                // var playerId = 'player_' + j;
+                gameRoom.players_1.push(gameRoomAssetManager.getGenericPlayerObject(j, team, gameId));
             }
             for (var j = environmentState.maxPlayerPerTeam; j < (environmentState.maxPlayerPerTeam * 2); ++j) { // populate room with generic players of team 2.
                 var team = 2;
-                var playerId = 'player_' + j;
-                gameRoom.players_2.push(gameRoomAssetManager.getGenericPlayerObject(playerId, team, gameId));
+                // var playerId = 'player_' + j;
+                gameRoom.players_2.push(gameRoomAssetManager.getGenericPlayerObject(j, team, gameId));
             }
             gameRoom.startTime = null;
             // console.log('init gameRoom3:', gameId);
@@ -282,13 +282,13 @@ module.exports = {
         // gameRoom.startTime = null;
 
         // remove all entries except buildings and towers
-        for(var i = 0; i < this.worldConfig.gridSide; ++i){ // x axis
-            for(var k = 0; k < this.worldConfig.gridSide; ++k){ // z axis
-                if(gameRoom.gridMatrix[i][k].object == undefined){
+        for (var i = 0; i < this.worldConfig.gridSide; ++i) { // x axis
+            for (var k = 0; k < this.worldConfig.gridSide; ++k) { // z axis
+                if (gameRoom.gridMatrix[i][k].object == undefined) {
                     gameRoom.gridMatrix[i][k].object = null;
                 }
-                if(gameRoom.gridMatrix[i][k].object != null){
-                    if(gameRoom.gridMatrix[i][k].object.type != 'tower' && gameRoom.gridMatrix[i][k].object.type != 'base'){
+                if (gameRoom.gridMatrix[i][k].object != null) {
+                    if (gameRoom.gridMatrix[i][k].object.type != 'tower' && gameRoom.gridMatrix[i][k].object.type != 'base') {
                         gameRoom.gridMatrix[i][k].object = null;
                     }
                 }
@@ -314,40 +314,30 @@ module.exports = {
 
         // players 1
         for (var i = 0; i < gameRoom.players_1.length; ++i) {
-            const player = gameRoom.players_1[i];
-            player.userId = null;
-            player.isConnected = false;
-            player.lastCommunication = 0;
-            player.joinTime = 0;
-            player.isAIDriven = true;
+            gameRoomAssetManager.resetPlayer(gameRoom.players_1[i]);
         }
 
         // players 2
         for (var i = 0; i < gameRoom.players_2.length; ++i) {
-            const player = gameRoom.players_2[i];
-            player.userId = null;
-            player.isConnected = false;
-            player.lastCommunication = 0;
-            player.joinTime = 0;
-            player.isAIDriven = true;
+            gameRoomAssetManager.resetPlayer(gameRoom.players_2[i]);
         }
 
     },
 
-    generateGameResult: function(gameRoom){
+    generateGameResult: function (gameRoom) {
         console.log('generateGameResult');
         var teamFlag = 0;
         var tempCounter = 0;
-        
+
 
         gameRoom.statistics.winningTeam = 0;
 
         // check if any base got destroyed
         for (var i = 0; i < gameRoom.buildingArray_1.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_1[i];
-            
+
             if (buildingConfig.type == 'base') {
-                if(buildingConfig.isActive == false){
+                if (buildingConfig.isActive == false) {
                     teamFlag = 1;
                     ++tempCounter;
                     break;
@@ -356,9 +346,9 @@ module.exports = {
         }
         for (var i = 0; i < gameRoom.buildingArray_2.length; ++i) {
             var buildingConfig = gameRoom.buildingArray_2[i];
-            
+
             if (buildingConfig.type == 'base') {
-                if(buildingConfig.isActive == false){
+                if (buildingConfig.isActive == false) {
                     teamFlag = 2;
                     ++tempCounter;
                     break;
@@ -366,21 +356,21 @@ module.exports = {
             }
         }
 
-        if(tempCounter == 2){ // if both base were destroyed
+        if (tempCounter == 2) { // if both base were destroyed
             gameRoom.statistics.winningTeam = 0;
             // foundWinningTeam = true;
             return;
-        }else if (tempCounter == 1){ // one base was destroyed
+        } else if (tempCounter == 1) { // one base was destroyed
             gameRoom.statistics.winningTeam = teamFlag;
             // foundWinningTeam = true;
             return;
         } else {
             // no base was destroyed.
 
-            
 
-            if(gameRoom.statistics.towerCountTeam1 != gameRoom.statistics.towerCountTeam2){
-                if(gameRoom.statistics.towerCountTeam1 > gameRoom.statistics.towerCountTeam2){
+
+            if (gameRoom.statistics.towerCountTeam1 != gameRoom.statistics.towerCountTeam2) {
+                if (gameRoom.statistics.towerCountTeam1 > gameRoom.statistics.towerCountTeam2) {
                     gameRoom.statistics.winningTeam = 1;
                     // foundWinningTeam = true;
                     return;
@@ -391,8 +381,8 @@ module.exports = {
                 }
             } else { // both team own equal number of towers
                 // compare kill count
-                if(gameRoom.statistics.performance[1].death != gameRoom.statistics.performance[2].death){
-                    if(gameRoom.statistics.performance[1].death < gameRoom.statistics.performance[2].death){
+                if (gameRoom.statistics.performance[1].death != gameRoom.statistics.performance[2].death) {
+                    if (gameRoom.statistics.performance[1].death < gameRoom.statistics.performance[2].death) {
                         gameRoom.statistics.winningTeam = 1;
                         // foundWinningTeam = true;
                         return;
@@ -403,8 +393,8 @@ module.exports = {
                     }
                 } else { // both team have equal kills
                     // compare damage
-                    if(gameRoom.statistics.performance[1].damage != gameRoom.statistics.performance[2].damage){
-                        if(gameRoom.statistics.performance[1].damage > gameRoom.statistics.performance[2].damage){
+                    if (gameRoom.statistics.performance[1].damage != gameRoom.statistics.performance[2].damage) {
+                        if (gameRoom.statistics.performance[1].damage > gameRoom.statistics.performance[2].damage) {
                             gameRoom.statistics.winningTeam = 1;
                             // foundWinningTeam = true;
                             return;
@@ -424,7 +414,7 @@ module.exports = {
         }
     },
 
-    terminateGame: function(gameRoom) { // either base destroyed or time completed.
+    terminateGame: function (gameRoom) { // either base destroyed or time completed.
         console.log('###################################');
         console.log('###################################');
         console.log('###################################');
