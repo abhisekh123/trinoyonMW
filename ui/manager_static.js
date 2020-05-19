@@ -226,15 +226,18 @@ tg.static.loadGLTFAssetFileForStaticMeshes = function (
     );
 }
 
-tg.static.loadGLTFAssetsForStaticItems = function (actionOnComplete) {
+tg.static.loadGLTFAndAudioAssets = function (actionOnComplete) {
     console.log('load gltf assets for static items.');
     var staticItemCount = 0;
     tg.am.onLoadComplete = actionOnComplete;
 
+    tg.am.totalAssetsLoaded_tillNow = 0;
+
     // 2 is added to account for base meshes.
     tg.am.totalAssetsToBeLoaded = 2 + tg.worldItems.defenceBottom.length + tg.worldItems.defenceTop.length;
 
-    tg.am.totalAssetsLoaded_tillNow = 0;
+    tg.am.totalAssetsToBeLoaded += tg.audio.loadAudioAssets();
+
 
     // defence team 1
     for (let index = 0; index < tg.worldItems.defenceTop.length; index++) {

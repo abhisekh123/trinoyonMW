@@ -38,6 +38,7 @@ tg.input.onPointerDownFunction = function (evt, pickResult) {
 };
 
 tg.input.OnKeyDownFunction = function (evt) {
+    // tg.music.play(); 
     tg.input.keyMap[evt.sourceEvent.key] = evt.sourceEvent.type == "keydown";
 
 };

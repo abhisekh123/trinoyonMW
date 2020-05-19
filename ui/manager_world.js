@@ -75,6 +75,7 @@ tg.world.handleNewMatchStartReadyTrigger = function () {
 
     tg.pn.showMatchPage();
     tg.updateWorld = tg.world.updateWorld;
+    
 };
 
 tg.world.handleNewMatchTerminatedTrigger = function () {

@@ -20,6 +20,21 @@ var worldItems = {
     createFreshStrategyMatrix: true,
     strategyMatrixFileName: 'visibilityMatrix.txt',
 
+    ambientAudio: [
+        {
+            key: 'menu',
+            file: 'static/audio/Darkness-Approaches_Looping.mp3',
+            autoplay: true,
+            loop: true
+        },
+        {
+            key: 'match',
+            file: 'static/audio/Dark-Things-2_V001.mp3',
+            autoplay: true,
+            loop: true
+        }
+    ],
+
     uiConfig: {
         playerDimensionBaseUnit: 10,
         hiddenY: -10, //value of y coordinate when object is hidden 

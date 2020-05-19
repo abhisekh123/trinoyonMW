@@ -50,6 +50,12 @@ tg.pn.showMatchResultPage = function(){
     // $("#game-footer-menu").show();
     tg.pn.currentPage = 'game-result';
     // tg.pv.setModalDimensionPercentage('10%', '90%');
+    tg.hl.removeJoysticks();
+    tg.audio.menu.play();
+    tg.audio.match.stop();
+
+    $("#showjoystick").hide();
+    $("#hidejoystick").hide();
 };
 
 tg.pn.showMatchPage = function(){
@@ -76,6 +82,10 @@ tg.pn.showMatchPage = function(){
     tg.hl.removeJoysticks();
     // $("#joystick-parent").show();
     tg.pn.currentPage = 'game-play';
+    tg.audio.menu.stop();
+    tg.audio.match.play();
+
+    $("#showjoystick").show();
     // tg.pv.setModalDimensionPercentage('10%', '90%');
 };
 
