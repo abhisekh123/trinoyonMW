@@ -11,6 +11,7 @@ tg.am.onLoadCompleteActionHandler = function() {
             //     tg.showHomePage();
             // }
             tg.pn.showHomePage();
+            tg.audio.playAudio(tg.audio.menu);
             break;
         case 'show_match_page':
             tg.world.handleNewMatchStartReadyTrigger();

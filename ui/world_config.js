@@ -24,15 +24,30 @@ var worldItems = {
         {
             key: 'menu',
             file: 'static/audio/Darkness-Approaches_Looping.mp3',
-            autoplay: true,
-            loop: true
+            autoplay: false,
+            loop: true,
+            volume: 0.2,
+            offset: -1,
+            length: 0
         },
         {
             key: 'match',
             file: 'static/audio/Dark-Things-2_V001.mp3',
-            autoplay: true,
-            loop: true
-        }
+            autoplay: false,
+            loop: true,
+            volume: 0.2,
+            offset: -1,
+            length: 0
+        },
+        {
+            key: 'ambience',
+            file: 'static/audio/test.mp3',
+            autoplay: false,
+            loop: true,
+            volume: 1,
+            offset: -1,
+            length: 1
+        },
     ],
 
     uiConfig: {

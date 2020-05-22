@@ -9,6 +9,7 @@
         items:{
             lion:{
                 bannedMeshes:[],
+                audioFile: 'static/audio/Darkness-Approaches_Looping.mp3',
                 animations: {
                     idleAnimation:{
                         speed:1,
@@ -59,6 +60,7 @@
             },
             swordman:{
                 bannedMeshes:[6],
+                audioFile: 'static/audio/Darkness-Approaches_Looping.mp3',
                 animations: {
                     idleAnimation:{
                         speed:1,
@@ -109,7 +111,7 @@
             },
             archer:{
                 bannedMeshes:[],
-
+                audioFile: 'static/audio/Darkness-Approaches_Looping.mp3',
                 animations: {
                     idleAnimation:{
                         speed:1,
@@ -171,6 +173,30 @@
             },
             tower:{
                 life:10,
+                audioFile: 'static/audio/test.mp3',
+                animations: {
+                    attack:{
+                        offset: 1000,
+                        length: 1000,
+                        autoplay: false,
+                        loop: false,
+                        volume: 0.2
+                    },
+                    destroy:{
+                        offset: 2000,
+                        length: 1000,
+                        autoplay: false,
+                        loop: false,
+                        volume: 0.2
+                    },
+                    capture:{
+                        offset: 3000,
+                        length: 1000,
+                        autoplay: false,
+                        loop: false,
+                        volume: 0.2
+                    },
+                },
                 attack:4,
                 file: 'tower_gloom',
                 scale: 0.05,
@@ -186,6 +212,23 @@
             },
             base:{
                 life:100,
+                audioFile: 'static/audio/test.mp3',
+                animations: {
+                    attack:{
+                        offset: 1000,
+                        length: 1000,
+                        autoplay: false,
+                        loop: false,
+                        volume: 0.2
+                    },
+                    destroy:{
+                        offset: 2000,
+                        length: 1000,
+                        autoplay: false,
+                        loop: false,
+                        volume: 0.2
+                    },
+                },
                 attack:2,
                 file: 'defense_tower',
                 scale: 2,

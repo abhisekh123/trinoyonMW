@@ -17,6 +17,7 @@
         "manager_static_key": "manager_static.js",
         "manager_view_key": "manager_view.js",
         "manager_world_key": "manager_world.js",
+        "manager_sprite_key": "manager_sprite.js",
         "manager_network_key": "manager_network.js",
         "manager_3dui_key": "manager_3dui.js",
         "pagenavigationmanager_key": "pagenavigationmanager.js",

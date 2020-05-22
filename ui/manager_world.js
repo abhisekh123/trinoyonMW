@@ -6,6 +6,7 @@ tg.world = {};
 
 // reset world and load characters based on current match configuration
 tg.world.startNewMatch = function (playerConfigArray, playerIndex) {
+    // tg.sprite.test();
     // reset game static objects
     tg.static.resetStaticItems();
 
