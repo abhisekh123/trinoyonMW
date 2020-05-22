@@ -6,7 +6,6 @@ tg.world = {};
 
 // reset world and load characters based on current match configuration
 tg.world.startNewMatch = function (playerConfigArray, playerIndex) {
-    // tg.sprite.test();
     // reset game static objects
     tg.static.resetStaticItems();
 
@@ -60,6 +59,7 @@ tg.world.updateBuildingTeamMarker = function () {
 // method that triggers when all the assets for the current match has been loaded.
 tg.world.handleNewMatchStartReadyTrigger = function () {
     console.log('all assets loaded');
+    // tg.sprite.test();
     tg.isGameLive = true;
 
     // Initialise camera settings.
@@ -232,13 +232,13 @@ tg.world.updateWorld = function (updateParam) {
                 }
 
             } else if (eventsArray[index].event == 'cteam') { // building change team event.
-                console.log('cteam event', eventsArray[index].id);
+                // console.log('cteam event', eventsArray[index].id);
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 // sourceConfig.team = eventsArray[index].team;
                 tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
             } else { // die and spawn
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
-                console.log('event:' + eventsArray[index].event + ' for bot:' + eventsArray[index].id);
+                // console.log('event:' + eventsArray[index].event + ' for bot:' + eventsArray[index].id);
                 tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
 
                 // if event is for dynamic object(bot), clear any goto action(if present)

@@ -375,7 +375,8 @@ tg.static.addStaticItems = function () {
     cameraTarget.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
     cameraTarget.position.z = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
     // ground.isPickable = true;
-    cameraTarget.material = tg.am.material_semitransparent_chosen;
+    // cameraTarget.material = tg.am.material_semitransparent_chosen;
+    cameraTarget.material = tg.am.material_transparent;
     // cameraTarget.freezeWorldMatrix();
     // ground.material = materialGround;
     tg.am.cameraTarget = cameraTarget;

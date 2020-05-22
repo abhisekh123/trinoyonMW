@@ -85,6 +85,8 @@ tg.pn.showMatchPage = function(){
     tg.audio.stopAudio(tg.audio.menu);
     tg.audio.playAudio(tg.audio.match);
 
+    // tg.sprite.test();
+
     $("#showjoystick").show();
     // tg.pv.setModalDimensionPercentage('10%', '90%');
 };

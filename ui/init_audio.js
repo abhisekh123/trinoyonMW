@@ -72,8 +72,11 @@ tg.audio.loadAudioAssets = function () {
 
 tg.audio.playAudio = function (soundParam) {
     soundParam.play();
-}
+    // tg.audio.ambience.play(0,1,1);
+};
 
-tg.audio.stopAudio = function () {
+tg.audio.stopAudio = function (soundParam) {
     soundParam.stop();
-}
+};
+
+

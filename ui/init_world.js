@@ -63,7 +63,7 @@ tg.newRefreshFunction = function() {
 
     // console.log(tg.currentTime);
     if(tg.isGameLive == true){
-        
+        // tg.sprite.refresh();
 
         if(tg.bot.userPlayerConfig.selectedBot != null){
             tg.am.chosenMarker.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
