@@ -61,6 +61,47 @@ tg.newRefreshFunction = function() {
     tg.currentTime = getCurrentTime ();
     tg.hl.divFps.innerHTML = tg.engine.getFps().toFixed() + " fps";
 
+    if ((tg.input.keyMap["s"] || tg.input.keyMap["S"])) {
+        tg.video.moveCameraStraight(1);
+    };
+
+    if ((tg.input.keyMap["w"] || tg.input.keyMap["W"])) {
+        tg.video.moveCameraStraight(-1);
+    };
+
+    if ((tg.input.keyMap["d"] || tg.input.keyMap["D"])) {
+        tg.video.moveCameraSideway(1);
+    };
+    if ((tg.input.keyMap["a"] || tg.input.keyMap["A"])) {
+        tg.video.moveCameraSideway(-1);
+    };
+
+    if ((tg.input.keyMap["q"] || tg.input.keyMap["Q"])) {
+        tg.video.cameraRotate(-1);
+    };
+
+    if ((tg.input.keyMap["e"] || tg.input.keyMap["E"])) {
+        tg.video.cameraRotate(1);
+    };
+
+    // maxCameraHeight: 60,
+    // minCameraHeight: 30,
+    // maxCameraRadius: 130,
+    // minCameraRadius: 70,
+    // cameraRadiusStep: 1,
+    // cameraHeightStep: 0.5,
+
+    // go near
+    if ((tg.input.keyMap["r"] || tg.input.keyMap["R"])) {
+        tg.video.cameraZoom(-1);
+    };
+
+    // go away
+    if ((tg.input.keyMap["f"] || tg.input.keyMap["F"])) {
+        tg.video.cameraZoom(1);
+    };
+    // tg.sprite.refresh();
+
     // console.log(tg.currentTime);
     if(tg.isGameLive == true){
         // tg.sprite.refresh();

@@ -400,16 +400,54 @@ tg.static.addStaticItems = function () {
     // ground.material = materialGround;
     tg.am.chosenMarker = chosenMarker;
 
+    // bottom left (u,v) 0,0
+    // top right (u,v) 1,1
+    // (Utop_right, Vbottom_left, Ubottom_left, Vtop_right);
+    // (Ubottom_left, Vtop_right, Utop_right, Vbottom_left);
+    // (Utop_right, Vtop_right, Ubottom_left, Vbottom_left);
+    var faceUV = new Array(6);
+    faceUV[0] = new BABYLON.Vector4(0, 0, 1, 1);
+    faceUV[1] = new BABYLON.Vector4(0, 0, 1, 1);
+
+    // faceUV[2] = new BABYLON.Vector4(1, 1, 1, 1);
+    // faceUV[2] = new BABYLON.Vector4(1, 1, 1, 0);
+    // faceUV[2] = new BABYLON.Vector4(1, 1, 0, 1);
+    // faceUV[2] = new BABYLON.Vector4(1, 1, 0, 0);
+    // faceUV[2] = new BABYLON.Vector4(1, 0, 1, 1);
+    // faceUV[2] = new BABYLON.Vector4(1, 0, 1, 0);
+    // faceUV[2] = new BABYLON.Vector4(1, 0, 0, 1);
+    // faceUV[2] = new BABYLON.Vector4(1, 0, 0, 0);
+    // faceUV[2] = new BABYLON.Vector4(0, 1, 1, 1);
+    // faceUV[2] = new BABYLON.Vector4(0, 1, 1, 0);
+    // faceUV[2] = new BABYLON.Vector4(0, 1, 0, 1);
+    // faceUV[2] = new BABYLON.Vector4(0, 1, 0, 0);
+    faceUV[2] = new BABYLON.Vector4(0, 0, 1, 1);
+    // faceUV[2] = new BABYLON.Vector4(0, 0, 1, 0);
+    // faceUV[2] = new BABYLON.Vector4(0, 0, 0, 1);
+    // faceUV[2] = new BABYLON.Vector4(0, 0, 0, 0);
+
+    faceUV[3] = new BABYLON.Vector4(0, 0, 1, 1);
+    faceUV[4] = new BABYLON.Vector4(0, 0, 1, 1);
+    faceUV[5] = new BABYLON.Vector4(0, 0, 1, 1);
+
+    var options = {
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        faceUV: faceUV
+    };
     // tg.am.staticItems = {};
     tg.am.staticItems.boxes = [];// return;
     for (var i = 0; i < tg.worldItems.obstacles.length; ++i) {
-        var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, {
-            height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-            width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-            depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
+        // var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, {
+        //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        // }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
+        var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, options, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
+        
         box.position.x = (tg.worldItems.obstacles[i][0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
-        box.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
+        box.position.y = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2.13);
         box.position.z = (tg.worldItems.obstacles[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
         box.isPickable = false;
         box.material = tg.am.boxMaterial;

@@ -20,6 +20,13 @@ var worldItems = {
     createFreshStrategyMatrix: true,
     strategyMatrixFileName: 'visibilityMatrix.txt',
 
+    // preloadImage: [
+    //     {
+    //         key: 'menu',
+    //         file: 'static/audio/Darkness-Approaches_Looping.mp3',
+    //     }
+    // ],
+
     ambientAudio: [
         {
             key: 'menu',
