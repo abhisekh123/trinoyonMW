@@ -1,8 +1,12 @@
 tg.sprite = {};
-tg.sprite.test = function () {
-    // alert('sprite_manager');
-    // alert('sprite_manager');
-    console.log('--------sprite_manager--------');
+
+
+
+
+
+/** CODES NOT USED PRESENTLY */
+tg.sprite.test_plane = function () {
+    // console.log('--------sprite_manager--------');
 
     var mat = new BABYLON.StandardMaterial("mat1", tg.scene);
     // mat.alpha = 0;
@@ -11,7 +15,7 @@ tg.sprite.test = function () {
     //mat.wireframe = true;
     // var texture = new BABYLON.Texture("static/sprite/lightning-pattern-png-1.png", tg.scene);
     // var texture = new BABYLON.Texture("static/img/palm.png", tg.scene);
-    var texture = new BABYLON.Texture("static/sprite/flame_arrow.png", tg.scene);
+    var texture = new BABYLON.Texture('static/sprite/flame_arrow.png', tg.scene);
     texture.hasAlpha = true;
 	texture.getAlphaFromRGB = true;
     
@@ -27,8 +31,8 @@ tg.sprite.test = function () {
         frontUVs: f,
 		backUVs: f,
         // updatable: false,
-		width: 5,
-		height: 5,
+		width: 20,
+		height: 20,
 	}
 	
 	var plane = BABYLON.MeshBuilder.CreatePlane("", options, tg.scene);
@@ -36,14 +40,12 @@ tg.sprite.test = function () {
     
     // plane.material = mat;
     tg.sprite.plane = plane;
-    // plane.rotation.x = Math.PI / 2;
-    // var orientation = BABYLON.Vector3.RotationFromAxis(1, 0, 1);
-    // plane.rotation = orientation;
 
     plane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
     plane.bakeCurrentTransformIntoVertices();
 
-    // plane.rotate(BABYLON.Axis.Y, 1.45, BABYLON.Space.WORLD);// BABYLON.Space.LOCAL
+    tg.sprite.plane.rotation = new BABYLON.Vector3(Math.PI/6, Math.PI/2, Math.PI/8);
+    // plane.rotate(BABYLON.Axis.Y, Math.PI/4, BABYLON.Space.WORLD);// BABYLON.Space.LOCAL
     plane.position.y = 15;
     plane.position.x = 450;
     plane.position.z = 450;
@@ -59,13 +61,9 @@ tg.sprite.refresh = function(){
         return;
     }
     tg.sprite.texture.uOffset += 1/6;
-    tg.sprite.plane.addRotation(0, 0.01, 0); 
+    // tg.sprite.plane.addRotation(0, 0.08, 0); 
 };
 
-
-
-
-/** CODES NOT USED PRESENTLY */
 tg.sprite.test_boxAnimation = function () {
     // alert('sprite_manager');
     // alert('sprite_manager');

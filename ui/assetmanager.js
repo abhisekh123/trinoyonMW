@@ -22,8 +22,74 @@ tg.am.onLoadCompleteActionHandler = function() {
     }
 };
 
+// tg.am.populateAssetArray = function(assetArray, keyParam, urlParam){
+//     assetArray.push({url: urlParam, key: keyParam});
+// };
+
 tg.am.preloadAssets = function(){
+    var totalAssetsTobeLoaded = 0;
+    var assetArray = [];
+
+    // gather assets to be pre loaded
+    // lion
     
+    assetArray.push({
+        url: tg.itemConfigs.items.lion.audioFile,
+        key: 'lion-audio',
+    });
+    // swordman
+    assetArray.push({
+        url: tg.itemConfigs.items.swordman.audioFile,
+        key: 'swordman-audio',
+    });
+    // archer
+    assetArray.push({
+        url: tg.itemConfigs.items.archer.audioFile,
+        key: 'archer-audio',
+    });
+    assetArray.push({
+        url: tg.itemConfigs.items.archer.projectile.image,
+        key: 'archer-projectile',
+    });
+    // base
+    assetArray.push({
+        url: tg.itemConfigs.items.base.audioFile,
+        key: 'base-audio',
+    });
+    assetArray.push({
+        url: tg.itemConfigs.items.base.projectile.image,
+        key: 'base-projectile',
+    });
+    // tower
+    assetArray.push({
+        url: tg.itemConfigs.items.tower.audioFile,
+        key: 'tower-audio',
+    });
+    assetArray.push({
+        url: tg.itemConfigs.items.tower.projectile.image,
+        key: 'tower-projectile',
+    });
+
+    totalAssetsTobeLoaded = assetArray.length;
+
+    for(var i = 0; i < assetArray.length; ++i){
+        var binaryTask = tg.am.bam.addBinaryFileTask(assetArray[i].key, assetArray[i].url);
+        binaryTask.onSuccess = function (task) {
+            // Do something with task.data
+            // console.log(task);
+            tg.am.updateNewAssetLoaded(1);
+        }
+    }
+
+    tg.am.bam.load();
+
+    tg.am.bam.onFinish = function (tasks) {
+        // DO nothing for now.
+        // tg.am.bam.reset();
+        console.log('babylon task loader completed task.');
+	};
+
+    return totalAssetsTobeLoaded;
 }
 
 tg.am.updateNewAssetLoaded = function(count){
@@ -228,6 +294,7 @@ tg.am.createMaterials = function () {
 }
 
 tg.am.init = function(){
+    tg.am.bam = new BABYLON.AssetsManager(tg.scene);
     tg.am.staticItems = {};
     tg.am.staticItems.buildings = {};
     tg.am.staticItems.buildingsArray = [];
@@ -238,5 +305,5 @@ tg.am.init = function(){
 
     tg.am.createMaterials();
     tg.static.addStaticItems();
-    tg.static.loadGLTFAndAudioAssets('show_home_page');
+    tg.static.loadStaticAssets('show_home_page');
 };

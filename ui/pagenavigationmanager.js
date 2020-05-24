@@ -110,7 +110,7 @@ tg.pn.showHomePage = function(){
         botList: ['swordman', 'swordman', 'swordman', 'swordman'],
         hero: 'lion',
     }
-    tg.sprite.test();
+    // tg.sprite.test();
     // tg.pv.advancedTexture.addControl(tg.pv.uiComponents.buttons.playButton);  
 }
 

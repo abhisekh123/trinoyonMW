@@ -1,4 +1,3 @@
-
 tg.static = {};
 
 tg.static.loadStaticModel = function (
@@ -53,12 +52,12 @@ tg.static.loadStaticModel = function (
     }, tg.scene);
 
     residue.position.x = positionParam.x;
-    if(isFriendly){
+    if (isFriendly) {
         residue.position.y = tg.worldItems.uiConfig.hiddenY;
     } else {
         residue.position.y = 0;
     }
-    
+
     residue.position.z = positionParam.z;
     residue.material = tg.am.material_semitransparent_red;
     // residue.freezeWorldMatrix();
@@ -72,7 +71,7 @@ tg.static.loadStaticModel = function (
     }, tg.scene);
 
     residue.position.x = positionParam.x;
-    if(isFriendly){
+    if (isFriendly) {
         residue.position.y = 0;
     } else {
         residue.position.y = tg.worldItems.uiConfig.hiddenY;
@@ -96,23 +95,67 @@ tg.static.loadStaticModel = function (
     buildingObject.markerMeshTeamNeutral = residue;
 
     // projectile mesh
-    var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + itemID, {
-        height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
-        width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
-        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10
-    }, tg.scene);
+    // var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + itemID, {
+    //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
+    //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
+    //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10
+    // }, tg.scene);
 
-    projectile.position.x = positionParam.x;
-    projectile.position.y = tg.worldItems.uiConfig.hiddenY;
-    projectile.position.z = positionParam.z;
-    projectile.material = tg.am.material_semitransparent_towerprojectile;
-    // projectile.freezeWorldMatrix();
+    // projectile.position.x = positionParam.x;
+    // projectile.position.y = tg.worldItems.uiConfig.hiddenY;
+    // projectile.position.z = positionParam.z;
+    // // projectile.material = tg.am.material_semitransparent_towerprojectile;
+    // // projectile.freezeWorldMatrix();
 
-    buildingObject.projectile = projectile;
+    // buildingObject.projectile = projectile;
+    // buildingObject.isProjectileActive = false;
+    // buildingObject.projectileData = {
+    //     path: null,
+    //     endTime: 0
+    // };
+
+    var mat = new BABYLON.StandardMaterial('material_projectile_' + itemID, tg.scene);
+    var projectileTexture = new BABYLON.Texture(buildingTypeConfig.projectile.image, tg.scene);
+    projectileTexture.hasAlpha = true;
+    projectileTexture.getAlphaFromRGB = true;
+
+    mat.diffuseTexture = projectileTexture;
+
+    var f = new BABYLON.Vector4(
+        buildingTypeConfig.projectile.uBottom,
+        buildingTypeConfig.projectile.vBottom,
+        buildingTypeConfig.projectile.uTop,
+        buildingTypeConfig.projectile.vTop
+    );
+
+    var options = {
+        sideOrientation: BABYLON.Mesh.DOUBLESIDE, // FRONTSIDE, BACKSIDE, DOUBLESIDE
+        frontUVs: f,
+        backUVs: f,
+        // updatable: false,
+        width: buildingTypeConfig.projectile.width,
+        height: buildingTypeConfig.projectile.height,
+    }
+
+    var projectilePlane = BABYLON.MeshBuilder.CreatePlane('projectile_plane_' + itemID, options, tg.scene);
+    projectilePlane.material = mat;
+
+    projectilePlane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
+    projectilePlane.bakeCurrentTransformIntoVertices();
+
+    projectilePlane.position.x = positionParam.x;
+    projectilePlane.position.y = tg.worldItems.uiConfig.hiddenY;
+    projectilePlane.position.z = positionParam.z;
+    // projectile.material = tg.am.material_semitransparent_projectile;
+
+    buildingObject.projectile = projectilePlane;
     buildingObject.isProjectileActive = false;
     buildingObject.projectileData = {
         path: null,
-        endTime: 0
+        endTime: 0,
+        plane: projectilePlane,
+        texture: projectileTexture,
+        uOffset: buildingTypeConfig.projectile.uOffset
     };
 
     //data reporter
@@ -125,7 +168,7 @@ tg.static.loadStaticModel = function (
     outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
     outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
     outputplane.material.backFaceCulling = false;
-    
+
     outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
     // outputplaneTexture.drawText(positionParam.x + ',' + positionParam.z, null, 140, "bold 80px verdana", "white");
 
@@ -145,8 +188,8 @@ tg.static.loadStaticModel = function (
     // hpBarConfig.healthBarContainer.position.z = positionParam.z;
 
     hpBarConfig.healthBarContainer.scaling = new BABYLON.Vector3(
-        buildingTypeConfig.hpBarScale, 
-        buildingTypeConfig.hpBarScale, 
+        buildingTypeConfig.hpBarScale,
+        buildingTypeConfig.hpBarScale,
         buildingTypeConfig.hpBarScale
     );
     hpBarConfig.healthBarContainer.position.x = positionParam.x;
@@ -158,27 +201,29 @@ tg.static.loadStaticModel = function (
     tg.am.staticItems.buildings[itemID] = buildingObject;
     tg.am.staticItems.buildingsArray.push(buildingObject);
 
+    tg.audio.initGameDynamicObjectAudio(buildingObject, buildingTypeConfig);
+
     tg.am.updateNewAssetLoaded(1);
 
     console.log('loadStaticModel end:', itemID);
 };
 
 
-tg.static.updateBuildingTeam = function(buildingConfig, team){
+tg.static.updateBuildingTeam = function (buildingConfig, team) {
     buildingConfig.team = team;
     tg.ui3d.updatehpbarForNewTeam(buildingConfig.hpBarConfig, team);
-    if(team == 0){
+    if (team == 0) {
         tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, 0);
-    }else{
+    } else {
         tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, 100);
     }
     // update marker mesh
-    if(team == 0){
+    if (team == 0) {
         buildingConfig.markerMeshTeamEnemy.position.y = tg.worldItems.uiConfig.hiddenY;
         buildingConfig.markerMeshTeamNeutral.position.y = 0;
         buildingConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
-    }else{
-        if(team != tg.bot.userPlayerConfig.team){ // enemy
+    } else {
+        if (team != tg.bot.userPlayerConfig.team) { // enemy
             buildingConfig.markerMeshTeamEnemy.position.y = 0;
             buildingConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
             buildingConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
@@ -192,14 +237,14 @@ tg.static.updateBuildingTeam = function(buildingConfig, team){
 
 
 tg.static.loadGLTFAssetFileForStaticMeshes = function (
-        filenameParam,
-        positionParam,
-        rotationParam,
-        scaleParam,
-        itemID,
-        type,
-        team
-    ) {
+    filenameParam,
+    positionParam,
+    rotationParam,
+    scaleParam,
+    itemID,
+    type,
+    team
+) {
     BABYLON.SceneLoader.ImportMesh(
         '',
         'static/model/' + filenameParam + '/',
@@ -226,7 +271,11 @@ tg.static.loadGLTFAssetFileForStaticMeshes = function (
     );
 }
 
-tg.static.loadGLTFAndAudioAssets = function (actionOnComplete) {
+/**
+ * Load ans preload assets
+ * @param {*} actionOnComplete : action to be performed once all assets has been loadded
+ */
+tg.static.loadStaticAssets = function (actionOnComplete) {
     console.log('load gltf assets for static items.');
     var staticItemCount = 0;
     tg.am.onLoadComplete = actionOnComplete;
@@ -234,22 +283,21 @@ tg.static.loadGLTFAndAudioAssets = function (actionOnComplete) {
     tg.am.totalAssetsLoaded_tillNow = 0;
 
     // 2 is added to account for base meshes.
-    tg.am.totalAssetsToBeLoaded = 2 + tg.worldItems.defenceBottom.length + tg.worldItems.defenceTop.length;
+    tg.am.totalAssetsToBeLoaded = ((2 + tg.worldItems.defenceBottom.length + tg.worldItems.defenceTop.length) * 2); // gltf file + audio file
 
     tg.am.totalAssetsToBeLoaded += tg.audio.loadAudioAssets();
-
+    tg.am.totalAssetsToBeLoaded += tg.am.preloadAssets();
+    console.log('total asset to be loaded:' + tg.am.totalAssetsToBeLoaded);
 
     // defence team 1
     for (let index = 0; index < tg.worldItems.defenceTop.length; index++) {
         const element = tg.worldItems.defenceTop[index];
         tg.static.loadGLTFAssetFileForStaticMeshes(
-            'tower_gloom',
-            {
+            'tower_gloom', {
                 x: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
                 y: 0,
                 z: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
-            },
-            {
+            }, {
                 rx: 0,
                 ry: Math.PI,
                 rz: 0
@@ -265,13 +313,11 @@ tg.static.loadGLTFAndAudioAssets = function (actionOnComplete) {
     // base team 1
     tg.static.loadGLTFAssetFileForStaticMeshes(
         // 'shinto_shrine',
-        'defense_tower',
-        {
+        'defense_tower', {
             x: (tg.worldItems.topBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             y: 0,
             z: (tg.worldItems.topBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        },
-        {
+        }, {
             rx: 0,
             ry: Math.PI,
             rz: 0
@@ -287,13 +333,11 @@ tg.static.loadGLTFAndAudioAssets = function (actionOnComplete) {
     for (let index = 0; index < tg.worldItems.defenceBottom.length; index++) {
         const element = tg.worldItems.defenceBottom[index];
         tg.static.loadGLTFAssetFileForStaticMeshes(
-            'tower_gloom', 
-            {
+            'tower_gloom', {
                 x: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
                 y: 0,
                 z: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
-            },
-            {
+            }, {
                 rx: 0,
                 ry: 0,
                 rz: 0
@@ -309,13 +353,11 @@ tg.static.loadGLTFAndAudioAssets = function (actionOnComplete) {
     // base team 2
     tg.static.loadGLTFAssetFileForStaticMeshes(
         // 'shinto_shrine',
-        'defense_tower',
-        {
+        'defense_tower', {
             x: (tg.worldItems.bottomBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             y: 0,
             z: (tg.worldItems.bottomBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        },
-        {
+        }, {
             rx: 0,
             ry: 0,
             rz: 0
@@ -324,7 +366,7 @@ tg.static.loadGLTFAndAudioAssets = function (actionOnComplete) {
         'base2',
         'base',
         2
-    );    
+    );
 
     // load characters
     // for (let index = 0; index < worldItems.characters.length; index++) {
@@ -437,7 +479,7 @@ tg.static.addStaticItems = function () {
         faceUV: faceUV
     };
     // tg.am.staticItems = {};
-    tg.am.staticItems.boxes = [];// return;
+    tg.am.staticItems.boxes = []; // return;
     for (var i = 0; i < tg.worldItems.obstacles.length; ++i) {
         // var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, {
         //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
@@ -445,7 +487,7 @@ tg.static.addStaticItems = function () {
         //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
         // }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
         var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, options, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
-        
+
         box.position.x = (tg.worldItems.obstacles[i][0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
         box.position.y = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2.13);
         box.position.z = (tg.worldItems.obstacles[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
@@ -515,4 +557,3 @@ tg.static.addStaticItems = function () {
 
     tg.am.targetMarker = targetMarker;
 }
-

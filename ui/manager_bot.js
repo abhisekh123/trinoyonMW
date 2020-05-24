@@ -1,22 +1,21 @@
-
 tg.bot = {};
 tg.bot.userPlayerConfig = null;
 
-tg.bot.reloadBots = function(playerConfigArray, playerSelfIndex, actionOnComplete) {
+tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComplete) {
     console.log('start tg.bot.reloadBots');
     tg.bot.characters = {};
 
     tg.am.onLoadComplete = actionOnComplete;
     tg.am.totalAssetsToBeLoaded = 0;
     for (let i = 0; i < playerConfigArray.length; i++) {
-        tg.am.totalAssetsToBeLoaded += playerConfigArray[i].botObjectList.length;
+        tg.am.totalAssetsToBeLoaded += (playerConfigArray[i].botObjectList.length * 2); // gltf file + audio file
     }
     tg.am.totalAssetsLoaded_tillNow = 0;
 
     for (let i = 0; i < playerConfigArray.length; i++) {
         const playerBotArray = playerConfigArray[i].botObjectList;
         console.log('playerBotArray:', playerBotArray);
-        if(i == playerSelfIndex){
+        if (i == playerSelfIndex) {
             tg.bot.userPlayerConfig = playerConfigArray[i];
             tg.bot.userPlayerConfig.selectedBot = null;
             tg.bot.userPlayerConfig.clearSelectionTimer = null;
@@ -89,11 +88,11 @@ tg.bot.processLoadedModel = function (
 
     var hpBarMaterial = null;
     var hpBarContainerMaterial = null;
-    if(team != tg.bot.userPlayerConfig.team){ // enemy
+    if (team != tg.bot.userPlayerConfig.team) { // enemy
         hpBarMaterial = tg.am.material_enemy_hpbar;
         hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
     } else { // fiendly
-        if(playerID == tg.bot.userPlayerConfig.id){ // self
+        if (playerID == tg.bot.userPlayerConfig.id) { // self
             hpBarMaterial = tg.am.material_self_hpbar;
             hpBarContainerMaterial = tg.am.material_self_hpbarcontainer;
         } else { // team
@@ -101,7 +100,7 @@ tg.bot.processLoadedModel = function (
             hpBarContainerMaterial = tg.am.material_friend_hpbarcontainer;
         }
     }
-    
+
     // console.log('--------->' + characterName);
     var characterConfig = tg.itemConfigs.items[characterName];
     if (characterConfig == null || characterConfig == undefined) {
@@ -149,13 +148,13 @@ tg.bot.processLoadedModel = function (
     botObject.hpBarConfig = hpBarConfig;
     // botObject.controlMesh.scaling = new BABYLON.Vector3(1/scale, 1/scale, 1/scale);
     hpBarConfig.healthBarContainer.scaling = new BABYLON.Vector3(
-        characterConfig.hpBarScale, 
-        characterConfig.hpBarScale, 
+        characterConfig.hpBarScale,
+        characterConfig.hpBarScale,
         characterConfig.hpBarScale
     );
     hpBarConfig.healthBarContainer.parent = botObject.controlMesh;
     hpBarConfig.healthBarContainer.position.y = characterConfig.hpBarPositionY;
-    
+
 
     tg.am.dynamicItems.bots[characterID] = botObject;
     tg.am.dynamicItems.botsArray.push(botObject);
@@ -217,31 +216,64 @@ tg.bot.processLoadedModel = function (
     // markerBox.material = markerMaterial;
     botObject.weaponType = characterConfig.weaponType;
     // projectile mesh
-    if(botObject.weaponType == 'melee'){
+    if (botObject.weaponType == 'melee') {
         botObject.projectile = null;
         botObject.isProjectileActive = false;
         botObject.projectileData = null;
     } else {
-        var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + characterID, {
-            height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20,
-            width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20,
-            depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20
-        }, tg.scene);
-    
-        projectile.position.x = positionParam.x;
-        projectile.position.y = tg.worldItems.uiConfig.hiddenY;
-        projectile.position.z = positionParam.z;
-        projectile.material = tg.am.material_semitransparent_projectile;
-    
-        botObject.projectile = projectile;
+        // var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + characterID, {
+        //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20,
+        //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20,
+        //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20
+        // }, tg.scene);
+
+        var mat = new BABYLON.StandardMaterial('material_projectile_' + characterID, tg.scene);
+        var projectileTexture = new BABYLON.Texture(characterConfig.projectile.image, tg.scene);
+        projectileTexture.hasAlpha = true;
+        projectileTexture.getAlphaFromRGB = true;
+
+        mat.diffuseTexture = projectileTexture;
+        
+        var f = new BABYLON.Vector4(
+            characterConfig.projectile.uBottom,
+            characterConfig.projectile.vBottom,
+            characterConfig.projectile.uTop,
+            characterConfig.projectile.vTop
+        );
+
+        var options = {
+            sideOrientation: BABYLON.Mesh.DOUBLESIDE, // FRONTSIDE, BACKSIDE, DOUBLESIDE
+            frontUVs: f,
+            backUVs: f,
+            // updatable: false,
+            width: characterConfig.projectile.width,
+            height: characterConfig.projectile.height,
+        }
+
+        var projectilePlane = BABYLON.MeshBuilder.CreatePlane('projectile_plane_' + characterID, options, tg.scene);
+        projectilePlane.material = mat;
+
+        projectilePlane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
+        projectilePlane.bakeCurrentTransformIntoVertices();
+
+        projectilePlane.position.x = positionParam.x;
+        projectilePlane.position.y = tg.worldItems.uiConfig.hiddenY;
+        projectilePlane.position.z = positionParam.z;
+        // projectile.material = tg.am.material_semitransparent_projectile;
+
+        botObject.projectile = projectilePlane;
         botObject.isProjectileActive = false;
         botObject.projectileData = {
             path: null,
-            endTime: 0
+            endTime: 0,
+            plane: projectilePlane,
+            texture: projectileTexture,
+            uOffset: characterConfig.projectile.uOffset
         };
     }
-    
-    
+
+    tg.audio.initGameDynamicObjectAudio(botObject, characterConfig);
+
+
     tg.am.updateNewAssetLoaded(1);
 }
-

@@ -14,27 +14,52 @@
                     idleAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 0
+                        index: 0,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     runAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 5
+                        index: 5,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     dieAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 6
+                        index: 6,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     spawnAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 4
+                        index: 4,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     attackAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 8
+                        index: 8,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                 },
                 
@@ -65,27 +90,52 @@
                     idleAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 4
+                        index: 4,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     runAnimation:{
                         speed:6,
                         type: 'flat',
-                        index: 1
+                        index: 1,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     dieAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 3
+                        index: 3,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     spawnAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 2
+                        index: 2,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     attackAnimation:{
                         speed:3,
                         type: 'flat',
-                        index: 0
+                        index: 0,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                 },
                 
@@ -112,41 +162,77 @@
             archer:{
                 bannedMeshes:[],
                 audioFile: 'static/audio/Darkness-Approaches_Looping.mp3',
+                projectile: {
+                    image: 'static/sprite/flame_arrow.png',
+                    uBottom: 0,
+                    vBottom: 0,
+                    uTop: 1/6,
+                    vTop: 1,
+                    uOffset: 1/6,
+                    height: 5,
+                    width: 5
+                    // vOffset: 0,
+                },
                 animations: {
                     idleAnimation:{
                         speed:1,
                         type: 'interval',
                         index: 0,
                         from: 0,
-                        to: 2
+                        to: 2,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     runAnimation:{
                         speed:1,
                         type: 'interval',
                         index: 0,
                         from: 2.4,
-                        to: 3.1
+                        to: 3.1,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     dieAnimation:{
                         speed:1,
                         type: 'interval',
                         index: 0,
                         from: 17,
-                        to: 19.1
+                        to: 19.1,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     spawnAnimation:{
                         speed:1,
                         type: 'interval',
                         index: 0,
                         from: 16,
-                        to: 17
+                        to: 17,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                     attackAnimation:{
                         speed:2,
                         type: 'interval',
                         index: 0,
                         from: 6.5,
-                        to: 7.5
+                        to: 7.5,
+
+                        // audio configurations
+                        offset: 1000,
+                        length: 1000,
+                        volume: 0.2
                     },
                 },
                 
@@ -174,6 +260,17 @@
             tower:{
                 life:10,
                 audioFile: 'static/audio/test.mp3',
+                projectile: {
+                    image: 'static/sprite/flame_arrow.png',
+                    uBottom: 0,
+                    vBottom: 0,
+                    uTop: 1/5,
+                    vTop: 1/5,
+                    uOffset: 1/5,
+                    // vOffset: 0,
+                    height: 5,
+                    width: 5
+                },
                 animations: {
                     attack:{
                         offset: 1000,
@@ -213,6 +310,17 @@
             base:{
                 life:100,
                 audioFile: 'static/audio/test.mp3',
+                projectile: {
+                    image: 'static/sprite/flame_arrow.png',
+                    uBottom: 0,
+                    vBottom: 0,
+                    uTop: 1/6,
+                    vTop: 1/6,
+                    uOffset: 1/6,
+                    // vOffset: 0,
+                    height: 5,
+                    width: 5
+                },
                 animations: {
                     attack:{
                         offset: 1000,

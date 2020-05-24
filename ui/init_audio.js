@@ -70,6 +70,28 @@ tg.audio.loadAudioAssets = function () {
     return tg.worldItems.ambientAudio.length;
 };
 
+tg.audio.initGameDynamicObjectAudio = function(objectParam, objectConfigParam){
+    var soundHandle = new BABYLON.Sound(
+        'sound_' + objectParam.id,
+        objectConfigParam.audioFile,
+        tg.scene,
+        function () {
+            // console.log('##############');
+            // console.log(tg.music);
+            // tg.music.play(); 
+            tg.am.updateNewAssetLoaded(1);
+        },
+        // function callback() { setTimeout(function() {tg.music.play();}, 5000)},
+        {}
+    );
+    
+    objectParam.sound = soundHandle;
+};
+
+tg.audio.playItemEventAudio = function(objectParam, eventType){
+
+};
+
 tg.audio.playAudio = function (soundParam) {
     soundParam.play();
     // tg.audio.ambience.play(0,1,1);
