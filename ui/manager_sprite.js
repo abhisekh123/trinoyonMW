@@ -1,7 +1,9 @@
 tg.sprite = {};
 
 
-
+// tg.sprite.createSpriteManager = function (key, filePath, capacity, cellDimension) {
+    
+// };
 
 
 /** CODES NOT USED PRESENTLY */

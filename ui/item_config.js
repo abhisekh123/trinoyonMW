@@ -12,6 +12,32 @@
                 file: 'static/sprite/flame_arrow.png',
             }
         ],
+        effectSprites: [
+            {
+                key: 'building_explosion',
+                file: 'static/sprite/building_explosion3.png',
+                capacity: 12, // (5 defence + 1 base) * 2
+                cellDimension: {width: 466 / 4, height: 231 / 2}
+            },
+            // {// working
+            //     key: 'building_explosion',
+            //     file: 'static/sprite/building_explosion2.png',
+            //     capacity: 12, // (5 defence + 1 base) * 2
+            //     cellDimension: {width: 960 / 5, height: 384 / 2}
+            // },
+            // {
+            //     key: 'building_explosion',
+            //     file: 'static/sprite/building_explosion.png',
+            //     capacity: 12, // (5 defence + 1 base) * 2
+            //     cellDimension: {width: 860 / 8, height: 664 / 6}
+            // },
+            // {
+            //     key: 'building_explosion',
+            //     file: 'static/sprite/building_explosion1.jpg',
+            //     capacity: 12, // (5 defence + 1 base) * 2
+            //     cellDimension: {width: 260 / 4, height: 300 / 4}
+            // }
+        ], 
         items:{
             lion:{
                 bannedMeshes:[],

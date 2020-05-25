@@ -142,6 +142,28 @@ tg.static.loadStaticModel = function (
         uOffset: buildingTypeConfig.projectile.uOffset
     };
 
+    // explosion sprite
+    var explosionSprite = new BABYLON.Sprite("building_explosion_" + itemID, tg.am.sprite_manager_building_explosion);
+    explosionSprite.position.x = positionParam.x;
+    // projectilePlane.position.y = tg.worldItems.uiConfig.hiddenY;
+    explosionSprite.position.y = 10;
+    explosionSprite.position.z = positionParam.z;
+    explosionSprite.isPickable = false;
+    explosionSprite.width = 3 * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+    explosionSprite.height = 4 * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+    // sprite.angle = Math.PI/4;
+    // sprite.invertU = -1;
+    explosionSprite.cellIndex = 7;
+
+    // explosionSprite.playAnimation(0, 15, true, 100);
+    buildingObject.explosionData = {
+        sprite: explosionSprite,
+        start: 0,
+        end: 7,
+        delay: 150
+    }
+    
+
     //data reporter
     var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);
     outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
@@ -206,6 +228,19 @@ tg.static.updateBuildingTeam = function (buildingConfig, team) {
         buildingConfig.markerMeshTeamEnemy.position.y = tg.worldItems.uiConfig.hiddenY;
         buildingConfig.markerMeshTeamNeutral.position.y = 0;
         buildingConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
+        // explosionSprite.playAnimation(0, 15, true, 100);
+        // buildingObject.explosionData = {
+        //     sprite: explosionSprite,
+        //     start: 0,
+        //     end: 7,
+        //     delay: 150
+        // }
+        buildingConfig.explosionData.sprite.playAnimation(
+            buildingConfig.explosionData.start,
+            buildingConfig.explosionData.end,
+            false,
+            buildingConfig.explosionData.delay
+        );
     } else {
         if (team != tg.bot.userPlayerConfig.team) { // enemy
             buildingConfig.markerMeshTeamEnemy.position.y = 0;
@@ -351,16 +386,6 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
         'base',
         2
     );
-
-    // load characters
-    // for (let index = 0; index < worldItems.characters.length; index++) {
-    //     var characterItem = worldItems.characters[index];
-    //     var characterConfig = itemConfigs.items[characterItem.type];
-    //     loadCharacters(
-    //         characterItem,
-    //         characterConfig,
-    //     );
-    // }
 };
 
 tg.static.resetStaticItems = function () {

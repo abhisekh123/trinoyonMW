@@ -138,6 +138,17 @@ tg.am.createMaterials = function () {
         tg.am['material_projectile_' + key] = material;
     }
 
+    // sprite for effects
+    for(var i = 0; i < tg.itemConfigs.effectSprites.length; ++i){
+        var key = 'sprite_manager_' + tg.itemConfigs.effectSprites[i].key;
+        tg.am[key] = new BABYLON.SpriteManager(
+            key,
+            tg.itemConfigs.effectSprites[i].file,
+            tg.itemConfigs.effectSprites[i].capacity,
+            tg.itemConfigs.effectSprites[i].cellDimension,
+            tg.scene
+        );
+    }
 
     // material for ground
     var groundMaterial = new BABYLON.StandardMaterial("material_ground", tg.scene);
