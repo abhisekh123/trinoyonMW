@@ -54,7 +54,7 @@ tg.initialiseCamera = function () {
     // //The speed at which acceleration is halted 
     // tg.camera.maxCameraSpeed = 5
 
-    // tg.camera.attachControl(tg.canvas, true);
+    tg.camera.attachControl(tg.canvas, true);
 
     // tg.camera2 = new BABYLON.ArcRotateCamera("camera2",  3 * Math.PI / 8, 3 * Math.PI / 8, 400, new BABYLON.Vector3(0, 10, -10), tg.scene);
     // tg.camera2.attachControl(tg.canvas, true);

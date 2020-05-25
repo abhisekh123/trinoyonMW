@@ -6,6 +6,12 @@
     // 4 possible action state: got, march, fight(not supported for now), ready
 
     var itemConfigs = {
+        projectiles: [
+            {
+                key: 'flame_arrow',
+                file: 'static/sprite/flame_arrow.png',
+            }
+        ],
         items:{
             lion:{
                 bannedMeshes:[],

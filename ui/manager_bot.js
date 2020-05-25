@@ -221,18 +221,13 @@ tg.bot.processLoadedModel = function (
         botObject.isProjectileActive = false;
         botObject.projectileData = null;
     } else {
-        // var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + characterID, {
-        //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20,
-        //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20,
-        //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 20
-        // }, tg.scene);
 
-        var mat = new BABYLON.StandardMaterial('material_projectile_' + characterID, tg.scene);
-        var projectileTexture = new BABYLON.Texture(characterConfig.projectile.image, tg.scene);
-        projectileTexture.hasAlpha = true;
-        projectileTexture.getAlphaFromRGB = true;
+        // var mat = new BABYLON.StandardMaterial('material_projectile_' + characterID, tg.scene);
+        // var projectileTexture = new BABYLON.Texture(characterConfig.projectile.image, tg.scene);
+        // projectileTexture.hasAlpha = true;
+        // projectileTexture.getAlphaFromRGB = true;
 
-        mat.diffuseTexture = projectileTexture;
+        // mat.diffuseTexture = projectileTexture;
         
         var f = new BABYLON.Vector4(
             characterConfig.projectile.uBottom,
@@ -251,10 +246,11 @@ tg.bot.processLoadedModel = function (
         }
 
         var projectilePlane = BABYLON.MeshBuilder.CreatePlane('projectile_plane_' + characterID, options, tg.scene);
-        projectilePlane.material = mat;
+        projectilePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        projectilePlane.material = tg.am.material_projectile_flame_arrow;
 
-        projectilePlane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
-        projectilePlane.bakeCurrentTransformIntoVertices();
+        // projectilePlane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
+        // projectilePlane.bakeCurrentTransformIntoVertices();
 
         projectilePlane.position.x = positionParam.x;
         projectilePlane.position.y = tg.worldItems.uiConfig.hiddenY;
@@ -267,7 +263,7 @@ tg.bot.processLoadedModel = function (
             path: null,
             endTime: 0,
             plane: projectilePlane,
-            texture: projectileTexture,
+            // texture: projectileTexture,
             uOffset: characterConfig.projectile.uOffset
         };
     }

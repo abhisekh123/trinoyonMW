@@ -47,28 +47,28 @@ tg.am.preloadAssets = function(){
         url: tg.itemConfigs.items.archer.audioFile,
         key: 'archer-audio',
     });
-    assetArray.push({
-        url: tg.itemConfigs.items.archer.projectile.image,
-        key: 'archer-projectile',
-    });
+    // assetArray.push({
+    //     url: tg.itemConfigs.items.archer.projectile.image,
+    //     key: 'archer-projectile',
+    // });
     // base
     assetArray.push({
         url: tg.itemConfigs.items.base.audioFile,
         key: 'base-audio',
     });
-    assetArray.push({
-        url: tg.itemConfigs.items.base.projectile.image,
-        key: 'base-projectile',
-    });
+    // assetArray.push({
+    //     url: tg.itemConfigs.items.base.projectile.image,
+    //     key: 'base-projectile',
+    // });
     // tower
     assetArray.push({
         url: tg.itemConfigs.items.tower.audioFile,
         key: 'tower-audio',
     });
-    assetArray.push({
-        url: tg.itemConfigs.items.tower.projectile.image,
-        key: 'tower-projectile',
-    });
+    // assetArray.push({
+    //     url: tg.itemConfigs.items.tower.projectile.image,
+    //     key: 'tower-projectile',
+    // });
 
     totalAssetsTobeLoaded = assetArray.length;
 
@@ -119,6 +119,26 @@ tg.am.createMaterials = function () {
     boxMaterial.disableLighting = true;
     boxMaterial.freeze();
     tg.am.boxMaterial = boxMaterial;
+
+    // material for projectiles
+    for(var i = 0; i < tg.itemConfigs.projectiles.length; ++i){
+        var key = tg.itemConfigs.projectiles[i].key;
+        var filePath = tg.itemConfigs.projectiles[i].file;
+
+        var material = new BABYLON.StandardMaterial('material_projectile_' + key, tg.scene);
+        var projectileTexture = new BABYLON.Texture(filePath, tg.scene);
+        projectileTexture.hasAlpha = true;
+        projectileTexture.getAlphaFromRGB = true;
+
+        material.diffuseTexture = projectileTexture;
+        material.emissiveTexture = projectileTexture;
+        
+        material.disableLighting = true;
+        material.freeze();
+        tg.am['material_projectile_' + key] = material;
+    }
+
+
     // material for ground
     var groundMaterial = new BABYLON.StandardMaterial("material_ground", tg.scene);
 

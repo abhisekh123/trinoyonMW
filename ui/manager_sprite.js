@@ -8,19 +8,18 @@ tg.sprite = {};
 tg.sprite.test_plane = function () {
     // console.log('--------sprite_manager--------');
 
-    var mat = new BABYLON.StandardMaterial("mat1", tg.scene);
-    // mat.alpha = 0;
-    // mat.diffuseColor = new BABYLON.Color3(0.5, 0.5, 1.0);
-    //mat.backFaceCulling = false;
-    //mat.wireframe = true;
-    // var texture = new BABYLON.Texture("static/sprite/lightning-pattern-png-1.png", tg.scene);
-    // var texture = new BABYLON.Texture("static/img/palm.png", tg.scene);
-    var texture = new BABYLON.Texture('static/sprite/flame_arrow.png', tg.scene);
-    texture.hasAlpha = true;
-	texture.getAlphaFromRGB = true;
+    // var mat = new BABYLON.StandardMaterial("mat1", tg.scene);
+    // // mat.alpha = 0;
+    // // mat.diffuseColor = new BABYLON.Color3(0.5, 0.5, 1.0);
+    // //mat.backFaceCulling = false;
+    // //mat.wireframe = true;
     
-    mat.diffuseTexture = texture;
-    tg.sprite.texture = texture;
+    // var texture = new BABYLON.Texture('static/sprite/flame_arrow.png', tg.scene);
+    // texture.hasAlpha = true;
+	// texture.getAlphaFromRGB = true;
+    
+    // mat.diffuseTexture = texture;
+    // tg.sprite.texture = texture;
     
 
     // var f = new BABYLON.Vector4(0,0, 1/6, 1); // front image = half the whole image along the width 
@@ -36,21 +35,22 @@ tg.sprite.test_plane = function () {
 	}
 	
 	var plane = BABYLON.MeshBuilder.CreatePlane("", options, tg.scene);
-    plane.material = mat;
+    plane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    plane.material = tg.am.material_projectile_flame_arrow;
     
     // plane.material = mat;
     tg.sprite.plane = plane;
 
-    plane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
-    plane.bakeCurrentTransformIntoVertices();
+    // plane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
+    // plane.bakeCurrentTransformIntoVertices();
 
-    tg.sprite.plane.rotation = new BABYLON.Vector3(Math.PI/6, Math.PI/2, Math.PI/8);
+    // tg.sprite.plane.rotation = new BABYLON.Vector3(Math.PI/6, Math.PI/2, Math.PI/8);
     // plane.rotate(BABYLON.Axis.Y, Math.PI/4, BABYLON.Space.WORLD);// BABYLON.Space.LOCAL
     plane.position.y = 15;
     plane.position.x = 450;
     plane.position.z = 450;
 
-    setInterval(tg.sprite.refresh, 150);
+    // setInterval(tg.sprite.refresh, 150);
 };
 
 tg.sprite.refresh = function(){

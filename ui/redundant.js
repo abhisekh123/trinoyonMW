@@ -906,3 +906,57 @@ tg.rm.initPathMap_old = function () {
         z: -1
     }, );
 };
+
+var createScene = function () {
+	var scene = new BABYLON.Scene(engine);
+
+	var camera = new BABYLON.ArcRotateCamera("Camera", 3 * Math.PI / 2, Math.PI / 6, 50, BABYLON.Vector3.Zero(), scene)
+	camera.attachControl(canvas, true)
+	var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene)
+
+    var box = BABYLON.MeshBuilder.CreateBox("box", {size: 2}, scene);
+    var mat = new BABYLON.StandardMaterial("mat1", scene);
+    
+    var texture = new BABYLON.Texture("https://upload.wikimedia.org/wikipedia/commons/8/87/Alaskan_Malamute%2BBlank.png", scene);
+    texture.hasAlpha = true;
+	texture.getAlphaFromRGB = true;
+    
+    mat.diffuseTexture = texture;
+    mat.emissiveTexture = texture;
+    mat.disableLighting = true;
+
+    var f = new BABYLON.Vector4(0,0, 1, 1);
+	
+	var options = {
+		sideOrientation: BABYLON.Mesh.DOUBLESIDE, // FRONTSIDE, BACKSIDE, DOUBLESIDE
+        frontUVs: f,
+		backUVs: f,
+        // updatable: false,
+		width: 4,
+		height: 4,
+	}
+
+    function makeMesh(x, z) {
+        // var m = BABYLON.Mesh.CreatePlane('', 4, scene);
+        var m = BABYLON.MeshBuilder.CreatePlane("", options, scene);
+        m.position.copyFromFloats(x, 0, z);
+        m.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        m.material = mat;
+        return m;
+    }
+
+    var meshes = []
+    meshes.push(makeMesh(5, 5))
+    meshes.push(makeMesh(5, -5))
+    meshes.push(makeMesh(-5, 5))
+    meshes.push(makeMesh(-5, -5))
+    
+    var b = camera.beta
+    var a = 0
+    scene.registerBeforeRender(function() {
+        // a += 0.05
+        // camera.beta = b + 0.5 * Math.sin(a)
+    })
+
+	return scene;
+};

@@ -5,12 +5,21 @@
 tg.createAmbience = function() {
     
  
-    var light = new BABYLON.HemisphericLight("hemiLight", new BABYLON.Vector3(0, 1, 0), tg.scene);
-	light.diffuse = new BABYLON.Color3(1, 1, 1);
-	light.specular = new BABYLON.Color3(1, 1, 1);
+    var light2 = new BABYLON.HemisphericLight("hemiLight", new BABYLON.Vector3(0, 1, 0), tg.scene);
+	light2.diffuse = new BABYLON.Color3(1, 1, 1);
+	light2.specular = new BABYLON.Color3(1, 1, 1);
+    light2.groundColor = new BABYLON.Color3(1, 1, 1);
+
+    tg.light2 = light2;
+
+    var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0,0,0), tg.scene);
+    light.diffuse = new BABYLON.Color3(1, 1, 1);
+    light.specular = new BABYLON.Color3(1, 1, 1);
     light.groundColor = new BABYLON.Color3(1, 1, 1);
 
-    tg.light2 = light;
+    tg.light = light;
+
+    tg.light.parent = tg.camera;
 
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000 * tg.worldItems.uiConfig.playerDimensionBaseUnit, tg.scene);
     skybox.position = new BABYLON.Vector3(((tg.worldItems.gridSide - 1) / 2) * tg.worldItems.uiConfig.playerDimensionBaseUnit, 

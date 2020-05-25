@@ -95,31 +95,13 @@ tg.static.loadStaticModel = function (
     buildingObject.markerMeshTeamNeutral = residue;
 
     // projectile mesh
-    // var projectile = BABYLON.MeshBuilder.CreateBox("projectile_" + itemID, {
-    //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
-    //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10,
-    //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit / 10
-    // }, tg.scene);
 
-    // projectile.position.x = positionParam.x;
-    // projectile.position.y = tg.worldItems.uiConfig.hiddenY;
-    // projectile.position.z = positionParam.z;
-    // // projectile.material = tg.am.material_semitransparent_towerprojectile;
-    // // projectile.freezeWorldMatrix();
+    // var mat = new BABYLON.StandardMaterial('material_projectile_' + itemID, tg.scene);
+    // var projectileTexture = new BABYLON.Texture(buildingTypeConfig.projectile.image, tg.scene);
+    // projectileTexture.hasAlpha = true;
+    // projectileTexture.getAlphaFromRGB = true;
 
-    // buildingObject.projectile = projectile;
-    // buildingObject.isProjectileActive = false;
-    // buildingObject.projectileData = {
-    //     path: null,
-    //     endTime: 0
-    // };
-
-    var mat = new BABYLON.StandardMaterial('material_projectile_' + itemID, tg.scene);
-    var projectileTexture = new BABYLON.Texture(buildingTypeConfig.projectile.image, tg.scene);
-    projectileTexture.hasAlpha = true;
-    projectileTexture.getAlphaFromRGB = true;
-
-    mat.diffuseTexture = projectileTexture;
+    // mat.diffuseTexture = projectileTexture;
 
     var f = new BABYLON.Vector4(
         buildingTypeConfig.projectile.uBottom,
@@ -138,11 +120,13 @@ tg.static.loadStaticModel = function (
     }
 
     var projectilePlane = BABYLON.MeshBuilder.CreatePlane('projectile_plane_' + itemID, options, tg.scene);
-    projectilePlane.material = mat;
+    projectilePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    projectilePlane.material = tg.am.material_projectile_flame_arrow;
 
-    projectilePlane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
-    projectilePlane.bakeCurrentTransformIntoVertices();
+    // projectilePlane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
+    // projectilePlane.bakeCurrentTransformIntoVertices();
 
+    // m.position.copyFromFloats(x, 0, z);
     projectilePlane.position.x = positionParam.x;
     projectilePlane.position.y = tg.worldItems.uiConfig.hiddenY;
     projectilePlane.position.z = positionParam.z;
@@ -154,7 +138,7 @@ tg.static.loadStaticModel = function (
         path: null,
         endTime: 0,
         plane: projectilePlane,
-        texture: projectileTexture,
+        // texture: projectileTexture,
         uOffset: buildingTypeConfig.projectile.uOffset
     };
 
