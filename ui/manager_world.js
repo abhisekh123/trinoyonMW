@@ -170,6 +170,8 @@ tg.world.updateWorld = function (updateParam) {
                     continue;
                 }
 
+                tg.audio.playItemEventAudio(sourceConfig, 'attack');
+
                 if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
                     sourceConfig.plannedPath = null;
                     tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);

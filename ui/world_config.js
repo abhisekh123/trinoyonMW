@@ -73,6 +73,8 @@ var worldItems = {
         maxCameraHeight: 130,
         minCameraHeight: 50,
         cameraHeightStep: 1,
+
+        maxAudibleDistance: 9, // in grid units
         
         maxCameraRadius: 100,
         minCameraRadius: 80,

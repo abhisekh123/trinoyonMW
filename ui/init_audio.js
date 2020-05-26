@@ -89,7 +89,34 @@ tg.audio.initGameDynamicObjectAudio = function(objectParam, objectConfigParam){
 };
 
 tg.audio.playItemEventAudio = function(objectParam, eventType){
+    // if(tg.isGameLive != true){
+    //     return;
+    // }
 
+    switch (eventType) {
+        case 'attack':
+            // var animConfig = objectParam.animations.attackAnimation;
+            var distance = tg.getDistanceBetweenPoints(
+                getGridPositionFromFloorPosition(tg.am.cameraTarget.position.x),
+                getGridPositionFromFloorPosition(tg.am.cameraTarget.position.z),
+                getGridPositionFromFloorPosition(objectParam.controlMesh.position.x),
+                getGridPositionFromFloorPosition(objectParam.controlMesh.position.z)
+            );
+
+            if(distance <= tg.worldItems.uiConfig.maxAudibleDistance){
+                tg.audio.playGameAudio(
+                    objectParam.sound,
+                    objectParam.animations.attackAnimation.offset,
+                    objectParam.animations.attackAnimation.duration
+                );
+            }
+            
+            break;
+    
+        default:
+            console.error('ERROR:Unknown event type @ tg.audio.playItemEventAudio : ' + eventType);
+            break;
+    }
 };
 
 tg.audio.playAudio = function (soundParam) {

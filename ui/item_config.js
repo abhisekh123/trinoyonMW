@@ -41,7 +41,7 @@
         items:{
             lion:{
                 bannedMeshes:[],
-                audioFile: 'static/audio/Darkness-Approaches_Looping.mp3',
+                audioFile: 'static/audio/test.mp3',
                 animations: {
                     idleAnimation:{
                         speed:1,
@@ -89,7 +89,7 @@
                         index: 8,
 
                         // audio configurations
-                        offset: 1,
+                        offset: 5,
                         duration: 1,
                         volume: 0.2
                     },
@@ -117,7 +117,7 @@
             },
             swordman:{
                 bannedMeshes:[6],
-                audioFile: 'static/audio/Darkness-Approaches_Looping.mp3',
+                audioFile: 'static/audio/test.mp3',
                 animations: {
                     idleAnimation:{
                         speed:1,
@@ -165,7 +165,7 @@
                         index: 0,
 
                         // audio configurations
-                        offset: 1,
+                        offset: 5,
                         duration: 1,
                         volume: 0.2
                     },
@@ -193,7 +193,7 @@
             },
             archer:{
                 bannedMeshes:[],
-                audioFile: 'static/audio/Darkness-Approaches_Looping.mp3',
+                audioFile: 'static/audio/test.mp3',
                 projectile: {
                     image: 'static/sprite/flame_arrow.png',
                     uBottom: 0,
@@ -262,7 +262,7 @@
                         to: 7.5,
 
                         // audio configurations
-                        offset: 1,
+                        offset: 5,
                         duration: 1,
                         volume: 0.2
                     },
@@ -304,21 +304,21 @@
                     // vOffset: 0,
                 },
                 animations: {
-                    attack:{
-                        offset: 1,
+                    attackAnimation:{
+                        offset: 5,
                         duration: 1,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
-                    destroy:{
+                    destroyAnimation:{
                         offset: 2,
                         duration: 1,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
-                    capture:{
+                    captureAnimation:{
                         offset: 3,
                         duration: 1,
                         autoplay: false,
@@ -354,21 +354,21 @@
                     // vOffset: 0,
                 },
                 animations: {
-                    attack:{
-                        offset: 1,
+                    attackAnimation:{
+                        offset: 5,
                         duration: 1,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
-                    destroy:{
+                    destroyAnimation:{
                         offset: 2,
                         duration: 1,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
-                    capture:{ // this audio must never play. this config added to avoid runtime error
+                    captureAnimation:{ // this audio must never play. this config added to avoid runtime error
                         offset: 3,
                         duration: 1,
                         autoplay: false,

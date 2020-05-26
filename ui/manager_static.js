@@ -238,8 +238,8 @@ tg.static.updateBuildingTeam = function (buildingConfig, team) {
         // }
         tg.audio.playGameAudio(
             buildingConfig.sound,
-            buildingConfig.animations.destroy.offset,
-            buildingConfig.animations.destroy.duration
+            buildingConfig.animations.destroyAnimation.offset,
+            buildingConfig.animations.destroyAnimation.duration
         );
         buildingConfig.explosionData.sprite.playAnimation(
             buildingConfig.explosionData.start,
@@ -259,8 +259,8 @@ tg.static.updateBuildingTeam = function (buildingConfig, team) {
         }
         tg.audio.playGameAudio(
             buildingConfig.sound,
-            buildingConfig.animations.capture.offset,
-            buildingConfig.animations.capture.duration
+            buildingConfig.animations.captureAnimation.offset,
+            buildingConfig.animations.captureAnimation.duration
         );
     }
 };
