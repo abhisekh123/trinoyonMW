@@ -15,9 +15,9 @@
         effectSprites: [
             {
                 key: 'building_explosion',
-                file: 'static/sprite/building_explosion3.png',
+                file: 'static/sprite/building_explosion4.png',
                 capacity: 12, // (5 defence + 1 base) * 2
-                cellDimension: {width: 466 / 4, height: 231 / 2}
+                cellDimension: {width: 512 / 4, height: 512 / 4}
             },
             // {// working
             //     key: 'building_explosion',
@@ -49,8 +49,8 @@
                         index: 0,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     runAnimation:{
@@ -59,8 +59,8 @@
                         index: 5,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     dieAnimation:{
@@ -69,8 +69,8 @@
                         index: 6,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     spawnAnimation:{
@@ -79,8 +79,8 @@
                         index: 4,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     attackAnimation:{
@@ -89,8 +89,8 @@
                         index: 8,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                 },
@@ -125,8 +125,8 @@
                         index: 4,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     runAnimation:{
@@ -135,8 +135,8 @@
                         index: 1,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     dieAnimation:{
@@ -145,8 +145,8 @@
                         index: 3,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     spawnAnimation:{
@@ -155,8 +155,8 @@
                         index: 2,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     attackAnimation:{
@@ -165,8 +165,8 @@
                         index: 0,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                 },
@@ -214,8 +214,8 @@
                         to: 2,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     runAnimation:{
@@ -226,8 +226,8 @@
                         to: 3.1,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     dieAnimation:{
@@ -238,8 +238,8 @@
                         to: 19.1,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     spawnAnimation:{
@@ -250,8 +250,8 @@
                         to: 17,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                     attackAnimation:{
@@ -262,8 +262,8 @@
                         to: 7.5,
 
                         // audio configurations
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         volume: 0.2
                     },
                 },
@@ -296,31 +296,31 @@
                     image: 'static/sprite/flame_arrow.png',
                     uBottom: 0,
                     vBottom: 0,
-                    uTop: 1/5,
-                    vTop: 1/5,
-                    uOffset: 1/5,
-                    // vOffset: 0,
+                    uTop: 1/6,
+                    vTop: 1,
+                    uOffset: 1/6,
                     height: 5,
                     width: 5
+                    // vOffset: 0,
                 },
                 animations: {
                     attack:{
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
                     destroy:{
-                        offset: 2000,
-                        length: 1000,
+                        offset: 2,
+                        duration: 1,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
                     capture:{
-                        offset: 3000,
-                        length: 1000,
+                        offset: 3,
+                        duration: 1,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
@@ -347,23 +347,30 @@
                     uBottom: 0,
                     vBottom: 0,
                     uTop: 1/6,
-                    vTop: 1/6,
+                    vTop: 1,
                     uOffset: 1/6,
-                    // vOffset: 0,
                     height: 5,
                     width: 5
+                    // vOffset: 0,
                 },
                 animations: {
                     attack:{
-                        offset: 1000,
-                        length: 1000,
+                        offset: 1,
+                        duration: 1,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
                     destroy:{
-                        offset: 2000,
-                        length: 1000,
+                        offset: 2,
+                        duration: 1,
+                        autoplay: false,
+                        loop: false,
+                        volume: 0.2
+                    },
+                    capture:{ // this audio must never play. this config added to avoid runtime error
+                        offset: 3,
+                        duration: 1,
                         autoplay: false,
                         loop: false,
                         volume: 0.2

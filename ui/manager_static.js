@@ -37,6 +37,7 @@ tg.static.loadStaticModel = function (
         fullLife: buildingTypeConfig.life,
         isActive: true,
         weaponType: buildingTypeConfig.weaponType,
+        animations: buildingTypeConfig.animations
     };
     buildingObject.controlMesh = newMeshes[0];
     buildingObject.team = team;
@@ -153,13 +154,13 @@ tg.static.loadStaticModel = function (
     explosionSprite.height = 4 * tg.worldItems.uiConfig.playerDimensionBaseUnit;
     // sprite.angle = Math.PI/4;
     // sprite.invertU = -1;
-    explosionSprite.cellIndex = 7;
+    explosionSprite.cellIndex = 12;
 
     // explosionSprite.playAnimation(0, 15, true, 100);
     buildingObject.explosionData = {
         sprite: explosionSprite,
         start: 0,
-        end: 7,
+        end: 12,
         delay: 150
     }
     
@@ -235,6 +236,11 @@ tg.static.updateBuildingTeam = function (buildingConfig, team) {
         //     end: 7,
         //     delay: 150
         // }
+        tg.audio.playGameAudio(
+            buildingConfig.sound,
+            buildingConfig.animations.destroy.offset,
+            buildingConfig.animations.destroy.duration
+        );
         buildingConfig.explosionData.sprite.playAnimation(
             buildingConfig.explosionData.start,
             buildingConfig.explosionData.end,
@@ -251,6 +257,11 @@ tg.static.updateBuildingTeam = function (buildingConfig, team) {
             buildingConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
             buildingConfig.markerMeshTeamFriendly.position.y = 0;
         }
+        tg.audio.playGameAudio(
+            buildingConfig.sound,
+            buildingConfig.animations.capture.offset,
+            buildingConfig.animations.capture.duration
+        );
     }
 };
 

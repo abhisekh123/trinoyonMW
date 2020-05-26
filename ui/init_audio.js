@@ -94,10 +94,23 @@ tg.audio.playItemEventAudio = function(objectParam, eventType){
 
 tg.audio.playAudio = function (soundParam) {
     soundParam.play();
+    // tg.audio.ambience.play(time,offset,length); // all in seconds. time: play audio after given seconds delay.
     // tg.audio.ambience.play(0,1,1);
 };
 
 tg.audio.stopAudio = function (soundParam) {
+    soundParam.stop();
+};
+
+tg.audio.playGameAudio = function (soundParam, offset, duration) {
+    if(tg.isGameLive == true){
+        soundParam.play(0, offset, duration);
+    }
+    // tg.audio.ambience.play(time,offset,length); // all in seconds. time: play audio after given seconds delay.
+    // tg.audio.ambience.play(0,1,1);
+};
+
+tg.audio.stopGameAudio = function (soundParam) {
     soundParam.stop();
 };
 

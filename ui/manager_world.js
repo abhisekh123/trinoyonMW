@@ -182,7 +182,7 @@ tg.world.updateWorld = function (updateParam) {
                         ))
                     );
                 } else {
-                    // console.log('building attack event:', eventsArray[index]);
+                    console.log('building attack event:', eventsArray[index]);
                 }
 
                 // if (sourceConfig.projectile == null) { // source config has melee attack
