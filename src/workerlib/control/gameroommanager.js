@@ -105,6 +105,11 @@ module.exports = {
         if (botConfig.life <= 0 && botConfig.isActive == true) { // bots that died in last cycle.
             actionManager.actionUtility.addActionToBot(botConfig, 'die', null, gameRoom);
             gameRoom.statistics.performance[botConfig.team].death++;
+            botConfig.level = 0;
+            var botEntryInStatistics = gameRoom.statistics.detailedPerformance[botConfig.playerIndex][botConfig.index];
+            botEntryInStatistics.totalDeath += 1;
+            botEntryInStatistics.totalDamageSinceSpawn = 0;
+            snapShotManager.processLevelChangeEvent(gameRoom, botConfig);
             return;
         }
     },

@@ -238,6 +238,16 @@ tg.world.updateWorld = function (updateParam) {
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 // sourceConfig.team = eventsArray[index].team;
                 tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
+            }else if (eventsArray[index].event == 'clevel') { // bot level change event.
+                // console.log('cteam event', eventsArray[index].id);
+                var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
+                // sourceConfig.team = eventsArray[index].team;
+                if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
+                    tg.bot.changeLevel(sourceConfig, eventsArray[index].level);
+                } else {
+                    // tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
+                }
+                
             } else { // die and spawn
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 // console.log('event:' + eventsArray[index].event + ' for bot:' + eventsArray[index].id);

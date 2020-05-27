@@ -41,6 +41,7 @@ module.exports = {
             
             if(gameRoom.isActive == true){
                 var timeElapsed = workerState.currentTime - gameRoom.gameStartTime;
+                gameRoom.timeElapsed = timeElapsed;
                 console.log('process games id:' + gameRoom.id + ' time elapsed:' + timeElapsed / 1000);
                 if(timeElapsed > this.worldConfig.matchMaxTimeDuration){
                     console.log('terminating game at:workerState.currentTime = ', workerState.currentTime);
@@ -162,6 +163,7 @@ module.exports = {
         console.log('starting new game room');
         // by this time all user admission is complete.
         gameRoom.gameStartTime = startTime;
+        gameRoom.timeElapsed = 0;
         // ,,, reset ai players
         gameRoomAssetManager.resetAllBotPositionToStartingPosition(gameRoom);
         this.createNewProximityGraph(gameRoom);
@@ -176,6 +178,15 @@ module.exports = {
         // console.log('gameRoom.players_2');
         // utilityFunctions.printEntireObjectNeatyle(gameRoom.players_2);
         gameRoom.isActive = true;
+        this.setNewStatisticsObject(gameRoom);
+        
+        snapShotManager.setNewSnapshotObject(gameRoom);
+        messageManager.broadcastGameConfigToPlayers(gameRoom);
+
+        console.log('game started:', workerState.userToPlayerMap);
+    },
+
+    setNewStatisticsObject: function(gameRoom){
         gameRoom.statistics = {
             towerCountTeam1: this.worldConfig.defenceTop.length,
             towerCountTeam2: this.worldConfig.defenceBottom.length,
@@ -192,10 +203,51 @@ module.exports = {
                 }
             ]
         }
-        snapShotManager.setNewSnapshotObject(gameRoom);
-        messageManager.broadcastGameConfigToPlayers(gameRoom);
 
-        console.log('game started:', workerState.userToPlayerMap);
+        var detailedPerformance = [];
+
+        for (var i = 0; i < gameRoom.players_1.length; ++i) {
+            const playerConfig = gameRoom.players_1[i];
+            var playerEntry = [];
+            for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
+                var botObject = playerConfig.botObjectList[j];
+                var botEntry = {
+                    type: botObject.type,
+                    totalDamageSinceSpawn: 0,
+                    totalDamageSinceGameStart: 0,
+                    totalBotKill: 0,
+                    totalBuildingDestroy: 0,
+                    totalDeath: 0,
+                    levelHistory: [],
+                }
+                playerEntry.push(botEntry);
+            }
+            detailedPerformance.push(playerEntry);
+        }
+        // console.log('completed processing bot action for team 1');
+
+        // players 2
+        // console.log('start processing bot action for team 2');
+        for (var i = 0; i < gameRoom.players_2.length; ++i) {
+            const playerConfig = gameRoom.players_1[i];
+            var playerEntry = [];
+            for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
+                var botObject = playerConfig.botObjectList[j];
+                var botEntry = {
+                    type: botObject.type,
+                    totalDamageSinceSpawn: 0,
+                    totalDamageSinceGameStart: 0,
+                    totalBotKill: 0,
+                    totalBuildingDestroy: 0,
+                    totalDeath: 0,
+                    levelHistory: [],
+                }
+                playerEntry.push(botEntry);
+            }
+            detailedPerformance.push(playerEntry);
+        }
+
+        gameRoom.statistics.detailedPerformance = detailedPerformance;
     },
     
     tryStartingNewGames: function() {

@@ -55,6 +55,15 @@ module.exports = {
         botSnapshotObject.position[2] = botConfig.position[2];
     },
 
+    processLevelChangeEvent: function(gameRoom, objectConfig){
+        var eventObject = this.getGeneric_Event_SnapshotObject();
+        eventObject.id = objectConfig.id;
+        eventObject.event = 'clevel';
+        eventObject.timestamp = workerState.currentTime;
+        eventObject.level = objectConfig.level;
+        this.addEventToSnapshot(eventObject, gameRoom);
+    },
+
     processAttackEvent: function(gameRoom, sourceConfig, targetConfig){
 
         var eventObject = this.getGeneric_Event_SnapshotObject();

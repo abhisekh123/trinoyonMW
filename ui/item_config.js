@@ -42,6 +42,24 @@
             lion:{
                 bannedMeshes:[],
                 audioFile: 'static/audio/test.mp3',
+                levelMap: [
+                    {
+                        damage: 30,
+                        attack: 2,
+                    },
+                    {
+                        damage: 60,
+                        attack: 2.25,
+                    },
+                    {
+                        damage: 90,
+                        attack: 2.5,
+                    },
+                    {
+                        damage: 120,
+                        attack: 2.75,
+                    },
+                ],
                 animations: {
                     idleAnimation:{
                         speed:1,
@@ -100,7 +118,7 @@
                 projectileReceiveY: 0.75,
 
                 attackinterval: 1000,
-                attack: 2,
+                // attack: 2,
                 life:60,
                 speed:2, //one tile per 1000 ms.
                 sight: 6,
@@ -118,6 +136,24 @@
             swordman:{
                 bannedMeshes:[6],
                 audioFile: 'static/audio/test.mp3',
+                levelMap: [
+                    {
+                        damage: 30,
+                        attack: 1,
+                    },
+                    {
+                        damage: 60,
+                        attack: 1.25,
+                    },
+                    {
+                        damage: 90,
+                        attack: 1.5,
+                    },
+                    {
+                        damage: 120,
+                        attack: 1.75,
+                    },
+                ],
                 animations: {
                     idleAnimation:{
                         speed:1,
@@ -176,7 +212,7 @@
                 projectileReceiveY: 0.75,
 
                 attackinterval: 1000,
-                attack: 1,
+                // attack: 1,
                 life:40,
                 speed:2, //one tile per 1000 ms.
                 sight: 6,
@@ -194,6 +230,24 @@
             archer:{
                 bannedMeshes:[],
                 audioFile: 'static/audio/test.mp3',
+                levelMap: [
+                    {
+                        damage: 30,
+                        attack: 3,
+                    },
+                    {
+                        damage: 60,
+                        attack: 3.25,
+                    },
+                    {
+                        damage: 90,
+                        attack: 3.5,
+                    },
+                    {
+                        damage: 120,
+                        attack: 3.75,
+                    },
+                ],
                 projectile: {
                     image: 'static/sprite/flame_arrow.png',
                     uBottom: 0,
@@ -273,7 +327,7 @@
                 projectileReceiveY: 0.75,
 
                 attackinterval: 1000,
-                attack: 3,
+                // attack: 3,
                 life:20,
                 speed:2, //one tile per 1000 ms.
                 sight: 6,
@@ -292,6 +346,12 @@
             tower:{
                 life:10,
                 audioFile: 'static/audio/test.mp3',
+                levelMap: [
+                    {
+                        damage: 30,
+                        attack: 4,
+                    },
+                ],
                 projectile: {
                     image: 'static/sprite/flame_arrow.png',
                     uBottom: 0,
@@ -326,7 +386,7 @@
                         volume: 0.2
                     },
                 },
-                attack:4,
+                // attack:4,
                 file: 'tower_gloom',
                 scale: 0.05,
                 sight: 6,
@@ -342,6 +402,12 @@
             base:{
                 life:100,
                 audioFile: 'static/audio/test.mp3',
+                levelMap: [
+                    {
+                        damage: 30,
+                        attack: 2,
+                    },
+                ],
                 projectile: {
                     image: 'static/sprite/flame_arrow.png',
                     uBottom: 0,
@@ -376,7 +442,7 @@
                         volume: 0.2
                     },
                 },
-                attack:2,
+                // attack:2,
                 file: 'defense_tower',
                 scale: 2,
                 sight: 6,

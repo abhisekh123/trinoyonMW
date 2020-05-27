@@ -217,10 +217,59 @@ module.exports = {
 
 
     processAttackAction: function (offenderConfig, defenderConfig, gameRoom) {
-        defenderConfig.life -= offenderConfig.attack;
+        var isAlive = false;
+        var isBuilding = false;
+        if(defenderConfig.life > 0){
+            isAlive = true;
+        }
+        if(defenderConfig.type == 'tower' || defenderConfig.type == 'base'){
+            isBuilding = true;
+        }
+        var offenderAttack = offenderConfig.levelMap[offenderConfig.level].attack;
+        // defenderConfig.life -= offenderConfig.attack;
+        defenderConfig.life -= offenderAttack;
         offenderConfig.activityTimeStamp += offenderConfig.attackinterval;
-        gameRoom.statistics.performance[offenderConfig.team].damage += offenderConfig.attack;
+        gameRoom.statistics.performance[offenderConfig.team].damage += offenderAttack;
         // snapShotManager.updateBotSnapshot(gameRoom, offenderConfig);
         snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
+
+        var botEntryInStatistics = gameRoom.statistics.detailedPerformance[offenderConfig.playerIndex][offenderConfig.index];
+
+        // increment bot totalDamageSinceSpawn and totalDamageSinceGameStart
+        botEntryInStatistics.totalDamageSinceSpawn += offenderAttack;
+        botEntryInStatistics.totalDamageSinceGameStart += offenderAttack;
+
+        // compare totalDamageSinceSpawn and increment level if required
+        if(offenderConfig.level < (offenderConfig.levelMap - 1)){
+            if(botEntryInStatistics.totalDamageSinceSpawn > offenderConfig.levelMap[offenderConfig.level].damage){
+                offenderConfig.level++;
+                botEntryInStatistics.levelHistory.push([offenderConfig.level, gameRoom.timeElapsed]);
+                snapShotManager.processLevelChangeEvent(gameRoom, offenderConfig);
+            }
+        }
+
+        if(isAlive == true && defenderConfig.life < 0){
+            // kill shot
+            // increment bot kill count tower or bot
+            if(isBuilding){
+                botEntryInStatistics.totalBuildingDestroy += 1;
+            }else{
+                botEntryInStatistics.totalBotKill += 1;
+            }
+        }
     },
+
+    // botConfig.level = 0;
+    //         var botEntryInStatistics = gameRoom.statistics.detailedPerformance[botConfig.playerIndex][botConfig.index];
+    //         botEntryInStatistics.totalDeath += 1;
+    //         botEntryInStatistics.totalDamageSinceSpawn = 0;
+
+    //         var botEntry = {
+    //             type: botObject.type,
+    //             totalDamageSinceSpawn: 0,
+    //             totalDamageSinceGameStart: 0,
+    //             totalBuildingDestroy: 0,
+    //             totalBotKill: 0,
+    //             totalDeath: 0,
+    //         }
 }

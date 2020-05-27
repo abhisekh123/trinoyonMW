@@ -309,6 +309,8 @@ module.exports = {
             playerObject.botObjectList[i].id = playerID + '_' + i;
             playerObject.botObjectList[i].team = playerTeam;
             playerObject.botObjectList[i].player = playerID;
+            playerObject.botObjectList[i].index = i;
+            playerObject.botObjectList[i].playerIndex = playerIndex;
         }
 
         return playerObject;
@@ -362,6 +364,10 @@ module.exports = {
         botObject.actionData = null;
         // botObject.deltaTime = 0;
 
+        // botObject.totalDamageSinceSpawn = 0;
+        // botObject.totalDamageSinceGameStart = 0;
+        botObject.level = 0;
+        botObject.levelMap = botTypeItemConfig.levelMap;
         return botObject;
     }
 

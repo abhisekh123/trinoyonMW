@@ -114,7 +114,9 @@ module.exports = {
                 this.worldConfig.topBase[0],
                 0,
                 this.worldConfig.topBase[1]
-            ]
+            ],
+            levelMap:this.itemConfig.items.base.levelMap,
+            level: 0
         }
         workerState.buildingArray_1.push(workerState.buildingMap_1['base1']);
 
@@ -145,7 +147,9 @@ module.exports = {
                     this.worldConfig.defenceTop[i][0],
                     0,
                     this.worldConfig.defenceTop[i][1]
-                ]
+                ],
+                levelMap:this.itemConfig.items.tower.levelMap,
+                level: 0
             }
             workerState.buildingArray_1.push(workerState.buildingMap_1[towerID]);
             ++towerIndex;
@@ -175,7 +179,9 @@ module.exports = {
                 this.worldConfig.bottomBase[0],
                 0,
                 this.worldConfig.bottomBase[1]
-            ]
+            ],
+            levelMap:this.itemConfig.items.base.levelMap,
+            level: 0
         }
         workerState.buildingArray_2.push(workerState.buildingMap_2['base2']);
 
@@ -206,7 +212,9 @@ module.exports = {
                     this.worldConfig.defenceBottom[i][0],
                     0,
                     this.worldConfig.defenceBottom[i][1]
-                ]
+                ],
+                levelMap:this.itemConfig.items.tower.levelMap,
+                level: 0
             }
             workerState.buildingArray_2.push(workerState.buildingMap_2[towerID]);
             ++towerIndex;

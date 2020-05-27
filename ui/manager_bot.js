@@ -272,4 +272,10 @@ tg.bot.processLoadedModel = function (
 
 
     tg.am.updateNewAssetLoaded(1);
-}
+};
+
+
+tg.bot.changeLevel = function (botConfig, level){
+    console.log('change level event:', botConfig);
+};
+
