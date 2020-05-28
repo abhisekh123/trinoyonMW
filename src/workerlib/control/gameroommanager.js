@@ -110,7 +110,7 @@ module.exports = {
             var botEntryInStatistics = gameRoom.statistics.detailedPerformance[botConfig.playerIndex][botConfig.index];
             botEntryInStatistics.totalDeath += 1;
             botEntryInStatistics.totalDamageSinceSpawn = 0;
-            botEntryInStatistics.levelHistory.push([offenderConfig.level, gameRoom.timeElapsed]);
+            botEntryInStatistics.levelHistory.push([botConfig.level, gameRoom.timeElapsed]);
             if(botConfig.level != previousLevel){
                 snapShotManager.processLevelChangeEvent(gameRoom, botConfig);
             }

@@ -101,7 +101,25 @@ tg.am.updateNewAssetLoaded = function(count){
         console.log('(tg.am.totalAssetsLoaded_tillNow >= tg.am.totalAssetsToBeLoaded)');
         tg.am.onLoadCompleteActionHandler();
     }
-}
+};
+
+tg.am.getMaterialsForPlane = function(configParam, idPrefix){
+    var key = configParam.key;
+    var filePath = configParam.file;
+    var newId = idPrefix + key;
+    var material = new BABYLON.StandardMaterial(newId, tg.scene);
+
+    var projectileTexture = new BABYLON.Texture(filePath, tg.scene);
+    projectileTexture.hasAlpha = true;
+    projectileTexture.getAlphaFromRGB = true;
+
+    material.diffuseTexture = projectileTexture;
+    material.emissiveTexture = projectileTexture;
+    
+    material.disableLighting = true;
+    material.freeze();
+    tg.am[newId] = material;
+};
 
 tg.am.createMaterials = function () {
     console.log('creating materials');
@@ -122,20 +140,12 @@ tg.am.createMaterials = function () {
 
     // material for projectiles
     for(var i = 0; i < tg.itemConfigs.projectiles.length; ++i){
-        var key = tg.itemConfigs.projectiles[i].key;
-        var filePath = tg.itemConfigs.projectiles[i].file;
+        tg.am.getMaterialsForPlane(tg.itemConfigs.projectiles[i], 'material_projectile_');
+    }
 
-        var material = new BABYLON.StandardMaterial('material_projectile_' + key, tg.scene);
-        var projectileTexture = new BABYLON.Texture(filePath, tg.scene);
-        projectileTexture.hasAlpha = true;
-        projectileTexture.getAlphaFromRGB = true;
-
-        material.diffuseTexture = projectileTexture;
-        material.emissiveTexture = projectileTexture;
-        
-        material.disableLighting = true;
-        material.freeze();
-        tg.am['material_projectile_' + key] = material;
+    // material for planes
+    for(var i = 0; i < tg.itemConfigs.planes.length; ++i){
+        tg.am.getMaterialsForPlane(tg.itemConfigs.planes[i], 'material_plane_');
     }
 
     // sprite for effects

@@ -205,15 +205,35 @@ tg.bot.processLoadedModel = function (
 
     botObject.outputplane = outputplane;
 
-    // var markerBox = BABYLON.MeshBuilder.CreateBox(characterID + 'markerBox', {
-    //     height: markerHeight * 1/scale,
-    //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit * 1/scale,
-    //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit * 1/scale,
-    // }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
-    // markerBox.position.y = 0;
-    // markerBox.parent = botObject.controlMesh;
-    // // console.log('markerMaterial:', markerMaterial);
-    // markerBox.material = markerMaterial;
+    // bot rank plane
+    var f = new BABYLON.Vector4(0,0,1,1);
+
+    var options = {
+        sideOrientation: BABYLON.Mesh.DOUBLESIDE, // FRONTSIDE, BACKSIDE, DOUBLESIDE
+        frontUVs: f,
+        backUVs: f,
+        // updatable: false,
+        width: 25,
+        height: 25,
+    }
+
+    var rankPlane = BABYLON.MeshBuilder.CreatePlane('rank_plane_' + characterID, options, tg.scene);
+    rankPlane.scaling = new BABYLON.Vector3(outputPlaneScale, outputPlaneScale, outputPlaneScale);
+    rankPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    rankPlane.material = tg.am.material_plane_rank2;
+
+    rankPlane.position = new BABYLON.Vector3(-(characterConfig.headerPositionY / 10), characterConfig.headerPositionY, 0);
+    rankPlane.parent = botObject.controlMesh;
+    botObject.rankPlane = rankPlane;
+    // botObject.projectileData = {
+    //     path: null,
+    //     endTime: 0,
+    //     plane: rankPlane,
+    //     // texture: projectileTexture,
+    //     uOffset: characterConfig.projectile.uOffset
+    // };
+
+
     botObject.weaponType = characterConfig.weaponType;
     // projectile mesh
     if (botObject.weaponType == 'melee') {

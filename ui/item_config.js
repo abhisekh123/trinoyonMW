@@ -12,6 +12,24 @@
                 file: 'static/sprite/flame_arrow.png',
             }
         ],
+        planes: [
+            {
+                key: 'rank0',
+                file: 'static/img/botrank0.png',
+            },
+            {
+                key: 'rank1',
+                file: 'static/img/botrank1.png',
+            },
+            {
+                key: 'rank2',
+                file: 'static/img/botrank2.png',
+            },
+            {
+                key: 'rank3',
+                file: 'static/img/botrank3.png',
+            },
+        ],
         effectSprites: [
             {
                 key: 'building_explosion',
