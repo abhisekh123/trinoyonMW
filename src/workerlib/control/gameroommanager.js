@@ -105,11 +105,16 @@ module.exports = {
         if (botConfig.life <= 0 && botConfig.isActive == true) { // bots that died in last cycle.
             actionManager.actionUtility.addActionToBot(botConfig, 'die', null, gameRoom);
             gameRoom.statistics.performance[botConfig.team].death++;
+            var previousLevel = botConfig.level;
             botConfig.level = 0;
             var botEntryInStatistics = gameRoom.statistics.detailedPerformance[botConfig.playerIndex][botConfig.index];
             botEntryInStatistics.totalDeath += 1;
             botEntryInStatistics.totalDamageSinceSpawn = 0;
-            snapShotManager.processLevelChangeEvent(gameRoom, botConfig);
+            botEntryInStatistics.levelHistory.push([offenderConfig.level, gameRoom.timeElapsed]);
+            if(botConfig.level != previousLevel){
+                snapShotManager.processLevelChangeEvent(gameRoom, botConfig);
+            }
+            
             return;
         }
     },

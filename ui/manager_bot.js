@@ -276,6 +276,6 @@ tg.bot.processLoadedModel = function (
 
 
 tg.bot.changeLevel = function (botConfig, level){
-    console.log('change level event:', botConfig);
+    console.log(level + '->change level event:', botConfig);
 };
 

@@ -228,10 +228,18 @@ module.exports = {
         var offenderAttack = offenderConfig.levelMap[offenderConfig.level].attack;
         // defenderConfig.life -= offenderConfig.attack;
         defenderConfig.life -= offenderAttack;
+        snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
         offenderConfig.activityTimeStamp += offenderConfig.attackinterval;
+
+        if(offenderConfig.type == 'tower' || offenderConfig.type == 'base'){
+            // no need to update remaining stats
+            return;
+        }
+
         gameRoom.statistics.performance[offenderConfig.team].damage += offenderAttack;
         // snapShotManager.updateBotSnapshot(gameRoom, offenderConfig);
-        snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
+
+        console.log(offenderConfig.level + ':' + offenderConfig.playerIndex + ':' + offenderConfig.index+ ':' + offenderConfig.id);
 
         var botEntryInStatistics = gameRoom.statistics.detailedPerformance[offenderConfig.playerIndex][offenderConfig.index];
 
@@ -239,11 +247,16 @@ module.exports = {
         botEntryInStatistics.totalDamageSinceSpawn += offenderAttack;
         botEntryInStatistics.totalDamageSinceGameStart += offenderAttack;
 
+        console.log(botEntryInStatistics);
+
         // compare totalDamageSinceSpawn and increment level if required
-        if(offenderConfig.level < (offenderConfig.levelMap - 1)){
+        if(offenderConfig.level < (offenderConfig.levelMap.length - 1)){
+            console.log('check if eligible for levelup.');
             if(botEntryInStatistics.totalDamageSinceSpawn > offenderConfig.levelMap[offenderConfig.level].damage){
+                console.log('eligible for levelup.');
                 offenderConfig.level++;
                 botEntryInStatistics.levelHistory.push([offenderConfig.level, gameRoom.timeElapsed]);
+                console.log(botEntryInStatistics.levelHistory);
                 snapShotManager.processLevelChangeEvent(gameRoom, offenderConfig);
             }
         }
