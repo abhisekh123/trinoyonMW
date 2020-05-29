@@ -239,7 +239,7 @@ module.exports = {
         gameRoom.statistics.performance[offenderConfig.team].damage += offenderAttack;
         // snapShotManager.updateBotSnapshot(gameRoom, offenderConfig);
 
-        console.log(offenderConfig.level + ':' + offenderConfig.playerIndex + ':' + offenderConfig.index+ ':' + offenderConfig.id);
+        // console.log(offenderConfig.level + ':' + offenderConfig.playerIndex + ':' + offenderConfig.index+ ':' + offenderConfig.id);
 
         var botEntryInStatistics = gameRoom.statistics.detailedPerformance[offenderConfig.playerIndex][offenderConfig.index];
 
@@ -247,16 +247,16 @@ module.exports = {
         botEntryInStatistics.totalDamageSinceSpawn += offenderAttack;
         botEntryInStatistics.totalDamageSinceGameStart += offenderAttack;
 
-        console.log(botEntryInStatistics);
+        // console.log(botEntryInStatistics);
 
         // compare totalDamageSinceSpawn and increment level if required
         if(offenderConfig.level < (offenderConfig.levelMap.length - 1)){
-            console.log('check if eligible for levelup.');
+            // console.log('check if eligible for levelup.');
             if(botEntryInStatistics.totalDamageSinceSpawn > offenderConfig.levelMap[offenderConfig.level].damage){
-                console.log('eligible for levelup.');
+                // console.log('eligible for levelup.');
                 offenderConfig.level++;
                 botEntryInStatistics.levelHistory.push([offenderConfig.level, gameRoom.timeElapsed]);
-                console.log(botEntryInStatistics.levelHistory);
+                // console.log(botEntryInStatistics.levelHistory);
                 snapShotManager.processLevelChangeEvent(gameRoom, offenderConfig);
             }
         }

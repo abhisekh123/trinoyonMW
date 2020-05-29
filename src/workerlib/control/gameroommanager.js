@@ -117,6 +117,16 @@ module.exports = {
             
             return;
         }
+
+        // increase bot life if near base
+        if(aiManager.Bot.isBotNearBase(botConfig, gameRoom)){
+            if(botConfig.life < botConfig.fullLife){
+                botConfig.life += this.worldConfig.baseLocalityHealRatePerMiliSecond * workerState.timeIntervalToSimulateInEachGame * botConfig.fullLife;
+                if(botConfig.life > botConfig.fullLife){
+                    botConfig.life = botConfig.fullLife;
+                }
+            }
+        }
     },
 
 

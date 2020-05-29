@@ -141,7 +141,7 @@ tg.world.updateWorld = function (updateParam) {
                         tg.animationmanager.startCharacterAnimation(botObject, updateItemConfig.action);
                         // console.log('completed setting planned path for bot:', botObject.id);
                     }
-                } else if(updateItemConfig.action == 'attack'){
+                // } else if(updateItemConfig.action == 'attack'){
 
                 } else {
                     botObject.controlMesh.position.x = (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;

@@ -122,4 +122,28 @@ module.exports = {
         return 0;
     },
 
+    isBotNearBase: function(botConfig, gameRoom){
+        // calculate distance from base
+        var distanceFromBase = 0;
+        var baseObject = null;
+        if(botConfig.team == 1){
+            baseObject = gameRoom.buildingArray_1[0];
+        }else{
+            baseObject = gameRoom.buildingArray_2[0];
+        }
+
+        distanceFromBase = routeManager.getDistanceBetweenPoints(
+            botConfig.position[0],
+            botConfig.position[2],
+            baseObject.position[0],
+            baseObject.position[2]
+        );
+
+        if(distanceFromBase <= this.worldConfig.baseNeighbourhoodDistance){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

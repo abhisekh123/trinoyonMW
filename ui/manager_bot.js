@@ -181,7 +181,7 @@ tg.bot.processLoadedModel = function (
 
     const outputPlaneScale = characterConfig.headerScale;
     //data reporter
-    var outputplane = BABYLON.Mesh.CreatePlane("outputplane" + characterID, 25, tg.scene, false);
+    var outputplane = BABYLON.Mesh.CreatePlane("outputplane" + characterID, characterConfig.headerSize, tg.scene, false);
     outputplane.scaling = new BABYLON.Vector3(outputPlaneScale, outputPlaneScale, outputPlaneScale);
     outputplane.isPickable = false;
     outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
@@ -206,23 +206,23 @@ tg.bot.processLoadedModel = function (
     botObject.outputplane = outputplane;
 
     // bot rank plane
-    var f = new BABYLON.Vector4(0,0,1,1);
+    var f = new BABYLON.Vector4(0, 0, 1, 1);
 
     var options = {
         sideOrientation: BABYLON.Mesh.DOUBLESIDE, // FRONTSIDE, BACKSIDE, DOUBLESIDE
         frontUVs: f,
         backUVs: f,
         // updatable: false,
-        width: 25,
-        height: 25,
+        width: characterConfig.headerSize / 5,
+        height: characterConfig.headerSize / 5,
     }
 
     var rankPlane = BABYLON.MeshBuilder.CreatePlane('rank_plane_' + characterID, options, tg.scene);
     rankPlane.scaling = new BABYLON.Vector3(outputPlaneScale, outputPlaneScale, outputPlaneScale);
     rankPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-    rankPlane.material = tg.am.material_plane_rank2;
+    rankPlane.material = tg.am.material_plane_rank0;
 
-    rankPlane.position = new BABYLON.Vector3(-(characterConfig.headerPositionY / 10), characterConfig.headerPositionY, 0);
+    rankPlane.position = new BABYLON.Vector3(-(characterConfig.headerPositionY / 3), characterConfig.headerPositionY * 1.5, 0);
     rankPlane.parent = botObject.controlMesh;
     botObject.rankPlane = rankPlane;
     // botObject.projectileData = {
@@ -248,7 +248,7 @@ tg.bot.processLoadedModel = function (
         // projectileTexture.getAlphaFromRGB = true;
 
         // mat.diffuseTexture = projectileTexture;
-        
+
         var f = new BABYLON.Vector4(
             characterConfig.projectile.uBottom,
             characterConfig.projectile.vBottom,
@@ -295,7 +295,23 @@ tg.bot.processLoadedModel = function (
 };
 
 
-tg.bot.changeLevel = function (botConfig, level){
+tg.bot.changeLevel = function (botConfig, level) {
     console.log(level + '->change level event:', botConfig);
+    switch (level) {
+        case 0:
+            botConfig.rankPlane.material = tg.am.material_plane_rank0;
+            break;
+        case 1:
+            botConfig.rankPlane.material = tg.am.material_plane_rank1;
+            break;
+        case 2:
+            botConfig.rankPlane.material = tg.am.material_plane_rank2;
+            break;
+        case 3:
+            botConfig.rankPlane.material = tg.am.material_plane_rank3;
+            break;
+        default:
+            console.error('ERROR: Unknown level:' + level + ' for bot:' + botConfig.id);
+            break;
+    }
 };
-

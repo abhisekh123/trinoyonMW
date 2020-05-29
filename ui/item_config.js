@@ -62,19 +62,19 @@
                 audioFile: 'static/audio/test.mp3',
                 levelMap: [
                     {
-                        damage: 30,
+                        damage: 10,
                         attack: 2,
                     },
                     {
-                        damage: 60,
+                        damage: 20,
                         attack: 2.25,
                     },
                     {
-                        damage: 90,
+                        damage: 30,
                         attack: 2.5,
                     },
                     {
-                        damage: 120,
+                        damage: 40,
                         attack: 2.75,
                     },
                 ],
@@ -146,8 +146,9 @@
                 scale:6,
                 respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/lion_icon.png',
-                headerScale: 0.03,
+                headerScale: 0.05,
                 headerPositionY: 1.8,
+                headerSize: 25,
                 hpBarScale: 0.5,
                 hpBarPositionY: 2.5,
             },
@@ -156,19 +157,19 @@
                 audioFile: 'static/audio/test.mp3',
                 levelMap: [
                     {
-                        damage: 30,
+                        damage: 10,
                         attack: 1,
                     },
                     {
-                        damage: 60,
+                        damage: 20,
                         attack: 1.25,
                     },
                     {
-                        damage: 90,
+                        damage: 30,
                         attack: 1.5,
                     },
                     {
-                        damage: 120,
+                        damage: 40,
                         attack: 1.75,
                     },
                 ],
@@ -242,6 +243,7 @@
                 iconurl: 'static/img/swordsman_icon.png',
                 headerScale: 0.1,
                 headerPositionY: 3.5,
+                headerSize: 25,
                 hpBarScale: 1,
                 hpBarPositionY: 5,
             },
@@ -250,19 +252,19 @@
                 audioFile: 'static/audio/test.mp3',
                 levelMap: [
                     {
-                        damage: 30,
+                        damage: 10,
                         attack: 3,
                     },
                     {
-                        damage: 60,
+                        damage: 20,
                         attack: 3.25,
                     },
                     {
-                        damage: 90,
+                        damage: 30,
                         attack: 3.5,
                     },
                     {
-                        damage: 120,
+                        damage: 40,
                         attack: 3.75,
                     },
                 ],
@@ -358,6 +360,7 @@
                 iconurl: 'static/img/archer_icon.png',
                 headerScale: 0.5,
                 headerPositionY: 16,
+                headerSize: 25,
                 hpBarScale: 8,
                 hpBarPositionY: 40,
             },

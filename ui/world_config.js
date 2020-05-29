@@ -88,6 +88,8 @@ var worldItems = {
         // 80/50/0.5
     },
     
+    baseNeighbourhoodDistance: 10,
+    baseLocalityHealRatePerMiliSecond: 0.0001, // fullLife x 0.1 per second
     maxRange: 10,
     neighbourhoodBoxSide: 21, // (maxRange x 2) + 1
     gridSide: 89,
