@@ -121,7 +121,9 @@ module.exports = {
         // increase bot life if near base
         if(aiManager.Bot.isBotNearBase(botConfig, gameRoom)){
             if(botConfig.life < botConfig.fullLife){
+                console.log(botConfig.id + '=>old hp:' + botConfig.life);
                 botConfig.life += this.worldConfig.baseLocalityHealRatePerMiliSecond * workerState.timeIntervalToSimulateInEachGame * botConfig.fullLife;
+                console.log('new hp:' + botConfig.life);
                 if(botConfig.life > botConfig.fullLife){
                     botConfig.life = botConfig.fullLife;
                 }

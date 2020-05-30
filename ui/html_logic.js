@@ -365,6 +365,7 @@ tg.hl.selectSelfBot = function (botIndex) {
     // // tg.am.cameraTarget.position.x = 0;
     // tg.am.chosenMarker.parent = botObject.controlMesh;
     tg.bot.userPlayerConfig.selectedBot = botObject;
+    tg.audio.playItemEventAudio(botObject, 'select');
     if (tg.bot.userPlayerConfig.clearSelectionTimer != null) {
         clearTimeout(tg.bot.userPlayerConfig.clearSelectionTimer);
     }

@@ -139,6 +139,7 @@ tg.world.updateWorld = function (updateParam) {
                         botObject.plannedPath = tg.rm.planBotRoute(botObject, updateItemConfig);
                         botObject.plannedPathTimeStamp = updateItemConfig.actionData.pathTimeStamp;
                         tg.animationmanager.startCharacterAnimation(botObject, updateItemConfig.action);
+                        tg.audio.playItemEventAudio(botObject, 'goto');
                         // console.log('completed setting planned path for bot:', botObject.id);
                     }
                 // } else if(updateItemConfig.action == 'attack'){
@@ -244,6 +245,7 @@ tg.world.updateWorld = function (updateParam) {
                 // sourceConfig.team = eventsArray[index].team;
                 if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
                     tg.bot.changeLevel(sourceConfig, eventsArray[index].level);
+                    tg.audio.playItemEventAudio(sourceConfig, 'levelup');
                 } else {
                     // tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
                 }

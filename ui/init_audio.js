@@ -70,7 +70,7 @@ tg.audio.loadAudioAssets = function () {
     return tg.worldItems.ambientAudio.length;
 };
 
-tg.audio.initGameDynamicObjectAudio = function(objectParam, objectConfigParam){
+tg.audio.initGameDynamicObjectAudio = function (objectParam, objectConfigParam) {
     var soundHandle = new BABYLON.Sound(
         'sound_' + objectParam.id,
         objectConfigParam.audioFile,
@@ -84,35 +84,125 @@ tg.audio.initGameDynamicObjectAudio = function(objectParam, objectConfigParam){
         // function callback() { setTimeout(function() {tg.music.play();}, 5000)},
         {}
     );
-    
+
     objectParam.sound = soundHandle;
 };
 
-tg.audio.playItemEventAudio = function(objectParam, eventType){
-    // if(tg.isGameLive != true){
-    //     return;
-    // }
+tg.audio.getDistanceFromCameraTarget = function (objectParam) {
+    return tg.getDistanceBetweenPoints(
+        getGridPositionFromFloorPosition(tg.am.cameraTarget.position.x),
+        getGridPositionFromFloorPosition(tg.am.cameraTarget.position.z),
+        getGridPositionFromFloorPosition(objectParam.controlMesh.position.x),
+        getGridPositionFromFloorPosition(objectParam.controlMesh.position.z)
+    );
+};
+
+tg.audio.playItemEventAudio = function (objectParam, eventType) {
+    if (tg.isGameLive != true) {
+        return;
+    }
+    tg.audio.stopAudio(objectParam.sound);
 
     switch (eventType) {
         case 'attack':
             // var animConfig = objectParam.animations.attackAnimation;
-            var distance = tg.getDistanceBetweenPoints(
-                getGridPositionFromFloorPosition(tg.am.cameraTarget.position.x),
-                getGridPositionFromFloorPosition(tg.am.cameraTarget.position.z),
-                getGridPositionFromFloorPosition(objectParam.controlMesh.position.x),
-                getGridPositionFromFloorPosition(objectParam.controlMesh.position.z)
-            );
+            var distance = tg.audio.getDistanceFromCameraTarget(objectParam);
 
-            if(distance <= tg.worldItems.uiConfig.maxAudibleDistance){
+            if (distance <= tg.worldItems.uiConfig.maxAudibleDistance) {
                 tg.audio.playGameAudio(
                     objectParam.sound,
                     objectParam.animations.attackAnimation.offset,
                     objectParam.animations.attackAnimation.duration
                 );
             }
+            break;
+        case 'select':
+            tg.audio.playGameAudio(
+                objectParam.sound,
+                objectParam.animations.selectAnimation.offset,
+                objectParam.animations.selectAnimation.duration
+            );
+            break;
+        case 'levelup':
+            // var animConfig = objectParam.animations.attackAnimation;
+            var distance = tg.audio.getDistanceFromCameraTarget(objectParam);
+
+            if (distance <= tg.worldItems.uiConfig.maxAudibleDistance) {
+                if(objectParam.team == tg.bot.userPlayerConfig.team){
+                    tg.audio.playGameAudio(
+                        objectParam.sound,
+                        objectParam.animations.teamLevelUpAnimation.offset,
+                        objectParam.animations.teamLevelUpAnimation.duration
+                    );
+                }else{
+                    tg.audio.playGameAudio(
+                        objectParam.sound,
+                        objectParam.animations.enemyLevelUpAnimation.offset,
+                        objectParam.animations.enemyLevelUpAnimation.duration
+                    );
+                }
+                
+            }
+            break;
+        case 'spawn':
+            // var animConfig = objectParam.animations.attackAnimation;
+            if(objectParam.playerID == tg.bot.userPlayerConfig.id){
+
+            }else{
+                var distance = tg.audio.getDistanceFromCameraTarget(objectParam);
+
+                if (distance <= tg.worldItems.uiConfig.maxAudibleDistance) {
+                    tg.audio.playGameAudio(
+                        objectParam.sound,
+                        objectParam.animations.spawnAnimation.offset,
+                        objectParam.animations.spawnAnimation.duration
+                    );
+                }
+            }
             
             break;
-    
+        case 'die':
+            // var animConfig = objectParam.animations.attackAnimation;
+            if(objectParam.playerID == tg.bot.userPlayerConfig.id){
+                tg.audio.playGameAudio(
+                    objectParam.sound,
+                    objectParam.animations.dieAnimation.offset,
+                    objectParam.animations.dieAnimation.duration
+                );
+            }else{
+                var distance = tg.audio.getDistanceFromCameraTarget(objectParam);
+
+                if (distance <= tg.worldItems.uiConfig.maxAudibleDistance) {
+                    tg.audio.playGameAudio(
+                        objectParam.sound,
+                        objectParam.animations.dieAnimation.offset,
+                        objectParam.animations.dieAnimation.duration
+                    );
+                }
+            }
+            
+            break;
+        case 'goto':
+            tg.audio.playGameAudio(
+                objectParam.sound,
+                objectParam.animations.gotoAnimation.offset,
+                objectParam.animations.gotoAnimation.duration
+            );
+            break;
+        case 'destroy':
+            tg.audio.playGameAudio(
+                objectParam.sound,
+                objectParam.animations.destroyAnimation.offset,
+                objectParam.animations.destroyAnimation.duration
+            );
+            break;
+        case 'capture':
+            tg.audio.playGameAudio(
+                objectParam.sound,
+                objectParam.animations.captureAnimation.offset,
+                objectParam.animations.captureAnimation.duration
+            );
+            break;
         default:
             console.error('ERROR:Unknown event type @ tg.audio.playItemEventAudio : ' + eventType);
             break;
@@ -130,15 +220,16 @@ tg.audio.stopAudio = function (soundParam) {
 };
 
 tg.audio.playGameAudio = function (soundParam, offset, duration) {
-    if(tg.isGameLive == true){
-        soundParam.play(0, offset, duration);
-    }
+    soundParam.play(0, offset, duration);
+    // if(tg.isGameLive == true){
+    //     soundParam.play(0, offset, duration);
+    // }
     // tg.audio.ambience.play(time,offset,length); // all in seconds. time: play audio after given seconds delay.
     // tg.audio.ambience.play(0,1,1);
 };
 
-tg.audio.stopGameAudio = function (soundParam) {
-    soundParam.stop();
-};
+// tg.audio.stopGameAudio = function (soundParam) {
+//     soundParam.stop();
+// };
 
 

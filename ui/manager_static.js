@@ -236,11 +236,8 @@ tg.static.updateBuildingTeam = function (buildingConfig, team) {
         //     end: 7,
         //     delay: 150
         // }
-        tg.audio.playGameAudio(
-            buildingConfig.sound,
-            buildingConfig.animations.destroyAnimation.offset,
-            buildingConfig.animations.destroyAnimation.duration
-        );
+        tg.audio.playItemEventAudio(buildingConfig, 'destroy');
+        
         buildingConfig.explosionData.sprite.playAnimation(
             buildingConfig.explosionData.start,
             buildingConfig.explosionData.end,
@@ -257,11 +254,8 @@ tg.static.updateBuildingTeam = function (buildingConfig, team) {
             buildingConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
             buildingConfig.markerMeshTeamFriendly.position.y = 0;
         }
-        tg.audio.playGameAudio(
-            buildingConfig.sound,
-            buildingConfig.animations.captureAnimation.offset,
-            buildingConfig.animations.captureAnimation.duration
-        );
+        tg.audio.playItemEventAudio(buildingConfig, 'capture');
+        
     }
 };
 

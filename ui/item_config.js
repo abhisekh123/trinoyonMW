@@ -59,7 +59,7 @@
         items:{
             lion:{
                 bannedMeshes:[],
-                audioFile: 'static/audio/test.mp3',
+                audioFile: 'static/audio/fury.mp3',
                 levelMap: [
                     {
                         damage: 10,
@@ -105,7 +105,7 @@
                         index: 6,
 
                         // audio configurations
-                        offset: 1,
+                        offset: 2,
                         duration: 1,
                         volume: 0.2
                     },
@@ -125,7 +125,47 @@
                         index: 8,
 
                         // audio configurations
+                        offset: 3,
+                        duration: 0.5,
+                        volume: 0.2
+                    },
+                    teamLevelUpAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 4,
+                        duration: 1,
+                        volume: 0.2
+                    },
+                    enemyLevelUpAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
                         offset: 5,
+                        duration: 1,
+                        volume: 0.2
+                    },
+                    gotoAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 0,
+                        duration: 1,
+                        volume: 0.2
+                    },
+                    selectAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 0,
                         duration: 1,
                         volume: 0.2
                     },
@@ -154,7 +194,7 @@
             },
             swordman:{
                 bannedMeshes:[6],
-                audioFile: 'static/audio/test.mp3',
+                audioFile: 'static/audio/fury.mp3',
                 levelMap: [
                     {
                         damage: 10,
@@ -224,6 +264,47 @@
                         duration: 1,
                         volume: 0.2
                     },
+
+                    teamLevelUpAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 4,
+                        duration: 1,
+                        volume: 0.2
+                    },
+                    enemyLevelUpAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 5,
+                        duration: 1,
+                        volume: 0.2
+                    },
+                    gotoAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 0,
+                        duration: 1,
+                        volume: 0.2
+                    },
+                    selectAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 0,
+                        duration: 1,
+                        volume: 0.2
+                    },
                 },
                 
                 weaponType: 'melee',
@@ -249,7 +330,7 @@
             },
             archer:{
                 bannedMeshes:[],
-                audioFile: 'static/audio/test.mp3',
+                audioFile: 'static/audio/fury.mp3',
                 levelMap: [
                     {
                         damage: 10,
@@ -337,6 +418,47 @@
 
                         // audio configurations
                         offset: 5,
+                        duration: 1,
+                        volume: 0.2
+                    },
+
+                    teamLevelUpAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 4,
+                        duration: 1,
+                        volume: 0.2
+                    },
+                    enemyLevelUpAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 5,
+                        duration: 1,
+                        volume: 0.2
+                    },
+                    gotoAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 0,
+                        duration: 1,
+                        volume: 0.2
+                    },
+                    selectAnimation:{
+                        speed:1,
+                        type: 'flat',
+                        index: 8,
+
+                        // audio configurations
+                        offset: 0,
                         duration: 1,
                         volume: 0.2
                     },
