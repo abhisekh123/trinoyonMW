@@ -194,7 +194,7 @@
             },
             swordman:{
                 bannedMeshes:[6],
-                audioFile: 'static/audio/fury.mp3',
+                audioFile: 'static/audio/swordman.mp3',
                 levelMap: [
                     {
                         damage: 10,
@@ -240,7 +240,7 @@
                         index: 3,
 
                         // audio configurations
-                        offset: 1,
+                        offset: 2,
                         duration: 1,
                         volume: 0.2
                     },
@@ -250,8 +250,8 @@
                         index: 2,
 
                         // audio configurations
-                        offset: 1,
-                        duration: 1,
+                        offset: 3,
+                        duration: 1.5,
                         volume: 0.2
                     },
                     attackAnimation:{
@@ -261,7 +261,7 @@
 
                         // audio configurations
                         offset: 5,
-                        duration: 1,
+                        duration: 0.5,
                         volume: 0.2
                     },
 
@@ -271,7 +271,7 @@
                         index: 8,
 
                         // audio configurations
-                        offset: 4,
+                        offset: 6,
                         duration: 1,
                         volume: 0.2
                     },
@@ -281,7 +281,7 @@
                         index: 8,
 
                         // audio configurations
-                        offset: 5,
+                        offset: 6,
                         duration: 1,
                         volume: 0.2
                     },
@@ -292,7 +292,7 @@
 
                         // audio configurations
                         offset: 0,
-                        duration: 1,
+                        duration: 1.5,
                         volume: 0.2
                     },
                     selectAnimation:{
@@ -302,7 +302,7 @@
 
                         // audio configurations
                         offset: 0,
-                        duration: 1,
+                        duration: 1.5,
                         volume: 0.2
                     },
                 },
@@ -330,7 +330,7 @@
             },
             archer:{
                 bannedMeshes:[],
-                audioFile: 'static/audio/fury.mp3',
+                audioFile: 'static/audio/archer.mp3',
                 levelMap: [
                     {
                         damage: 10,
@@ -393,7 +393,7 @@
                         to: 19.1,
 
                         // audio configurations
-                        offset: 1,
+                        offset: 2,
                         duration: 1,
                         volume: 0.2
                     },
@@ -417,7 +417,7 @@
                         to: 7.5,
 
                         // audio configurations
-                        offset: 5,
+                        offset: 3,
                         duration: 1,
                         volume: 0.2
                     },
@@ -428,7 +428,7 @@
                         index: 8,
 
                         // audio configurations
-                        offset: 4,
+                        offset: 5,
                         duration: 1,
                         volume: 0.2
                     },
@@ -448,7 +448,7 @@
                         index: 8,
 
                         // audio configurations
-                        offset: 0,
+                        offset: 4,
                         duration: 1,
                         volume: 0.2
                     },
@@ -488,7 +488,7 @@
             },
             tower:{
                 life:10,
-                audioFile: 'static/audio/test.mp3',
+                audioFile: 'static/audio/building.mp3',
                 levelMap: [
                     {
                         damage: 30,
@@ -508,22 +508,22 @@
                 },
                 animations: {
                     attackAnimation:{
-                        offset: 5,
-                        duration: 1,
+                        offset: 8,
+                        duration: 1.5,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
                     destroyAnimation:{
-                        offset: 2,
-                        duration: 1,
+                        offset: 3,
+                        duration: 4,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
                     captureAnimation:{
-                        offset: 3,
-                        duration: 1,
+                        offset: 0,
+                        duration: 2.5,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
@@ -544,7 +544,7 @@
             },
             base:{
                 life:100,
-                audioFile: 'static/audio/test.mp3',
+                audioFile: 'static/audio/building.mp3',
                 levelMap: [
                     {
                         damage: 30,
@@ -564,22 +564,22 @@
                 },
                 animations: {
                     attackAnimation:{
-                        offset: 5,
-                        duration: 1,
+                        offset: 8,
+                        duration: 1.5,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
                     destroyAnimation:{
-                        offset: 2,
-                        duration: 1,
+                        offset: 3,
+                        duration: 4,
                         autoplay: false,
                         loop: false,
                         volume: 0.2
                     },
                     captureAnimation:{ // this audio must never play. this config added to avoid runtime error
-                        offset: 3,
-                        duration: 1,
+                        offset: 0,
+                        duration: 2.5,
                         autoplay: false,
                         loop: false,
                         volume: 0.2

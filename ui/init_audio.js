@@ -125,29 +125,42 @@ tg.audio.playItemEventAudio = function (objectParam, eventType) {
             break;
         case 'levelup':
             // var animConfig = objectParam.animations.attackAnimation;
-            var distance = tg.audio.getDistanceFromCameraTarget(objectParam);
+            // var distance = tg.audio.getDistanceFromCameraTarget(objectParam);
 
-            if (distance <= tg.worldItems.uiConfig.maxAudibleDistance) {
-                if(objectParam.team == tg.bot.userPlayerConfig.team){
-                    tg.audio.playGameAudio(
-                        objectParam.sound,
-                        objectParam.animations.teamLevelUpAnimation.offset,
-                        objectParam.animations.teamLevelUpAnimation.duration
-                    );
-                }else{
-                    tg.audio.playGameAudio(
-                        objectParam.sound,
-                        objectParam.animations.enemyLevelUpAnimation.offset,
-                        objectParam.animations.enemyLevelUpAnimation.duration
-                    );
-                }
+            // if (distance <= tg.worldItems.uiConfig.maxAudibleDistance) {
+            //     if(objectParam.team == tg.bot.userPlayerConfig.team){
+            //         tg.audio.playGameAudio(
+            //             objectParam.sound,
+            //             objectParam.animations.teamLevelUpAnimation.offset,
+            //             objectParam.animations.teamLevelUpAnimation.duration
+            //         );
+            //     }else{
+            //         tg.audio.playGameAudio(
+            //             objectParam.sound,
+            //             objectParam.animations.enemyLevelUpAnimation.offset,
+            //             objectParam.animations.enemyLevelUpAnimation.duration
+            //         );
+            //     }
                 
+            // }
+            if(objectParam.playerID == tg.bot.userPlayerConfig.id){
+                console.log('level up:', objectParam.id);
+                tg.audio.playGameAudio(
+                    objectParam.sound,
+                    objectParam.animations.teamLevelUpAnimation.offset,
+                    objectParam.animations.teamLevelUpAnimation.duration
+                );
             }
+            
             break;
         case 'spawn':
             // var animConfig = objectParam.animations.attackAnimation;
             if(objectParam.playerID == tg.bot.userPlayerConfig.id){
-
+                tg.audio.playGameAudio(
+                    objectParam.sound,
+                    objectParam.animations.spawnAnimation.offset,
+                    objectParam.animations.spawnAnimation.duration
+                );
             }else{
                 var distance = tg.audio.getDistanceFromCameraTarget(objectParam);
 
@@ -183,11 +196,18 @@ tg.audio.playItemEventAudio = function (objectParam, eventType) {
             
             break;
         case 'goto':
-            tg.audio.playGameAudio(
-                objectParam.sound,
-                objectParam.animations.gotoAnimation.offset,
-                objectParam.animations.gotoAnimation.duration
-            );
+            // tg.audio.playGameAudio(
+            //     objectParam.sound,
+            //     objectParam.animations.gotoAnimation.offset,
+            //     objectParam.animations.gotoAnimation.duration
+            // );
+            if(objectParam.playerID == tg.bot.userPlayerConfig.id){
+                tg.audio.playGameAudio(
+                    objectParam.sound,
+                    objectParam.animations.dieAnimation.offset,
+                    objectParam.animations.dieAnimation.duration
+                );
+            }
             break;
         case 'destroy':
             tg.audio.playGameAudio(
