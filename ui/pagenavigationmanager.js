@@ -51,8 +51,8 @@ tg.pn.showMatchResultPage = function(){
     tg.pn.currentPage = 'game-result';
     // tg.pv.setModalDimensionPercentage('10%', '90%');
     tg.hl.removeJoysticks();
-    tg.audio.playAudio(tg.audio.menu.play);
-    tg.audio.stopAudio(tg.audio.match.stop);
+    tg.audio.playAudio(tg.audio.menu);
+    tg.audio.stopAudio(tg.audio.match);
 
     $("#showjoystick").hide();
     $("#hidejoystick").hide();

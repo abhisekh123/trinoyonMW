@@ -15,7 +15,7 @@ tg.world.startNewMatch = function (playerConfigArray, playerIndex) {
     tg.pn.showMatchStartingLoader();
 };
 
-tg.world.processResult = function(resultObject){
+tg.world.processResult = function (resultObject) {
     tg.isGameLive = false;
     tg.updateWorld = tg.world.updateWorldDormant;
 
@@ -24,13 +24,13 @@ tg.world.processResult = function(resultObject){
     var enemyTeamPerformance = null;
     var playerTeamTowerCount = null;
     var enemyTeamTowerCount = null;
-    if(tg.bot.userPlayerConfig.team == resultObject.winningTeam){
+    if (tg.bot.userPlayerConfig.team == resultObject.winningTeam) {
         outCome = 'victory';
     } else {
         outCome = 'defeat';
     }
 
-    if(tg.bot.userPlayerConfig.team == 1){
+    if (tg.bot.userPlayerConfig.team == 1) {
         playerTeamPerformance = resultObject.performance[1];
         playerTeamTowerCount = resultObject.towerCountTeam1;
         enemyTeamTowerCount = resultObject.towerCountTeam2;
@@ -63,11 +63,11 @@ tg.world.handleNewMatchStartReadyTrigger = function () {
     tg.isGameLive = true;
 
     // Initialise camera settings.
-    const botId =  tg.bot.userPlayerConfig.botObjectList[0].id;
+    const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
     const botObject = tg.am.dynamicItems.bots[botId];
     tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
     tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
-    if(tg.bot.userPlayerConfig.team == 1){
+    if (tg.bot.userPlayerConfig.team == 1) {
         tg.camera.rotationOffset = 180;
     } else {
         tg.camera.rotationOffset = 0;
@@ -76,7 +76,7 @@ tg.world.handleNewMatchStartReadyTrigger = function () {
 
     tg.pn.showMatchPage();
     tg.updateWorld = tg.world.updateWorld;
-    
+
 };
 
 tg.world.handleNewMatchTerminatedTrigger = function () {
@@ -96,7 +96,59 @@ tg.world.getBuildingOrBot = function (idParam) {
     } else {
         return configObject;
     }
-}
+};
+
+// this is called as timeout with random interval to make the attacks more realistic.
+tg.world.processAttackEvent = function (sourceConfig, destinationConfig, eventsArrayItem) {
+    tg.audio.playItemEventAudio(sourceConfig, 'attack');
+
+    if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
+        sourceConfig.plannedPath = null;
+        tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArrayItem.event);
+        tg.world.rotateMesh(
+            new BABYLON.Vector3(0, 1, 0),
+            sourceConfig.controlMesh,
+            roundTo2Decimal(Math.atan2(
+                (destinationConfig.controlMesh.position.x - sourceConfig.controlMesh.position.x),
+                (destinationConfig.controlMesh.position.z - sourceConfig.controlMesh.position.z)
+            ))
+        );
+    } else {
+        console.log('building attack event:', eventsArrayItem);
+    }
+
+    // if (sourceConfig.projectile == null) { // source config has melee attack
+    //     continue;
+    // }
+
+
+    // console.log('process attack:', sourceConfig);
+    if (sourceConfig.weaponType != 'melee') {
+        sourceConfig.isProjectileActive = true;
+        sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;
+        sourceConfig.projectile.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
+        sourceConfig.projectile.position.z = sourceConfig.controlMesh.position.z;
+
+        var pathData = tg.world.planProjectilePath(
+            sourceConfig.controlMesh.position.x,
+            sourceConfig.controlMesh.position.z,
+            destinationConfig.controlMesh.position.x,
+            destinationConfig.controlMesh.position.z,
+            sourceConfig.projectileShootY,
+            destinationConfig.projectileReceiveY
+        );
+        // console.log('sourceConfig.id:', sourceConfig.id);
+        // console.log('tg.currentTime:', tg.currentTime);
+        // console.log('pathData:', pathData);
+        var endTime = tg.currentTime;
+        if (pathData.length > 0) {
+            endTime = pathData[pathData.length - 1].time;
+        }
+
+        sourceConfig.projectileData.path = pathData;
+        sourceConfig.projectileData.endTime = endTime;
+    }
+};
 
 tg.world.updateWorld = function (updateParam) {
     // console.log('tg.world.updateWorld:', updateParam);
@@ -119,7 +171,7 @@ tg.world.updateWorld = function (updateParam) {
                 //     console.log('building item:', buildingConfig);
                 //     console.log('building updateItemConfig:', updateItemConfig);
                 // }
-                
+
                 buildingConfig.life = updateItemConfig.life;
                 tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, ((100 * buildingConfig.life) / buildingConfig.fullLife));
                 continue;
@@ -142,7 +194,7 @@ tg.world.updateWorld = function (updateParam) {
                         tg.audio.playItemEventAudio(botObject, 'goto');
                         // console.log('completed setting planned path for bot:', botObject.id);
                     }
-                // } else if(updateItemConfig.action == 'attack'){
+                    // } else if(updateItemConfig.action == 'attack'){
 
                 } else {
                     botObject.controlMesh.position.x = (updateItemConfig.position[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
@@ -151,7 +203,7 @@ tg.world.updateWorld = function (updateParam) {
             }
 
             botObject.life = updateItemConfig.life;
-            
+
             // if(updateItemConfig.action == 'fight'){
             //     console.log('updateParam:', updateParam);
             // }
@@ -163,7 +215,7 @@ tg.world.updateWorld = function (updateParam) {
                 // console.log('attack event', eventsArray[index].id);
 
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
-                
+
                 var destinationConfig = tg.world.getBuildingOrBot(eventsArray[index].tid);
                 // console.log('set projectile position for:', sourceConfig.id);
                 if (sourceConfig == null || destinationConfig == null) {
@@ -171,75 +223,64 @@ tg.world.updateWorld = function (updateParam) {
                     continue;
                 }
 
-                tg.audio.playItemEventAudio(sourceConfig, 'attack');
+                var randomInterval = tg.uu.getRandom(0, 400);
+                setTimeout(tg.world.processAttackEvent, randomInterval, sourceConfig, destinationConfig, eventsArray[index]);
 
-                if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
-                    sourceConfig.plannedPath = null;
-                    tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
-                    tg.world.rotateMesh(
-                        new BABYLON.Vector3(0, 1, 0), 
-                        sourceConfig.controlMesh, 
-                        roundTo2Decimal(Math.atan2(
-                            (destinationConfig.controlMesh.position.x - sourceConfig.controlMesh.position.x), 
-                            (destinationConfig.controlMesh.position.z - sourceConfig.controlMesh.position.z)
-                        ))
-                    );
-                } else {
-                    console.log('building attack event:', eventsArray[index]);
-                }
+                // tg.audio.playItemEventAudio(sourceConfig, 'attack');
 
-                // if (sourceConfig.projectile == null) { // source config has melee attack
-                //     continue;
+                // if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
+                //     sourceConfig.plannedPath = null;
+                //     tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
+                //     tg.world.rotateMesh(
+                //         new BABYLON.Vector3(0, 1, 0),
+                //         sourceConfig.controlMesh,
+                //         roundTo2Decimal(Math.atan2(
+                //             (destinationConfig.controlMesh.position.x - sourceConfig.controlMesh.position.x),
+                //             (destinationConfig.controlMesh.position.z - sourceConfig.controlMesh.position.z)
+                //         ))
+                //     );
+                // } else {
+                //     console.log('building attack event:', eventsArray[index]);
                 // }
 
-                
-                // console.log('process attack:', sourceConfig);
-                if (sourceConfig.weaponType != 'melee') {
-                    sourceConfig.isProjectileActive = true;
-                    sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;
-                    sourceConfig.projectile.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
-                    sourceConfig.projectile.position.z = sourceConfig.controlMesh.position.z;
+                // // if (sourceConfig.projectile == null) { // source config has melee attack
+                // //     continue;
+                // // }
 
-                    // tg.world.rotateMesh(
-                    //     new BABYLON.Vector3(0, 1, 0), 
-                    //     sourceConfig.projectile, 
-                    //     roundTo2Decimal(Math.atan2(
-                    //         (destinationConfig.controlMesh.position.x - sourceConfig.controlMesh.position.x), 
-                    //         (destinationConfig.controlMesh.position.z - sourceConfig.controlMesh.position.z)
-                    //     ))
-                    // );
-                    // if(projectileMesh != undefined){
-                    // projectileMesh.rotationQuaternion = quaternion;
-                    // }
-                    // console.log('source position:', sourceConfig.controlMesh.position);
-                    // console.log('destination position:', destinationConfig.controlMesh.position);
 
-                    var pathData = tg.world.planProjectilePath(
-                        sourceConfig.controlMesh.position.x,
-                        sourceConfig.controlMesh.position.z,
-                        destinationConfig.controlMesh.position.x,
-                        destinationConfig.controlMesh.position.z,
-                        sourceConfig.projectileShootY,
-                        destinationConfig.projectileReceiveY
-                    );
-                    // console.log('sourceConfig.id:', sourceConfig.id);
-                    // console.log('tg.currentTime:', tg.currentTime);
-                    // console.log('pathData:', pathData);
-                    var endTime = tg.currentTime;
-                    if (pathData.length > 0) {
-                        endTime = pathData[pathData.length - 1].time;
-                    }
+                // // console.log('process attack:', sourceConfig);
+                // if (sourceConfig.weaponType != 'melee') {
+                //     sourceConfig.isProjectileActive = true;
+                //     sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;
+                //     sourceConfig.projectile.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
+                //     sourceConfig.projectile.position.z = sourceConfig.controlMesh.position.z;
 
-                    sourceConfig.projectileData.path = pathData;
-                    sourceConfig.projectileData.endTime = endTime;
-                }
+                //     var pathData = tg.world.planProjectilePath(
+                //         sourceConfig.controlMesh.position.x,
+                //         sourceConfig.controlMesh.position.z,
+                //         destinationConfig.controlMesh.position.x,
+                //         destinationConfig.controlMesh.position.z,
+                //         sourceConfig.projectileShootY,
+                //         destinationConfig.projectileReceiveY
+                //     );
+                //     // console.log('sourceConfig.id:', sourceConfig.id);
+                //     // console.log('tg.currentTime:', tg.currentTime);
+                //     // console.log('pathData:', pathData);
+                //     var endTime = tg.currentTime;
+                //     if (pathData.length > 0) {
+                //         endTime = pathData[pathData.length - 1].time;
+                //     }
+
+                //     sourceConfig.projectileData.path = pathData;
+                //     sourceConfig.projectileData.endTime = endTime;
+                // }
 
             } else if (eventsArray[index].event == 'cteam') { // building change team event.
                 // console.log('cteam event', eventsArray[index].id);
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 // sourceConfig.team = eventsArray[index].team;
                 tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
-            }else if (eventsArray[index].event == 'clevel') { // bot level change event.
+            } else if (eventsArray[index].event == 'clevel') { // bot level change event.
                 // console.log('cteam event', eventsArray[index].id);
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 // sourceConfig.team = eventsArray[index].team;
@@ -249,7 +290,7 @@ tg.world.updateWorld = function (updateParam) {
                 } else {
                     // tg.static.updateBuildingTeam(sourceConfig, eventsArray[index].team);
                 }
-                
+
             } else { // die and spawn
                 var sourceConfig = tg.world.getBuildingOrBot(eventsArray[index].id);
                 // console.log('event:' + eventsArray[index].event + ' for bot:' + eventsArray[index].id);
@@ -266,7 +307,7 @@ tg.world.updateWorld = function (updateParam) {
 
         // update score
         $('#header-clock-cell').html(tg.uu.convertSecondsMMSS(updateParam.playerConfig.statistics.timeRemaining / 1000));
-        if(tg.bot.userPlayerConfig.team == 1){
+        if (tg.bot.userPlayerConfig.team == 1) {
             $('#tower-team').html(updateParam.playerConfig.statistics.towerCountTeam1);
             $('#tower-enemy').html(updateParam.playerConfig.statistics.towerCountTeam2);
             $('#kill-team').html(updateParam.playerConfig.statistics.performance[2].death);
@@ -281,15 +322,15 @@ tg.world.updateWorld = function (updateParam) {
             $('#attack-team').html(updateParam.playerConfig.statistics.performance[2].damage);
             $('#attack-enemy').html(updateParam.playerConfig.statistics.performance[1].damage);
         }
-        
+
     }
 };
 
 // tg.world.refreshWorld = function(){
-    
+
 // }
 
-tg.world.rotateMesh = function(axis, meshParam, angle, projectileMesh){
+tg.world.rotateMesh = function (axis, meshParam, angle, projectileMesh) {
     // axis.normalize();
     var quaternion = new BABYLON.Quaternion.RotationAxis(axis, angle);
     meshParam.rotationQuaternion = quaternion;

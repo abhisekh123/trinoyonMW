@@ -20,6 +20,7 @@ tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComple
             tg.bot.userPlayerConfig.selectedBot = null;
             tg.bot.userPlayerConfig.clearSelectionTimer = null;
             tg.hl.updateFooterIconImageForPlayerTeamBots();
+            
         }
         for (let j = 0; j < playerBotArray.length; j++) {
             let botConfig = playerBotArray[j];
@@ -88,6 +89,7 @@ tg.bot.processLoadedModel = function (
 
     var hpBarMaterial = null;
     var hpBarContainerMaterial = null;
+    var isSelfBot = false;
     if (team != tg.bot.userPlayerConfig.team) { // enemy
         hpBarMaterial = tg.am.material_enemy_hpbar;
         hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
@@ -95,6 +97,7 @@ tg.bot.processLoadedModel = function (
         if (playerID == tg.bot.userPlayerConfig.id) { // self
             hpBarMaterial = tg.am.material_self_hpbar;
             hpBarContainerMaterial = tg.am.material_self_hpbarcontainer;
+            isSelfBot = true;
         } else { // team
             hpBarMaterial = tg.am.material_friend_hpbar;
             hpBarContainerMaterial = tg.am.material_friend_hpbarcontainer;
@@ -112,18 +115,11 @@ tg.bot.processLoadedModel = function (
 
 
     for (var i = 0; i < newMeshes.length; ++i) {
-        // // console.log(i + '->' + newMeshes[i].name);
+        // console.log(i + '->' + newMeshes[i].isPickable);
         newMeshes[i].isPickable = false;
     }
-    // var parentMesh = BABYLON.MeshBuilder.CreateBox(characterID, {
-    //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-    //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-    //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-    // }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
-    // parentMesh.material = tg.am.material_transparent;
-    // parentMesh.material = tg.material_semitransparent_blue;
-    // parentMesh.isPickable = true;
-    // botObject = {};
+    
+
     const botObject = {};
     botObject.id = characterID;
     // botObject.parentMesh = parentMesh;
@@ -173,6 +169,26 @@ tg.bot.processLoadedModel = function (
     botObject.controlMesh.position.y = 0;
     botObject.controlMesh.position.z = positionParam.z;
     botObject.controlMesh.addRotation(0, rotationParam, 0);
+
+    if(isSelfBot == true){
+        var envelopMesh = BABYLON.MeshBuilder.CreateBox('envelop_' + characterID, {
+            height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
+        // parentMesh.material = tg.am.material_transparent;
+        envelopMesh.material = tg.am.material_transparent;
+        envelopMesh.position.y = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2) * (1 / characterConfig.scale);
+        envelopMesh.isPickable = true;
+        botObject.envelopMesh = envelopMesh;
+        envelopMesh.scaling = new BABYLON.Vector3(
+            1 / characterConfig.scale,
+            1 / characterConfig.scale,
+            1 / characterConfig.scale
+        );
+        envelopMesh.parent = botObject.controlMesh;
+    }
+    
 
     // botObject.currentAnimation = 'goto';
 
@@ -269,6 +285,8 @@ tg.bot.processLoadedModel = function (
         projectilePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
         projectilePlane.material = tg.am.material_projectile_flame_arrow;
 
+        console.log('=======->' + projectilePlane.isPickable);
+
         // projectilePlane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
         // projectilePlane.bakeCurrentTransformIntoVertices();
 
@@ -296,7 +314,7 @@ tg.bot.processLoadedModel = function (
 
 
 tg.bot.changeLevel = function (botConfig, level) {
-    console.log(level + '->change level event:', botConfig);
+    // console.log(level + '->change level event:', botConfig);
     switch (level) {
         case 0:
             botConfig.rankPlane.material = tg.am.material_plane_rank0;

@@ -177,12 +177,14 @@ tg.am.createMaterials = function () {
 
     var material_sky = new BABYLON.StandardMaterial('material_sky', tg.scene);
     // material_sky.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.5);
-    material_sky.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.5);
+    material_sky.emissiveColor = new BABYLON.Color3(0.4, 0.4, 0.55);
+    // material_sky.emissiveColor = new BABYLON.Color3(198/256, 230/256, 245/256);
     material_sky.backFaceCulling = false;
     material_sky.disableLighting = true;
     // material_sky.needDepthPrePass = true;
     // material_sky.alpha = 0.7;
     // material_semitransparent_blue.freeze();
+    material_sky.disableLighting = true;
     material_sky.freeze();
     tg.material_sky = material_sky;
 

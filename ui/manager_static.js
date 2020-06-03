@@ -435,6 +435,7 @@ tg.static.addStaticItems = function () {
     cameraTarget.material = tg.am.material_transparent;
     // cameraTarget.freezeWorldMatrix();
     // ground.material = materialGround;
+    cameraTarget.isPickable = false;
     tg.am.cameraTarget = cameraTarget;
 
     tg.camera.lockedTarget = tg.am.cameraTarget;
@@ -451,7 +452,7 @@ tg.static.addStaticItems = function () {
     chosenMarker.position.x = 0;
     chosenMarker.position.y = tg.worldItems.uiConfig.hiddenY;
     chosenMarker.position.z = 0;
-    // ground.isPickable = true;
+    ground.isPickable = false;
     chosenMarker.material = tg.am.material_semitransparent_chosen;
     // ground.material = materialGround;
     tg.am.chosenMarker = chosenMarker;

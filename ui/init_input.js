@@ -27,12 +27,20 @@ tg.input.onPointerDownFunction = function (evt, pickResult) {
     // We try to pick an object
     if (pickResult.hit) {
         // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
-        console.log('pickResult.pickedPoint:', pickResult.pickedPoint);
-        if(tg.bot.userPlayerConfig.selectedBot != null){
-            var gridX = Math.floor(pickResult.pickedPoint.x / tg.worldItems.uiConfig.playerDimensionBaseUnit);
-            var gridZ = Math.floor(pickResult.pickedPoint.z / tg.worldItems.uiConfig.playerDimensionBaseUnit);
-
-            tg.network.sendUserInstruction({x: gridX, z: gridZ});
+        // console.log('pickResult.pickedPoint:', pickResult.pickedPoint);
+        if(pickResult.pickedMesh.name == 'ground'){
+            if(tg.bot.userPlayerConfig.selectedBot != null){ // bot already selected. test for goto instruction.
+                var gridX = Math.floor(pickResult.pickedPoint.x / tg.worldItems.uiConfig.playerDimensionBaseUnit);
+                var gridZ = Math.floor(pickResult.pickedPoint.z / tg.worldItems.uiConfig.playerDimensionBaseUnit);
+    
+                tg.network.sendUserInstruction({x: gridX, z: gridZ});
+            }
+        }else{
+            var botIndex = tg.bot.userBotIdMap[pickResult.pickedMesh.name];
+            console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
+            if(botIndex != null && botIndex != undefined){
+                tg.hl.selectSelfBot(botIndex, false);
+            }
         }
     }
 };

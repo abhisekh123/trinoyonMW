@@ -338,24 +338,35 @@ tg.hl.countDownHandler_idle = function () {
 tg.hl.updateFooterIconImageForPlayerTeamBots = function () {
     const selfBots = tg.bot.userPlayerConfig.botObjectList;
     console.log('start updateFooterIconImageForPlayerTeamBots:', selfBots);
+    tg.bot.userBotIdMap = {};
     // tg.itemConfigs
-    for (let j = 1; j < selfBots.length; j++) {
+    for (let j = 0; j < selfBots.length; j++) {
         let botConfig = selfBots[j];
         console.log('botConfig.type', botConfig.type);
         const iconSource = tg.itemConfigs.items[botConfig.type].iconurl;
         console.log('iconSource->', iconSource);
         $('#footer-image_' + j).attr('src', iconSource);
         // return;
+        tg.bot.userBotIdMap['envelop_' + botConfig.id] = j;
+        tg.bot.userBotIdMap[botConfig.id] = j;
     }
 };
 
-tg.hl.selectSelfBot = function (botIndex) {
+tg.hl.selectBotButtonClick = function (botIndex) {
+    tg.hl.selectSelfBot(botIndex, true);
+};
+
+tg.hl.selectSelfBot = function (botIndex, lookAtBot) {  
     console.log('selectSelfBot:', botIndex);
     // alert('selectSelfBot');
     const botId = tg.bot.userPlayerConfig.botObjectList[botIndex].id;
     const botObject = tg.am.dynamicItems.bots[botId];
-    // tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
-    // tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
+
+    if(lookAtBot){
+        tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
+        tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
+    }
+    
 
 
     // tg.am.chosenMarker.position.x = 0;
@@ -364,17 +375,31 @@ tg.hl.selectSelfBot = function (botIndex) {
 
     // // tg.am.cameraTarget.position.x = 0;
     // tg.am.chosenMarker.parent = botObject.controlMesh;
-    tg.bot.userPlayerConfig.selectedBot = botObject;
-    tg.audio.playItemEventAudio(botObject, 'select');
-    if (tg.bot.userPlayerConfig.clearSelectionTimer != null) {
+    
+    if (tg.bot.userPlayerConfig.clearSelectionTimer != null || tg.bot.userPlayerConfig.selectedBot != null) {
         clearTimeout(tg.bot.userPlayerConfig.clearSelectionTimer);
     }
+    tg.bot.userPlayerConfig.selectedBot = botObject;
+    tg.audio.playItemEventAudio(botObject, 'select');
+
     tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
         tg.hl.clearSelfBotSelection();
     }, tg.worldItems.uiConfig.clearSelectionTimerInterval);
     // tg.bot.userPlayerConfig.team
     // tg.am.dynamicItems.bots[characterID]
     // botObject.id
+    for(var i = 0; i < 5; ++i){
+        $("#game-footer-bot-selection_" + i).removeClass("selected-bot-footer-item");
+        $("#game-footer-bot-selection_" + i).addClass("unselected-bot-footer-item");
+    }
+
+    var botIndex = tg.bot.userBotIdMap[botObject.id];
+    // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
+    if(botIndex != null && botIndex != undefined){
+        $("#game-footer-bot-selection_" + botIndex).removeClass("unselected-bot-footer-item");
+        $("#game-footer-bot-selection_" + botIndex).addClass("selected-bot-footer-item");
+    }
+
     document.getElementById("tc").focus();
 };
 

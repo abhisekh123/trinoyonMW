@@ -33,3 +33,8 @@ tg.uu.getObjectValues = function (objectParam) {
     return Object.values(objectParam);
 };
 
+// both inputs should be integers.
+tg.uu.getRandom = function (rangeStart, rangeEnd) {
+    return Math.floor(Math.random() * (rangeEnd - rangeStart)) + rangeStart;
+};
+

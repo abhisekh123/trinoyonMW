@@ -82,7 +82,9 @@ tg.audio.initGameDynamicObjectAudio = function (objectParam, objectConfigParam) 
             tg.am.updateNewAssetLoaded(1);
         },
         // function callback() { setTimeout(function() {tg.music.play();}, 5000)},
-        {}
+        {
+            volume: 1
+        }
     );
 
     objectParam.sound = soundHandle;

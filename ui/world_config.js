@@ -33,7 +33,8 @@ var worldItems = {
             file: 'static/audio/Darkness-Approaches_Looping.mp3',
             autoplay: false,
             loop: true,
-            volume: 0.2,
+            // volume: 0.2,
+            volume: 1,
             offset: -1,
             length: 0
         },
@@ -42,19 +43,19 @@ var worldItems = {
             file: 'static/audio/Dark-Things-2_V001.mp3',
             autoplay: false,
             loop: true,
-            volume: 0.2,
+            volume: 1,
             offset: -1,
             length: 0
         },
-        {
-            key: 'ambience',
-            file: 'static/audio/test.mp3',
-            autoplay: false,
-            loop: true,
-            volume: 1,
-            offset: -1,
-            length: 1
-        },
+        // {
+        //     key: 'ambience',
+        //     file: 'static/audio/test.mp3',
+        //     autoplay: false,
+        //     loop: true,
+        //     volume: 1,
+        //     offset: -1,
+        //     length: 1
+        // },
     ],
 
     uiConfig: {
