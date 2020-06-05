@@ -414,6 +414,10 @@ tg.hl.selectSelfBot = function (botIndex, lookAtBot) {
     document.getElementById("tc").focus();
 };
 
+tg.hl.populateRightColumn = function(botObject){
+    
+}
+
 tg.hl.clearAllFooterButtonSelection = function(){
     for(var i = 0; i < 5; ++i){
         $("#game-footer-bot-selection_" + i).removeClass("selected-bot-footer-item");

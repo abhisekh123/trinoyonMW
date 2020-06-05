@@ -369,6 +369,25 @@ canvas {
     /* width: 100%; */
 }
 
+.rightcolumn{
+    display: none;
+    position: fixed;
+    height: 60%;
+    width: 10%;
+    right: 5px;
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+
+.rightcolumn-button{
+    display: none;
+    height: 25%;
+    width: 100%;
+    border-style: groove;
+    border-width: 7px;
+    border-color: beige;
+}
+
 .game-header-table {
     width: 100%;
     height: 100%;
