@@ -31,6 +31,7 @@ tg.createAmbience = function() {
     // skyboxMaterial.disableLighting = true;
     skybox.material = tg.material_sky;
     skybox.freezeWorldMatrix();
+    skybox.isPickable = false;
     tg.skybox = skybox;
 };
 

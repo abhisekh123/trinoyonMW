@@ -352,6 +352,19 @@ tg.hl.updateFooterIconImageForPlayerTeamBots = function () {
     }
 };
 
+tg.hl.updateBotButtonLife = function (botIndex, botObject) {
+    var lifePercentage = ((100 * botObject.life) / botObject.fullLife);
+    if(lifePercentage < 0){
+        lifePercentage = 0;
+    }
+    if(lifePercentage > 100){
+        lifePercentage = 100;
+    }
+    var elementid = "#footer-bot-life_" + botIndex;
+    var element = $(elementid);
+    $('#footer-bot-life_' + botIndex)[0].style.width = lifePercentage + '%';
+};
+
 tg.hl.selectBotButtonClick = function (botIndex) {
     tg.hl.selectSelfBot(botIndex, true);
 };
@@ -382,16 +395,14 @@ tg.hl.selectSelfBot = function (botIndex, lookAtBot) {
     tg.bot.userPlayerConfig.selectedBot = botObject;
     tg.audio.playItemEventAudio(botObject, 'select');
 
+    tg.hl.clearAllFooterButtonSelection();
+
     tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
         tg.hl.clearSelfBotSelection();
     }, tg.worldItems.uiConfig.clearSelectionTimerInterval);
     // tg.bot.userPlayerConfig.team
     // tg.am.dynamicItems.bots[characterID]
     // botObject.id
-    for(var i = 0; i < 5; ++i){
-        $("#game-footer-bot-selection_" + i).removeClass("selected-bot-footer-item");
-        $("#game-footer-bot-selection_" + i).addClass("unselected-bot-footer-item");
-    }
 
     var botIndex = tg.bot.userBotIdMap[botObject.id];
     // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
@@ -402,6 +413,13 @@ tg.hl.selectSelfBot = function (botIndex, lookAtBot) {
 
     document.getElementById("tc").focus();
 };
+
+tg.hl.clearAllFooterButtonSelection = function(){
+    for(var i = 0; i < 5; ++i){
+        $("#game-footer-bot-selection_" + i).removeClass("selected-bot-footer-item");
+        $("#game-footer-bot-selection_" + i).addClass("unselected-bot-footer-item");
+    }
+}
 
 tg.hl.clearSelfBotSelection = function () {
     console.log('clearSelfBotSelection');
@@ -416,6 +434,7 @@ tg.hl.clearSelfBotSelection = function () {
 
     tg.bot.userPlayerConfig.selectedBot = null;
     tg.bot.userPlayerConfig.clearSelectionTimer = null;
+    tg.hl.clearAllFooterButtonSelection();
     // tg.bot.userPlayerConfig.team
     // tg.am.dynamicItems.bots[characterID]
     // botObject.id

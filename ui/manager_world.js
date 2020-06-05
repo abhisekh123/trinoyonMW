@@ -208,6 +208,11 @@ tg.world.updateWorld = function (updateParam) {
             //     console.log('updateParam:', updateParam);
             // }
             tg.ui3d.updateHPBarPercentage(botObject.hpBarConfig, ((100 * botObject.life) / botObject.fullLife));
+            var botIndex = tg.bot.userBotIdMap[botObject.id];
+            // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
+            if(botIndex != null && botIndex != undefined){
+                tg.hl.updateBotButtonLife(botIndex, botObject);
+            }
         }
 
         for (let index = 0; index < eventsArray.length; index++) {

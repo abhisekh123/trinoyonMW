@@ -338,6 +338,7 @@ canvas {
 .game-footer-bot-selection {
     float: left;
     width: 20%;
+    height: 95%;
     /* size: */
 }
 
@@ -354,8 +355,18 @@ canvas {
 
 .footer-bot-image {
     width: 100%;
-    height: 100%;
+    height: 80%;
     object-fit: contain;
+}
+
+.footer-bot-life-container{
+    height: 20%;
+    width: 100%;
+}
+
+.footer-bot-life{
+    height: 100%;
+    /* width: 100%; */
 }
 
 .game-header-table {
