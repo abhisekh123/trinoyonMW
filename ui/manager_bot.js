@@ -118,6 +118,10 @@ tg.bot.processLoadedModel = function (
         // console.log(i + '->' + newMeshes[i].isPickable);
         newMeshes[i].isPickable = false;
     }
+
+    var botLevelMap = characterConfig.levelMap[0];
+    var botSpeed = botLevelMap.speed;
+    var botLife = botLevelMap.life;
     
 
     const botObject = {};
@@ -131,15 +135,17 @@ tg.bot.processLoadedModel = function (
     botObject.intermediatePositionArrayIndex = 0;
     botObject.animationAction = 'goto'; // initialise action.
     botObject.animations = characterConfig.animations;
+    botObject.level = 0;
     botObject.projectileShootY = characterConfig.projectileShootY * tg.worldItems.uiConfig.playerDimensionBaseUnit;
     botObject.projectileReceiveY = characterConfig.projectileReceiveY * tg.worldItems.uiConfig.playerDimensionBaseUnit;
-    botObject.life = characterConfig.life;
-    botObject.fullLife = characterConfig.life;
+    botObject.life = botLife;
+    botObject.fullLife = botLife;
     botObject.team = team;
     botObject.playerID = playerID;
-    botObject.timeTakenToCover1Tile = 1000 / characterConfig.speed; // in milliSeconds
+    botObject.timeTakenToCover1Tile = 1000 / botSpeed; // in milliSeconds
     botObject.plannedPath = null;
     botObject.plannedPathTimeStamp = 0;
+    botObject.levelMap = characterConfig.levelMap;
     var hpBarConfig = tg.ui3d.gethpbar(characterID, hpBarMaterial, hpBarContainerMaterial);
     botObject.hpBarConfig = hpBarConfig;
     // botObject.controlMesh.scaling = new BABYLON.Vector3(1/scale, 1/scale, 1/scale);
@@ -315,6 +321,14 @@ tg.bot.processLoadedModel = function (
 
 tg.bot.changeLevel = function (botConfig, level) {
     // console.log(level + '->change level event:', botConfig);
+    botConfig.level = level;
+    var botLevelMap = botConfig.levelMap[level];
+    var botSpeed = botLevelMap.speed;
+    var botLife = botLevelMap.life;
+
+    botConfig.fullLife = botLife;
+    botConfig.timeTakenToCover1Tile = 1000 / botSpeed; // in milliSeconds
+
     switch (level) {
         case 0:
             botConfig.rankPlane.material = tg.am.material_plane_rank0;

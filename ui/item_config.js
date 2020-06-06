@@ -64,18 +64,26 @@
                     {
                         damage: 10,
                         attack: 2,
+                        life: 60,
+                        speed: 2
                     },
                     {
                         damage: 20,
                         attack: 2.25,
+                        life: 70,
+                        speed: 2.5
                     },
                     {
                         damage: 30,
                         attack: 2.5,
+                        life: 80,
+                        speed: 3
                     },
                     {
                         damage: 40,
                         attack: 2.75,
+                        life: 90,
+                        speed: 3.5
                     },
                 ],
                 animations: {
@@ -177,8 +185,8 @@
 
                 attackinterval: 1000,
                 // attack: 2,
-                life:60,
-                speed:2, //one tile per 1000 ms.
+                // life:60,
+                // speed:2, //one tile per 1000 ms.
                 sight: 6,
                 range: 2,
                 parentMesh: null,
@@ -199,18 +207,26 @@
                     {
                         damage: 10,
                         attack: 1,
+                        life: 40,
+                        speed: 2
                     },
                     {
                         damage: 20,
                         attack: 1.25,
+                        life: 50,
+                        speed: 2.5
                     },
                     {
                         damage: 30,
                         attack: 1.5,
+                        life: 60,
+                        speed: 3
                     },
                     {
                         damage: 40,
                         attack: 1.75,
+                        life: 70,
+                        speed: 3.5
                     },
                 ],
                 animations: {
@@ -313,8 +329,8 @@
 
                 attackinterval: 1000,
                 // attack: 1,
-                life:40,
-                speed:2, //one tile per 1000 ms.
+                // life:40,
+                // speed:2, //one tile per 1000 ms.
                 sight: 6,
                 range: 2,
                 parentMesh: null,
@@ -335,18 +351,26 @@
                     {
                         damage: 10,
                         attack: 3,
+                        life: 20,
+                        speed: 2
                     },
                     {
                         damage: 20,
                         attack: 3.25,
+                        life: 30,
+                        speed: 2.5
                     },
                     {
                         damage: 30,
                         attack: 3.5,
+                        life: 40,
+                        speed: 3
                     },
                     {
                         damage: 40,
                         attack: 3.75,
+                        life: 50,
+                        speed: 3.5
                     },
                 ],
                 projectile: {
@@ -470,8 +494,8 @@
 
                 attackinterval: 1000,
                 // attack: 3,
-                life:20,
-                speed:2, //one tile per 1000 ms.
+                // life:20,
+                // speed:2, //one tile per 1000 ms.
                 sight: 6,
                 range: 4,
                 parentMesh: null,

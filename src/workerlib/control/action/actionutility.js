@@ -1,6 +1,7 @@
 const workerState = require('../../state/workerstate');
 const snapShotManager = require('../../state/snapshotmanager');
 const routeManager = require('../../route/routemanager');
+const utilityFunctions = require('../../../utils/utilityfunctions');
 
 module.exports = {
     // baseMap: {}
@@ -225,7 +226,7 @@ module.exports = {
         if(defenderConfig.type == 'tower' || defenderConfig.type == 'base'){
             isBuilding = true;
         }
-        var offenderAttack = offenderConfig.levelMap[offenderConfig.level].attack;
+        var offenderAttack = offenderConfig.attack;
         // defenderConfig.life -= offenderConfig.attack;
         defenderConfig.life -= offenderAttack;
         snapShotManager.processAttackEvent(gameRoom, offenderConfig, defenderConfig);
@@ -255,6 +256,7 @@ module.exports = {
             if(botEntryInStatistics.totalDamageSinceSpawn > offenderConfig.levelMap[offenderConfig.level].damage){
                 // console.log('eligible for levelup.');
                 offenderConfig.level++;
+                this.updateBotConfigForNewLevel(offenderConfig);
                 botEntryInStatistics.levelHistory.push([offenderConfig.level, gameRoom.timeElapsed]);
                 // console.log(botEntryInStatistics.levelHistory);
                 snapShotManager.processLevelChangeEvent(gameRoom, offenderConfig);
@@ -270,6 +272,23 @@ module.exports = {
                 botEntryInStatistics.totalBotKill += 1;
             }
         }
+    },
+
+    updateBotConfigForNewLevel: function(botObject){
+        var botLevelMap = botObject.levelMap[botObject.level];
+        botObject.attack = botLevelMap.attack;
+        // botObject.attackTimestamp = 0;
+
+        var botSpeed = botLevelMap.speed;
+        var botLife = botLevelMap.life;
+
+        botObject.life = botLife;
+        botObject.fullLife = botLife;
+
+        botObject.speed = botSpeed; //one tile per 1000 ms.
+        // times are in miliseconds. but speed is in meter/second
+        botObject.diagonalTime = utilityFunctions.roundTo2Decimal((1.414 * 1000) / botSpeed);
+        botObject.adjacentTime = utilityFunctions.roundTo2Decimal((1 * 1000) / botSpeed);
     },
 
     // botConfig.level = 0;

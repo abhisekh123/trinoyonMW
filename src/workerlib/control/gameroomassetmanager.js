@@ -328,16 +328,19 @@ module.exports = {
         botObject.type = botType;
 
         botObject.attackinterval = botTypeItemConfig.attackinterval;
-        botObject.attack = botTypeItemConfig.attack;
+        botObject.attack = botTypeItemConfig.levelMap[0].attack;
         // botObject.attackTimestamp = 0;
 
-        botObject.life = botTypeItemConfig.life;
-        botObject.fullLife = botTypeItemConfig.life;
+        var botSpeed = botTypeItemConfig.levelMap[0].speed;
+        var botLife = botTypeItemConfig.levelMap[0].life;
 
-        botObject.speed = botTypeItemConfig.speed; //one tile per 1000 ms.
+        botObject.life = botLife;
+        botObject.fullLife = botLife;
+
+        botObject.speed = botSpeed; //one tile per 1000 ms.
         // times are in miliseconds. but speed is in meter/second
-        botObject.diagonalTime = utilityFunctions.roundTo2Decimal((1.414 * 1000) / botObject.speed);
-        botObject.adjacentTime = utilityFunctions.roundTo2Decimal((1 * 1000) / botObject.speed);
+        botObject.diagonalTime = utilityFunctions.roundTo2Decimal((1.414 * 1000) / botSpeed);
+        botObject.adjacentTime = utilityFunctions.roundTo2Decimal((1 * 1000) / botSpeed);
         // botObject.strideDistance = botTypeItemConfig.strideDistance;
         // botObject.strideTime = botTypeItemConfig.strideTime;
 
