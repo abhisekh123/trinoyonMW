@@ -282,7 +282,7 @@ module.exports = {
         var botSpeed = botLevelMap.speed;
         var botLife = botLevelMap.life;
 
-        botObject.life = botLife;
+        // botObject.life = botLife;
         botObject.fullLife = botLife;
 
         botObject.speed = botSpeed; //one tile per 1000 ms.
