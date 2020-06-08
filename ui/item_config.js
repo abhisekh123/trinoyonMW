@@ -60,6 +60,18 @@
             lion:{
                 bannedMeshes:[],
                 audioFile: 'static/audio/fury.mp3',
+                ability: [
+                    {
+                        key: 'retreat',
+                        iconurl: '/static/img/flag-white.png',
+                        action: 'retreat'
+                    },
+                    {
+                        key: 'pulse',
+                        iconurl: '/static/img/quake.jpeg',
+                        action: 'pulse'
+                    }
+                ],
                 levelMap: [
                     {
                         damage: 10,
@@ -203,6 +215,18 @@
             swordman:{
                 bannedMeshes:[6],
                 audioFile: 'static/audio/swordman.mp3',
+                ability: [
+                    {
+                        key: 'retreat',
+                        iconurl: 'static/img/flag-white.png',
+                        action: 'retreat'
+                    },
+                    {
+                        key: 'sheild',
+                        iconurl: 'static/img/sheild.png',
+                        action: 'sheild'
+                    }
+                ],
                 levelMap: [
                     {
                         damage: 10,
@@ -347,6 +371,18 @@
             archer:{
                 bannedMeshes:[],
                 audioFile: 'static/audio/archer.mp3',
+                ability: [
+                    {
+                        key: 'retreat',
+                        iconurl: 'static/img/flag-white.png',
+                        action: 'retreat'
+                    },
+                    {
+                        key: 'scorch',
+                        iconurl: 'static/img/flame_arrow_icon.png',
+                        action: 'scorch'
+                    }
+                ],
                 levelMap: [
                     {
                         damage: 10,

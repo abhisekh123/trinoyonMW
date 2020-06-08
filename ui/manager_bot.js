@@ -146,6 +146,7 @@ tg.bot.processLoadedModel = function (
     botObject.plannedPath = null;
     botObject.plannedPathTimeStamp = 0;
     botObject.levelMap = characterConfig.levelMap;
+    botObject.ability = characterConfig.ability;
     var hpBarConfig = tg.ui3d.gethpbar(characterID, hpBarMaterial, hpBarContainerMaterial);
     botObject.hpBarConfig = hpBarConfig;
     // botObject.controlMesh.scaling = new BABYLON.Vector3(1/scale, 1/scale, 1/scale);

@@ -275,8 +275,6 @@ tg.hl.makeThumbArea = function (name, thickness, color, background, curves) {
 //     tg.joystickR.destroy();
 // };
 
-// tg.hl.
-console.log('sdf');
 $('#button-result-exit').click(function () {
     console.log('clicked button-result-exit');
     tg.engine.dispose();
@@ -373,14 +371,13 @@ tg.hl.selectSelfBot = function (botIndex, lookAtBot) {
     console.log('selectSelfBot:', botIndex);
     // alert('selectSelfBot');
     const botId = tg.bot.userPlayerConfig.botObjectList[botIndex].id;
-    const botObject = tg.am.dynamicItems.bots[botId];
-
-    if(lookAtBot){
-        tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
-        tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
-    }
     
 
+    const botObject = tg.am.dynamicItems.bots[botId];
+    if(botObject.isActive == false){
+        // bot is inactive, nothing to do
+        return;
+    }
 
     // tg.am.chosenMarker.position.x = 0;
     tg.am.chosenMarker.position.y = 0;
@@ -392,6 +389,14 @@ tg.hl.selectSelfBot = function (botIndex, lookAtBot) {
     if (tg.bot.userPlayerConfig.clearSelectionTimer != null || tg.bot.userPlayerConfig.selectedBot != null) {
         clearTimeout(tg.bot.userPlayerConfig.clearSelectionTimer);
     }
+
+    if(tg.bot.userPlayerConfig.selectedBot != null){// selected already selected bot
+        if(lookAtBot && tg.bot.userPlayerConfig.selectedBot.id == botObject.id){
+            tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
+            tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
+        }    
+    }
+
     tg.bot.userPlayerConfig.selectedBot = botObject;
     tg.audio.playItemEventAudio(botObject, 'select');
 
@@ -411,12 +416,52 @@ tg.hl.selectSelfBot = function (botIndex, lookAtBot) {
         $("#game-footer-bot-selection_" + botIndex).addClass("selected-bot-footer-item");
     }
 
+    tg.hl.updateRightColumnForNewBotSelection(botObject);
+
     document.getElementById("tc").focus();
 };
 
-tg.hl.populateRightColumn = function(botObject){
-    
+tg.hl.diableFooterSelfBotIcon = function(id){
+    tg.hl.diableDiv($("#" + id));
 }
+
+tg.hl.enableFooterSelfBotIcon = function(id){
+    tg.hl.enableDiv($("#" + id));
+}
+
+tg.hl.diableDiv = function(element){
+    element.addClass("disabled-element");
+}
+
+tg.hl.enableDiv = function(element){
+    element.removeClass("disabled-element");
+}
+
+tg.hl.clearRightColumn = function(){
+    tg.hl.resetAllRighColumnButton();
+}
+
+tg.hl.updateRightColumnForNewBotSelection = function(botObject){
+    tg.hl.resetAllRighColumnButton();
+    for(var i = 0; i < botObject.ability.length; ++i){
+        var element = $("#rightcolumn-button-" + i);
+        element.show();
+
+        element = $("#rightcolumn-image-" + i);
+        element.attr('src', botObject.ability[i].iconurl);
+    }
+}
+
+tg.hl.resetAllRighColumnButton = function(){
+    for(var i = 0; i < 4; ++i){
+        var element = $("#rightcolumn-button-" + i);
+        element.hide();
+
+        element = $("#rightcolumn-image-" + i);
+        element.attr('src', '');
+    }
+}
+
 
 tg.hl.clearAllFooterButtonSelection = function(){
     for(var i = 0; i < 5; ++i){
@@ -439,6 +484,7 @@ tg.hl.clearSelfBotSelection = function () {
     tg.bot.userPlayerConfig.selectedBot = null;
     tg.bot.userPlayerConfig.clearSelectionTimer = null;
     tg.hl.clearAllFooterButtonSelection();
+    tg.hl.clearRightColumn();
     // tg.bot.userPlayerConfig.team
     // tg.am.dynamicItems.bots[characterID]
     // botObject.id

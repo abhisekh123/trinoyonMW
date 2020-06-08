@@ -203,7 +203,12 @@ tg.world.updateWorld = function (updateParam) {
             }
 
             botObject.life = updateItemConfig.life;
-
+            var activeStateUpdated = false;
+            if(botObject.isActive != updateItemConfig.isActive){
+                activeStateUpdated = true;
+            }
+            botObject.isActive = updateItemConfig.isActive;
+            
             // if(updateItemConfig.action == 'fight'){
             //     console.log('updateParam:', updateParam);
             // }
@@ -212,6 +217,14 @@ tg.world.updateWorld = function (updateParam) {
             // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
             if(botIndex != null && botIndex != undefined){
                 tg.hl.updateBotButtonLife(botIndex, botObject);
+                if(activeStateUpdated){
+                    if(botObject.isActive == true){
+                        tg.hl.enableFooterSelfBotIcon("game-footer-bot-selection_" + botIndex);
+                    }else{
+                        tg.hl.diableFooterSelfBotIcon("game-footer-bot-selection_" + botIndex);
+                    }
+                    
+                }
             }
         }
 

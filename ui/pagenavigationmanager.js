@@ -37,6 +37,7 @@ tg.pn.showMatchResultPage = function(){
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
             tg.hl.removeJoysticks();
             $("#footerrow").hide();
+            $("#rightcolumn").hide();
             $("#game-header-menu").hide();
             // $("#joystick-parent").hide();
             tg.pv.showModal();
@@ -74,6 +75,7 @@ tg.pn.showMatchPage = function(){
     tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#footerrow").show();
+    $("#rightcolumn").show();
 
     // tg.joystickL.add();
     // tg.joystickR.add();

@@ -96,6 +96,7 @@ module.exports = {
         this.worldConfig.topBase.push('base1');
         workerState.buildingMap_1['base1'] = {
             life:this.itemConfig.items.base.life,
+            fullLife:this.itemConfig.items.base.life,
             attack:this.itemConfig.items.base.attack,
             range:this.itemConfig.items.base.range,
             sight:this.itemConfig.items.base.sight,
@@ -128,6 +129,7 @@ module.exports = {
             this.worldConfig.defenceTop[i].push(towerID);
             workerState.buildingMap_1[towerID] = {
                 life:this.itemConfig.items.tower.life,
+                fullLife:this.itemConfig.items.tower.life,
                 attack:this.itemConfig.items.tower.attack,
                 range:this.itemConfig.items.tower.range,
                 sight:this.itemConfig.items.tower.sight,
@@ -161,6 +163,7 @@ module.exports = {
         this.worldConfig.bottomBase.push('base2');
         workerState.buildingMap_2['base2'] = {
             life:this.itemConfig.items.base.life,
+            fullLife:this.itemConfig.items.base.life,
             attack:this.itemConfig.items.base.attack,
             range:this.itemConfig.items.base.range,
             sight:this.itemConfig.items.base.sight,

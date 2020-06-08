@@ -34,6 +34,7 @@ module.exports = {
         botSnapshotObject.activityTimeStamp = botConfig.activityTimeStamp;
         botSnapshotObject.isActive = botConfig.isActive;
         botSnapshotObject.life = botConfig.life;
+        // botSnapshotObject.life = botConfig.life;
 
         botSnapshotObject.position[0] = botConfig.position[0];
         botSnapshotObject.position[1] = botConfig.position[1];
@@ -210,6 +211,7 @@ module.exports = {
             // deathTimestamp: workerState.currentTime,
             activityTimeStamp: workerState.currentTime,
             life: itemConfig.life,
+            fullLife: itemConfig.fullLife,
             team: itemConfig.team,
 
             isActive: itemConfig.isActive,
