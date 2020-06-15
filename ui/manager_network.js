@@ -15,6 +15,15 @@ tg.network.sendUserInstruction = function(destinationPosition) {
     tg.sendMessageToWS(message);
 };
 
+tg.network.sendAbilityInstruction = function(botIdParam, abilityIndex) {
+    var message = tg.getEmptyMessagePacket('si');
+    // message.si = instructionParam;
+    message.abilityIndex = abilityIndex;
+    
+    message.botId = botIdParam;
+    tg.sendMessageToWS(message);
+};
+
 tg.network.initNetworkManager = function() {
     console.log('initNetworkManager');
 };

@@ -25,6 +25,39 @@ module.exports = {
         return false;
     },
 
+    processAbilityRequest: function(objectConfig, gameRoom, abilityIndex){
+        var abilityObject = objectConfig.ability[abilityIndex];
+        // var key = ;
+        if(objectConfig[abilityObject.key] != this.worldConfig.constants.ABILITY_UNAVAILABLE){
+            // ability is not available at this moment. reject.
+        } else {
+            actionManager.actionUtility.activateAbility(objectConfig, gameRoom, abilityIndex);
+
+            // process abilities which execute immediately
+            switch (abilityObject.action) {
+                case 'retreat': // goto base
+                    var basePosition = null;
+                    if(objectConfig.team == 1){
+                        basePosition = this.worldConfig.topBase;
+                    } else if(objectConfig.team == 2){
+                        basePosition = this.worldConfig.bottomBase;
+                    }
+                    if(basePosition != null){
+                        this.goNearDesignatedPosition(
+                            objectConfig, 
+                            {x: basePosition[0], z: basePosition[1]},
+                            'goto', 
+                            gameRoom, 
+                        );
+                    }
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    },
+
     // attack as many times possible.  add remainitng time to bot in activityTimeStam field.
     attackHostile: function(offenderConfig, defenderConfig, gameRoom){
         while (this.canAttack(offenderConfig)){

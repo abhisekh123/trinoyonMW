@@ -145,8 +145,14 @@ tg.bot.processLoadedModel = function (
     botObject.timeTakenToCover1Tile = 1000 / botSpeed; // in milliSeconds
     botObject.plannedPath = null;
     botObject.plannedPathTimeStamp = 0;
+
     botObject.levelMap = characterConfig.levelMap;
     botObject.ability = characterConfig.ability;
+    for(var i = 0; i < characterConfig.ability.length; ++i){
+        var abilityItem = characterConfig.ability[i];
+        botObject[abilityItem.key] = tg.worldItems.constants.ABILITY_AVAILABLE;
+    }
+
     var hpBarConfig = tg.ui3d.gethpbar(characterID, hpBarMaterial, hpBarContainerMaterial);
     botObject.hpBarConfig = hpBarConfig;
     // botObject.controlMesh.scaling = new BABYLON.Vector3(1/scale, 1/scale, 1/scale);

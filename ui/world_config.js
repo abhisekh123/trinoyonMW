@@ -138,6 +138,11 @@ var worldItems = {
         VISIBLE: 1,
         INVISIBLE: 2,
         DONTCARE: 0,
+
+        // ABILITY STATE
+        ABILITY_AVAILABLE: 0,
+        ABILITY_ACTIVE: 1,
+        ABILITY_UNAVAILABLE: 2
     },
     // players: [
     //     {

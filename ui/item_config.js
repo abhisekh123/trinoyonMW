@@ -56,20 +56,55 @@
             //     cellDimension: {width: 260 / 4, height: 300 / 4}
             // }
         ], 
+        abilityConfig: {
+            scorch: {
+                name: 'scorch',
+                iconurl: 'static/img/flame_arrow_icon.png',
+                resetInterval: 40000,
+                duration: 3000,
+                targetAttackFactor: 2
+            },
+            retreat: {
+                // goto base
+                name: 'retreat',
+                iconurl: '/static/img/flag-white.png',
+                resetInterval: 5000,
+                duration: 3000,
+            },
+            pulse: {
+                // 1.5 attack to recipient
+                // ((0.5 * distance) / range) attack to all
+                // single attack. deactivate ability right after that.
+                name: 'pulse',
+                iconurl: '/static/img/quake.jpeg',
+                resetInterval: 40000,
+                duration: 3000,
+                neighbourAttackFactor: 0.5,
+                targetAttackFactor: 1.5
+            },
+            sheild: {
+                // 0.25 * damage(all attacks received) received for the whole duration.
+                name: 'sheild',
+                iconurl: 'static/img/sheild.png',
+                resetInterval: 40000,
+                duration: 3000,
+                defenceFactor: 0.25
+            }
+        },
         items:{
             lion:{
                 bannedMeshes:[],
                 audioFile: 'static/audio/fury.mp3',
                 ability: [
                     {
-                        key: 'retreat',
-                        iconurl: '/static/img/flag-white.png',
-                        action: 'retreat'
+                        key: 'abilityKey0',
+                        action: 'retreat',
+                        timeStamp: 0
                     },
                     {
-                        key: 'pulse',
-                        iconurl: '/static/img/quake.jpeg',
-                        action: 'pulse'
+                        key: 'abilityKey1',
+                        action: 'pulse',
+                        timeStamp: 0
                     }
                 ],
                 levelMap: [
@@ -77,25 +112,49 @@
                         damage: 10,
                         attack: 2,
                         life: 60,
-                        speed: 2
+                        speed: 2,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
                     },
                     {
                         damage: 20,
                         attack: 2.25,
                         life: 70,
-                        speed: 2.5
+                        speed: 2.5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
                     },
                     {
                         damage: 30,
                         attack: 2.5,
                         life: 80,
-                        speed: 3
+                        speed: 3,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
                     },
                     {
                         damage: 40,
                         attack: 2.75,
                         life: 90,
-                        speed: 3.5
+                        speed: 3.5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
                     },
                 ],
                 animations: {
@@ -217,14 +276,14 @@
                 audioFile: 'static/audio/swordman.mp3',
                 ability: [
                     {
-                        key: 'retreat',
-                        iconurl: 'static/img/flag-white.png',
-                        action: 'retreat'
+                        key: 'abilityKey0',
+                        action: 'retreat',
+                        timeStamp: 0
                     },
                     {
-                        key: 'sheild',
-                        iconurl: 'static/img/sheild.png',
-                        action: 'sheild'
+                        key: 'abilityKey1',
+                        action: 'sheild',
+                        timeStamp: 0
                     }
                 ],
                 levelMap: [
@@ -232,25 +291,49 @@
                         damage: 10,
                         attack: 1,
                         life: 40,
-                        speed: 2
+                        speed: 2,
+                        ability: [
+                            {},
+                            {
+                                intensity: 0.1
+                            }
+                        ]
                     },
                     {
                         damage: 20,
                         attack: 1.25,
                         life: 50,
-                        speed: 2.5
+                        speed: 2.5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 0.15
+                            }
+                        ]
                     },
                     {
                         damage: 30,
                         attack: 1.5,
                         life: 60,
-                        speed: 3
+                        speed: 3,
+                        ability: [
+                            {},
+                            {
+                                intensity: 0.2
+                            }
+                        ]
                     },
                     {
                         damage: 40,
                         attack: 1.75,
                         life: 70,
-                        speed: 3.5
+                        speed: 3.5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 0.25
+                            }
+                        ]
                     },
                 ],
                 animations: {
@@ -373,14 +456,14 @@
                 audioFile: 'static/audio/archer.mp3',
                 ability: [
                     {
-                        key: 'retreat',
-                        iconurl: 'static/img/flag-white.png',
-                        action: 'retreat'
+                        key: 'abilityKey0',
+                        action: 'retreat',
+                        timeStamp: 0
                     },
                     {
-                        key: 'scorch',
-                        iconurl: 'static/img/flame_arrow_icon.png',
-                        action: 'scorch'
+                        key: 'abilityKey1',
+                        action: 'scorch',
+                        timeStamp: 0
                     }
                 ],
                 levelMap: [
@@ -388,25 +471,49 @@
                         damage: 10,
                         attack: 3,
                         life: 20,
-                        speed: 2
+                        speed: 2,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
                     },
                     {
                         damage: 20,
                         attack: 3.25,
                         life: 30,
-                        speed: 2.5
+                        speed: 2.5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
                     },
                     {
                         damage: 30,
                         attack: 3.5,
                         life: 40,
-                        speed: 3
+                        speed: 3,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
                     },
                     {
                         damage: 40,
                         attack: 3.75,
                         life: 50,
-                        speed: 3.5
+                        speed: 3.5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
                     },
                 ],
                 projectile: {

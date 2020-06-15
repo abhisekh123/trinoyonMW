@@ -76,8 +76,31 @@ module.exports = {
         // console.log('completed processing bot action for team 2');
     },
 
+    // enable abilities which are in disabled state for a duration more than their reset time.
+    // deactivate ability if active time more than the duration.
+    resetBotAbilities: function(playerConfig, botIndex){
+        const botConfig = playerConfig.botObjectList[botIndex];
+        if(botConfig.isActive == false){
+            return 0;
+        }
+        
+        // ability cycle: available -> active -> unavailable -> available ....
+        for(var i = 0; i < botConfig.ability.length; ++i){
+            var abilityObject = botConfig.ability[i];
+            if(botConfig[abilityObject.key] == this.worldConfig.constants.ABILITY_UNAVAILABLE){ // if ability is disabled
+                if((workerState.currentTime - abilityObject.timeStamp) > abilityObject.resetInterval){
+                    botConfig[abilityObject.key] = this.worldConfig.constants.ABILITY_AVAILABLE;
+                }
+            } else if(botConfig[abilityObject.key] == this.worldConfig.constants.ABILITY_ACTIVE){
+                if((workerState.currentTime - abilityObject.timeStamp) > abilityObject.duration){
+                    botConfig[abilityObject.key] = this.worldConfig.constants.ABILITY_UNAVAILABLE;
+                }
+            }
+        }
+    },
 
     processBotAction: function (playerConfig, gameRoom, botIndex) {
+        this.resetBotAbilities(playerConfig, botIndex);
         // console.log('botaction for index:', botIndex);
         // const botConfig = playerConfig.botObjectList[botIndex];
         // try consuming the timeslice by performing action
@@ -88,6 +111,7 @@ module.exports = {
             timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
             // console.log('timeSlice returned:', timeSlice);
         }
+        snapShotManager.updateBotSnapshotAction(gameRoom, botConfig);
     },
 
     processBotLifeCycle: function (botConfig, gameRoom) {

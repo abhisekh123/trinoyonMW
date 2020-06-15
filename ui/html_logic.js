@@ -363,6 +363,12 @@ tg.hl.updateBotButtonLife = function (botIndex, botObject) {
     $('#footer-bot-life_' + botIndex)[0].style.width = lifePercentage + '%';
 };
 
+tg.hl.abilityButtonClick = function(abilityIndex){
+    var botObject = tg.bot.userPlayerConfig.selectedBot;
+    // var abilityConfig = botObject.ability[abilityIndex];
+    tg.network.sendAbilityInstruction(botObject.id, abilityIndex);
+}
+
 tg.hl.selectBotButtonClick = function (botIndex) {
     tg.hl.selectSelfBot(botIndex, true);
 };
@@ -422,14 +428,14 @@ tg.hl.selectSelfBot = function (botIndex, lookAtBot) {
 };
 
 tg.hl.diableFooterSelfBotIcon = function(id){
-    tg.hl.diableDiv($("#" + id));
+    tg.hl.disableDiv($("#" + id));
 }
 
 tg.hl.enableFooterSelfBotIcon = function(id){
     tg.hl.enableDiv($("#" + id));
 }
 
-tg.hl.diableDiv = function(element){
+tg.hl.disableDiv = function(element){
     element.addClass("disabled-element");
 }
 
@@ -444,11 +450,17 @@ tg.hl.clearRightColumn = function(){
 tg.hl.updateRightColumnForNewBotSelection = function(botObject){
     tg.hl.resetAllRighColumnButton();
     for(var i = 0; i < botObject.ability.length; ++i){
-        var element = $("#rightcolumn-button-" + i);
-        element.show();
+        var buttonElement = $("#rightcolumn-button-" + i);
+        buttonElement.show();
+        var abilityConfig = tg.itemConfigs.abilityConfig[botObject.ability[i].action];
+        var imageElement = $("#rightcolumn-image-" + i);
+        imageElement.attr('src', abilityConfig.iconurl);
 
-        element = $("#rightcolumn-image-" + i);
-        element.attr('src', botObject.ability[i].iconurl);
+        if(botObject[botObject.ability[i].key] == tg.worldItems.constants.ABILITY_AVAILABLE){
+            tg.hl.enableDiv(buttonElement);
+        } else {
+            tg.hl.disableDiv(buttonElement);
+        }
     }
 }
 

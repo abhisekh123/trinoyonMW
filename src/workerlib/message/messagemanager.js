@@ -190,25 +190,30 @@ module.exports = {
 
         if(gameRoom != null){ // if found
             // console.log('botConfig:', botConfig);
-
-            aiUtility.goNearDesignatedPosition(
-                botConfig, 
-                userMessageObject.destinationPosition, 
-                'goto', 
-                gameRoom, 
-            );
+            switch (userMessageObject.type) {
+                case 'action':
+                    aiUtility.goNearDesignatedPosition(
+                        botConfig, 
+                        userMessageObject.destinationPosition, 
+                        'goto', 
+                        gameRoom, 
+                    );
+                    break;
+                case 'si':
+                    aiUtility.processAbilityRequest(botConfig, gameRoom, userMessageObject.abilityIndex);
+                    break;
+                default:
+                    break;
+            }
+            
             // console.log('botConfig after:', botConfig);
         }else{
             console.error('gameRoom not found ', userMessageObject);
             return;
         }
-
-
-
-        
     },
 
-
+    
 
     /**
      * PROCESS INCOMING MESSAGE
@@ -224,6 +229,7 @@ module.exports = {
             }
             switch(currentMessage.type){
                 case 'action':
+                case 'si':
                     // // console.log('process action');
                     this.updateBotAction(currentMessage);
                     break;

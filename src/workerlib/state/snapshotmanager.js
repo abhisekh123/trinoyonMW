@@ -34,6 +34,7 @@ module.exports = {
         botSnapshotObject.activityTimeStamp = botConfig.activityTimeStamp;
         botSnapshotObject.isActive = botConfig.isActive;
         botSnapshotObject.life = botConfig.life;
+        this.setBotAbilityState(botConfig, botSnapshotObject);
         // botSnapshotObject.life = botConfig.life;
 
         botSnapshotObject.position[0] = botConfig.position[0];
@@ -65,12 +66,13 @@ module.exports = {
         this.addEventToSnapshot(eventObject, gameRoom);
     },
 
-    processAttackEvent: function(gameRoom, sourceConfig, targetConfig){
+    processAttackEvent: function(gameRoom, sourceConfig, targetConfig, attackType){
 
         var eventObject = this.getGeneric_Event_SnapshotObject();
         eventObject.id = sourceConfig.id;
         eventObject.tid = targetConfig.id;
         eventObject.event = 'attack';
+        eventObject.attackType = attackType;
         eventObject.timestamp = workerState.currentTime;
 
         this.addEventToSnapshot(eventObject, gameRoom);
@@ -243,6 +245,7 @@ module.exports = {
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
                 const botConfig = playerConfig.botObjectList[j];
                 var botSnapshotObject = this.getGeneric_SnapshotObject(botConfig);
+                setBotAbilityState(botConfig, botSnapshotObject);
                 snapShotObject.itemState[botSnapshotObject.id] = botSnapshotObject;
             }
         }
@@ -253,6 +256,7 @@ module.exports = {
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
                 const botConfig = playerConfig.botObjectList[j];
                 var botSnapshotObject = this.getGeneric_SnapshotObject(botConfig);
+                setBotAbilityState(botConfig, botSnapshotObject);
                 snapShotObject.itemState[botSnapshotObject.id] = botSnapshotObject;
             }
         }
@@ -317,4 +321,11 @@ module.exports = {
         }
         return botConfigArray;
     },
+
+    setBotAbilityState: function(botObject, snapShotObject){
+        for(var i = 0; i < botObject.ability.length; ++i){
+            var abilityItem = botObject.ability[i];
+            snapShotObject[abilityItem.key] = botObject[abilityItem.key];
+        }
+    }
 }

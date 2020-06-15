@@ -371,6 +371,11 @@ module.exports = {
         // botObject.totalDamageSinceGameStart = 0;
         botObject.level = 0;
         botObject.levelMap = botTypeItemConfig.levelMap;
+        botObject.ability = botTypeItemConfig.ability;
+        for(var i = 0; i < botObject.ability.length; ++i){
+            var abilityItem = botObject.ability[i];
+            botObject[abilityItem.key] = this.worldConfig.constants.ABILITY_AVAILABLE;
+        }
         return botObject;
     }
 

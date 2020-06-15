@@ -150,6 +150,23 @@ tg.world.processAttackEvent = function (sourceConfig, destinationConfig, eventsA
     }
 };
 
+tg.world.processAbilityStateChangeEvent = function (botObject, updateItemConfig, abilityIndex) {
+    var abilityObject = botObject.ability[abilityIndex];
+    switch (abilityObject.action) {
+        case 'sheild':
+            
+            break;
+        case 'pulse':
+            
+            break;
+        case 'scorch':
+            
+            break;
+        default:
+            break;
+    }
+};
+
 tg.world.updateWorld = function (updateParam) {
     // console.log('tg.world.updateWorld:', updateParam);
     if (tg.isGameLive == true) {
@@ -203,6 +220,13 @@ tg.world.updateWorld = function (updateParam) {
             }
 
             botObject.life = updateItemConfig.life;
+            for(var i = 0; i < botObject.ability.length; ++i){
+                var abilityObject = botObject.ability[i];
+                if(botObject[abilityObject.key] != updateItemConfig[abilityObject.key]){
+                    tg.world.processAbilityStateChangeEvent(botObject, updateItemConfig, i);
+                    botObject[abilityObject.key] = updateItemConfig[abilityObject.key];
+                }
+            }
             var activeStateUpdated = false;
             if(botObject.isActive != updateItemConfig.isActive){
                 activeStateUpdated = true;
@@ -243,55 +267,6 @@ tg.world.updateWorld = function (updateParam) {
 
                 var randomInterval = tg.uu.getRandom(0, 400);
                 setTimeout(tg.world.processAttackEvent, randomInterval, sourceConfig, destinationConfig, eventsArray[index]);
-
-                // tg.audio.playItemEventAudio(sourceConfig, 'attack');
-
-                // if (sourceConfig.type != 'base' && sourceConfig.type != 'tower') {
-                //     sourceConfig.plannedPath = null;
-                //     tg.animationmanager.startCharacterAnimation(sourceConfig, eventsArray[index].event);
-                //     tg.world.rotateMesh(
-                //         new BABYLON.Vector3(0, 1, 0),
-                //         sourceConfig.controlMesh,
-                //         roundTo2Decimal(Math.atan2(
-                //             (destinationConfig.controlMesh.position.x - sourceConfig.controlMesh.position.x),
-                //             (destinationConfig.controlMesh.position.z - sourceConfig.controlMesh.position.z)
-                //         ))
-                //     );
-                // } else {
-                //     console.log('building attack event:', eventsArray[index]);
-                // }
-
-                // // if (sourceConfig.projectile == null) { // source config has melee attack
-                // //     continue;
-                // // }
-
-
-                // // console.log('process attack:', sourceConfig);
-                // if (sourceConfig.weaponType != 'melee') {
-                //     sourceConfig.isProjectileActive = true;
-                //     sourceConfig.projectile.position.x = sourceConfig.controlMesh.position.x;
-                //     sourceConfig.projectile.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
-                //     sourceConfig.projectile.position.z = sourceConfig.controlMesh.position.z;
-
-                //     var pathData = tg.world.planProjectilePath(
-                //         sourceConfig.controlMesh.position.x,
-                //         sourceConfig.controlMesh.position.z,
-                //         destinationConfig.controlMesh.position.x,
-                //         destinationConfig.controlMesh.position.z,
-                //         sourceConfig.projectileShootY,
-                //         destinationConfig.projectileReceiveY
-                //     );
-                //     // console.log('sourceConfig.id:', sourceConfig.id);
-                //     // console.log('tg.currentTime:', tg.currentTime);
-                //     // console.log('pathData:', pathData);
-                //     var endTime = tg.currentTime;
-                //     if (pathData.length > 0) {
-                //         endTime = pathData[pathData.length - 1].time;
-                //     }
-
-                //     sourceConfig.projectileData.path = pathData;
-                //     sourceConfig.projectileData.endTime = endTime;
-                // }
 
             } else if (eventsArray[index].event == 'cteam') { // building change team event.
                 // console.log('cteam event', eventsArray[index].id);
