@@ -111,6 +111,7 @@ module.exports = {
             timeSlice = aiManager.Bot.processAI(playerConfig, botIndex, gameRoom, timeSlice);
             // console.log('timeSlice returned:', timeSlice);
         }
+        const botConfig = playerConfig.botObjectList[botIndex];
         snapShotManager.updateBotSnapshotAction(gameRoom, botConfig);
     },
 

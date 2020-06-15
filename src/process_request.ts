@@ -18,6 +18,7 @@ export class RequestProcessor {
         
         switch (requestJSON.type) {
             case 'action':
+            case 'si':
                 // console.log('got action update from client');
                 // console.log(requestJSON);
                 workermanager.postMessage(requestJSON);

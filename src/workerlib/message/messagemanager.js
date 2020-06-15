@@ -189,7 +189,7 @@ module.exports = {
         }
 
         if(gameRoom != null){ // if found
-            // console.log('botConfig:', botConfig);
+            // console.log('update bot action:', userMessageObject);
             switch (userMessageObject.type) {
                 case 'action':
                     aiUtility.goNearDesignatedPosition(

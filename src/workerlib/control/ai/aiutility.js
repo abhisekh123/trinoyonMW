@@ -27,11 +27,10 @@ module.exports = {
 
     processAbilityRequest: function(objectConfig, gameRoom, abilityIndex){
         var abilityObject = objectConfig.ability[abilityIndex];
+        // console.log('processAbilityRequest:', abilityObject);
         // var key = ;
-        if(objectConfig[abilityObject.key] != this.worldConfig.constants.ABILITY_UNAVAILABLE){
-            // ability is not available at this moment. reject.
-        } else {
-            actionManager.actionUtility.activateAbility(objectConfig, gameRoom, abilityIndex);
+        if(objectConfig[abilityObject.key] == this.worldConfig.constants.ABILITY_AVAILABLE){
+            actionManager.actionUtility.activateAbility(objectConfig, abilityIndex);
 
             // process abilities which execute immediately
             switch (abilityObject.action) {
@@ -43,6 +42,7 @@ module.exports = {
                         basePosition = this.worldConfig.bottomBase;
                     }
                     if(basePosition != null){
+                        // console.log('retreat to:', basePosition);
                         this.goNearDesignatedPosition(
                             objectConfig, 
                             {x: basePosition[0], z: basePosition[1]},

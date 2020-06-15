@@ -23,10 +23,10 @@ module.exports = {
         // botConfig.position[2] = posZ;
     },
 
-    activateAbility: function (objectConfig, gameRoom, abilityIndex) {
+    activateAbility: function (objectConfig, abilityIndex) {
         var abilityObject = objectConfig.ability[abilityIndex];
 
-        botConfig[abilityObject.key] = this.worldConfig.constants.ABILITY_ACTIVE;
+        objectConfig[abilityObject.key] = this.worldConfig.constants.ABILITY_ACTIVE;
         // abilityObject.isActive = true;
         abilityObject.timeStamp = workerState.currentTime;
     },
@@ -230,7 +230,7 @@ module.exports = {
             return -1;
         }
         for (var i = 1; i < objectConfig.ability.length; ++i) { // skip first ability as it is retreat.
-            if (botConfig[objectConfig.ability[i].key] == this.worldConfig.constants.ABILITY_AVAILABLE) {
+            if (objectConfig[objectConfig.ability[i].key] == this.worldConfig.constants.ABILITY_AVAILABLE) {
                 return i;
             }
         }
@@ -242,7 +242,7 @@ module.exports = {
         if (abilityIndex < 0) { // no ability activated. regular attack.
             return offenderAttack;
         } else {
-            var abilityObject = offenderConfig.ability[abilityIndex];
+            var abilityObject = defenderConfig.ability[abilityIndex];
 
             switch (abilityObject.action) {
                 case 'sheild': // enhanced attack with crowd control
@@ -257,7 +257,7 @@ module.exports = {
 
     // conciders defence of defender and returns the damage received finally
     // handles one-to-one relation : one ofender to one defender.
-    completeBookKeepingForAttackEvent: function (offenderConfig, defenderConfig, offenderAttack) {
+    completeBookKeepingForAttackEvent: function (offenderConfig, defenderConfig, offenderAttack, gameRoom) {
         var isAlive = false;
         var isDefenderBuilding = false;
         if (defenderConfig.life > 0) {
@@ -319,14 +319,14 @@ module.exports = {
         var attackType = 'regular';
         var totalDamageDealt = 0;
         if (abilityIndex < 0) { // no ability activated. regular attack.
-            totalDamageDealt += this.completeBookKeepingForAttackEvent(offenderConfig, defenderConfig, offenderAttack);
+            totalDamageDealt += this.completeBookKeepingForAttackEvent(offenderConfig, defenderConfig, offenderAttack, gameRoom);
         } else {
             var abilityObject = offenderConfig.ability[abilityIndex];
             var abilityConfig = this.itemConfig.abilityConfig[abilityObject.action];
             switch (abilityObject.action) {
                 case 'pulse': // enhanced attack with crowd control
                     attackType = abilityObject.action;
-                    var playerTeam = configParam.team;
+                    var playerTeam = offenderConfig.team;
                     var enemyPlayerList = null;
                     if (playerTeam == 1) { // top team = 1
                         enemyPlayerList = gameRoom.players_2;
@@ -355,14 +355,15 @@ module.exports = {
                             );
                             if(distance <= offenderConfig.range){
                                 var damageByOffender = (offenderAttack * abilityConfig.neighbourAttackFactor) * (distance / offenderConfig.range);
-                                totalDamageDealt += this.completeBookKeepingForAttackEvent(offenderConfig, defenderConfig, damageByOffender);
+                                totalDamageDealt += this.completeBookKeepingForAttackEvent(offenderConfig, defenderConfig, damageByOffender, gameRoom);
                             }
                         }
                     }
                     totalDamageDealt += this.completeBookKeepingForAttackEvent(
                         offenderConfig, 
                         defenderConfig, 
-                        offenderAttack * abilityConfig.targetAttackFactor
+                        offenderAttack * abilityConfig.targetAttackFactor, 
+                        gameRoom
                     );
                     // disable ability
                     offenderConfig[abilityObject.key] = this.worldConfig.constants.ABILITY_UNAVAILABLE;
@@ -373,7 +374,8 @@ module.exports = {
                     totalDamageDealt += this.completeBookKeepingForAttackEvent(
                         offenderConfig, 
                         defenderConfig, 
-                        damageByOffender
+                        damageByOffender, 
+                        gameRoom
                     );
                     break;
                 default:

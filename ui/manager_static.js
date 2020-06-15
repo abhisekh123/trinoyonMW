@@ -10,6 +10,9 @@ tg.static.loadStaticModel = function (
     team
 ) {
     console.log('loadStaticModel:', itemID);
+    console.log('positionParam:', positionParam);
+    console.log('rotation:', rotation);
+    console.log('scale:', scale);
 
     var hpBarMaterial = tg.am.material_neutral_hpbar;
     var hpBarContainerMaterial = tg.am.material_neutral_hpbarcontainer;
@@ -274,12 +277,15 @@ tg.static.loadGLTFAssetFileForStaticMeshes = function (
         'static/model/' + filenameParam + '/',
         'scene.gltf',
         tg.scene,
-        (
+        function(
             newMeshes,
+            // positionParam,
+            // rotationParam,
+            // scaleParam,
             particleSystems,
             skeletons,
             animationGroups
-        ) => {
+        ){
             console.log('inner function', filenameParam);
             // this.meshes = newMeshes;
             tg.static.loadStaticModel(

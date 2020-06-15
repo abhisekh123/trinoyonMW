@@ -245,7 +245,7 @@ module.exports = {
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
                 const botConfig = playerConfig.botObjectList[j];
                 var botSnapshotObject = this.getGeneric_SnapshotObject(botConfig);
-                setBotAbilityState(botConfig, botSnapshotObject);
+                this.setBotAbilityState(botConfig, botSnapshotObject);
                 snapShotObject.itemState[botSnapshotObject.id] = botSnapshotObject;
             }
         }
@@ -256,7 +256,7 @@ module.exports = {
             for (var j = 0; j < playerConfig.botObjectList.length; ++j) {
                 const botConfig = playerConfig.botObjectList[j];
                 var botSnapshotObject = this.getGeneric_SnapshotObject(botConfig);
-                setBotAbilityState(botConfig, botSnapshotObject);
+                this.setBotAbilityState(botConfig, botSnapshotObject);
                 snapShotObject.itemState[botSnapshotObject.id] = botSnapshotObject;
             }
         }
