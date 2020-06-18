@@ -152,6 +152,8 @@ tg.world.processAttackEvent = function (sourceConfig, destinationConfig, eventsA
 
 tg.world.processAbilityStateChangeEvent = function (botObject, updateItemConfig, abilityIndex) {
     var abilityObject = botObject.ability[abilityIndex];
+    console.log(abilityObject.action + '::ability state change for bot:', botObject.id);
+    console.log('current value:' + botObject[abilityObject.key] + ' New value:' + updateItemConfig[abilityObject.key]);
     switch (abilityObject.action) {
         case 'sheild':
             
@@ -160,6 +162,9 @@ tg.world.processAbilityStateChangeEvent = function (botObject, updateItemConfig,
             
             break;
         case 'scorch':
+            
+            break;
+        case 'retreat':
             
             break;
         default:

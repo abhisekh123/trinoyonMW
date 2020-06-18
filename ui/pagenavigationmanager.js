@@ -31,7 +31,7 @@ tg.pn.showMatchStartingLoader = function(){
 };
 
 tg.pn.showMatchResultPage = function(){
-    console.log('showMatchPage');
+    console.log('showMatchResultPage');
     switch (tg.pn.currentPage) {
         case 'game-play':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
@@ -71,7 +71,7 @@ tg.pn.showMatchPage = function(){
         default:
             break;
     }
-
+    tg.static.freezeStaticAssets();
     tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#footerrow").show();

@@ -24,11 +24,11 @@ tg.static.loadStaticModel = function (
     newMeshes[0].scaling = new BABYLON.Vector3(scale, scale, scale);
     newMeshes[0].addRotation(rotation.rx, rotation.ry, rotation.rz);
     // console.log('loadStaticModel');
-    for (var i = 0; i < newMeshes.length; ++i) {
-        // // console.log(i + '->' + newMeshes[i].name);
-        newMeshes[i].isPickable = false;
-        newMeshes[i].freezeWorldMatrix();
-    }
+    // for (var i = 0; i < newMeshes.length; ++i) {
+    //     // // console.log(i + '->' + newMeshes[i].name);
+    //     newMeshes[i].isPickable = false;
+    //     newMeshes[i].freezeWorldMatrix();
+    // }
 
     var buildingTypeConfig = tg.itemConfigs.items[itemType];
     const buildingObject = {
@@ -43,6 +43,7 @@ tg.static.loadStaticModel = function (
         animations: buildingTypeConfig.animations
     };
     buildingObject.controlMesh = newMeshes[0];
+    buildingObject.allMeshes = newMeshes;
     buildingObject.team = team;
     buildingObject.projectileShootY = buildingTypeConfig.projectileShootY * tg.worldItems.uiConfig.playerDimensionBaseUnit;
     buildingObject.projectileReceiveY = buildingTypeConfig.projectileReceiveY * tg.worldItems.uiConfig.playerDimensionBaseUnit;
@@ -213,10 +214,27 @@ tg.static.loadStaticModel = function (
 
     tg.audio.initGameDynamicObjectAudio(buildingObject, buildingTypeConfig);
 
+    for (var i = 0; i < newMeshes.length; ++i) {
+        // // console.log(i + '->' + newMeshes[i].name);
+        newMeshes[i].isPickable = false;
+        // newMeshes[i].freezeWorldMatrix();
+        
+    }
+
     tg.am.updateNewAssetLoaded(1);
 
     console.log('loadStaticModel end:', itemID);
 };
+
+tg.static.freezeStaticAssets = function(){
+    for (let itemIndex = 0; itemIndex < tg.am.staticItems.buildingsArray.length; itemIndex++) {
+        const staticItem = tg.am.staticItems.buildingsArray[itemIndex];
+        for (let meshIndex = 0; meshIndex < staticItem.allMeshes.length; meshIndex++) {
+            const meshItem = staticItem.allMeshes[meshIndex];
+            meshItem.unfreezeWorldMatrix();
+        }
+    }
+}
 
 
 tg.static.updateBuildingTeam = function (buildingConfig, team) {

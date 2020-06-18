@@ -225,12 +225,13 @@ module.exports = {
     },
 
     // need to be updated if more abilities(per bot) are introduced.
+    // returns index of ability activated.
     getActiveAbilityIndex: function (objectConfig) {
         if (objectConfig.ability == undefined || objectConfig.ability == null) { // for buildings.
             return -1;
         }
         for (var i = 1; i < objectConfig.ability.length; ++i) { // skip first ability as it is retreat.
-            if (objectConfig[objectConfig.ability[i].key] == this.worldConfig.constants.ABILITY_AVAILABLE) {
+            if (objectConfig[objectConfig.ability[i].key] == this.worldConfig.constants.ABILITY_ACTIVE) {
                 return i;
             }
         }
@@ -258,6 +259,7 @@ module.exports = {
     // conciders defence of defender and returns the damage received finally
     // handles one-to-one relation : one ofender to one defender.
     completeBookKeepingForAttackEvent: function (offenderConfig, defenderConfig, offenderAttack, gameRoom) {
+        // console.log('completeBookKeepingForAttackEvent::', offenderConfig);
         var isAlive = false;
         var isDefenderBuilding = false;
         if (defenderConfig.life > 0) {
@@ -271,8 +273,11 @@ module.exports = {
         defenderConfig.life -= attackReceived;
 
         gameRoom.statistics.performance[offenderConfig.team].damage += offenderAttack;
-        if (offenderConfig.type != 'tower' || offenderConfig.type != 'base') {
+        // console.log(offenderConfig.id + '--' + offenderConfig.type + '-');
+        if (offenderConfig.type != 'tower' && offenderConfig.type != 'base') {
             // no need to update remaining stats
+            
+            // console.log(offenderConfig.playerIndex + '<=>' + offenderConfig.index);
             var botEntryInStatistics = gameRoom.statistics.detailedPerformance[offenderConfig.playerIndex][offenderConfig.index];
 
             // increment bot totalDamageSinceSpawn and totalDamageSinceGameStart
@@ -316,6 +321,7 @@ module.exports = {
         var offenderAttack = offenderConfig.levelMap[offenderConfig.level].attack;
 
         var abilityIndex = this.getActiveAbilityIndex(offenderConfig);
+        // console.log(offenderConfig.id + 'processAttackAction:abilityIndex:' + abilityIndex);
         var attackType = 'regular';
         var totalDamageDealt = 0;
         if (abilityIndex < 0) { // no ability activated. regular attack.

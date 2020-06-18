@@ -80,6 +80,7 @@ module.exports = {
     // deactivate ability if active time more than the duration.
     resetBotAbilities: function(playerConfig, botIndex){
         const botConfig = playerConfig.botObjectList[botIndex];
+
         if(botConfig.isActive == false){
             return 0;
         }
@@ -87,12 +88,13 @@ module.exports = {
         // ability cycle: available -> active -> unavailable -> available ....
         for(var i = 0; i < botConfig.ability.length; ++i){
             var abilityObject = botConfig.ability[i];
+            var abilityConfig = this.itemConfig.abilityConfig[abilityObject.action];
             if(botConfig[abilityObject.key] == this.worldConfig.constants.ABILITY_UNAVAILABLE){ // if ability is disabled
-                if((workerState.currentTime - abilityObject.timeStamp) > abilityObject.resetInterval){
+                if((workerState.currentTime - abilityObject.timeStamp) > abilityConfig.resetInterval){
                     botConfig[abilityObject.key] = this.worldConfig.constants.ABILITY_AVAILABLE;
                 }
             } else if(botConfig[abilityObject.key] == this.worldConfig.constants.ABILITY_ACTIVE){
-                if((workerState.currentTime - abilityObject.timeStamp) > abilityObject.duration){
+                if((workerState.currentTime - abilityObject.timeStamp) > abilityConfig.duration){
                     botConfig[abilityObject.key] = this.worldConfig.constants.ABILITY_UNAVAILABLE;
                 }
             }
