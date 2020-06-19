@@ -128,13 +128,15 @@ tg.am.createMaterials = function () {
     var boxMaterial = new BABYLON.StandardMaterial("material_box", tg.scene);
 
     // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor5.jpg", tg.scene);
+    // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor5.jpg", tg.scene);
+    // boxMaterial.emissiveColor = new BABYLON.Color3(45/256, 62/256, 50/256);
+    boxMaterial.diffuseColor = new BABYLON.Color3(45/256, 62/256, 50/256);
     // boxMaterial.emissiveColor = new BABYLON.Color3(0.2, 0.3, 0.3);
     // boxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     // boxMaterial.specularTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
     // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
     // boxMaterial.ambientTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    boxMaterial.disableLighting = true;
+    // boxMaterial.disableLighting = true;
     boxMaterial.freeze();
     tg.am.boxMaterial = boxMaterial;
 
@@ -163,10 +165,12 @@ tg.am.createMaterials = function () {
     // material for ground
     var groundMaterial = new BABYLON.StandardMaterial("material_ground", tg.scene);
 
-    // groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor6.jpg", tg.scene);
-    groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/grass.png", tg.scene);
-    groundMaterial.emissiveTexture.uScale = tg.worldItems.gridSide / 8;
-    groundMaterial.emissiveTexture.vScale = tg.worldItems.gridSide / 8;
+    // // groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor6.jpg", tg.scene);
+    // groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/grass.png", tg.scene);
+    // groundMaterial.emissiveTexture.uScale = tg.worldItems.gridSide / 8;
+    // groundMaterial.emissiveTexture.vScale = tg.worldItems.gridSide / 8;
+
+    groundMaterial.emissiveColor = new BABYLON.Color3(20/256, 20/256, 40/256);
     // groundMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 0.3);
     // material_sky.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.5);
     // material_sky.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.5);
@@ -174,6 +178,7 @@ tg.am.createMaterials = function () {
     groundMaterial.disableLighting = true;
     groundMaterial.freeze();
     tg.am.groundMaterial = groundMaterial;
+    // tg.am.groundMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 0.3);
 
     var material_sky = new BABYLON.StandardMaterial('material_sky', tg.scene);
     // material_sky.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.5);
@@ -334,7 +339,57 @@ tg.am.createMaterials = function () {
     tg.am.material_neutral_hpbarcontainer = material_neutral_hpbarcontainer;
 
     console.log('complete creating materials');
-}
+};
+
+tg.am.initialiseBotMetaDataFactory = function(playerConfigArray){
+    var metaDataRequirement = {
+        retreat: 0,
+        sheild: 0,
+        scorch: 0,
+        pulse: 0,
+    };
+    for (let i = 0; i < playerConfigArray.length; i++) {
+        const playerBotArray = playerConfigArray[i].botObjectList;
+        for (let j = 0; j < playerBotArray.length; j++) {
+            let botConfig = playerBotArray[j];
+            var characterConfig = tg.itemConfigs.items[botConfig.type];
+            // return;
+            for(var k = 0; k < characterConfig.ability.length; ++k){
+                switch (characterConfig.ability[k].action) {
+                    case 'retreat':
+                        metaDataRequirement[characterConfig.ability[k].action]++;
+                        break;
+                    case 'sheild':
+                        metaDataRequirement[characterConfig.ability[k].action]++;
+                        break;
+                    case 'scorch':
+                        metaDataRequirement[characterConfig.ability[k].action]++;
+                        break;
+                    case 'pulse':
+                        metaDataRequirement[characterConfig.ability[k].action]++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    console.log('metaDataRequirement:', metaDataRequirement);
+
+    // initialise factory objects
+
+    // pulse:
+    var pulseAbilityConfig = tg.itemConfigs.abilityConfig.pulse;
+    var key = pulseAbilityConfig.metaData.key;
+    tg.am[key] = new BABYLON.SpriteManager(
+        key,
+        pulseAbilityConfig.metaData.file,
+        metaDataRequirement.pulse,// capacity
+        pulseAbilityConfig.metaData.cellDimension,
+        tg.scene
+    );
+};
 
 tg.am.init = function(){
     tg.am.bam = new BABYLON.AssetsManager(tg.scene);

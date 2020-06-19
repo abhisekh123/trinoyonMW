@@ -14,8 +14,9 @@ tg.createAmbience = function() {
 
     var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0,0,0), tg.scene);
     light.diffuse = new BABYLON.Color3(1, 1, 1);
-    light.specular = new BABYLON.Color3(1, 1, 1);
-    light.groundColor = new BABYLON.Color3(1, 1, 1);
+//     light.specular = new BABYLON.Color3(1, 1, 1);
+//     light.groundColor = new BABYLON.Color3(1, 1, 1);
+    light.position.y = 600;
 
     tg.light = light;
 

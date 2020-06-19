@@ -12,6 +12,8 @@ tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComple
     }
     tg.am.totalAssetsLoaded_tillNow = 0;
 
+    tg.am.initialiseBotMetaDataFactory(playerConfigArray);
+
     for (let i = 0; i < playerConfigArray.length; i++) {
         const playerBotArray = playerConfigArray[i].botObjectList;
         console.log('playerBotArray:', playerBotArray);
@@ -29,9 +31,6 @@ tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComple
         }
     }
 };
-
-
-
 
 tg.bot.loadCharacters = function (
     botConfig,
@@ -325,6 +324,24 @@ tg.bot.processLoadedModel = function (
     tg.am.updateNewAssetLoaded(1);
 };
 
+// add additional data/asset to the botconfig based on bot type
+tg.bot.addMetaDataToBot = function (botObject) {
+    switch (botObject.type) {
+        case 'lion':
+            
+            break;
+        case 'swordman':
+            
+            break;
+        case 'archer':
+            
+            break;
+    
+        default:
+            console.log('unknown bot type:', botObject.type);
+            break;
+    }
+};
 
 tg.bot.changeLevel = function (botConfig, level) {
     // console.log(level + '->change level event:', botConfig);

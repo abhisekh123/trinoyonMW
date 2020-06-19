@@ -55,14 +55,17 @@
             //     capacity: 12, // (5 defence + 1 base) * 2
             //     cellDimension: {width: 260 / 4, height: 300 / 4}
             // }
-        ], 
+        ],
         abilityConfig: {
             scorch: {
                 name: 'scorch',
                 iconurl: 'static/img/flame_arrow_icon.png',
                 resetInterval: 40000,
                 duration: 3000,
-                targetAttackFactor: 2
+                targetAttackFactor: 2,
+                metaData: {
+                    file: '/static/img/fireball.png'
+                }
             },
             retreat: {
                 // goto base
@@ -70,6 +73,9 @@
                 iconurl: '/static/img/flag-white.png',
                 resetInterval: 5000,
                 duration: 3000,
+                metaData: {
+                    file: '/static/img/flag-white.png'
+                }
             },
             pulse: {
                 // 1.5 attack to recipient
@@ -80,7 +86,12 @@
                 resetInterval: 40000,
                 duration: 3000,
                 neighbourAttackFactor: 0.5,
-                targetAttackFactor: 1.5
+                targetAttackFactor: 1.5,
+                metaData: {
+                    file: '/static/img/pulse.png',
+                    key: 'sprite_manager_ability_pulse',
+                    cellDimension: {width: 480 / 5, height: 192 / 2}
+                }
             },
             sheild: {
                 // 0.25 * damage(all attacks received) received for the whole duration.
@@ -88,7 +99,10 @@
                 iconurl: 'static/img/sheild.png',
                 resetInterval: 40000,
                 duration: 3000,
-                defenceFactor: 0.25
+                defenceFactor: 0.25,
+                metaData: {
+                    file: '/static/img/dragon-sheild.png'
+                }
             }
         },
         items:{
