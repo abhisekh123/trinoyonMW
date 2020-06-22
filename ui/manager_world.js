@@ -150,27 +150,6 @@ tg.world.processAttackEvent = function (sourceConfig, destinationConfig, eventsA
     }
 };
 
-tg.world.processAbilityStateChangeEvent = function (botObject, updateItemConfig, abilityIndex) {
-    var abilityObject = botObject.ability[abilityIndex];
-    console.log(abilityObject.action + '::ability state change for bot:', botObject.id);
-    console.log('current value:' + botObject[abilityObject.key] + ' New value:' + updateItemConfig[abilityObject.key]);
-    switch (abilityObject.action) {
-        case 'sheild':
-            
-            break;
-        case 'pulse':
-            
-            break;
-        case 'scorch':
-            
-            break;
-        case 'retreat':
-            
-            break;
-        default:
-            break;
-    }
-};
 
 tg.world.updateWorld = function (updateParam) {
     // console.log('tg.world.updateWorld:', updateParam);
@@ -228,7 +207,7 @@ tg.world.updateWorld = function (updateParam) {
             for(var i = 0; i < botObject.ability.length; ++i){
                 var abilityObject = botObject.ability[i];
                 if(botObject[abilityObject.key] != updateItemConfig[abilityObject.key]){
-                    tg.world.processAbilityStateChangeEvent(botObject, updateItemConfig, i);
+                    tg.effect.processAbilityStateChangeEvent(botObject, updateItemConfig, i);
                     botObject[abilityObject.key] = updateItemConfig[abilityObject.key];
                 }
             }

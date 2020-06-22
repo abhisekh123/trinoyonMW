@@ -33,6 +33,10 @@ tg.uu.getObjectValues = function (objectParam) {
     return Object.values(objectParam);
 };
 
+tg.uu.getObjectClone = function (objectParam) {
+    return JSON.parse(JSON.stringify(objectParam));
+};
+
 // both inputs should be integers.
 tg.uu.getRandom = function (rangeStart, rangeEnd) {
     return Math.floor(Math.random() * (rangeEnd - rangeStart)) + rangeStart;

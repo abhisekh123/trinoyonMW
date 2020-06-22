@@ -22,7 +22,7 @@ tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComple
             tg.bot.userPlayerConfig.selectedBot = null;
             tg.bot.userPlayerConfig.clearSelectionTimer = null;
             tg.hl.updateFooterIconImageForPlayerTeamBots();
-            
+
         }
         for (let j = 0; j < playerBotArray.length; j++) {
             let botConfig = playerBotArray[j];
@@ -121,7 +121,7 @@ tg.bot.processLoadedModel = function (
     var botLevelMap = characterConfig.levelMap[0];
     var botSpeed = botLevelMap.speed;
     var botLife = botLevelMap.life;
-    
+
 
     const botObject = {};
     botObject.id = characterID;
@@ -145,9 +145,9 @@ tg.bot.processLoadedModel = function (
     botObject.plannedPath = null;
     botObject.plannedPathTimeStamp = 0;
 
-    botObject.levelMap = characterConfig.levelMap;
-    botObject.ability = characterConfig.ability;
-    for(var i = 0; i < characterConfig.ability.length; ++i){
+    botObject.levelMap = tg.uu.getObjectClone(characterConfig.levelMap);
+    botObject.ability = tg.uu.getObjectClone(characterConfig.ability);
+    for (var i = 0; i < characterConfig.ability.length; ++i) {
         var abilityItem = characterConfig.ability[i];
         botObject[abilityItem.key] = tg.worldItems.constants.ABILITY_AVAILABLE;
     }
@@ -182,7 +182,7 @@ tg.bot.processLoadedModel = function (
     botObject.controlMesh.position.z = positionParam.z;
     botObject.controlMesh.addRotation(0, rotationParam, 0);
 
-    if(isSelfBot == true){
+    if (isSelfBot == true) {
         var envelopMesh = BABYLON.MeshBuilder.CreateBox('envelop_' + characterID, {
             height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
             width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
@@ -200,7 +200,7 @@ tg.bot.processLoadedModel = function (
         );
         envelopMesh.parent = botObject.controlMesh;
     }
-    
+
 
     // botObject.currentAnimation = 'goto';
 
@@ -263,84 +263,139 @@ tg.bot.processLoadedModel = function (
 
 
     botObject.weaponType = characterConfig.weaponType;
+    tg.bot.addMetaDataToBot(botObject, characterConfig, characterID, positionParam);
     // projectile mesh
-    if (botObject.weaponType == 'melee') {
-        botObject.projectile = null;
-        botObject.isProjectileActive = false;
-        botObject.projectileData = null;
-    } else {
+    // if (botObject.weaponType == 'melee') {
 
-        // var mat = new BABYLON.StandardMaterial('material_projectile_' + characterID, tg.scene);
-        // var projectileTexture = new BABYLON.Texture(characterConfig.projectile.image, tg.scene);
-        // projectileTexture.hasAlpha = true;
-        // projectileTexture.getAlphaFromRGB = true;
+    // } else {
 
-        // mat.diffuseTexture = projectileTexture;
+    //     // var mat = new BABYLON.StandardMaterial('material_projectile_' + characterID, tg.scene);
+    //     // var projectileTexture = new BABYLON.Texture(characterConfig.projectile.image, tg.scene);
+    //     // projectileTexture.hasAlpha = true;
+    //     // projectileTexture.getAlphaFromRGB = true;
 
-        var f = new BABYLON.Vector4(
-            characterConfig.projectile.uBottom,
-            characterConfig.projectile.vBottom,
-            characterConfig.projectile.uTop,
-            characterConfig.projectile.vTop
-        );
+    //     // mat.diffuseTexture = projectileTexture;
 
-        var options = {
-            sideOrientation: BABYLON.Mesh.DOUBLESIDE, // FRONTSIDE, BACKSIDE, DOUBLESIDE
-            frontUVs: f,
-            backUVs: f,
-            // updatable: false,
-            width: characterConfig.projectile.width,
-            height: characterConfig.projectile.height,
-        }
 
-        var projectilePlane = BABYLON.MeshBuilder.CreatePlane('projectile_plane_' + characterID, options, tg.scene);
-        projectilePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-        projectilePlane.material = tg.am.material_projectile_flame_arrow;
-
-        console.log('=======->' + projectilePlane.isPickable);
-
-        // projectilePlane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
-        // projectilePlane.bakeCurrentTransformIntoVertices();
-
-        projectilePlane.position.x = positionParam.x;
-        projectilePlane.position.y = tg.worldItems.uiConfig.hiddenY;
-        projectilePlane.position.z = positionParam.z;
-        // projectile.material = tg.am.material_semitransparent_projectile;
-
-        botObject.projectile = projectilePlane;
-        botObject.isProjectileActive = false;
-        botObject.projectileData = {
-            path: null,
-            endTime: 0,
-            plane: projectilePlane,
-            // texture: projectileTexture,
-            uOffset: characterConfig.projectile.uOffset
-        };
-    }
+    // }
 
     tg.audio.initGameDynamicObjectAudio(botObject, characterConfig);
-
+    console.log(botObject.ability);
 
     tg.am.updateNewAssetLoaded(1);
 };
 
 // add additional data/asset to the botconfig based on bot type
-tg.bot.addMetaDataToBot = function (botObject) {
+tg.bot.addMetaDataToBot = function (botObject, characterConfig, characterID, positionParam) {
+    // populate character type assets
+    console.log('tg.bot.addMetaDataToBot:', characterID);
     switch (botObject.type) {
         case 'lion':
-            
+            botObject.projectile = null;
+            botObject.isProjectileActive = false;
+            botObject.projectileData = null;
             break;
         case 'swordman':
-            
+            botObject.projectile = null;
+            botObject.isProjectileActive = false;
+            botObject.projectileData = null;
             break;
         case 'archer':
-            
+
+            var faceUV = new BABYLON.Vector4(
+                characterConfig.projectile.uBottom,
+                characterConfig.projectile.vBottom,
+                characterConfig.projectile.uTop,
+                characterConfig.projectile.vTop
+            );
+
+            var options = {
+                sideOrientation: BABYLON.Mesh.DOUBLESIDE, // FRONTSIDE, BACKSIDE, DOUBLESIDE
+                frontUVs: faceUV,
+                backUVs: faceUV,
+                // updatable: false,
+                width: characterConfig.projectile.width,
+                height: characterConfig.projectile.height,
+            }
+
+            var projectilePlane = BABYLON.MeshBuilder.CreatePlane('projectile_plane_' + characterID, options, tg.scene);
+            projectilePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+            projectilePlane.material = tg.am.material_projectile_flame_arrow;
+
+            // console.log('=======->' + projectilePlane.isPickable);
+
+            // projectilePlane.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
+            // projectilePlane.bakeCurrentTransformIntoVertices();
+
+            projectilePlane.position.x = positionParam.x;
+            projectilePlane.position.y = tg.worldItems.uiConfig.hiddenY;
+            projectilePlane.position.z = positionParam.z;
+            // projectile.material = tg.am.material_semitransparent_projectile;
+            projectilePlane.isPickable = false;
+
+            botObject.projectile = projectilePlane;
+            botObject.isProjectileActive = false;
+            botObject.projectileData = {
+                path: null,
+                endTime: 0,
+                plane: projectilePlane,
+                // texture: projectileTexture,
+                uOffset: characterConfig.projectile.uOffset
+            };
             break;
-    
+
         default:
             console.log('unknown bot type:', botObject.type);
             break;
     }
+
+    // populate ability specific asset
+    for (var k = 0; k < botObject.ability.length; ++k) {
+        var abilityObject = botObject.ability[k];
+        var abilityConfig = tg.itemConfigs.abilityConfig[abilityObject.action];
+        switch (abilityObject.action) {
+            case 'retreat':
+                // metaDataRequirement[characterConfig.ability[k].action]++;
+                tg.effect.addAbilityEffectPlane(abilityObject, characterID, positionParam, abilityConfig);
+                var abilityEffectPlane = abilityObject[abilityConfig.metaData.key];
+                abilityEffectPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+                abilityEffectPlane.scaling = new BABYLON.Vector3(
+                    1 / characterConfig.scale,
+                    1 / characterConfig.scale,
+                    1 / characterConfig.scale
+                );
+                abilityObject.visibleY = (tg.worldItems.uiConfig.playerDimensionBaseUnit) / characterConfig.scale;
+                
+                break;
+            case 'sheild':
+                tg.effect.addAbilityEffectPlane(abilityObject, characterID, positionParam, abilityConfig);
+                var abilityEffectPlane = abilityObject[abilityConfig.metaData.key];
+                abilityEffectPlane.addRotation(Math.PI / 2, 0, 0);
+                // abilityEffectPlane.bakeCurrentTransformIntoVertices();
+                abilityObject.visibleY = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2) / characterConfig.scale;
+
+                // abilityEffectPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+                // abilityEffectPlane.scaling = new BABYLON.Vector3(
+                //     1 / characterConfig.scale,
+                //     1 / characterConfig.scale,
+                //     1 / characterConfig.scale
+                // );
+
+                // abilityEffectPlane.position.y = abilityObject.visibleY;
+                break;
+            case 'scorch':
+                tg.effect.addAbilityEffectPlane(abilityObject, characterID, positionParam, abilityConfig);
+                var abilityEffectPlane = abilityObject[abilityConfig.metaData.key];
+                abilityEffectPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+                break;
+            case 'pulse':
+                tg.effect.addAbilityEffectSprite(abilityObject, characterID, positionParam, abilityConfig);
+                break;
+            default:
+                break;
+        }
+    }
+
 };
 
 tg.bot.changeLevel = function (botConfig, level) {

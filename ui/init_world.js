@@ -17,6 +17,7 @@ tg.createAmbience = function() {
 //     light.specular = new BABYLON.Color3(1, 1, 1);
 //     light.groundColor = new BABYLON.Color3(1, 1, 1);
     light.position.y = 600;
+    light.range = 1000;
 
     tg.light = light;
 

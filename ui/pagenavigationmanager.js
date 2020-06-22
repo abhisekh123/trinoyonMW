@@ -72,6 +72,7 @@ tg.pn.showMatchPage = function(){
             break;
     }
     tg.static.freezeStaticAssets();
+    console.log('print bot grand list::', tg.am.dynamicItems.botsArray);
     tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#footerrow").show();

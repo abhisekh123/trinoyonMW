@@ -57,6 +57,7 @@
             // }
         ],
         abilityConfig: {
+            // iconurl: image to be shown in the ui icon to activate the event.
             scorch: {
                 name: 'scorch',
                 iconurl: 'static/img/flame_arrow_icon.png',
@@ -64,7 +65,13 @@
                 duration: 3000,
                 targetAttackFactor: 2,
                 metaData: {
-                    file: '/static/img/fireball.png'
+                    type: 'plane',
+                    file: '/static/img/fireball.png',
+                    key: 'material_ability_scorch',
+                    cellDimension: {
+                        width: 3,
+                        height: 3,
+                    }
                 }
             },
             retreat: {
@@ -74,7 +81,13 @@
                 resetInterval: 5000,
                 duration: 3000,
                 metaData: {
-                    file: '/static/img/flag-white.png'
+                    type: 'plane',
+                    file: '/static/img/flag-white.png',
+                    key: 'material_ability_retreat',
+                    cellDimension: {
+                        width: 5,
+                        height: 5,
+                    }
                 }
             },
             pulse: {
@@ -83,14 +96,22 @@
                 // single attack. deactivate ability right after that.
                 name: 'pulse',
                 iconurl: '/static/img/quake.jpeg',
-                resetInterval: 40000,
+                resetInterval: 4000,
                 duration: 3000,
                 neighbourAttackFactor: 0.5,
                 targetAttackFactor: 1.5,
                 metaData: {
+                    type: 'sprite',
                     file: '/static/img/pulse.png',
                     key: 'sprite_manager_ability_pulse',
-                    cellDimension: {width: 480 / 5, height: 192 / 2}
+                    cellDimension: {width: 480 / 5, height: 192 / 2},
+                    staticCellIndex: 9,
+                    delay: 100,
+                    startCellIndex: 0,
+                    endCellIndex: 9,
+                    width: 30,
+                    height: 30,
+                    visibleY: 10
                 }
             },
             sheild: {
@@ -101,7 +122,13 @@
                 duration: 3000,
                 defenceFactor: 0.25,
                 metaData: {
-                    file: '/static/img/dragon-sheild.png'
+                    type: 'plane',
+                    file: '/static/img/dragon-sheild.png',
+                    key: 'material_ability_sheild',
+                    cellDimension: {
+                        width: 5,
+                        height: 5,
+                    }
                 }
             }
         },

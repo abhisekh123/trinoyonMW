@@ -595,4 +595,6 @@ tg.static.addStaticItems = function () {
     targetMarker.material = tg.am.material_semitransparent_blue;
 
     tg.am.targetMarker = targetMarker;
-}
+};
+
+

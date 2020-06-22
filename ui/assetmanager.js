@@ -150,6 +150,22 @@ tg.am.createMaterials = function () {
         tg.am.getMaterialsForPlane(tg.itemConfigs.planes[i], 'material_plane_');
     }
 
+    // material for ability effect
+    const itemKeyArray = tg.uu.getObjectKeys(tg.itemConfigs.abilityConfig);
+    for(var i = 0; i < itemKeyArray.length; ++i){
+        var abilityConfig = tg.itemConfigs.abilityConfig[itemKeyArray[i]];
+
+        if(abilityConfig.metaData.type != 'plane'){
+            continue;
+        }
+
+        var paramConfig = {
+            file: abilityConfig.metaData.file,
+            key: abilityConfig.metaData.key,
+        }
+        tg.am.getMaterialsForPlane(paramConfig, '');
+    }
+
     // sprite for effects
     for(var i = 0; i < tg.itemConfigs.effectSprites.length; ++i){
         var key = 'sprite_manager_' + tg.itemConfigs.effectSprites[i].key;

@@ -437,23 +437,38 @@ tg.hl.enableFooterSelfBotIcon = function(id){
 
 tg.hl.disableDiv = function(element){
     element.addClass("disabled-element");
-}
+};
 
 tg.hl.enableDiv = function(element){
     element.removeClass("disabled-element");
-}
+};
 
 tg.hl.clearRightColumn = function(){
     tg.hl.resetAllRighColumnButton();
-}
+};
+
+tg.hl.getHTMLElementByIndex = function(elementIndex, elementType){
+    var prefix = '';
+    switch (elementType) {
+        case 'right-column-button':
+            prefix = '#rightcolumn-button-';
+            break;
+        case 'right-column-image':
+            prefix = '#rightcolumn-image-'
+            break;
+        default:
+            break;
+    }
+    return $(prefix + elementIndex);
+};
 
 tg.hl.updateRightColumnForNewBotSelection = function(botObject){
     tg.hl.resetAllRighColumnButton();
     for(var i = 0; i < botObject.ability.length; ++i){
-        var buttonElement = $("#rightcolumn-button-" + i);
+        var buttonElement = tg.hl.getHTMLElementByIndex(i, 'right-column-button');
         buttonElement.show();
         var abilityConfig = tg.itemConfigs.abilityConfig[botObject.ability[i].action];
-        var imageElement = $("#rightcolumn-image-" + i);
+        var imageElement = tg.hl.getHTMLElementByIndex(i, 'right-column-image');
         imageElement.attr('src', abilityConfig.iconurl);
 
         if(botObject[botObject.ability[i].key] == tg.worldItems.constants.ABILITY_AVAILABLE){
