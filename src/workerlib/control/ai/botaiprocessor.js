@@ -23,6 +23,86 @@ module.exports = {
         return false;
     },
 
+
+
+    // check bot strategic situation and activate AI if required
+    // manageBotTypeAIToActivateAbility: function(botConfig, gameRoom){
+    // },
+
+    getAbilityState: function(botConfig, abilityIndex){
+        return botConfig[botConfig.ability[abilityIndex].key];
+    },
+
+
+    useRetreatAbility: function(botConfig, gameRoom){
+        for(var i = 0; i < botConfig.ability.length; ++i){
+            switch (botConfig.ability[i].action) {
+                case 'retreat':
+                    if(this.getAbilityState(botConfig, i) == this.worldConfig.constants.ABILITY_AVAILABLE){
+                        aiUtility.processAbilityRequest(botConfig, gameRoom, i);
+                        return true;
+                    }
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+        return false;
+    },
+
+    useHPAbility: function(botConfig, gameRoom){
+        for(var i = 0; i < botConfig.ability.length; ++i){
+            switch (botConfig.ability[i].action) {
+                case 'sheild':
+                    if(this.getAbilityState(botConfig, i) == this.worldConfig.constants.ABILITY_AVAILABLE){
+                        aiUtility.processAbilityRequest(botConfig, gameRoom, i);
+                    }
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    },
+
+    useAttackAbility: function(botConfig, gameRoom){
+        for(var i = 0; i < botConfig.ability.length; ++i){
+            switch (botConfig.ability[i].action) {
+                case 'pulse':
+                    if(this.getAbilityState(botConfig, i) == this.worldConfig.constants.ABILITY_AVAILABLE){
+                        aiUtility.processAbilityRequest(botConfig, gameRoom, i);
+                    }
+                    break;
+                case 'scorch':
+                    if(this.getAbilityState(botConfig, i) == this.worldConfig.constants.ABILITY_AVAILABLE){
+                        aiUtility.processAbilityRequest(botConfig, gameRoom, i);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    },
+
+    isBotAIDriven: function(botConfig, gameRoom){
+        var playerID = botConfig.player;
+        var playerList = null;
+        if(botConfig.team == 1){
+            playerList = gameRoom.players_1;
+        } else {
+            playerList = gameRoom.players_2;
+        }
+
+        for(var i = 0; i < playerList.length; ++i){
+            if(playerID == playerList[i].id){
+                return playerList[i].isAIDriven;
+            }
+        }
+
+        return true;
+    },
+
     processAI: function(playerConfig, botIndex, gameRoom, timeSlice){
 
         /**
@@ -65,6 +145,20 @@ module.exports = {
             return timeSlice;
         }
 
+        // try retreat action
+        
+        if(playerConfig.isAIDriven == true){
+            var offenderLifeRatio = (botConfig.life / botConfig.fullLife);
+            if(offenderLifeRatio < this.itemConfig.globalAIConfig.retreatAbilityLifeFraction){
+                if(this.useRetreatAbility(botConfig, gameRoom) == true){ // if successfully used ability
+                    return timeSlice;
+                }
+                
+            }
+        }
+        
+
+
         // find closest hostile and calculate distance.
         var distanceBetweenBotAndHostile = this.worldConfig.gridSide + 1;
         var hostileConfig = routeManager.findClosestHostile(botConfig, gameRoom, this.worldConfig.constants.ALL);
@@ -80,6 +174,16 @@ module.exports = {
         if(distanceBetweenBotAndHostile <= botConfig.range && botConfig.action == 'ready'){ // if a hostile is found in range
             // console.log('--attack -> hostiles in range:' + hostileConfig.id + ' at position:', hostileConfig.position);
             // actionManager.actionUtility.addActionToBot(botConfig, 'fight', hostileConfig, gameRoom);
+            if(playerConfig.isAIDriven == true){
+                this.useAttackAbility(botConfig, gameRoom);
+            }
+
+            if(hostileConfig.type != 'tower' && hostileConfig.type != 'base'){
+                if(this.isBotAIDriven(hostileConfig, gameRoom)){
+                    this.useHPAbility(hostileConfig, gameRoom);
+                }
+            }
+            
             aiUtility.attackHostile(botConfig, hostileConfig, gameRoom);
             return 0; // consumed all remaining time to attack. Done for the current iteration.
         }

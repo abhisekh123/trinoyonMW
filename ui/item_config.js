@@ -56,6 +56,11 @@
             //     cellDimension: {width: 260 / 4, height: 300 / 4}
             // }
         ],
+        globalAIConfig: {
+            retreatAbilityLifeFraction: 0.3,
+            hpAbilityLifeFraction: 0.45,
+            
+        },
         abilityConfig: {
             // iconurl: image to be shown in the ui icon to activate the event.
             scorch: {
@@ -96,7 +101,7 @@
                 // single attack. deactivate ability right after that.
                 name: 'pulse',
                 iconurl: '/static/img/quake.jpeg',
-                resetInterval: 4000,
+                resetInterval: 40000,
                 duration: 3000,
                 neighbourAttackFactor: 0.5,
                 targetAttackFactor: 1.5,
