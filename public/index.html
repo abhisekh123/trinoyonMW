@@ -21,6 +21,13 @@
 </head>
 
 <body onload="initSystem()" class="parent-body" oncontextmenu="contextMenuFunction()">
+    <!-- <script type="text/javascript" language="javascript">
+        var aax_size = '728x90';
+        var aax_pubname = 'trinoyon-21';
+        var aax_src = '302';
+    </script>
+    <script type="text/javascript" language="javascript" src="http://c.amazon-adsystem.com/aax2/assoc.js"></script> -->
+
     <div id="fps">0</div>
     <canvas id='tc'></canvas>
     <button onclick="makeFullScreen()" class="fullscreenbutton" id="fullscreenbutton"></button>
@@ -41,6 +48,13 @@
 
         <!-- home -->
         <div class="menu-home" id="menu-home">
+                <script type="text/javascript" language="javascript">
+                    var aax_size = '728x90';
+                    var aax_pubname = 'trinoyon-21';
+                    var aax_src = '302';
+                </script>
+                <script type="text/javascript" language="javascript" src="http://c.amazon-adsystem.com/aax2/assoc.js"></script>
+            
             <div class="menu-header">Choose Your Team</div>
 
             <div class="home-grid-container">
@@ -161,35 +175,36 @@
             return false;
         };
 
-        function showControls(){
+        function showControls() {
             alert(
-                'W - Foreward\t' + 
-                'A - Left\n' + 
-                'S - Reverse\t' + 
+                'W - Foreward\t' +
+                'A - Left\n' +
+                'S - Reverse\t' +
                 'D - Right\n\n' +
 
-                'Q - Left\t' + 
-                'E - Right\n' + 
-                'R - Near\t' + 
+                'Q - Left\t' +
+                'E - Right\n' +
+                'R - Near\t' +
                 'F - Away\n\n' +
-                
-                'Click on player button to select troop.\n' + 
+
+                'Click on player button to select troop.\n' +
                 'Click on floor to send the troop to the location.\n' +
                 '\nThe aim is to send the right troop, at the right place, at the right time.'
             );
         }
 
-        function showjoystick(){
+        function showjoystick() {
             $("#hidejoystick").show();
             $("#showjoystick").hide();
             tg.hl.showJoysticks();
         };
 
-        function hidejoystick(){
+        function hidejoystick() {
             $("#hidejoystick").hide();
             $("#showjoystick").show();
             tg.hl.removeJoysticks();
         };
+
         function makeFullScreen() {
             console.log("makeFullScreen");
             // if (tg.canvas.webkitRequestFullScreen) {
@@ -204,16 +219,19 @@
             if (tg.canvas.requestFullscreen) {
                 alert('webkit 1');
                 tg.canvas.requestFullscreen();
-            } else if (tg.canvas.mozRequestFullScreen) { /* Firefox */
+            } else if (tg.canvas.mozRequestFullScreen) {
+                /* Firefox */
                 alert('webkit 2');
                 tg.canvas.mozRequestFullScreen();
-            } else if (tg.canvas.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+            } else if (tg.canvas.webkitRequestFullscreen) {
+                /* Chrome, Safari and Opera */
                 alert('webkit 3');
                 tg.canvas.webkitRequestFullscreen();
-            } else if (tg.canvas.msRequestFullscreen) { /* IE/Edge */
+            } else if (tg.canvas.msRequestFullscreen) {
+                /* IE/Edge */
                 alert('webkit 4');
                 tg.canvas.msRequestFullscreen();
-            } else{
+            } else {
                 alert('webkit 5');
             }
         };
@@ -268,16 +286,16 @@
 
     <div class="rightcolumn" id="rightcolumn">
         <div class="rightcolumn-button" id="rightcolumn-button-3" onclick="tg.hl.abilityButtonClick(3)">
-            <img class="footer-bot-image" id="rightcolumn-image-3" src="static/img/quake.jpeg"/>
+            <img class="footer-bot-image" id="rightcolumn-image-3" src="static/img/quake.jpeg" />
         </div>
         <div class="rightcolumn-button" id="rightcolumn-button-2" onclick="tg.hl.abilityButtonClick(2)">
-            <img class="footer-bot-image" id="rightcolumn-image-2" src="static/img/sheild.png"/>
+            <img class="footer-bot-image" id="rightcolumn-image-2" src="static/img/sheild.png" />
         </div>
         <div class="rightcolumn-button" id="rightcolumn-button-1" onclick="tg.hl.abilityButtonClick(1)">
-            <img class="footer-bot-image" id="rightcolumn-image-1" src="static/img/flame_arrow_icon.png"/>
+            <img class="footer-bot-image" id="rightcolumn-image-1" src="static/img/flame_arrow_icon.png" />
         </div>
         <div class="rightcolumn-button" id="rightcolumn-button-0" onclick="tg.hl.abilityButtonClick(0)">
-            <img class="footer-bot-image" id="rightcolumn-image-0" src="static/img/flag-white.png"/>
+            <img class="footer-bot-image" id="rightcolumn-image-0" src="static/img/flag-white.png" />
         </div>
     </div>
 
