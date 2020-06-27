@@ -124,10 +124,6 @@ app.get("/ox", function (req, res) {
     res.send(respJSON);
 });
 
-// login page
-app.get("/login", function (req, res) {
-    res.send("<a href='/auth/facebook'>login through facebook</a>");
-});
 app.use('/static', express.static(path.join(__dirname + '/../../public')));
 // app.use(express.static('public'));
 // console.log()
@@ -162,6 +158,12 @@ app.use('/static', express.static(path.join(__dirname + '/../../public')));
 
 // });
 
+
+// login page
+app.get("/login", function (req, res) {
+    // res.send("<a href='/auth/facebook'>login through facebook</a>");
+    res.sendFile(path.join(__dirname + '/../../public/login.html'));
+});
 
 app.get('/logout', function (req: any, res) {
     req.logout();
