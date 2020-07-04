@@ -15,6 +15,7 @@
     <script src="static/js/t.js"></script>
     <script src="static/js/nipplejs.js"></script>
     <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/grid.css">
     <link rel="stylesheet" href="static/css/w3.css">
     <!-- <script src="static/js/babylon.gui.js"></script> -->
     <!-- <script src="static/js/dat.gui.min.js"></script> -->
@@ -50,24 +51,61 @@
 
         <!-- home -->
         <div class="menu-home" id="menu-home">
-                <!-- <script type="text/javascript" language="javascript">
+            <!-- <script type="text/javascript" language="javascript">
                     var aax_size = '728x90';
                     var aax_pubname = 'trinoyon-21';
                     var aax_src = '302';
                 </script>
                 <script type="text/javascript" language="javascript" src="//c.amazon-adsystem.com/aax2/assoc.js"></script>
              -->
-            <div class="menu-header">Choose Your Team</div>
+            <!-- <div class="menu-header">Choose Your Team</div> -->
 
-            <div class="home-grid-container">
-                <div class="home-grid-header">Selected</div>
-                <div class="home-grid-header">Option 1</div>
-                <div class="home-grid-header">Option 2</div>
+            <div class="hg-container">
+                <div class="hg-header">Header</div>
 
-                <div class="bot-selection-container">
-                    <img src="static/img/swordsman_icon.png" class="bot-image" id="bot-selection-1" />
+                <div class="hg-ad-hdr center-relative">
+                    <div class="menu-text">
+                        Advertisements
+                    </div>
                 </div>
-                <div class="bot-selection-option-container" id="botoption_1-1" name="swordsman">
+                <div class="hg-ad1">ad1</div>
+                <div class="hg-ad2">ad2</div>
+                <div class="hg-ad3">ad3</div>
+
+
+
+                <div class="hg-info">info</div>
+                <div class="hg-botimg">
+                    <img src="static/img/lion_icon.png" class="hg-bot-image" />
+                </div>
+                <div class="hg-botstat">botstat</div>
+
+
+                <div class="hg-selection">
+                    <div class="game-footer-bot-selection selected-bot-footer-item"
+                        onclick="tg.hl.selectBotButtonClick(0)">
+                        <img src="static/img/lion_icon.png" id="footer-image_0" class="footer-bot-image" />
+                    </div>
+                    <div class="game-footer-bot-selection unselected-bot-footer-item"
+                        onclick="tg.hl.selectBotButtonClick(1)">
+                        <img src="static/img/archer_icon.png" id="footer-image_1" class="footer-bot-image" />
+                    </div>
+                    <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_2"
+                        onclick="tg.hl.selectBotButtonClick(2)">
+                        <img src="static/img/archer_icon.png" id="footer-image_2" class="footer-bot-image" />
+                    </div>
+                    <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_3"
+                        onclick="tg.hl.selectBotButtonClick(3)">
+                        <img src="static/img/swordsman_icon.png" id="footer-image_3" class="footer-bot-image" />
+                    </div>
+                    <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_4"
+                        onclick="tg.hl.selectBotButtonClick(4)">
+                        <img src="static/img/swordsman_icon.png" id="footer-image_4" class="footer-bot-image" />
+                    </div>
+                </div>
+
+
+                <!-- <div class="bot-selection-option-container" id="botoption_1-1" name="swordsman">
                     <img src="static/img/swordsman_icon.png" id="botoptionimage_1-1" class="bot-image" />
                     <p class="bot-image-tag" id="bot-image-tag_1-1">&#10004;</p>
                 </div>
@@ -76,9 +114,7 @@
                     <p class="bot-image-tag" style="display: none;" id="bot-image-tag_1-2">&#10004;</p>
                 </div>
 
-                <div class="bot-selection-container">
-                    <img src="static/img/swordsman_icon.png" class="bot-image" id="bot-selection-2" />
-                </div>
+                
                 <div class="bot-selection-option-container" id="botoption_2-1" name="swordsman">
                     <img src="static/img/swordsman_icon.png" id="botoptionimage_2-1" class="bot-image" />
                     <p class="bot-image-tag" id="bot-image-tag_2-1">&#10004;</p>
@@ -88,9 +124,7 @@
                     <p class="bot-image-tag" style="display: none;" id="bot-image-tag_2-2">&#10004;</p>
                 </div>
 
-                <div class="bot-selection-container">
-                    <img src="static/img/swordsman_icon.png" class="bot-image" id="bot-selection-3" />
-                </div>
+                
                 <div class="bot-selection-option-container" id="botoption_3-1" name="swordsman">
                     <img src="static/img/swordsman_icon.png" id="botoptionimage_3-1" class="bot-image" />
                     <p class="bot-image-tag" id="bot-image-tag_3-1">&#10004;</p>
@@ -100,9 +134,7 @@
                     <p class="bot-image-tag" style="display: none;" id="bot-image-tag_3-2">&#10004;</p>
                 </div>
 
-                <div class="bot-selection-container">
-                    <img src="static/img/swordsman_icon.png" class="bot-image" id="bot-selection-4" />
-                </div>
+                
                 <div class="bot-selection-option-container" id="botoption_4-1" name="swordsman">
                     <img src="static/img/swordsman_icon.png" id="botoptionimage_4-1" class="bot-image" />
                     <p class="bot-image-tag" id="bot-image-tag_4-1">&#10004;</p>
@@ -110,9 +142,11 @@
                 <div class="bot-selection-option-container" id="botoption_4-2" name="archer">
                     <img src="static/img/archer_icon.png" id="botoptionimage_4-2" class="bot-image" />
                     <p class="bot-image-tag" style="display: none;" id="bot-image-tag_4-2">&#10004;</p>
-                </div>
+                </div> -->
 
-                <div class="button-home-start" id="button-home-start">start</div>
+                <div class="hg-footer">
+                    <button id="button-home-start">PLAY</button>
+                </div>
             </div>
         </div>
 
