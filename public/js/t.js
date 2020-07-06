@@ -25,8 +25,16 @@ function initSystem(){
         console.log('ox response', data);
         tg.connectToParent(data.data.u, data.data.k);
     });
-    
+    // console.log($('#ad-iframe'));
+    // $('#ad-iframe').on('load', function() {
+    //     tg.iframeLoaded();
+    // });
 }
+
+// tg.iframeLoaded = function(){
+//     console.log('iframe loaded');
+//     checktext();
+// }
 
 tg.connectToParent = function(parentEndPoint, keyIdentifier){
     // parentEndPoint = window.location.hostname;

@@ -70,6 +70,10 @@ body {
     position: fixed;
 }
 
+#title{
+    overflow: hidden;
+}
+
 
 /* #joy2Div
 {

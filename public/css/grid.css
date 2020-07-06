@@ -67,28 +67,26 @@
     grid-area: 3 / 2 / span 6 / span 12;
 } */
 
-.hg-ad-hdr{
-    /* grid-area: hg-ad1; */
-    /* width: 90%;
-    height: 90%; */
-    grid-area: 2 / 14 / span 2 / span 3;
+/* .hg-ad-hdr{
+    grid-area: 2 / 14 / span 8 / span 3;
+} */
+
+.amzn-ad-prod-detail{
+    overflow: auto;
 }
 
 .hg-ad1{
-    /* grid-area: hg-ad1; */
-    grid-area: 4 / 14 / span 2 / span 3;
+    grid-area: 2 / 14 / span 8 / span 3;
 }
 
 
-.hg-ad2{
-    /* grid-area: hg-ad2; */
-    grid-area: 6 / 14 / span 2 / span 3;
-}
+/* .hg-ad2{
+    grid-area: 6 / 14 / span 4 / span 3;
+} */
 
-.hg-ad3{
-    /* grid-area: hg-ad2; */
+/* .hg-ad3{
     grid-area: 8 / 14 / span 2 / span 3;
-}
+} */
 
 .hg-botinfo{
     /* grid-area: hg-ad2; */
