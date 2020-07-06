@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Metal Wars</title>
+    <title>Trinoyon</title>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content"> -->
     <!-- <script src="static/js/babylon.js"></script> -->
@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="static/css/grid.css">
     <link rel="stylesheet" href="static/css/w3.css">
+    <link rel="stylesheet" href="static/css/component.css">
     <!-- <script src="static/js/babylon.gui.js"></script> -->
     <!-- <script src="static/js/dat.gui.min.js"></script> -->
     <script src="static/js/babylon.gui.min.js"></script>
@@ -42,7 +43,7 @@
     <div id="menu-modal" class="modal center">
         <!-- loader -->
         <div class="load-indicator menu-text" id="load-indicator">
-            <div class="load-indicator-header" id="load-indicator-header">Metal Wars</div>
+            <div class="load-indicator-header menu-header" id="load-indicator-header">CHAOS</div>
             <div class="w3-light-grey">
                 <div id="loader-bar" class="w3-container w3-green" style="height:24px;width:0%"></div>
             </div>
@@ -61,10 +62,13 @@
             <!-- <div class="menu-header">Choose Your Team</div> -->
 
             <div class="hg-container">
-                <div class="hg-header">Header</div>
-
-                <div class="hg-ad-hdr center-relative">
-                    <div class="menu-text">
+                <div class="hg-header">
+                    <div class="menu-header center-relative">
+                        Choose Your Fighters
+                    </div>
+                </div>
+                <div class="hg-ad-hdr">
+                    <div class="menu-text center-relative">
                         Advertisements
                     </div>
                 </div>
@@ -74,33 +78,97 @@
 
 
 
-                <div class="hg-info">info</div>
+                <div class="hg-botinfo">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="bot-info-header">
+                                    Header
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="bot-info-description">
+                                    description
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="bot-info-ability-container">
+                                    Abilities
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 <div class="hg-botimg">
                     <img src="static/img/lion_icon.png" class="hg-bot-image" />
                 </div>
-                <div class="hg-botstat">botstat</div>
+                <div class="hg-botstat">
+                    <table class="information-table">
+                        <tr>
+                            <td>
+                                <div class="bot-stat-header menu-header">
+                                    Header
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="bot-stat-life menu-text">
+                                    life
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="bot-stat-attack menu-text">
+                                    attack
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="bot-stat-movement menu-text">
+                                    movement
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+
+
+
+                </div>
 
 
                 <div class="hg-selection">
-                    <div class="game-footer-bot-selection selected-bot-footer-item"
-                        onclick="tg.hl.selectBotButtonClick(0)">
-                        <img src="static/img/lion_icon.png" id="footer-image_0" class="footer-bot-image" />
+                    <div class="game-footer-bot-selection selected-bot-footer-item">
+                        <img src="static/img/lion_icon.png" id="footer-image_0" class="image-icon"
+                            onclick="tg.uu.viewSelectedBotDetails(this, 0)" />
+                        <!-- <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 0)">Change</button> -->
                     </div>
-                    <div class="game-footer-bot-selection unselected-bot-footer-item"
-                        onclick="tg.hl.selectBotButtonClick(1)">
-                        <img src="static/img/archer_icon.png" id="footer-image_1" class="footer-bot-image" />
+                    <div class="game-footer-bot-selection unselected-bot-footer-item">
+                        <img src="static/img/archer_icon.png" id="footer-image_1" class="image-icon"
+                            onclick="tg.uu.viewSelectedBotDetails(this, 1)" />
+                        <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 1)">Change</button>
                     </div>
-                    <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_2"
-                        onclick="tg.hl.selectBotButtonClick(2)">
-                        <img src="static/img/archer_icon.png" id="footer-image_2" class="footer-bot-image" />
+                    <div class="game-footer-bot-selection unselected-bot-footer-item">
+                        <img src="static/img/archer_icon.png" id="footer-image_2" class="image-icon"
+                            onclick="tg.uu.viewSelectedBotDetails(this, 2)" />
+                        <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 2)">Change</button>
                     </div>
-                    <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_3"
-                        onclick="tg.hl.selectBotButtonClick(3)">
-                        <img src="static/img/swordsman_icon.png" id="footer-image_3" class="footer-bot-image" />
+                    <div class="game-footer-bot-selection unselected-bot-footer-item">
+                        <img src="static/img/swordsman_icon.png" id="footer-image_3" class="image-icon"
+                            onclick="tg.uu.viewSelectedBotDetails(this, 3)" />
+                        <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 3)">Change</button>
                     </div>
-                    <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_4"
-                        onclick="tg.hl.selectBotButtonClick(4)">
-                        <img src="static/img/swordsman_icon.png" id="footer-image_4" class="footer-bot-image" />
+                    <div class="game-footer-bot-selection unselected-bot-footer-item">
+                        <img src="static/img/swordsman_icon.png" id="footer-image_4" class="image-icon"
+                            onclick="tg.uu.viewSelectedBotDetails(this, 4)" />
+                        <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 4)">Change</button>
                     </div>
                 </div>
 
@@ -282,35 +350,35 @@
             <div class="game-footer-menu" id="game-footer-menu">
                 <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_0"
                     onclick="tg.hl.selectBotButtonClick(0)">
-                    <img src="static/img/lion_icon.png" id="footer-image_0" class="footer-bot-image" />
+                    <img src="static/img/lion_icon.png" id="footer-image_0" class="image-icon" />
                     <div class="w3-light-grey footer-bot-life-container">
                         <div id="footer-bot-life_0" class="w3-green footer-bot-life" style="width:30"></div>
                     </div>
                 </div>
                 <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_1"
                     onclick="tg.hl.selectBotButtonClick(1)">
-                    <img src="static/img/archer_icon.png" id="footer-image_1" class="footer-bot-image" />
+                    <img src="static/img/archer_icon.png" id="footer-image_1" class="image-icon" />
                     <div class="w3-light-grey footer-bot-life-container">
                         <div id="footer-bot-life_1" class="w3-green footer-bot-life" style="width:30"></div>
                     </div>
                 </div>
                 <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_2"
                     onclick="tg.hl.selectBotButtonClick(2)">
-                    <img src="static/img/archer_icon.png" id="footer-image_2" class="footer-bot-image" />
+                    <img src="static/img/archer_icon.png" id="footer-image_2" class="image-icon" />
                     <div class="w3-light-grey footer-bot-life-container">
                         <div id="footer-bot-life_2" class="w3-green footer-bot-life" style="width:30"></div>
                     </div>
                 </div>
                 <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_3"
                     onclick="tg.hl.selectBotButtonClick(3)">
-                    <img src="static/img/archer_icon.png" id="footer-image_3" class="footer-bot-image" />
+                    <img src="static/img/archer_icon.png" id="footer-image_3" class="image-icon" />
                     <div class="w3-light-grey footer-bot-life-container">
                         <div id="footer-bot-life_3" class="w3-green footer-bot-life" style="width:30"></div>
                     </div>
                 </div>
                 <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_4"
                     onclick="tg.hl.selectBotButtonClick(4)">
-                    <img src="static/img/archer_icon.png" id="footer-image_4" class="footer-bot-image" />
+                    <img src="static/img/archer_icon.png" id="footer-image_4" class="image-icon" />
                     <div class="w3-light-grey footer-bot-life-container">
                         <div id="footer-bot-life_4" class="w3-green footer-bot-life" style="width:30"></div>
                     </div>
@@ -322,16 +390,16 @@
 
     <div class="rightcolumn" id="rightcolumn">
         <div class="rightcolumn-button" id="rightcolumn-button-3" onclick="tg.hl.abilityButtonClick(3)">
-            <img class="footer-bot-image" id="rightcolumn-image-3" src="static/img/quake.jpeg" />
+            <img class="image-icon" id="rightcolumn-image-3" src="static/img/quake.jpeg" />
         </div>
         <div class="rightcolumn-button" id="rightcolumn-button-2" onclick="tg.hl.abilityButtonClick(2)">
-            <img class="footer-bot-image" id="rightcolumn-image-2" src="static/img/sheild.png" />
+            <img class="image-icon" id="rightcolumn-image-2" src="static/img/sheild.png" />
         </div>
         <div class="rightcolumn-button" id="rightcolumn-button-1" onclick="tg.hl.abilityButtonClick(1)">
-            <img class="footer-bot-image" id="rightcolumn-image-1" src="static/img/flame_arrow_icon.png" />
+            <img class="image-icon" id="rightcolumn-image-1" src="static/img/flame_arrow_icon.png" />
         </div>
         <div class="rightcolumn-button" id="rightcolumn-button-0" onclick="tg.hl.abilityButtonClick(0)">
-            <img class="footer-bot-image" id="rightcolumn-image-0" src="static/img/flag-white.png" />
+            <img class="image-icon" id="rightcolumn-image-0" src="static/img/flag-white.png" />
         </div>
     </div>
 

@@ -113,7 +113,7 @@ tg.pn.showHomePage = function(){
         botList: ['swordman', 'swordman', 'swordman', 'swordman'],
         hero: 'lion',
     }
-    tg.hl.populateHomePage();
+    tg.uu.populatePlayerBot($('#menu-home'));
     // tg.sprite.test_plane();
     // tg.pv.advancedTexture.addControl(tg.pv.uiComponents.buttons.playButton);  
 }

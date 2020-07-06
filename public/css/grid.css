@@ -71,7 +71,7 @@
     /* grid-area: hg-ad1; */
     /* width: 90%;
     height: 90%; */
-    grid-area: 2 / 14 / span 12 / span 3;
+    grid-area: 2 / 14 / span 2 / span 3;
 }
 
 .hg-ad1{
@@ -90,7 +90,7 @@
     grid-area: 8 / 14 / span 2 / span 3;
 }
 
-.hg-info{
+.hg-botinfo{
     /* grid-area: hg-ad2; */
     grid-area: 2 / 1 / span 5 / span 5;
 }

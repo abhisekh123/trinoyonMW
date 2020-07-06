@@ -286,7 +286,7 @@ $('#button-home-start').click(function () {
     console.log('clicked button-home-start');
     tg.network.requestGameAdmit();
 });
-,,,,,,,,,
+// ,,,,,,,,,
 $('.bot-selection-option-container').click(function (element) {
     element.preventDefault();
     var id = this.id;
@@ -310,9 +310,6 @@ $('.bot-selection-option-container').click(function (element) {
     console.log(tg.botSelection);
 });
 
-tg.hl.populateHomePage = function(){
-
-};
 
 tg.hl.updateResult = function (outCome, playerTeamPerformance, enemyTeamPerformance, playerTeamTowerCount, enemyTeamTowerCount) {
     $('#game-result-header').html(outCome);

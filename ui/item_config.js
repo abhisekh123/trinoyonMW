@@ -295,6 +295,8 @@
                         volume: 0.2
                     },
                 },
+
+                description: 'description lion',
                 
                 weaponType: 'melee',
                 projectileShootY: 0.75,
@@ -475,6 +477,8 @@
                         volume: 0.2
                     },
                 },
+
+                description: 'description swordman',
                 
                 weaponType: 'melee',
                 projectileShootY: 0.75,
@@ -677,6 +681,8 @@
                     },
                 },
                 
+                description: 'description archer',
+
                 weaponType: 'arrow',
                 projectileShootY: 0.75,
                 projectileReceiveY: 0.75,
@@ -742,7 +748,11 @@
                         volume: 0.2
                     },
                 },
+
+                description: 'description tower',
+
                 // attack:4,
+                iconurl: 'static/img/swordsman_icon.png',
                 file: 'tower_gloom',
                 scale: 0.05,
                 sight: 6,
@@ -798,7 +808,12 @@
                         volume: 0.2
                     },
                 },
+
+                description: 'description base',
+
+
                 // attack:2,
+                iconurl: 'static/img/swordsman_icon.png',
                 file: 'defense_tower',
                 scale: 2,
                 sight: 6,
