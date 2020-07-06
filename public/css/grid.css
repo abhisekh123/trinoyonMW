@@ -92,6 +92,7 @@
 
 .hg-botinfo{
     /* grid-area: hg-ad2; */
+    overflow-y: scroll;
     grid-area: 2 / 1 / span 5 / span 5;
 }
 
@@ -102,6 +103,7 @@
 
 .hg-botstat{
     /* grid-area: hg-ad2; */
+    overflow-y: scroll;
     grid-area: 2 / 11 / span 5 / span 3;
 }
 

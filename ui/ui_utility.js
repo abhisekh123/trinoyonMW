@@ -71,6 +71,8 @@ tg.uu.displaySelectedBotDetails = function(elementParam, botIndex){
     var botItemConfig = tg.itemConfigs.items[botType];
 
     // selectedBotDetailsInformation[0].innerHTML = botItemConfig.description;
+    var botInfoHeader = $(selectedBotDetailsInformation[0]).find('.bot-info-header')[0];
+    botInfoHeader.innerHTML = botType.toUpperCase();
     // selectedBotDetailsStatistics[0].innerHTML = botItemConfig.description;
 };
 

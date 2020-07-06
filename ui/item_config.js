@@ -69,6 +69,7 @@
                 resetInterval: 40000,
                 duration: 3000,
                 targetAttackFactor: 2,
+                description: 'ability scorch',
                 metaData: {
                     type: 'plane',
                     file: '/static/img/fireball.png',
@@ -82,6 +83,7 @@
             retreat: {
                 // goto base
                 name: 'retreat',
+                description: 'ability retreat',
                 iconurl: '/static/img/flag-white.png',
                 resetInterval: 5000,
                 duration: 3000,
@@ -100,6 +102,7 @@
                 // ((0.5 * distance) / range) attack to all
                 // single attack. deactivate ability right after that.
                 name: 'pulse',
+                description: 'ability pulse',
                 iconurl: '/static/img/quake.jpeg',
                 resetInterval: 40000,
                 duration: 3000,
@@ -122,6 +125,7 @@
             sheild: {
                 // 0.25 * damage(all attacks received) received for the whole duration.
                 name: 'sheild',
+                description: 'ability sheild',
                 iconurl: 'static/img/sheild.png',
                 resetInterval: 40000,
                 duration: 3000,
