@@ -397,7 +397,7 @@ canvas {
     /* width: 100%; */
 }
 
-.amazon-ad{
+/* .amazon-ad{
     position: absolute;
     height: 240px;
     width: 120px;
@@ -405,7 +405,7 @@ canvas {
     right: 5px;
     top: 50%;
     transform: translate(0%, -50%);
-}
+} */
 
 .rightcolumn{
     display: none;

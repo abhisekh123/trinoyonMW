@@ -114,6 +114,7 @@ tg.pn.showHomePage = function(){
         hero: 'lion',
     }
     tg.uu.populatePlayerBot($('#menu-home'));
+    tg.uu.addAmazonAdToContent();
     // tg.sprite.test_plane();
     // tg.pv.advancedTexture.addControl(tg.pv.uiComponents.buttons.playButton);  
 }

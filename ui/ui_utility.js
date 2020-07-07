@@ -42,6 +42,18 @@ tg.uu.getRandom = function (rangeStart, rangeEnd) {
     return Math.floor(Math.random() * (rangeEnd - rangeStart)) + rangeStart;
 };
 
+tg.uu.addAmazonAdToContent = function(){
+    // var content = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07ZNRJ6JV&asins=B07ZNRJ6JV&linkId=cd4c14812c6c5f1e3dc9411daa1e3db9&show_border=true&link_opens_in_new_window=true"></iframe>';
+    var content = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07ZNRJ6JV&asins=B07ZNRJ6JV&linkId=cd4c14812c6c5f1e3dc9411daa1e3db9&show_border=true&link_opens_in_new_window=true"></iframe>';
+    var content2 = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ac&ref=tf_til&ad_type=product_link&tracking_id=trinoyon-21&marketplace=amazon&region=IN&placement=B07FMFGGNR&asins=B07FMFGGNR&linkId=40fd30266917f7df696ade693e490094&show_border=true&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff"></iframe>';
+    $('.hg-ad1').html(content);
+
+    setTimeout((()=>{
+        console.log('calling checktext');
+        $('.hg-ad1').html(content2);
+    }), 5000);
+}
+
 tg.uu.markSelectedItem = function(elementArray, selectedIndex){
     // update selection class.
     tg.uu.addRemoveClassFromElementArray(elementArray, 'remove', 'selected-bot-footer-item');

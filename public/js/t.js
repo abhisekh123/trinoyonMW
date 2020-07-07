@@ -25,7 +25,14 @@ function initSystem(){
         console.log('ox response', data);
         tg.connectToParent(data.data.u, data.data.k);
     });
-    
+    // console.log($('#ad-iframe'));
+    // $('#ad-iframe').on('load', function() {
+    //     tg.iframeLoaded();
+    // });
+    // setTimeout((()=>{
+    //     console.log('calling checktext');
+    //     checktext();
+    // }), 10000);
 }
 
 
