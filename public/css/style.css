@@ -397,6 +397,16 @@ canvas {
     /* width: 100%; */
 }
 
+.amazon-ad{
+    position: absolute;
+    height: 240px;
+    width: 120px;
+    z-index: 99;
+    right: 5px;
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+
 .rightcolumn{
     display: none;
     position: fixed;
