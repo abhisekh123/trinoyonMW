@@ -48,10 +48,10 @@ tg.uu.addAmazonAdToContent = function(){
     var content2 = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ac&ref=tf_til&ad_type=product_link&tracking_id=trinoyon-21&marketplace=amazon&region=IN&placement=B07FMFGGNR&asins=B07FMFGGNR&linkId=40fd30266917f7df696ade693e490094&show_border=true&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff"></iframe>';
     $('.hg-ad1').html(content);
 
-    setTimeout((()=>{
-        console.log('calling checktext');
-        $('.hg-ad1').html(content2);
-    }), 5000);
+    // setTimeout((()=>{
+    //     console.log('calling checktext');
+    //     $('.hg-ad1').html(content2);
+    // }), 5000);
 }
 
 tg.uu.markSelectedItem = function(elementArray, selectedIndex){
@@ -66,7 +66,13 @@ tg.uu.displaySelectedBotDetails = function(elementParam, botIndex){
     console.log('displaySelectedBotDetails');
     var selectedBotDetailsImage = elementParam.find('.hg-bot-image');
     var selectedBotDetailsInformation = elementParam.find('.hg-botinfo');
-    var selectedBotDetailsStatistics = elementParam.find('.hg-botstat');
+    var selectedBotDetailsAbilityImage = elementParam.find('.ability-Image');
+    var selectedBotDetailsAbilityName = elementParam.find('.ability-name');
+    var selectedBotDetailsAbilityStatistics = elementParam.find('.ability-statistics');
+    var selectedBotDetailsAbilityDescription = elementParam.find('.ability-description');
+
+
+    // var selectedBotDetailsStatistics = elementParam.find('.hg-botstat');
 
     // selectedBotDetailsImage[0].src = tg.uu.getIconURLFromType('item', tg.botSelection.hero);
     
@@ -81,11 +87,41 @@ tg.uu.displaySelectedBotDetails = function(elementParam, botIndex){
     selectedBotDetailsImage[0].src = tg.uu.getIconURLFromType('item', botType);
 
     var botItemConfig = tg.itemConfigs.items[botType];
+    var botLevelMap = botItemConfig.levelMap;
+    
+    for (let index = 0; index < botItemConfig.ability.length; index++) {
+        const botAbilityConfig = tg.itemConfigs.abilityConfig[botItemConfig.ability[index].action];
+
+        selectedBotDetailsAbilityImage[index].src = botAbilityConfig.iconurl;
+        selectedBotDetailsAbilityDescription[index].innerHTML = botAbilityConfig.description;
+
+        selectedBotDetailsAbilityStatistics[index].innerHTML = 'Duration: ' + botAbilityConfig.duration / 1000
+        + ' seconds.<br>Reset time: ' + botAbilityConfig.resetInterval / 1000 + ' seconds.';
+        selectedBotDetailsAbilityName[index].innerHTML = botItemConfig.ability[index].action.toUpperCase();
+    }
 
     // selectedBotDetailsInformation[0].innerHTML = botItemConfig.description;
     var botInfoHeader = $(selectedBotDetailsInformation[0]).find('.bot-info-header')[0];
     botInfoHeader.innerHTML = botType.toUpperCase();
     // selectedBotDetailsStatistics[0].innerHTML = botItemConfig.description;
+
+
+    // vitals 
+    var selectedBotDetailsLife = 'Life:<br>';
+    var selectedBotDetailsAttack = 'Attack<br>';
+    var selectedBotDetailsMovement = 'Movement:<br>';
+
+    for (let index = 0; index < botLevelMap.length; index++) {
+        var levelConfig = botLevelMap[index];
+
+        selectedBotDetailsLife += '<br>Level' + (index + 1) + ' : ' + levelConfig.life;
+        selectedBotDetailsAttack += '<br>Level' + (index + 1) + ' : ' + levelConfig.attack;
+        selectedBotDetailsMovement += '<br>Level' + (index + 1) + ' : ' + levelConfig.speed;
+    }
+
+    elementParam.find('.bot-stat-life')[0].innerHTML;
+    elementParam.find('.bot-stat-attack')[0].innerHTML;
+    elementParam.find('.bot-stat-movement')[0].innerHTML;
 };
 
 tg.uu.viewSelectedBotDetails = function(element, botIndex){

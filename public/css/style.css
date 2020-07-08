@@ -199,6 +199,16 @@ canvas {
     color: #aaa;
     /* float: ; */
     font-size: 0.9em;
+    /* font-weight: bold; */
+    text-align: center;
+    width: 100%;
+
+}
+
+.menu-large-text {
+    color: #aaa;
+    /* float: ; */
+    font-size: 1.1em;
     font-weight: bold;
     text-align: center;
     width: 100%;
