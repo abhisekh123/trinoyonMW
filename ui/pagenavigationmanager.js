@@ -57,6 +57,8 @@ tg.pn.showMatchResultPage = function(){
 
     $("#showjoystick").hide();
     $("#hidejoystick").hide();
+
+    tg.uu.addAmazonAdToContent('gr-ad');
 };
 
 tg.pn.showMatchPage = function(){
@@ -114,7 +116,8 @@ tg.pn.showHomePage = function(){
         hero: 'lion',
     }
     tg.uu.populatePlayerBot($('#menu-home'));
-    tg.uu.addAmazonAdToContent();
+    tg.uu.addAmazonAdToContent('hg-ad');
+    tg.uu.addAmazonAdToContent('gr-ad');
     // tg.sprite.test_plane();
     // tg.pv.advancedTexture.addControl(tg.pv.uiComponents.buttons.playButton);  
 }

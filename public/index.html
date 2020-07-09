@@ -25,13 +25,6 @@
 </head>
 
 <body onload="initSystem()" class="parent-body" oncontextmenu="contextMenuFunction()">
-    <!-- <script type="text/javascript" language="javascript">
-        var aax_size = '728x90';
-        var aax_pubname = 'trinoyon-21';
-        var aax_src = '302';
-    </script>
-    <script type="text/javascript" language="javascript" src="http://c.amazon-adsystem.com/aax2/assoc.js"></script> -->
-
     <div id="fps">0</div>
     <canvas id='tc'></canvas>
     <button onclick="makeFullScreen()" class="fullscreenbutton" id="fullscreenbutton"></button>
@@ -52,14 +45,6 @@
 
         <!-- home -->
         <div class="menu-home" id="menu-home">
-            <!-- <script type="text/javascript" language="javascript">
-                    var aax_size = '728x90';
-                    var aax_pubname = 'trinoyon-21';
-                    var aax_src = '302';
-                </script>
-                <script type="text/javascript" language="javascript" src="//c.amazon-adsystem.com/aax2/assoc.js"></script>
-             -->
-            <!-- <div class="menu-header">Choose Your Team</div> -->
 
             <div class="hg-container">
                 <div class="hg-header">
@@ -68,7 +53,7 @@
                     </div>
                 </div>
 
-                <div class="hg-ad1"></div>
+                <div class="hg-ad"></div>
 
                 <div class="hg-botinfo">
                     <table class="information-table">
@@ -230,71 +215,31 @@
 
                 <div class="hg-selection">
                     <div class="game-footer-bot-selection selected-bot-footer-item">
-                        <img src="static/img/lion_icon.png" id="footer-image_0" class="image-icon"
+                        <img src="static/img/lion_icon.png" class="image-icon"
                             onclick="tg.uu.viewSelectedBotDetails(this, 0)" />
                         <!-- <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 0)">Change</button> -->
                     </div>
                     <div class="game-footer-bot-selection unselected-bot-footer-item">
-                        <img src="static/img/archer_icon.png" id="footer-image_1" class="image-icon"
+                        <img src="static/img/archer_icon.png" class="image-icon"
                             onclick="tg.uu.viewSelectedBotDetails(this, 1)" />
                         <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 1)">Change</button>
                     </div>
                     <div class="game-footer-bot-selection unselected-bot-footer-item">
-                        <img src="static/img/archer_icon.png" id="footer-image_2" class="image-icon"
+                        <img src="static/img/archer_icon.png" class="image-icon"
                             onclick="tg.uu.viewSelectedBotDetails(this, 2)" />
                         <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 2)">Change</button>
                     </div>
                     <div class="game-footer-bot-selection unselected-bot-footer-item">
-                        <img src="static/img/swordsman_icon.png" id="footer-image_3" class="image-icon"
+                        <img src="static/img/swordsman_icon.png" class="image-icon"
                             onclick="tg.uu.viewSelectedBotDetails(this, 3)" />
                         <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 3)">Change</button>
                     </div>
                     <div class="game-footer-bot-selection unselected-bot-footer-item">
-                        <img src="static/img/swordsman_icon.png" id="footer-image_4" class="image-icon"
+                        <img src="static/img/swordsman_icon.png" class="image-icon"
                             onclick="tg.uu.viewSelectedBotDetails(this, 4)" />
                         <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 4)">Change</button>
                     </div>
                 </div>
-
-
-                <!-- <div class="bot-selection-option-container" id="botoption_1-1" name="swordsman">
-                    <img src="static/img/swordsman_icon.png" id="botoptionimage_1-1" class="bot-image" />
-                    <p class="bot-image-tag" id="bot-image-tag_1-1">&#10004;</p>
-                </div>
-                <div class="bot-selection-option-container" id="botoption_1-2" name="archer">
-                    <img src="static/img/archer_icon.png" id="botoptionimage_1-2" class="bot-image" />
-                    <p class="bot-image-tag" style="display: none;" id="bot-image-tag_1-2">&#10004;</p>
-                </div>
-
-                
-                <div class="bot-selection-option-container" id="botoption_2-1" name="swordsman">
-                    <img src="static/img/swordsman_icon.png" id="botoptionimage_2-1" class="bot-image" />
-                    <p class="bot-image-tag" id="bot-image-tag_2-1">&#10004;</p>
-                </div>
-                <div class="bot-selection-option-container" id="botoption_2-2" name="archer">
-                    <img src="static/img/archer_icon.png" id="botoptionimage_2-2" class="bot-image" />
-                    <p class="bot-image-tag" style="display: none;" id="bot-image-tag_2-2">&#10004;</p>
-                </div>
-
-                
-                <div class="bot-selection-option-container" id="botoption_3-1" name="swordsman">
-                    <img src="static/img/swordsman_icon.png" id="botoptionimage_3-1" class="bot-image" />
-                    <p class="bot-image-tag" id="bot-image-tag_3-1">&#10004;</p>
-                </div>
-                <div class="bot-selection-option-container" id="botoption_3-2" name="archer">
-                    <img src="static/img/archer_icon.png" id="botoptionimage_3-2" class="bot-image" />
-                    <p class="bot-image-tag" style="display: none;" id="bot-image-tag_3-2">&#10004;</p>
-                </div>
-
-                
-                <div class="bot-selection-option-container" id="botoption_4-1" name="swordsman">
-                    <img src="static/img/swordsman_icon.png" id="botoptionimage_4-1" class="bot-image" />
-                    <p class="bot-image-tag" id="bot-image-tag_4-1">&#10004;</p>
-                </div>
-                <div class="bot-selection-option-container" id="botoption_4-2" name="archer">
-                    <img src="static/img/archer_icon.png" id="botoptionimage_4-2" class="bot-image" />
-                    <p class="bot-image-tag" style="display: none;" id="bot-image-tag_4-2">&#10004;</p>
-                </div> -->
 
                 <div class="hg-footer">
                     <button id="button-home-start">PLAY</button>
@@ -313,8 +258,92 @@
             </div>
         </div>
 
-        <div class="result" id="game-result-container" class="game-result-container">
-            <div class="menu-header" id="game-result-header">Draw!</div>
+        <div id="game-result-container" class="game-result-container result">
+
+            <div class="grid-result">
+                <div class="gr-header">
+                    <div class="menu-header center-relative">
+                        Result
+                    </div>
+                </div>
+
+                <div class="gr-ad"></div>
+
+                <div class="gr-team-header"> Team </div>
+                <div class="gr-team-players">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="border-team player-container menu-large-text"
+                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 0)">
+                                    t1
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="border-team player-container menu-large-text"
+                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 1)">
+                                    t2
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="border-team player-container menu-large-text"
+                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 2)">
+                                    t3
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="gr-player-details-header"></div>
+                <div class="gr-player-details-body"></div>
+
+                <div class="gr-enemy-header"> Enemy </div>
+                <div class="gr-enemy-players">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="border-enemy player-container menu-large-text"
+                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 3)">
+                                    e1
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="border-enemy player-container menu-large-text"
+                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 4)">
+                                    e2
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="border-enemy player-container menu-large-text"
+                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 5)">
+                                    e3
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+
+                <div class="gr-footer">
+                    <!-- <div class="menu-header center-relative">
+                            Result
+                        </div> -->
+                    <button id="button-result-exit">exit</button>
+                </div>
+            </div>
+
+
+
+            <!-- <div class="menu-header" id="game-result-header">Draw!</div>
             <strong>Your team performance</strong><br>
             <em id="team-owned-tower-count"></em><br>
             <em id="team-total-kill-count"></em><br>
@@ -323,7 +352,7 @@
             <em id="enemy-owned-tower-count"></em><br>
             <em id="enemy-total-kill-count"></em><br>
             <em id="enemy-total-attack-damage"></em><br>
-            <button id="button-result-exit">exit</button>
+            <button id="button-result-exit">exit</button> -->
         </div>
     </div>
 
@@ -472,17 +501,6 @@
 
     </div>
 
-    <!-- <div class="amazon-ad" id="amazon-ad">
-        <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0"
-            src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ac&ref=tf_til&ad_type=product_link&tracking_id=trinoyon-21&marketplace=amazon&region=IN&placement=B07FMFGGNR&asins=B07FMFGGNR&linkId=40fd30266917f7df696ade693e490094&show_border=true&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff">
-        </iframe>
-        <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0"
-            src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07P7W9H82&asins=B07P7W9H82&linkId=b01ad56a1d1c756003336e6790960225&show_border=true&link_opens_in_new_window=true">
-        </iframe>
-        <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" 
-            src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07ZNRJ6JV&asins=B07ZNRJ6JV&linkId=cd4c14812c6c5f1e3dc9411daa1e3db9&show_border=true&link_opens_in_new_window=true">
-        </iframe>
-    </div> -->
 
     <div class="rightcolumn" id="rightcolumn">
         <div class="rightcolumn-button" id="rightcolumn-button-3" onclick="tg.hl.abilityButtonClick(3)">

@@ -1,43 +1,86 @@
 
-
-
-
-/* .menu-header {
-    text-align: center;
-    font-size: var(--font-size-header);
-    color: var(--font-color-light);
-    height: 20%;
+/* RESULT PAGE */
+.grid-result {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25%;
+    grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+    grid-gap: 0px;
     padding: 0;
-    margin: 0;
-}; */
+    color: whitesmoke;
+    text-align: center;
+    justify-content: space-evenly;
+}
+
+.gr-footer {
+    grid-area: 10 / 1 / span 1 / span 16;
+    cursor: pointer;
+}
+
+
+.gr-header {
+    grid-area: 1 / 1 / span 1 / span 16;
+}
+
+.gr-ad{
+    grid-area: 2 / 14 / span 8 / span 3;
+    overflow: scroll;
+}
+
+/* result area 2 / 1 / span 8 / span 13 */
+
+/* team : 2 / 1 / span 8 / span 3 */
+/* team header : 2 / 1 / span 3 / span 3 */
+.gr-team-header{
+    grid-area: 2 / 1 / span 3 / span 3;
+    border-style: solid;
+    color: green;
+    border-color: green;
+}
+/* team players : 5 / 1 / span 5 / span 3 */
+.gr-team-players{
+    grid-area: 5 / 1 / span 5 / span 3;
+    overflow: scroll;
+}
+
+/* player details : 2 / 4 / span 8 / span 7 */
+.gr-player-details-header{
+    grid-area: 2 / 4 / span 3 / span 7;
+    font-weight: bold;
+    text-align: center;
+}
+.gr-player-details-body{
+    grid-area: 5 / 4 / span 5 / span 7;
+    overflow-y: scroll;
+}
+
+/* enemy : 2 / 11 / span 8 / span 3 */
+/* enemy : 2 / 11 / span 3 / span 3 */
+.gr-enemy-header{
+    grid-area: 2 / 11 / span 3 / span 3;
+    border-style: solid;
+    color: red;
+    border-color: red;
+}
+/* enemy : 5 / 11 / span 5 / span 3 */
+.gr-enemy-players{
+    grid-area: 5 / 11 / span 5 / span 3;
+    overflow: scroll;
+}
+
+/* HOME PAGE */
 
 .hg-container {
     display: grid;
     height: 100%;
     width: 100%;
-    /* grid-template-columns: 20% 20% 20% 40%; */
-    /* grid-template-rows: 80px 200px; */
-    /* grid-template-areas:
-    'hg-header hg-header hg-header hg-header hg-header hg-header'
-    'hg-selection hg-selection hg-details hg-details hg-ad1 hg-ad1'
-    'hg-selection hg-selection hg-details hg-details hg-ad1 hg-ad1'
-    'hg-selection hg-selection hg-details hg-details hg-ad1 hg-ad1'
-    'hg-selection hg-selection hg-details hg-details hg-ad2 hg-ad2'
-    'hg-selection hg-selection hg-details hg-details hg-ad2 hg-ad2'
-    'hg-selection hg-selection hg-details hg-details hg-ad2 hg-ad2'
-    'hg-button-start hg-button-start hg-button-start hg-button-start hg-button-start hg-button-start'; */
-    /* grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto; */
     grid-template-columns: 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25% 6.25%;
-    /* grid-template-columns: 7.7% 7.7% 7.7% 7.7% 7.7% 7.7% 7.7% 7.7% 7.7% 7.7% 7.7% 7.7% 7.7%; */
     grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
     grid-gap: 0px;
-    /* background-color: var(--color-menu-boundary); */
     padding: 0;
     color: whitesmoke;
-    /* background-color: var(--color-menu-background); */
     text-align: center;
-    /* font-size: var(--font-size-content); */
-    /* align-content: end; */
     justify-content: space-evenly;
 }
 
@@ -49,63 +92,35 @@
 
 
 .hg-footer {
-    /* grid-column-start: 1;
-    grid-column-end: 6; */
     grid-area: 10 / 1 / span 1 / span 16;
     cursor: pointer;
-    /* grid-area: hg-button-start; */
 }
 
 
 .hg-header {
-    /* border: 5px solid dimgray; */
-    /* height: 16%; */
-    /* grid-area: hg-header; */
     grid-area: 1 / 1 / span 1 / span 16;
 }
 
-/* .hg-details{
-    grid-area: 3 / 2 / span 6 / span 12;
-} */
-
-/* .hg-ad-hdr{
-    grid-area: 2 / 14 / span 8 / span 3;
-} */
-
-
-.hg-ad1{
+.hg-ad{
     grid-area: 2 / 14 / span 8 / span 3;
     overflow: scroll;
 }
 
-
-/* .hg-ad2{
-    grid-area: 6 / 14 / span 4 / span 3;
-} */
-
-/* .hg-ad3{
-    grid-area: 8 / 14 / span 2 / span 3;
-} */
-
 .hg-botinfo{
-    /* grid-area: hg-ad2; */
     overflow-y: scroll;
     grid-area: 2 / 1 / span 5 / span 5;
 }
 
 .hg-botimg{
-    /* grid-area: hg-ad2; */
     grid-area: 2 / 6 / span 5 / span 5;
 }
 
 .hg-botstat{
-    /* grid-area: hg-ad2; */
     overflow-y: scroll;
     grid-area: 2 / 11 / span 5 / span 3;
 }
 
 .hg-selection{
-    /* grid-area: hg-selection; */
     grid-area: 7 / 1 / span 3 / span 13;
 }
 

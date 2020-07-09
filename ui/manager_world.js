@@ -19,15 +19,27 @@ tg.world.processResult = function (resultObject) {
     tg.isGameLive = false;
     tg.updateWorld = tg.world.updateWorldDormant;
 
+    resultObject.playersPerTeam = resultObject.detailedPerformance.length / 2;
+
+    if (tg.bot.userPlayerConfig.team == 1) {
+    } else {
+        // swap players ordering based on user team.
+        for(var i = 0; i < resultObject.playersPerTeam; ++i){
+            tg.uu.swapArrayElements(resultObject.detailedPerformance, i, (i + resultObject.playersPerTeam));
+        }
+    }
+
+    tg.resultObject = resultObject;
+
     var outCome = null;
     var playerTeamPerformance = null;
     var enemyTeamPerformance = null;
     var playerTeamTowerCount = null;
     var enemyTeamTowerCount = null;
     if (tg.bot.userPlayerConfig.team == resultObject.winningTeam) {
-        outCome = 'victory';
+        outCome = 'VICTORY';
     } else {
-        outCome = 'defeat';
+        outCome = 'DEFEAT';
     }
 
     if (tg.bot.userPlayerConfig.team == 1) {
@@ -42,8 +54,19 @@ tg.world.processResult = function (resultObject) {
         enemyTeamPerformance = resultObject.performance[1];
     }
 
-    tg.hl.updateResult(outCome, playerTeamPerformance, enemyTeamPerformance, playerTeamTowerCount, enemyTeamTowerCount);
+    $('.gr-header').html(outCome);
+
+    // console.log(JSON.stringify(resultObject));
+
+    // tg.hl.updateResult(outCome, playerTeamPerformance, enemyTeamPerformance, playerTeamTowerCount, enemyTeamTowerCount);
     tg.pn.showMatchResultPage();
+    $('#game-result-header').html(outCome);
+    $('#team-owned-tower-count').html('Total tower owned count : ' + playerTeamTowerCount);
+    $('#team-total-kill-count').html('Total enemy killed : ' + enemyTeamPerformance.death);
+    $('#team-total-attack-damage').html('Total damage done to enemy : ' + playerTeamPerformance.damage);
+    $('#enemy-owned-tower-count').html('Total tower owned count : ' + enemyTeamTowerCount);
+    $('#enemy-total-kill-count').html('Total enemy killed : ' + playerTeamPerformance.death);
+    $('#enemy-total-attack-damage').html('Total damage done to enemy : ' + enemyTeamPerformance.damage);
 };
 
 

@@ -42,17 +42,27 @@ tg.uu.getRandom = function (rangeStart, rangeEnd) {
     return Math.floor(Math.random() * (rangeEnd - rangeStart)) + rangeStart;
 };
 
-tg.uu.addAmazonAdToContent = function(){
+tg.uu.swapArrayElements = function(arrayParam, index1, index2){
+    if(index1 >= arrayParam.length || index2 >= arrayParam.length){
+        return -1;
+    }
+    var tmp = arrayParam[index1];
+    arrayParam[index1] = arrayParam[index2];
+    arrayParam[index2] = tmp;
+    return 1;
+};
+
+tg.uu.addAmazonAdToContent = function(className){
     // var content = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07ZNRJ6JV&asins=B07ZNRJ6JV&linkId=cd4c14812c6c5f1e3dc9411daa1e3db9&show_border=true&link_opens_in_new_window=true"></iframe>';
     var content = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07ZNRJ6JV&asins=B07ZNRJ6JV&linkId=cd4c14812c6c5f1e3dc9411daa1e3db9&show_border=true&link_opens_in_new_window=true"></iframe>';
     var content2 = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ac&ref=tf_til&ad_type=product_link&tracking_id=trinoyon-21&marketplace=amazon&region=IN&placement=B07FMFGGNR&asins=B07FMFGGNR&linkId=40fd30266917f7df696ade693e490094&show_border=true&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff"></iframe>';
-    $('.hg-ad1').html(content);
+    $('.' + className).html(content);
 
     // setTimeout((()=>{
     //     console.log('calling checktext');
-    //     $('.hg-ad1').html(content2);
+    //     $('.hg-ad').html(content2);
     // }), 5000);
-}
+};
 
 tg.uu.markSelectedItem = function(elementArray, selectedIndex){
     // update selection class.
@@ -60,6 +70,28 @@ tg.uu.markSelectedItem = function(elementArray, selectedIndex){
     tg.uu.addRemoveClassFromElementArray(elementArray, 'add', 'unselected-bot-footer-item');
     $(elementArray[selectedIndex]).removeClass('unselected-bot-footer-item');
     $(elementArray[selectedIndex]).addClass('selected-bot-footer-item');
+};
+
+tg.uu.viewSelectedPlayerResultDetails = function (elementParam, playerIndex) {
+    var playerResultObject = tg.resultObject.detailedPerformance[playerIndex];
+    var totalDamage = 0;
+    var totalDeath = 0;
+    var totalKills = 0;
+    var totalBuildingsDestroyed = 0;
+
+    for(var i = 0; i < playerResultObject.length; ++i){
+        totalDamage += playerResultObject[i].totalDamageSinceSpawn;
+        totalDeath += playerResultObject[i].totalDeath;
+        totalKills += playerResultObject[i].totalBotKill;
+        totalBuildingsDestroyed += playerResultObject[i].totalBuildingDestroy;
+    }
+    // tg.bot.userPlayerConfig
+    var resultString = 'Total Damage:' + totalDamage + '<br>'
+        + 'Total Deaths:' + totalDeath + '<br>'
+        + 'Total Kills:' + totalKills + '<br>'
+        + 'Total Buildins Destroyed:' + totalBuildingsDestroyed + '<br>';
+
+    $('.gr-player-details-header').html(resultString);
 };
 
 tg.uu.displaySelectedBotDetails = function(elementParam, botIndex){
