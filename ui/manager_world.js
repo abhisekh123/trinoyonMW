@@ -15,6 +15,7 @@ tg.world.startNewMatch = function (playerConfigArray, playerIndex) {
     tg.pn.showMatchStartingLoader();
 };
 
+
 tg.world.processResult = function (resultObject) {
     tg.isGameLive = false;
     tg.updateWorld = tg.world.updateWorldDormant;
@@ -22,16 +23,29 @@ tg.world.processResult = function (resultObject) {
     resultObject.playersPerTeam = resultObject.detailedPerformance.length / 2;
     resultObject.calculatedValues = [];
 
+    if (tg.bot.userPlayerConfig.team == 1) {} else {
+        // swap players ordering based on user team.
+        for (var i = 0; i < resultObject.playersPerTeam; ++i) {
+            tg.uu.swapArrayElements(resultObject.detailedPerformance, i, (i + resultObject.playersPerTeam));
+            tg.uu.swapArrayElements(resultObject.calculatedValues, i, (i + resultObject.playersPerTeam));
+            tg.uu.swapArrayElements(tg.bot.playerConfigArray, i, (i + resultObject.playersPerTeam));
+        }
+    }
+
+    tg.resultObject = resultObject;
+
+
+
     resultObject.performance[1].kills = 0;
     resultObject.performance[1].buildingDestroyed = 0;
     resultObject.performance[2].kills = 0;
     resultObject.performance[2].buildingDestroyed = 0;
 
-    for(var j = 0; j < 2; ++j){
-        for(var k = 0; k < resultObject.playersPerTeam; ++k){
+    for (var j = 0; j < 2; ++j) {
+        for (var k = 0; k < resultObject.playersPerTeam; ++k) {
             var playerResultObject = null;
             var teamPerformanceObject = null;
-            if(j == 1){ // team 2
+            if (j == 1) { // team 2
                 playerResultObject = resultObject.detailedPerformance[k + resultObject.playersPerTeam];
                 teamPerformanceObject = resultObject.performance[2];
             } else { // team 1
@@ -44,7 +58,7 @@ tg.world.processResult = function (resultObject) {
             var totalKills = 0;
             var totalBuildingsDestroyed = 0;
 
-            for(var i = 0; i < playerResultObject.length; ++i){
+            for (var i = 0; i < playerResultObject.length; ++i) {
                 totalDamage += playerResultObject[i].totalDamageSinceSpawn;
                 totalDeath += playerResultObject[i].totalDeath;
                 totalKills += playerResultObject[i].totalBotKill;
@@ -63,18 +77,7 @@ tg.world.processResult = function (resultObject) {
         }
     }
 
-    
 
-    if (tg.bot.userPlayerConfig.team == 1) {
-    } else {
-        // swap players ordering based on user team.
-        for(var i = 0; i < resultObject.playersPerTeam; ++i){
-            tg.uu.swapArrayElements(resultObject.detailedPerformance, i, (i + resultObject.playersPerTeam));
-            tg.uu.swapArrayElements(resultObject.calculatedValues, i, (i + resultObject.playersPerTeam));
-        }
-    }
-
-    tg.resultObject = resultObject;
 
     var outCome = null;
     var playerTeamPerformance = null;
@@ -101,29 +104,35 @@ tg.world.processResult = function (resultObject) {
 
     $('.gr-header').html(outCome);
 
+
     // team summary
-    var resultString = 'Total Damage:' + playerTeamPerformance.totalDamage + '<br>'
-        + 'Total Deaths:' + playerTeamPerformance.totalDeath + '<br>'
-        + 'Total Kills:' + playerTeamPerformance.totalKills + '<br>'
-        + 'Total Buildins Destroyed:' + playerTeamPerformance.totalBuildingsDestroyed + '<br>'
-        + 'Total Tower Owned:' + playerTeamTowerCount + '<br>';
+    var resultString = 'TEAM<br>Total Damage:' + playerTeamPerformance.damage.toFixed() + '<br>' +
+        'Total Deaths:' + playerTeamPerformance.death + '<br>' +
+        'Total Kills:' + playerTeamPerformance.kills + '<br>' +
+        'Total Buildins Destroyed:' + playerTeamPerformance.buildingDestroyed + '<br>' +
+        'Total Tower Owned:' + playerTeamTowerCount + '<br>';
     $('.gr-team-header').html(resultString);
 
     // enemy summary
-    resultString = 'Total Damage:' + enemyTeamPerformance.totalDamage + '<br>'
-        + 'Total Deaths:' + enemyTeamPerformance.totalDeath + '<br>'
-        + 'Total Kills:' + enemyTeamPerformance.totalKills + '<br>'
-        + 'Total Buildins Destroyed:' + enemyTeamPerformance.totalBuildingsDestroyed + '<br>'
-        + 'Total Tower Owned:' + enemyTeamTowerCount + '<br>';
+    resultString = 'ENEMY<br>Total Damage:' + enemyTeamPerformance.damage.toFixed() + '<br>' +
+        'Total Deaths:' + enemyTeamPerformance.death + '<br>' +
+        'Total Kills:' + enemyTeamPerformance.kills + '<br>' +
+        'Total Buildins Destroyed:' + enemyTeamPerformance.buildingDestroyed + '<br>' +
+        'Total Tower Owned:' + enemyTeamTowerCount + '<br>';
     $('.gr-enemy-header').html(resultString);
 
     var playerSelfIndex = 0;
-    if(tg.bot.userPlayerConfig.playerSelfIndex < resultObject.playersPerTeam){
+    var resultPlayerContainerArray = $('.result-player-container');
+    if (tg.bot.userPlayerConfig.playerSelfIndex < resultObject.playersPerTeam) {
         playerSelfIndex = tg.bot.userPlayerConfig.playerSelfIndex;
     } else {
         playerSelfIndex = tg.bot.userPlayerConfig.playerSelfIndex - resultObject.playersPerTeam;
     }
-    var playerHTMLContainer = $('.border-team.player-container')[playerSelfIndex];
+
+    for(var i = 0; i < resultPlayerContainerArray.length; ++i){
+        resultPlayerContainerArray[i].innerHTML = tg.bot.playerConfigArray[i].id;
+    }
+    var playerHTMLContainer = $('.border-team.result-player-container')[playerSelfIndex];
     tg.uu.viewSelectedPlayerResultDetails(playerHTMLContainer, tg.bot.userPlayerConfig.playerSelfIndex);
     // console.log(JSON.stringify(resultObject));
 
@@ -297,34 +306,34 @@ tg.world.updateWorld = function (updateParam) {
             }
 
             botObject.life = updateItemConfig.life;
-            for(var i = 0; i < botObject.ability.length; ++i){
+            for (var i = 0; i < botObject.ability.length; ++i) {
                 var abilityObject = botObject.ability[i];
-                if(botObject[abilityObject.key] != updateItemConfig[abilityObject.key]){
+                if (botObject[abilityObject.key] != updateItemConfig[abilityObject.key]) {
                     tg.effect.processAbilityStateChangeEvent(botObject, updateItemConfig, i);
                     botObject[abilityObject.key] = updateItemConfig[abilityObject.key];
                 }
             }
             var activeStateUpdated = false;
-            if(botObject.isActive != updateItemConfig.isActive){
+            if (botObject.isActive != updateItemConfig.isActive) {
                 activeStateUpdated = true;
             }
             botObject.isActive = updateItemConfig.isActive;
-            
+
             // if(updateItemConfig.action == 'fight'){
             //     console.log('updateParam:', updateParam);
             // }
             tg.ui3d.updateHPBarPercentage(botObject.hpBarConfig, ((100 * botObject.life) / botObject.fullLife));
             var botIndex = tg.bot.userBotIdMap[botObject.id];
             // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
-            if(botIndex != null && botIndex != undefined){
+            if (botIndex != null && botIndex != undefined) {
                 tg.hl.updateBotButtonLife(botIndex, botObject);
-                if(activeStateUpdated){
-                    if(botObject.isActive == true){
+                if (activeStateUpdated) {
+                    if (botObject.isActive == true) {
                         tg.hl.enableFooterSelfBotIcon("game-footer-bot-selection_" + botIndex);
-                    }else{
+                    } else {
                         tg.hl.diableFooterSelfBotIcon("game-footer-bot-selection_" + botIndex);
                     }
-                    
+
                 }
             }
         }
@@ -444,3 +453,734 @@ tg.world.planProjectilePath = function (startX, startZ, endX, endZ, startY, endY
 }
 
 tg.world.updateWorldDormant = function (updateParam) {};
+
+
+
+
+tg.world.testResultRendering = function () {
+    console.log('test result rendering');
+
+    tg.world.processResult({
+        "towerCountTeam1": 5,
+        "towerCountTeam2": 5,
+        "timeRemaining": 0,
+        "performance": [{
+                "death": null
+            },
+            {
+                "death": 8,
+                "damage": 2517.39375
+            },
+            {
+                "death": 1,
+                "damage": 2401.625
+            }
+        ],
+        "detailedPerformance": [
+            [{
+                    "type": "lion",
+                    "totalDamageSinceSpawn": 37.625,
+                    "totalDamageSinceGameStart": 81.844375,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 1,
+                    "levelHistory": [
+                        [
+                            1,
+                            88904
+                        ],
+                        [
+                            2,
+                            126094
+                        ],
+                        [
+                            3,
+                            211562
+                        ],
+                        [
+                            0,
+                            215577
+                        ],
+                        [
+                            1,
+                            264811
+                        ],
+                        [
+                            2,
+                            268838
+                        ],
+                        [
+                            3,
+                            273357
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 13.5,
+                    "totalDamageSinceGameStart": 38.75,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 2,
+                    "levelHistory": [
+                        [
+                            0,
+                            148199
+                        ],
+                        [
+                            1,
+                            223617
+                        ],
+                        [
+                            0,
+                            229654
+                        ],
+                        [
+                            1,
+                            349222
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 0,
+                    "totalDamageSinceGameStart": 379.25,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 2,
+                    "levelHistory": [
+                        [
+                            1,
+                            84877
+                        ],
+                        [
+                            2,
+                            87397
+                        ],
+                        [
+                            3,
+                            90909
+                        ],
+                        [
+                            0,
+                            209048
+                        ],
+                        [
+                            1,
+                            264311
+                        ],
+                        [
+                            2,
+                            267837
+                        ],
+                        [
+                            3,
+                            270845
+                        ],
+                        [
+                            0,
+                            331629
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 28.75,
+                    "totalDamageSinceGameStart": 214.5,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 1,
+                    "levelHistory": [
+                        [
+                            1,
+                            87397
+                        ],
+                        [
+                            2,
+                            88402
+                        ],
+                        [
+                            3,
+                            91917
+                        ],
+                        [
+                            0,
+                            219602
+                        ],
+                        [
+                            1,
+                            322593
+                        ],
+                        [
+                            2,
+                            325606
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 9,
+                    "totalDamageSinceGameStart": 34.75,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 2,
+                    "levelHistory": [
+                        [
+                            1,
+                            138644
+                        ],
+                        [
+                            0,
+                            146185
+                        ],
+                        [
+                            1,
+                            223617
+                        ],
+                        [
+                            0,
+                            226636
+                        ]
+                    ]
+                }
+            ],
+            [{
+                    "type": "lion",
+                    "totalDamageSinceSpawn": 162.70499999999998,
+                    "totalDamageSinceGameStart": 162.70499999999998,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            62768
+                        ],
+                        [
+                            2,
+                            177365
+                        ],
+                        [
+                            3,
+                            218598
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 35,
+                    "totalDamageSinceGameStart": 35,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            276872
+                        ],
+                        [
+                            2,
+                            284905
+                        ],
+                        [
+                            3,
+                            341690
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 38.5,
+                    "totalDamageSinceGameStart": 38.5,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            277877
+                        ],
+                        [
+                            2,
+                            285907
+                        ],
+                        [
+                            3,
+                            340178
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 332.25,
+                    "totalDamageSinceGameStart": 332.25,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            61266
+                        ],
+                        [
+                            2,
+                            64279
+                        ],
+                        [
+                            3,
+                            68298
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 369.75,
+                    "totalDamageSinceGameStart": 369.75,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            60257
+                        ],
+                        [
+                            2,
+                            63272
+                        ],
+                        [
+                            3,
+                            66283
+                        ]
+                    ]
+                }
+            ],
+            [{
+                    "type": "lion",
+                    "totalDamageSinceSpawn": 212.094375,
+                    "totalDamageSinceGameStart": 212.094375,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            78851
+                        ],
+                        [
+                            2,
+                            103472
+                        ],
+                        [
+                            3,
+                            158260
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 87.5,
+                    "totalDamageSinceGameStart": 87.5,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            126598
+                        ],
+                        [
+                            2,
+                            210557
+                        ],
+                        [
+                            3,
+                            238696
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 11,
+                    "totalDamageSinceGameStart": 11,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            349726
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 219.5,
+                    "totalDamageSinceGameStart": 219.5,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            116038
+                        ],
+                        [
+                            2,
+                            163300
+                        ],
+                        [
+                            3,
+                            164810
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 276,
+                    "totalDamageSinceGameStart": 276,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            77848
+                        ],
+                        [
+                            2,
+                            95426
+                        ],
+                        [
+                            3,
+                            109505
+                        ]
+                    ]
+                }
+            ],
+            [{
+                    "type": "lion",
+                    "totalDamageSinceSpawn": 167.125,
+                    "totalDamageSinceGameStart": 167.125,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            60761
+                        ],
+                        [
+                            2,
+                            131114
+                        ],
+                        [
+                            3,
+                            193442
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 35,
+                    "totalDamageSinceGameStart": 35,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            208038
+                        ],
+                        [
+                            2,
+                            219101
+                        ],
+                        [
+                            3,
+                            341186
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 91,
+                    "totalDamageSinceGameStart": 91,
+                    "totalBotKill": 1,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            142665
+                        ],
+                        [
+                            2,
+                            217086
+                        ],
+                        [
+                            3,
+                            227137
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 261,
+                    "totalDamageSinceGameStart": 261,
+                    "totalBotKill": 1,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            61767
+                        ],
+                        [
+                            2,
+                            66283
+                        ],
+                        [
+                            3,
+                            69301
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 411,
+                    "totalDamageSinceGameStart": 411,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            61266
+                        ],
+                        [
+                            2,
+                            64279
+                        ],
+                        [
+                            3,
+                            68298
+                        ]
+                    ]
+                }
+            ],
+            [{
+                    "type": "lion",
+                    "totalDamageSinceSpawn": 116.25,
+                    "totalDamageSinceGameStart": 116.25,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            118052
+                        ],
+                        [
+                            2,
+                            124081
+                        ],
+                        [
+                            3,
+                            176362
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 16,
+                    "totalDamageSinceGameStart": 16,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            298471
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 6,
+                    "totalDamageSinceGameStart": 6,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": []
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 189.75,
+                    "totalDamageSinceGameStart": 189.75,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            102969
+                        ],
+                        [
+                            2,
+                            113523
+                        ],
+                        [
+                            3,
+                            116541
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 129.5,
+                    "totalDamageSinceGameStart": 141.5,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 1,
+                    "levelHistory": [
+                        [
+                            1,
+                            75831
+                        ],
+                        [
+                            0,
+                            79353
+                        ],
+                        [
+                            1,
+                            130611
+                        ],
+                        [
+                            2,
+                            133620
+                        ],
+                        [
+                            3,
+                            177866
+                        ]
+                    ]
+                }
+            ],
+            [{
+                    "type": "lion",
+                    "totalDamageSinceSpawn": 186.25,
+                    "totalDamageSinceGameStart": 186.25,
+                    "totalBotKill": 1,
+                    "totalBuildingDestroy": 1,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            75327
+                        ],
+                        [
+                            2,
+                            150213
+                        ],
+                        [
+                            3,
+                            153234
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 35,
+                    "totalDamageSinceGameStart": 35,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            241711
+                        ],
+                        [
+                            2,
+                            342692
+                        ],
+                        [
+                            3,
+                            350229
+                        ]
+                    ]
+                },
+                {
+                    "type": "swordman",
+                    "totalDamageSinceSpawn": 40.25,
+                    "totalDamageSinceGameStart": 40.25,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            162288
+                        ],
+                        [
+                            2,
+                            245232
+                        ],
+                        [
+                            3,
+                            340178
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 298.5,
+                    "totalDamageSinceGameStart": 298.5,
+                    "totalBotKill": 4,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            83371
+                        ],
+                        [
+                            2,
+                            157256
+                        ],
+                        [
+                            3,
+                            159268
+                        ]
+                    ]
+                },
+                {
+                    "type": "archer",
+                    "totalDamageSinceSpawn": 407,
+                    "totalDamageSinceGameStart": 407,
+                    "totalBotKill": 0,
+                    "totalBuildingDestroy": 0,
+                    "totalDeath": 0,
+                    "levelHistory": [
+                        [
+                            1,
+                            84877
+                        ],
+                        [
+                            2,
+                            158765
+                        ],
+                        [
+                            3,
+                            159776
+                        ]
+                    ]
+                }
+            ]
+        ],
+        "winningTeam": 2
+    });
+};
+
+

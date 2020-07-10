@@ -74,14 +74,31 @@ tg.uu.markSelectedItem = function(elementArray, selectedIndex){
 
 tg.uu.viewSelectedPlayerResultDetails = function (elementParam, playerIndex) {
     var playerResultObject = tg.resultObject.calculatedValues[playerIndex];
+    var playerDetailedPerformance = tg.resultObject.detailedPerformance[playerIndex];
     
     // tg.bot.userPlayerConfig
-    var resultString = 'Total Damage:' + playerResultObject.totalDamage + '<br>'
+    var resultString = 'Performance Summary for : ' + elementParam.innerHTML 
+        + '<br><br>Total Damage:' + playerResultObject.totalDamage.toFixed() + '<br>'
         + 'Total Deaths:' + playerResultObject.totalDeath + '<br>'
         + 'Total Kills:' + playerResultObject.totalKills + '<br>'
         + 'Total Buildins Destroyed:' + playerResultObject.totalBuildingsDestroyed + '<br>';
 
     $('.gr-player-details-header').html(resultString);
+
+    var botImageList = $('.result-bot-details-image-icon');
+    var resultBotDetails = $('.result-bot-details');
+
+    for(var i = 0; i < playerDetailedPerformance.length; ++i){
+        var botType = playerDetailedPerformance[i].type;
+
+        resultString = botType.toUpperCase() + '<br><br>Total Damage:' + playerResultObject.totalDamage.toFixed() + '<br>'
+        + 'Total Deaths:' + playerResultObject.totalDeath + '<br>'
+        + 'Total Kills:' + playerResultObject.totalKills + '<br>'
+        + 'Total Buildins Destroyed:' + playerResultObject.totalBuildingsDestroyed + '<br>';
+
+        botImageList[i].src = tg.uu.getIconURLFromType('item', botType);
+        resultBotDetails[i].innerHTML = resultString;
+    }
 };
 
 tg.uu.displaySelectedBotDetails = function(elementParam, botIndex){

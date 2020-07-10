@@ -195,6 +195,18 @@ canvas {
     border-top: 1px solid #aaa;
 }
 
+.full-width{
+    width: 100%;
+}
+
+.menu-small-text {
+    color: #aaa;
+    /* float: ; */
+    font-size: 0.7em;
+    width: 100%;
+
+}
+
 .menu-text {
     color: #aaa;
     /* float: ; */
