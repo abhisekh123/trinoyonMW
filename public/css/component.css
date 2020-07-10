@@ -78,4 +78,21 @@
     width: 100%;
 }
 
+.result-bot-details-container{
+    width: 100%;
+    border-top: 1px solid #aaa;
+}
+
+.result-bot-details-image-icon{
+    width: 25%;
+    /* height: 100%; */
+    object-fit: cover;
+    float: right;
+}
+
+.result-bot-details{
+    text-align: left;
+    float: left;
+    width: 75%;
+}
 

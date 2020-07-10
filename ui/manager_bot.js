@@ -4,6 +4,7 @@ tg.bot.userPlayerConfig = null;
 tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComplete) {
     console.log('start tg.bot.reloadBots');
     tg.bot.characters = {};
+    tg.bot.playerConfigArray = playerConfigArray;
 
     tg.am.onLoadComplete = actionOnComplete;
     tg.am.totalAssetsToBeLoaded = 0;
@@ -21,6 +22,7 @@ tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComple
             tg.bot.userPlayerConfig = playerConfigArray[i];
             tg.bot.userPlayerConfig.selectedBot = null;
             tg.bot.userPlayerConfig.clearSelectionTimer = null;
+            tg.bot.userPlayerConfig.playerSelfIndex = playerSelfIndex;
             tg.hl.updateFooterIconImageForPlayerTeamBots();
 
         }

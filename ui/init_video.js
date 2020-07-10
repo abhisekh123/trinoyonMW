@@ -102,6 +102,7 @@ tg.video.cameraChangeView = function (angleParam) {
 };
 
 tg.video.moveCameraSideway = function (factorParam) {
+    factorParam *= tg.video.getFPSFactor();
     tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.sideX * factorParam;
     tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.sideZ * factorParam;
 
@@ -120,6 +121,7 @@ tg.video.moveCameraSideway = function (factorParam) {
 };
 
 tg.video.moveCameraStraight = function (factorParam) {
+    factorParam *= tg.video.getFPSFactor();
     tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.forewardX * factorParam;
     tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.forewardZ * factorParam;
 
@@ -138,6 +140,7 @@ tg.video.moveCameraStraight = function (factorParam) {
 };
 
 tg.video.cameraRotate = function (factorParam) {
+    factorParam *= tg.video.getFPSFactor();
     tg.camera.rotationOffset += tg.worldItems.uiConfig.cameraTargetRotationStep * factorParam;
 
     if (tg.camera.rotationOffset > 359) {
@@ -152,6 +155,7 @@ tg.video.cameraRotate = function (factorParam) {
 
 
 tg.video.cameraZoom = function (factorParam) {
+    factorParam *= tg.video.getFPSFactor();
     tg.camera.radius += tg.worldItems.uiConfig.cameraRadiusStep * factorParam;
     tg.camera.heightOffset += tg.worldItems.uiConfig.cameraHeightStep * factorParam;
     tg.camera.fov += tg.worldItems.uiConfig.cameraFovStep * factorParam;
@@ -175,6 +179,10 @@ tg.video.cameraZoom = function (factorParam) {
         tg.camera.fov = tg.worldItems.uiConfig.minCameraFov;
     }
 };
+
+tg.video.getFPSFactor = function(){
+    return (60 / tg.engine.getFps().toFixed()) / 1.5;
+}
 
 // tg.video.makeFullScreen = function () {
 //     if (canvas.webkitRequestFullScreen) {

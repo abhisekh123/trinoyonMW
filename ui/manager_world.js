@@ -20,12 +20,57 @@ tg.world.processResult = function (resultObject) {
     tg.updateWorld = tg.world.updateWorldDormant;
 
     resultObject.playersPerTeam = resultObject.detailedPerformance.length / 2;
+    resultObject.calculatedValues = [];
+
+    resultObject.performance[1].kills = 0;
+    resultObject.performance[1].buildingDestroyed = 0;
+    resultObject.performance[2].kills = 0;
+    resultObject.performance[2].buildingDestroyed = 0;
+
+    for(var j = 0; j < 2; ++j){
+        for(var k = 0; k < resultObject.playersPerTeam; ++k){
+            var playerResultObject = null;
+            var teamPerformanceObject = null;
+            if(j == 1){ // team 2
+                playerResultObject = resultObject.detailedPerformance[k + resultObject.playersPerTeam];
+                teamPerformanceObject = resultObject.performance[2];
+            } else { // team 1
+                playerResultObject = resultObject.detailedPerformance[k];
+                teamPerformanceObject = resultObject.performance[1];
+            }
+
+            var totalDamage = 0;
+            var totalDeath = 0;
+            var totalKills = 0;
+            var totalBuildingsDestroyed = 0;
+
+            for(var i = 0; i < playerResultObject.length; ++i){
+                totalDamage += playerResultObject[i].totalDamageSinceSpawn;
+                totalDeath += playerResultObject[i].totalDeath;
+                totalKills += playerResultObject[i].totalBotKill;
+                totalBuildingsDestroyed += playerResultObject[i].totalBuildingDestroy;
+            }
+
+            resultObject.calculatedValues.push({
+                totalDamage: totalDamage,
+                totalDeath: totalDeath,
+                totalKills: totalKills,
+                totalBuildingsDestroyed: totalBuildingsDestroyed
+            });
+
+            teamPerformanceObject.kills += totalKills;
+            teamPerformanceObject.buildingDestroyed += totalBuildingsDestroyed;
+        }
+    }
+
+    
 
     if (tg.bot.userPlayerConfig.team == 1) {
     } else {
         // swap players ordering based on user team.
         for(var i = 0; i < resultObject.playersPerTeam; ++i){
             tg.uu.swapArrayElements(resultObject.detailedPerformance, i, (i + resultObject.playersPerTeam));
+            tg.uu.swapArrayElements(resultObject.calculatedValues, i, (i + resultObject.playersPerTeam));
         }
     }
 
@@ -56,17 +101,42 @@ tg.world.processResult = function (resultObject) {
 
     $('.gr-header').html(outCome);
 
+    // team summary
+    var resultString = 'Total Damage:' + playerTeamPerformance.totalDamage + '<br>'
+        + 'Total Deaths:' + playerTeamPerformance.totalDeath + '<br>'
+        + 'Total Kills:' + playerTeamPerformance.totalKills + '<br>'
+        + 'Total Buildins Destroyed:' + playerTeamPerformance.totalBuildingsDestroyed + '<br>'
+        + 'Total Tower Owned:' + playerTeamTowerCount + '<br>';
+    $('.gr-team-header').html(resultString);
+
+    // enemy summary
+    resultString = 'Total Damage:' + enemyTeamPerformance.totalDamage + '<br>'
+        + 'Total Deaths:' + enemyTeamPerformance.totalDeath + '<br>'
+        + 'Total Kills:' + enemyTeamPerformance.totalKills + '<br>'
+        + 'Total Buildins Destroyed:' + enemyTeamPerformance.totalBuildingsDestroyed + '<br>'
+        + 'Total Tower Owned:' + enemyTeamTowerCount + '<br>';
+    $('.gr-enemy-header').html(resultString);
+
+    var playerSelfIndex = 0;
+    if(tg.bot.userPlayerConfig.playerSelfIndex < resultObject.playersPerTeam){
+        playerSelfIndex = tg.bot.userPlayerConfig.playerSelfIndex;
+    } else {
+        playerSelfIndex = tg.bot.userPlayerConfig.playerSelfIndex - resultObject.playersPerTeam;
+    }
+    var playerHTMLContainer = $('.border-team.player-container')[playerSelfIndex];
+    tg.uu.viewSelectedPlayerResultDetails(playerHTMLContainer, tg.bot.userPlayerConfig.playerSelfIndex);
     // console.log(JSON.stringify(resultObject));
 
     // tg.hl.updateResult(outCome, playerTeamPerformance, enemyTeamPerformance, playerTeamTowerCount, enemyTeamTowerCount);
     tg.pn.showMatchResultPage();
-    $('#game-result-header').html(outCome);
-    $('#team-owned-tower-count').html('Total tower owned count : ' + playerTeamTowerCount);
-    $('#team-total-kill-count').html('Total enemy killed : ' + enemyTeamPerformance.death);
-    $('#team-total-attack-damage').html('Total damage done to enemy : ' + playerTeamPerformance.damage);
-    $('#enemy-owned-tower-count').html('Total tower owned count : ' + enemyTeamTowerCount);
-    $('#enemy-total-kill-count').html('Total enemy killed : ' + playerTeamPerformance.death);
-    $('#enemy-total-attack-damage').html('Total damage done to enemy : ' + enemyTeamPerformance.damage);
+
+    // $('#game-result-header').html(outCome);
+    // $('#team-owned-tower-count').html('Total tower owned count : ' + playerTeamTowerCount);
+    // $('#team-total-kill-count').html('Total enemy killed : ' + enemyTeamPerformance.death);
+    // $('#team-total-attack-damage').html('Total damage done to enemy : ' + playerTeamPerformance.damage);
+    // $('#enemy-owned-tower-count').html('Total tower owned count : ' + enemyTeamTowerCount);
+    // $('#enemy-total-kill-count').html('Total enemy killed : ' + playerTeamPerformance.death);
+    // $('#enemy-total-attack-damage').html('Total damage done to enemy : ' + enemyTeamPerformance.damage);
 };
 
 

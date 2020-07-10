@@ -73,23 +73,13 @@ tg.uu.markSelectedItem = function(elementArray, selectedIndex){
 };
 
 tg.uu.viewSelectedPlayerResultDetails = function (elementParam, playerIndex) {
-    var playerResultObject = tg.resultObject.detailedPerformance[playerIndex];
-    var totalDamage = 0;
-    var totalDeath = 0;
-    var totalKills = 0;
-    var totalBuildingsDestroyed = 0;
-
-    for(var i = 0; i < playerResultObject.length; ++i){
-        totalDamage += playerResultObject[i].totalDamageSinceSpawn;
-        totalDeath += playerResultObject[i].totalDeath;
-        totalKills += playerResultObject[i].totalBotKill;
-        totalBuildingsDestroyed += playerResultObject[i].totalBuildingDestroy;
-    }
+    var playerResultObject = tg.resultObject.calculatedValues[playerIndex];
+    
     // tg.bot.userPlayerConfig
-    var resultString = 'Total Damage:' + totalDamage + '<br>'
-        + 'Total Deaths:' + totalDeath + '<br>'
-        + 'Total Kills:' + totalKills + '<br>'
-        + 'Total Buildins Destroyed:' + totalBuildingsDestroyed + '<br>';
+    var resultString = 'Total Damage:' + playerResultObject.totalDamage + '<br>'
+        + 'Total Deaths:' + playerResultObject.totalDeath + '<br>'
+        + 'Total Kills:' + playerResultObject.totalKills + '<br>'
+        + 'Total Buildins Destroyed:' + playerResultObject.totalBuildingsDestroyed + '<br>';
 
     $('.gr-player-details-header').html(resultString);
 };

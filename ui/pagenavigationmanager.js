@@ -50,7 +50,7 @@ tg.pn.showMatchResultPage = function(){
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     // $("#game-footer-menu").show();
     tg.pn.currentPage = 'game-result';
-    // tg.pv.setModalDimensionPercentage('10%', '90%');
+    tg.pv.setModalDimensionPercentage('100%', '100%');
     tg.hl.removeJoysticks();
     tg.audio.playAudio(tg.audio.menu);
     tg.audio.stopAudio(tg.audio.match);
