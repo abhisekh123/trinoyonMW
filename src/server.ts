@@ -157,6 +157,16 @@ app.use('/static', express.static(path.join(__dirname + '/../../public')));
 //     console.log('Destroying session');
 
 // });
+app.enable('trust proxy');
+app.use (function (req, res, next) {
+    if (req.secure) {
+            // request was via https, so do no special handling
+            next();
+    } else {
+            // request was via http, so redirect to https
+            res.redirect('https://' + req.headers.host + req.url);
+    }
+});
 
 
 // login page
@@ -364,6 +374,12 @@ export class DemoServer {
             server.listen(443, () => {
                 // console.log(`Server started on port ${httpsserver.address.toString} :)`);
             });
+
+            // Redirect from http port 80 to https
+            // http.createServer(function (req, res) {
+            //     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+            //     res.end();
+            // }).listen(80);
         } else {
             server.listen(portParam, () => {
                 // console.log(`>>>>>>>>>>>>>>>>>Server started on port ${server.address.toString} :)`);
