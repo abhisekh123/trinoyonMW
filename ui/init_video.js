@@ -40,10 +40,11 @@ tg.initialiseCamera = function () {
     // Parameters: name, position, scene
     tg.camera = new BABYLON.FollowCamera("Camera", new BABYLON.Vector3(0, 10, -10), tg.scene);
     // //The goal distance of camera from target
-    tg.camera.radius = 90;
+    tg.camera.radius = 120;
 
     // // The goal height of camera above local origin (centre) of target
-    tg.camera.heightOffset = 35;
+    tg.camera.heightOffset = 70;
+    tg.camera.fov = 1.1;
 
     // // The goal rotation of camera around local origin (centre) of target in x y plane
     tg.camera.rotationOffset = 0;

@@ -530,13 +530,15 @@ canvas {
     background-size: contain;
 }
 
+
+
 .showjoystick{
     display: none;
     position: fixed;
-    top: 52;
-    left: 65px;
-    height: 32px;
-    width: 45px;
+    top: 62;
+    left: 10px;
+    height: 64px;
+    width: 90px;
     background: url("touch-icon.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
     /* line-height: 20px; */
     vertical-align: center;
@@ -548,17 +550,17 @@ canvas {
     position: fixed;
     top: 10;
     left: 10px;
-    height: 32px;
-    width: 100px;
+    /* height: 32px;
+    width: 100px; */
 }
 
 .hidejoystick{
     display: none;
     position: fixed;
-    top: 52;
-    left: 65px;
-    height: 32px;
-    width: 45px;
+    top: 62;
+    left: 10px;
+    height: 64px;
+    width: 90px;
     background: url("laptop-icon.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
     /* line-height: 20px; */
     vertical-align: center;

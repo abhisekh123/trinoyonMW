@@ -49,10 +49,15 @@
     grid-area: 2 / 4 / span 3 / span 7;
     font-weight: bold;
     text-align: center;
+    border-style: solid;
+    border-color: #aaa;
+    color: #aaa;
 }
 .gr-player-details-body{
     grid-area: 5 / 4 / span 5 / span 7;
     overflow-y: scroll;
+    border-style: solid;
+    border-color: #aaa;
 }
 
 /* enemy : 2 / 11 / span 8 / span 3 */

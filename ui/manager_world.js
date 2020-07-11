@@ -174,6 +174,7 @@ tg.world.handleNewMatchStartReadyTrigger = function () {
     } else {
         tg.camera.rotationOffset = 0;
     }
+    
     tg.calculateCameraMovementSteps();
 
     tg.pn.showMatchPage();

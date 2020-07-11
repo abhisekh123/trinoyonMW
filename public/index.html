@@ -30,7 +30,8 @@
     <button onclick="makeFullScreen()" class="fullscreenbutton" id="fullscreenbutton"></button>
     <button onclick="showjoystick()" class="showjoystick" id="showjoystick"></button>
     <button onclick="hidejoystick()" class="hidejoystick" id="hidejoystick"></button>
-    <button onclick="showControls()" class="showControls" id="showControls">CONTROLS</button>
+    <!-- <button onclick="showControls()" class="showControls" id="showControls">CONTROLS</button> -->
+    <a onclick="showControls()" class="tButton showControls" id="showControls">CONTROLS</a>
 
     <!-- The Modal -->
     <div id="menu-modal" class="modal center">
@@ -242,7 +243,9 @@
                 </div>
 
                 <div class="hg-footer">
-                    <button id="button-home-start">PLAY</button>
+                    <!-- <button id="button-home-start">PLAY</button> -->
+                    <!-- <a href="#" class="tButton" id="button-home-start">PLAY</a> -->
+                    <a class="tButton" id="button-home-start">PLAY</a>
                 </div>
             </div>
         </div>
@@ -261,7 +264,7 @@
         <div id="game-result-container" class="game-result-container result">
 
             <div class="grid-result">
-                <div class="gr-header">
+                <div class="gr-header menu-header">
                     <div class="menu-header center-relative">
                         Result
                     </div>
@@ -301,7 +304,7 @@
 
                 <div class="gr-player-details-header"></div>
                 <div class="gr-player-details-body">
-                    <table>
+                    <table class="full-width">
                         <tr>
                             <td>
                                 <div class="result-bot-details-container">

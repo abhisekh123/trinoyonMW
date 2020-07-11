@@ -54,9 +54,10 @@ tg.uu.swapArrayElements = function(arrayParam, index1, index2){
 
 tg.uu.addAmazonAdToContent = function(className){
     // var content = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07ZNRJ6JV&asins=B07ZNRJ6JV&linkId=cd4c14812c6c5f1e3dc9411daa1e3db9&show_border=true&link_opens_in_new_window=true"></iframe>';
-    var content = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07ZNRJ6JV&asins=B07ZNRJ6JV&linkId=cd4c14812c6c5f1e3dc9411daa1e3db9&show_border=true&link_opens_in_new_window=true"></iframe>';
+    // var content = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07ZNRJ6JV&asins=B07ZNRJ6JV&linkId=cd4c14812c6c5f1e3dc9411daa1e3db9&show_border=true&link_opens_in_new_window=true"></iframe>';
     var content2 = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ac&ref=tf_til&ad_type=product_link&tracking_id=trinoyon-21&marketplace=amazon&region=IN&placement=B07FMFGGNR&asins=B07FMFGGNR&linkId=40fd30266917f7df696ade693e490094&show_border=true&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff"></iframe>';
-    $('.' + className).html(content);
+    var content3 = '<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=trinoyon-21&language=en_IN&marketplace=amazon&region=IN&placement=B07ZNRJ6JV&asins=B07ZNRJ6JV&linkId=0099a1ad65e77ed8d76aa1a66123d7ce&show_border=true&link_opens_in_new_window=true"></iframe>';
+    $('.' + className).html(content3);
 
     // setTimeout((()=>{
     //     console.log('calling checktext');
@@ -91,10 +92,10 @@ tg.uu.viewSelectedPlayerResultDetails = function (elementParam, playerIndex) {
     for(var i = 0; i < playerDetailedPerformance.length; ++i){
         var botType = playerDetailedPerformance[i].type;
 
-        resultString = botType.toUpperCase() + '<br><br>Total Damage:' + playerResultObject.totalDamage.toFixed() + '<br>'
-        + 'Total Deaths:' + playerResultObject.totalDeath + '<br>'
-        + 'Total Kills:' + playerResultObject.totalKills + '<br>'
-        + 'Total Buildins Destroyed:' + playerResultObject.totalBuildingsDestroyed + '<br>';
+        resultString = botType.toUpperCase() + '<br><br>Total Damage:' + playerDetailedPerformance[i].totalDamageSinceGameStart.toFixed() + '<br>'
+        + 'Total Deaths:' + playerDetailedPerformance[i].totalDeath + '<br>'
+        + 'Total Kills:' + playerDetailedPerformance[i].totalBotKill + '<br>'
+        + 'Total Buildins Destroyed:' + playerDetailedPerformance[i].totalBuildingDestroy + '<br>';
 
         botImageList[i].src = tg.uu.getIconURLFromType('item', botType);
         resultBotDetails[i].innerHTML = resultString;

@@ -1,3 +1,32 @@
+
+
+
+.tButton {
+	box-shadow: 0px 0px 10px 2px #a2b39d;
+    background: linear-gradient(to bottom, #181a18 5%, #757a71 100%);
+    background-color: #181a18;
+    border-radius: 6px;
+    border: 2px solid #b4c2b6;
+    display: inline-block;
+    cursor: pointer;
+    color: #dbd0db;
+    font-family: Arial;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 7px 50px;
+    text-decoration: none;
+    text-shadow: 2px 3px 5px #4b6347;
+}
+.tButton:hover {
+	background:linear-gradient(to bottom, #757a71 5%, #181a18 100%);
+	background-color:#757a71;
+}
+.tButton:active {
+	position:relative;
+	top:1px;
+}
+
+
 .information-table {
     /* height: 100%; */
     width: 100%;
@@ -97,6 +126,11 @@
 .border-team {
     border-style: solid;
     border-color: green;
+}
+
+.border-regular {
+    border-style: solid;
+    border-color: #aaa;
 }
 
 .result-player-container {
