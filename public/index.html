@@ -24,7 +24,7 @@
 
 </head>
 
-<body onload="initSystem()" class="parent-body" oncontextmenu="contextMenuFunction()">
+<body onload="initSystem()" class="parent-body" oncontextmenu="contextMenuFunction()" onbeforeunload="return tg.onAppExit()">
     <div id="fps">0</div>
     <canvas id='tc'></canvas>
     <button onclick="makeFullScreen()" class="fullscreenbutton" id="fullscreenbutton"></button>

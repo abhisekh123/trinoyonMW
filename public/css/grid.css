@@ -25,7 +25,7 @@
 
 .gr-ad{
     grid-area: 2 / 14 / span 8 / span 3;
-    overflow: scroll;
+    /* overflow: scroll; */
 }
 
 /* result area 2 / 1 / span 8 / span 13 */
@@ -103,7 +103,7 @@
 
 .hg-ad{
     grid-area: 2 / 14 / span 8 / span 3;
-    overflow: scroll;
+    /* overflow: scroll; */
 }
 
 .hg-botinfo{

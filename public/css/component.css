@@ -1,17 +1,42 @@
-
-.information-table{
+.information-table {
     /* height: 100%; */
     width: 100%;
     /* overflow-y: scroll; */
     border: 2px solid #ccc;
 }
 
-
-
-.bot-info-header{
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-.bot-info-description{
+/* Track */
+::-webkit-scrollbar-track {
+    background: #aaa;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+}
+
+.information1-table::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+
+
+
+.bot-info-header {}
+
+.bot-info-description {
     text-align: left;
 }
 
@@ -19,50 +44,48 @@
     text-align: left;
 } */
 
-.bot-info-ability-details{
+.bot-info-ability-details {
     text-align: left;
 }
 
-.ability-introduction{
+.ability-introduction {
     width: 100%;
 }
 
-.ability-Image{
+.ability-Image {
     object-fit: cover;
     width: 20%;
     float: left;
 }
 
-.ability-name{
+.ability-name {
     width: 80%;
     float: right;
 }
 
-.ability-statistics{
+.ability-statistics {
     width: 100%;
     text-align: left;
 }
 
-.ability-description{
+.ability-description {
     width: 100%;
     text-align: left;
 }
 
 
-.bot-stat-header{
-    
-}
+.bot-stat-header {}
 
 
-.bot-stat-life{
+.bot-stat-life {
     text-align: left;
 }
 
-.bot-stat-attack{
+.bot-stat-attack {
     text-align: left;
 }
 
-.bot-stat-movement{
+.bot-stat-movement {
     text-align: left;
 }
 
@@ -70,29 +93,30 @@
     border-style: solid;
     border-color: red;
 }
+
 .border-team {
     border-style: solid;
     border-color: green;
 }
-.result-player-container{
+
+.result-player-container {
     width: 100%;
 }
 
-.result-bot-details-container{
+.result-bot-details-container {
     width: 100%;
     border-top: 1px solid #aaa;
 }
 
-.result-bot-details-image-icon{
+.result-bot-details-image-icon {
     width: 25%;
     /* height: 100%; */
     object-fit: cover;
     float: right;
 }
 
-.result-bot-details{
+.result-bot-details {
     text-align: left;
     float: left;
     width: 75%;
 }
-
