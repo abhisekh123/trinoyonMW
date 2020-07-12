@@ -66,9 +66,9 @@
             scorch: {
                 name: 'scorch',
                 iconurl: 'static/img/flame_arrow_icon.png',
-                resetInterval: 40000,
-                duration: 3000,
-                targetAttackFactor: 2,
+                resetInterval: 30000,
+                duration: 5000,
+                targetAttackFactor: 4,
                 description: 'ability scorch',
                 metaData: {
                     type: 'plane',
@@ -106,8 +106,8 @@
                 iconurl: '/static/img/quake.jpeg',
                 resetInterval: 40000,
                 duration: 3000,
-                neighbourAttackFactor: 0.5,
-                targetAttackFactor: 1.5,
+                neighbourAttackFactor: 1.5,
+                targetAttackFactor: 3.5,
                 metaData: {
                     type: 'sprite',
                     file: '/static/img/pulse.png',
@@ -127,8 +127,8 @@
                 name: 'sheild',
                 description: 'ability sheild',
                 iconurl: 'static/img/sheild.png',
-                resetInterval: 40000,
-                duration: 3000,
+                resetInterval: 20000,
+                duration: 5000,
                 defenceFactor: 0.25,
                 metaData: {
                     type: 'plane',
@@ -159,10 +159,10 @@
                 ],
                 levelMap: [
                     {
-                        damage: 10,
-                        attack: 2,
-                        life: 60,
-                        speed: 2,
+                        damage: 60,
+                        attack: 3,
+                        life: 150,
+                        speed: 4,
                         ability: [
                             {},
                             {
@@ -171,10 +171,10 @@
                         ]
                     },
                     {
-                        damage: 20,
-                        attack: 2.25,
-                        life: 70,
-                        speed: 2.5,
+                        damage: 120,
+                        attack: 4,
+                        life: 200,
+                        speed: 4.2,
                         ability: [
                             {},
                             {
@@ -183,10 +183,10 @@
                         ]
                     },
                     {
-                        damage: 30,
-                        attack: 2.5,
-                        life: 80,
-                        speed: 3,
+                        damage: 180,
+                        attack: 5,
+                        life: 250,
+                        speed: 4.4,
                         ability: [
                             {},
                             {
@@ -195,10 +195,10 @@
                         ]
                     },
                     {
-                        damage: 40,
-                        attack: 2.75,
-                        life: 90,
-                        speed: 3.5,
+                        damage: 240,
+                        attack: 6,
+                        life: 300,
+                        speed: 5,
                         ability: [
                             {},
                             {
@@ -342,7 +342,7 @@
                     {
                         damage: 10,
                         attack: 1,
-                        life: 40,
+                        life: 200,
                         speed: 2,
                         ability: [
                             {},
@@ -353,9 +353,9 @@
                     },
                     {
                         damage: 20,
-                        attack: 1.25,
-                        life: 50,
-                        speed: 2.5,
+                        attack: 1.5,
+                        life: 300,
+                        speed: 2.25,
                         ability: [
                             {},
                             {
@@ -365,9 +365,9 @@
                     },
                     {
                         damage: 30,
-                        attack: 1.5,
-                        life: 60,
-                        speed: 3,
+                        attack: 2,
+                        life: 400,
+                        speed: 2.5,
                         ability: [
                             {},
                             {
@@ -377,9 +377,9 @@
                     },
                     {
                         damage: 40,
-                        attack: 1.75,
-                        life: 70,
-                        speed: 3.5,
+                        attack: 2.5,
+                        life: 500,
+                        speed: 3,
                         ability: [
                             {},
                             {
@@ -522,33 +522,9 @@
                 ],
                 levelMap: [
                     {
-                        damage: 10,
-                        attack: 3,
-                        life: 20,
-                        speed: 2,
-                        ability: [
-                            {},
-                            {
-                                intensity: 1
-                            }
-                        ]
-                    },
-                    {
-                        damage: 20,
-                        attack: 3.25,
-                        life: 30,
-                        speed: 2.5,
-                        ability: [
-                            {},
-                            {
-                                intensity: 1
-                            }
-                        ]
-                    },
-                    {
-                        damage: 30,
-                        attack: 3.5,
-                        life: 40,
+                        damage: 40,
+                        attack: 2,
+                        life: 50,
                         speed: 3,
                         ability: [
                             {},
@@ -558,10 +534,34 @@
                         ]
                     },
                     {
-                        damage: 40,
-                        attack: 3.75,
-                        life: 50,
-                        speed: 3.5,
+                        damage: 80,
+                        attack: 4,
+                        life: 60,
+                        speed: 4,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
+                    },
+                    {
+                        damage: 120,
+                        attack: 6,
+                        life: 70,
+                        speed: 5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
+                    },
+                    {
+                        damage: 160,
+                        attack: 8,
+                        life: 80,
+                        speed: 6,
                         ability: [
                             {},
                             {
@@ -710,7 +710,7 @@
                 hpBarPositionY: 40,
             },
             tower:{
-                life:10,
+                life:50,
                 audioFile: 'static/audio/building.mp3',
                 levelMap: [
                     {

@@ -125,6 +125,7 @@ app.get("/ox", function (req, res) {
 });
 
 app.use('/static', express.static(path.join(__dirname + '/../../public')));
+
 // app.use(express.static('public'));
 // console.log()
 // app.post('/login1', function (req, res) {
@@ -157,16 +158,21 @@ app.use('/static', express.static(path.join(__dirname + '/../../public')));
 //     console.log('Destroying session');
 
 // });
-app.enable('trust proxy');
-app.use (function (req, res, next) {
-    if (req.secure) {
+
+if (environmentState.environment == 'server') {
+    console.log('enabling trust proxy');
+    app.enable('trust proxy');
+    app.use(function (req, res, next) {
+        if (req.secure) {
             // request was via https, so do no special handling
             next();
-    } else {
+        } else {
             // request was via http, so redirect to https
             res.redirect('https://' + req.headers.host + req.url);
-    }
-});
+        }
+    });
+}
+
 
 
 // login page
@@ -383,6 +389,7 @@ export class DemoServer {
         } else {
             server.listen(portParam, () => {
                 // console.log(`>>>>>>>>>>>>>>>>>Server started on port ${server.address.toString} :)`);
+                console.log('>>>>>>>>>>>>>>>>> local server started.');
             });
         }
     }

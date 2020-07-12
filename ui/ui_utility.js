@@ -154,14 +154,14 @@ tg.uu.displaySelectedBotDetails = function(elementParam, botIndex){
     for (let index = 0; index < botLevelMap.length; index++) {
         var levelConfig = botLevelMap[index];
 
-        selectedBotDetailsLife += '<br>Level' + (index + 1) + ' : ' + levelConfig.life;
-        selectedBotDetailsAttack += '<br>Level' + (index + 1) + ' : ' + levelConfig.attack;
-        selectedBotDetailsMovement += '<br>Level' + (index + 1) + ' : ' + levelConfig.speed;
+        selectedBotDetailsLife += '<br>Level ' + (index) + ': ' + levelConfig.life;
+        selectedBotDetailsAttack += '<br>Level ' + (index) + ': ' + levelConfig.attack;
+        selectedBotDetailsMovement += '<br>Level ' + (index) + ': ' + levelConfig.speed;
     }
 
-    elementParam.find('.bot-stat-life')[0].innerHTML;
-    elementParam.find('.bot-stat-attack')[0].innerHTML;
-    elementParam.find('.bot-stat-movement')[0].innerHTML;
+    elementParam.find('.bot-stat-life')[0].innerHTML = selectedBotDetailsLife;
+    elementParam.find('.bot-stat-attack')[0].innerHTML = selectedBotDetailsAttack;
+    elementParam.find('.bot-stat-movement')[0].innerHTML = selectedBotDetailsMovement;
 };
 
 tg.uu.viewSelectedBotDetails = function(element, botIndex){

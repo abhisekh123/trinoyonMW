@@ -1,3 +1,6 @@
+
+
+
 var exampleSocket;
 var tg = {};
 tg.socket = null;
@@ -116,7 +119,7 @@ tg.getEmptyMessagePacket = function (type) {
     container.type = type;
     return container;
     // return JSON.stringify(container);
-}
+};
 
 tg.getActionPacketJSON = function (type) {
     var container = {};
@@ -125,4 +128,6 @@ tg.getActionPacketJSON = function (type) {
     container.message.type = type;
 
     return container;
-}
+};
+
+
