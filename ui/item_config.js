@@ -69,7 +69,7 @@
                 resetInterval: 30000,
                 duration: 5000,
                 targetAttackFactor: 4,
-                description: 'ability scorch',
+                description: 'This ability targets single opponent warrior.<br>Once activated, the warrior will shoot fire arrows for the entire active duration, each attack to the target will cause 4 times the current attack damage.<br>It is best that this ability is activated while the warrior is already attacking an enemy. Otherwise the ability might complete the active duration without being able to use the ability on an opponent.',
                 metaData: {
                     type: 'plane',
                     file: '/static/img/fireball.png',
@@ -83,7 +83,7 @@
             retreat: {
                 // goto base
                 name: 'retreat',
-                description: 'ability retreat',
+                description: 'Once the ability is activated, the warrior will return to base. This ability can be used to prevent the warrior from getting killed when life is low.',
                 iconurl: '/static/img/flag-white.png',
                 resetInterval: 5000,
                 duration: 3000,
@@ -102,7 +102,7 @@
                 // ((0.5 * distance) / range) attack to all
                 // single attack. deactivate ability right after that.
                 name: 'pulse',
-                description: 'ability pulse',
+                description: 'This ability targets multiple nearby opponents. This is a single attack ability meaning this ability can be used only once in the active duration. Once activated, the warrior releases an energy pulse during the next attack causing 3.5 times the current attack damage to the target opponent and 1.5 times the current attack damage to nearby opponent warriors.<br>This ability is best used when the warrior is already fighting and there are multiple enemy troops nearby. When used properly, the warrior can level up quickly.',
                 iconurl: '/static/img/quake.jpeg',
                 resetInterval: 40000,
                 duration: 3000,
@@ -125,7 +125,7 @@
             sheild: {
                 // 0.25 * damage(all attacks received) received for the whole duration.
                 name: 'sheild',
-                description: 'ability sheild',
+                description: 'This is a defensive ability. Once activated, the warrior gets a protective sheild which absorbs attack damage from opponents. During the active state, for each attack recieved, the warrior life loss is 0.25 times the attack damage. Use it when the warrior is recieving heavy attack.',
                 iconurl: 'static/img/sheild.png',
                 resetInterval: 20000,
                 duration: 5000,
@@ -160,7 +160,7 @@
                 levelMap: [
                     {
                         damage: 60,
-                        attack: 3,
+                        attack: 2.5,
                         life: 150,
                         speed: 4,
                         ability: [
@@ -172,7 +172,7 @@
                     },
                     {
                         damage: 120,
-                        attack: 4,
+                        attack: 3,
                         life: 200,
                         speed: 4.2,
                         ability: [
@@ -184,7 +184,7 @@
                     },
                     {
                         damage: 180,
-                        attack: 5,
+                        attack: 3.5,
                         life: 250,
                         speed: 4.4,
                         ability: [
@@ -196,7 +196,7 @@
                     },
                     {
                         damage: 240,
-                        attack: 6,
+                        attack: 4,
                         life: 300,
                         speed: 5,
                         ability: [
@@ -300,7 +300,7 @@
                     },
                 },
 
-                description: 'description lion',
+                description: "Once a fearce fighter, a leader and a protector. He was mortally wounded in a war and was ready to embrace a warrior's death. But he was subjected to human-animal hybrid experiments agains his will. Once in higher level, lion is a formidable force to be reckoned with.",
                 
                 weaponType: 'melee',
                 projectileShootY: 0.75,
@@ -353,7 +353,7 @@
                     },
                     {
                         damage: 20,
-                        attack: 1.5,
+                        attack: 1.1,
                         life: 300,
                         speed: 2.25,
                         ability: [
@@ -365,7 +365,7 @@
                     },
                     {
                         damage: 30,
-                        attack: 2,
+                        attack: 1.3,
                         life: 400,
                         speed: 2.5,
                         ability: [
@@ -377,7 +377,7 @@
                     },
                     {
                         damage: 40,
-                        attack: 2.5,
+                        attack: 1.5,
                         life: 500,
                         speed: 3,
                         ability: [
@@ -482,7 +482,7 @@
                     },
                 },
 
-                description: 'description swordman',
+                description: 'An anciant warrior with unknown past. In the quest to become the strongest warrior, he kept replacing his body parts with mechanical alternatives. But in the process some how he lost himself. Now he is a walking tank tormented by fragments of his past memories. All that is left of him is his conscience and endurance. Although he is slow to move but a high level swordman is virtually unkillable. Use him as a sheild for other troops.',
                 
                 weaponType: 'melee',
                 projectileShootY: 0.75,
@@ -535,7 +535,7 @@
                     },
                     {
                         damage: 80,
-                        attack: 4,
+                        attack: 3,
                         life: 60,
                         speed: 4,
                         ability: [
@@ -547,7 +547,7 @@
                     },
                     {
                         damage: 120,
-                        attack: 6,
+                        attack: 4,
                         life: 70,
                         speed: 5,
                         ability: [
@@ -559,7 +559,7 @@
                     },
                     {
                         damage: 160,
-                        attack: 8,
+                        attack: 5,
                         life: 80,
                         speed: 6,
                         ability: [
@@ -685,7 +685,7 @@
                     },
                 },
                 
-                description: 'description archer',
+                description: 'She has little life and can be killed easily. But Once leveled up she has highest agility and attack. Sheild her well and she can raise havoc to enemy. Also if used well, she can kill the retreating enemy troops easily.',
 
                 weaponType: 'arrow',
                 projectileShootY: 0.75,
@@ -710,12 +710,12 @@
                 hpBarPositionY: 40,
             },
             tower:{
-                life:50,
+                life:100,
                 audioFile: 'static/audio/building.mp3',
                 levelMap: [
                     {
                         damage: 30,
-                        attack: 4,
+                        attack: 3,
                     },
                 ],
                 projectile: {
@@ -770,7 +770,7 @@
                 hpBarPositionY: 34,
             },
             base:{
-                life:100,
+                life:200,
                 audioFile: 'static/audio/building.mp3',
                 levelMap: [
                     {

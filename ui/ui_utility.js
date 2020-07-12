@@ -78,7 +78,7 @@ tg.uu.viewSelectedPlayerResultDetails = function (elementParam, playerIndex) {
     var playerDetailedPerformance = tg.resultObject.detailedPerformance[playerIndex];
     
     // tg.bot.userPlayerConfig
-    var resultString = 'Performance Summary for : ' + elementParam.innerHTML 
+    var resultString = 'Performance Summary<br>' + elementParam.innerHTML 
         + '<br><br>Total Damage:' + playerResultObject.totalDamage.toFixed() + '<br>'
         + 'Total Deaths:' + playerResultObject.totalDeath + '<br>'
         + 'Total Kills:' + playerResultObject.totalKills + '<br>'
@@ -143,6 +143,8 @@ tg.uu.displaySelectedBotDetails = function(elementParam, botIndex){
     // selectedBotDetailsInformation[0].innerHTML = botItemConfig.description;
     var botInfoHeader = $(selectedBotDetailsInformation[0]).find('.bot-info-header')[0];
     botInfoHeader.innerHTML = botType.toUpperCase();
+    var botInfoDescription = $(selectedBotDetailsInformation[0]).find('.bot-info-description')[0];
+    botInfoDescription.innerHTML = botItemConfig.description;
     // selectedBotDetailsStatistics[0].innerHTML = botItemConfig.description;
 
 

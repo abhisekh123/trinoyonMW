@@ -133,6 +133,7 @@ tg.world.processResult = function (resultObject) {
         resultPlayerContainerArray[i].innerHTML = tg.bot.playerConfigArray[i].id;
     }
     var playerHTMLContainer = $('.border-team.result-player-container')[playerSelfIndex];
+    playerHTMLContainer.innerHTML = 'YOU';
     tg.uu.viewSelectedPlayerResultDetails(playerHTMLContainer, tg.bot.userPlayerConfig.playerSelfIndex);
     // console.log(JSON.stringify(resultObject));
 
