@@ -12,6 +12,24 @@ tg.pn = {};
 
 tg.pn.currentPage = null;
 
+tg.pn.showControls = function() {
+    alert(
+        'W - Foreward\t' +
+        'A - Left\n' +
+        'S - Reverse\t' +
+        'D - Right\n\n' +
+
+        'Q - Left\t' +
+        'E - Right\n' +
+        'R - Near\t' +
+        'F - Away\n\n' +
+
+        'Click on player button to select troop.\n' +
+        'Click on floor to send the troop to the location.\n' +
+        '\nThe aim is to send the right troop, at the right place, at the right time.'
+    );
+};
+
 tg.pn.showMatchStartingLoader = function(){
     console.log('showMatchStartingLoader. current page:', tg.pn.currentPage);
     switch (tg.pn.currentPage) {

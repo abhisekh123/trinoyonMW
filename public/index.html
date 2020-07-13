@@ -30,8 +30,11 @@
     <button onclick="makeFullScreen()" class="fullscreenbutton" id="fullscreenbutton"></button>
     <button onclick="showjoystick()" class="showjoystick" id="showjoystick"></button>
     <button onclick="hidejoystick()" class="hidejoystick" id="hidejoystick"></button>
-    <!-- <button onclick="showControls()" class="showControls" id="showControls">CONTROLS</button> -->
-    <a onclick="showControls()" class="tButton showControls" id="showControls">CONTROLS</a>
+    <div class="show-controls">
+        <a class="tButton" id="button-show-controls">CONTROLS</a>
+    </div>
+    
+    <!-- <a class="tButton" id="button-home-start">PLAY</a> -->
 
     <!-- The Modal -->
     <div id="menu-modal" class="modal center">
@@ -428,7 +431,8 @@
                     <!-- <div class="menu-header center-relative">
                             Result
                         </div> -->
-                    <button id="button-result-exit">exit</button>
+                    <!-- <button id="button-result-exit">exit</button> -->
+                    <a class="tButton" id="button-result-exit">EXIT</a>
                 </div>
             </div>
 
@@ -483,24 +487,6 @@
             return false;
         };
 
-        function showControls() {
-            alert(
-                'W - Foreward\t' +
-                'A - Left\n' +
-                'S - Reverse\t' +
-                'D - Right\n\n' +
-
-                'Q - Left\t' +
-                'E - Right\n' +
-                'R - Near\t' +
-                'F - Away\n\n' +
-
-                'Click on player button to select troop.\n' +
-                'Click on floor to send the troop to the location.\n' +
-                '\nThe aim is to send the right troop, at the right place, at the right time.'
-            );
-        }
-
         function showjoystick() {
             $("#hidejoystick").show();
             $("#showjoystick").hide();
@@ -546,8 +532,7 @@
     </script>
 
     <!-- match footer menu. -->
-    <div class="left-joystick" id="left-joystick">
-    </div>
+    
     <div class="footerrow" id="footerrow">
 
         <div class="columnCetral">
@@ -608,8 +593,6 @@
         </div>
     </div>
 
-    <div class="right-joystick" id="right-joystick">
-    </div>
 </body>
 
 </html>

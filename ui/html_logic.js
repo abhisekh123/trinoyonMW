@@ -169,23 +169,11 @@ tg.hl.addJoysticks = function () {
 tg.hl.removeJoysticks = function () {
     tg.hl.rightThumbContainer.isVisible = false;
     tg.hl.leftThumbContainer.isVisible = false;
-    // leftThumbContainer.removeControl(leftInnerThumbContainer);
-    // leftThumbContainer.removeControl(leftPuck);
-    // rightThumbContainer.removeControl(rightInnerThumbContainer);
-    // rightThumbContainer.removeControl(rightPuck);
-    // tg.pv.advancedTexture.removeControl(rightThumbContainer);
-    // tg.pv.advancedTexture.removeControl(leftThumbContainer);
 };
 
 tg.hl.showJoysticks = function () {
     tg.hl.rightThumbContainer.isVisible = true;
     tg.hl.leftThumbContainer.isVisible = true;
-    // leftThumbContainer.removeControl(leftInnerThumbContainer);
-    // leftThumbContainer.removeControl(leftPuck);
-    // rightThumbContainer.removeControl(rightInnerThumbContainer);
-    // rightThumbContainer.removeControl(rightPuck);
-    // tg.pv.advancedTexture.removeControl(rightThumbContainer);
-    // tg.pv.advancedTexture.removeControl(leftThumbContainer);
 };
 
 tg.hl.makeThumbArea = function (name, thickness, color, background, curves) {
@@ -201,79 +189,6 @@ tg.hl.makeThumbArea = function (name, thickness, color, background, curves) {
     return rect;
 }
 
-// tg.hl.addJoysticks = function () {
-//     var joystickL = nipplejs.create({
-//         zone: document.getElementById('left-joystick'),
-//         mode: 'static',
-//         position: {
-//             left: '20%',
-//             top: '50%'
-//         },
-//         color: 'green',
-//         size: 200
-//     });
-
-//     var joystickR = nipplejs.create({
-//         zone: document.getElementById('right-joystick'),
-//         mode: 'static',
-//         position: {
-//             left: '80%',
-//             top: '50%'
-//         },
-//         color: 'red',
-//         size: 200
-//     });
-
-//     tg.video.leftJoystickAngle = 0;
-//     tg.video.rightJoystickAngle = 0;
-
-//     joystickL.on('move', function (evt, nipple) {
-//         // console.log("left move", nipple);
-//         tg.video.leftJoystickAngle = nipple.angle.radian;
-//     });
-//     joystickR.on('move', function (evt, nipple) {
-//         // console.log("right move");
-//         tg.video.rightJoystickAngle = nipple.angle.radian;
-//     });
-
-//     joystickL.on('start', function (evt, nipple) {
-//         // console.log("left start", nipple);
-
-//         tg.video.leftJoystickActive = true;
-//         // tg.video.rightJoystickActive = false;
-//     });
-//     joystickR.on('start', function (evt, nipple) {
-//         // console.log("right start");
-
-//         // tg.video.leftJoystickActive = false;
-//         tg.video.rightJoystickActive = true;
-//     });
-
-//     joystickL.on('end', function (evt, nipple) {
-//         // console.log("left end", nipple);
-
-//         tg.video.leftJoystickActive = false;
-//         // tg.video.rightJoystickActive = false;
-//     });
-//     joystickR.on('end', function (evt, nipple) {
-//         // console.log("right end");
-
-//         // tg.video.leftJoystickActive = false;
-//         tg.video.rightJoystickActive = false;
-//     });
-
-
-//     // tg.joystickL = joystickL;
-//     // tg.joystickR = joystickR;
-
-//     tg.joystickL = joystickL;
-//     tg.joystickR = joystickR;
-// };
-
-// tg.hl.removeJoysticks = function () {
-//     tg.joystickL.destroy();
-//     tg.joystickR.destroy();
-// };
 
 $('#button-result-exit').click(function () {
     console.log('clicked button-result-exit');
@@ -284,31 +199,13 @@ $('#button-result-exit').click(function () {
 
 $('#button-home-start').click(function () {
     console.log('clicked button-home-start');
-    tg.network.requestGameAdmit();
+    // tg.network.requestGameAdmit();
 });
-// ,,,,,,,,,
-// $('.bot-selection-option-container').click(function (element) {
-//     element.preventDefault();
-//     var id = this.id;
-//     console.log('clicked bot-selection-option-container with id:', id);
-//     var elemntName = $('#' + id).attr('name');
-//     console.log('elemntName:', elemntName);
-//     // tg.network.requestGameAdmit();
-//     var rowCol = id.split('_')[1];
-//     var rowIndex = rowCol.split('-')[0];
-//     console.log(rowCol);
-//     var rowIdPrefix = "bot-image-tag_" + rowIndex;
-//     console.log(rowIdPrefix);
-//     $("[id^=" + rowIdPrefix + "]").hide();
-//     $('#bot-image-tag_' + rowCol).show();
-//     var currentElementImageSource = $("#botoptionimage_" + rowCol).attr('src');
-//     console.log(currentElementImageSource);
-//     $('#bot-selection-' + rowIndex).attr('src', currentElementImageSource);
 
-//     tg.botSelection.botList[rowIndex - 1] = elemntName;
-
-//     console.log(tg.botSelection);
-// });
+$('#button-show-controls').click(function () {
+    console.log('clicked button-show-controls');
+    tg.pn.showControls();
+});
 
 tg.hl.setLoaderHeaderText = function (textParam) {
     $('#load-indicator-header').html(textParam);
@@ -506,3 +403,5 @@ tg.hl.clearSelfBotSelection = function () {
     // tg.am.dynamicItems.bots[characterID]
     // botObject.id
 };
+
+
