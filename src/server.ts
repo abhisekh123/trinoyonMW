@@ -47,7 +47,7 @@ passport.use(new FacebookStrategy({
     profileFields: environmentState.facebookAuth.profileFields
 },
     async function (accessToken: any, refreshToken: any, profile: any, done: any) {
-        // console.log('use function.', profile);
+        console.log('use function.', profile);
         // console.log('accesstoken:', accessToken);
         const user = await dbManager.findUser(profile.id);
         // console.log('searched for user');
