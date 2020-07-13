@@ -510,23 +510,26 @@
             //     tg.canvas.mozRequestFullScreen();
             // }
             // alert('webkit');
-            if (tg.canvas.requestFullscreen) {
-                alert('webkit 1');
-                tg.canvas.requestFullscreen();
-            } else if (tg.canvas.mozRequestFullScreen) {
+            // var htmlElement = tg.canvas;
+            var htmlElement = $('body')[0];
+            if (htmlElement.requestFullscreen) {
+                console.log('webkit 1');
+                htmlElement.requestFullscreen();
+            } else if (htmlElement.mozRequestFullScreen) {
                 /* Firefox */
-                alert('webkit 2');
-                tg.canvas.mozRequestFullScreen();
-            } else if (tg.canvas.webkitRequestFullscreen) {
+                console.log('webkit 2');
+                htmlElement.mozRequestFullScreen();
+            } else if (htmlElement.webkitRequestFullscreen) {
                 /* Chrome, Safari and Opera */
-                alert('webkit 3');
-                tg.canvas.webkitRequestFullscreen();
-            } else if (tg.canvas.msRequestFullscreen) {
+                console.log('webkit 3');
+                htmlElement.webkitRequestFullscreen();
+            } else if (htmlElement.msRequestFullscreen) {
                 /* IE/Edge */
-                alert('webkit 4');
-                tg.canvas.msRequestFullscreen();
+                console.log('webkit 4');
+                htmlElement.msRequestFullscreen();
             } else {
-                alert('webkit 5');
+                htmlElement.requestFullscreen();
+                console.log('webkit 5');
             }
         };
     </script>

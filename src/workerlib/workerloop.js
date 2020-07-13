@@ -53,8 +53,10 @@ module.exports = {
             }
         }
 
-
-        console.log('=========>refreshWorld2, totalTimeToSimulate:' + totalTimeToSimulate + ' (totalActiveGameRoomCount)=' + totalActiveGameRoomCount);
+        if(totalActiveGameRoomCount > 0){
+            console.log('=========>refreshWorld2, totalTimeToSimulate:' + totalTimeToSimulate + ' (totalActiveGameRoomCount)=' + totalActiveGameRoomCount);
+        }
+        
         while (totalTimeToSimulate > 0){
             // console.log('--))start while loop with : remainingTimeForThisRefreshCycle = ' + remainingTimeForThisRefreshCycle);
             if (totalTimeToSimulate <= workerState.gameLoopInterval) {
@@ -92,7 +94,7 @@ module.exports = {
 
         // time taken to compute current snapshot for each game
         // will be used to schedule next iteration of engine loop
-        console.log('*******current time', utilityFunctions.getCurrentTime());
+        // console.log('*******current time', utilityFunctions.getCurrentTime());
         let timeElapsed = utilityFunctions.getCurrentTime() - workerState.timePreviousGameLoopStart;
         console.log('refreshWorld cycle duration:' + timeElapsed);
         if(timeElapsed > workerState.gameLoopInterval){

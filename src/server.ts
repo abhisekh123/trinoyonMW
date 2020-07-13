@@ -126,38 +126,6 @@ app.get("/ox", function (req, res) {
 
 app.use('/static', express.static(path.join(__dirname + '/../../public')));
 
-// app.use(express.static('public'));
-// console.log()
-// app.post('/login1', function (req, res) {
-//     //
-//     // "Log in" user and set userId to session.
-//     //
-//     console.log('asdfvcv');
-//     // const id = uuid.v4();
-
-//     // console.log(`Updating session for user ${id}`);
-//     // if (req.session) {
-//     //     req.session.user = id;
-//     // }
-//     // req.session.userId = id;
-//     res.send({ result: 'OK', message: 'Session updated' });
-// });
-
-// app.delete('/logout', function (req, res) {
-//     // let ws = null;
-//     if (req.session) {
-//         const ws = map.get(req.session.userId);
-//         req.session.destroy(function () {
-//             if (ws) ws.close();
-
-//             res.send({ result: 'OK', message: 'Session destroyed' });
-//         });
-//     } else {
-//         return;
-//     }
-//     console.log('Destroying session');
-
-// });
 
 if (environmentState.environment == 'server') {
     console.log('enabling trust proxy');
@@ -216,7 +184,13 @@ app.get("/auth/facebook/callback",
 app.get('/howrwi', function (req, res) {
     console.log('how r wi');
     // res.send(serverState.getServerState());
-    res.send('a1');
+    var etaseta = req.query.etaseta;
+    if(etaseta == 'chonch0l'){
+        res.send(serverState.getServerState());
+    }else{
+        res.send('Cannot GET /howrwi');
+    }
+    
 });
 
 app.post('/9h109x', function (req, res) {// phionix .... restart routine.

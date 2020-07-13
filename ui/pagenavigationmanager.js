@@ -78,6 +78,7 @@ tg.pn.showMatchResultPage = function(){
 
     $("#showjoystick").hide();
     $("#hidejoystick").hide();
+    // $("#fullscreenbutton").hide();
 
     tg.uu.addAmazonAdToContent('gr-ad');
 };
@@ -114,6 +115,7 @@ tg.pn.showMatchPage = function(){
     // tg.sprite.test();
 
     $("#showjoystick").show();
+    // $("#fullscreenbutton").show();
     // tg.pv.setModalDimensionPercentage('10%', '90%');
 };
 

@@ -199,7 +199,7 @@ $('#button-result-exit').click(function () {
 
 $('#button-home-start').click(function () {
     console.log('clicked button-home-start');
-    // tg.network.requestGameAdmit();
+    tg.network.requestGameAdmit();
 });
 
 $('#button-show-controls').click(function () {
