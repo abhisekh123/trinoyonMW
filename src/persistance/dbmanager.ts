@@ -22,22 +22,13 @@ module.exports = {
         const allUsers = await this.db.users.find({}, function (err: any, docs: any) {});
         for(var i = 0; i < allUsers.length; ++i){
             // console.log('==>allUsers[i].id:', allUsers[i].id);
-            
-            allUsers[i].userId = parseInt(allUsers[i].id, 10).toString(32);
+            // allUsers[i].userId = parseInt(allUsers[i].id, 10).toString(32);
             // console.log(allUsers[i].userId);
-
             // console.log(parseInt(allUsers[i].id, 32).toString(10));
-
             this.serverState.users_db_state[allUsers[i].id] = allUsers[i];
             // console.log('updating:', allUsers[i].id);
-            // const result = await this.db.users.update({ id: allUsers[i].id }, { $set: { userId: allUsers[i].userId } }, function (err:any, numReplaced:any) {
-            //     // numReplaced = 3
-            //     // Field 'system' on Mars, Earth, Jupiter now has value 'solar system'
-            //     console.log('updated db:', i);
-            //   });
-
             // console.log('result:', result);
-            var result = await this.db.users.update({ id: allUsers[i].id }, { $set: { userId: allUsers[i].userId } }, { multi: true });
+            // var result = await this.db.users.update({ id: allUsers[i].id }, { $set: { userId: allUsers[i].userId } }, { multi: true });
             // console.log(i + '::completed update', result);
         }
     },
