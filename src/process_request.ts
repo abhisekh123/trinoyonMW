@@ -27,11 +27,11 @@ export class RequestProcessor {
             case 'init':
             case 'init_ui':
             case 'init_world':
-                console.log('got message type:<' + requestJSON.type + '>');
+                // console.log('got message type:<' + requestJSON.type + '>');
                 this.sendMessagePacket('ack1', assetManager.getAsset(requestJSON.type), requestJSON.userId);
                 break;
             case 'request_game_admit':
-                console.log('got message with type:request_game_admit userID:', requestJSON.userId);
+                // console.log('got message with type:request_game_admit userID:', requestJSON.userId);
                 
                 workermanager.postMessage(requestJSON);
                 break;
@@ -50,7 +50,7 @@ export class RequestProcessor {
 
     // send message to the client.
     sendMessagePacket(packetType: string, payload: JSON, userId: string){
-        console.log('sending message packet', userId);
+        // console.log('sending message packet', userId);
         const ws: WebSocket = serverState.userIdToWSMap[userId].ws;
         // console.log('ws=>', ws);
         var container = {type:packetType, message:payload};

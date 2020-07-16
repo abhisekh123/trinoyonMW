@@ -7,7 +7,7 @@ import * as http from 'http';
 import * as https from 'https';
 import * as WebSocket from 'ws';
 import * as path from 'path';
-const dbManager = require('./persistance/dbmanager');
+// const dbManager = require('./persistance/dbmanager');
 
 import { request_message } from './factory/types';
 import { RequestProcessor } from './process_request';
@@ -49,19 +49,12 @@ passport.use(new FacebookStrategy({
     async function (accessToken: any, refreshToken: any, profile: any, done: any) {
         console.log('use function.', profile);
         // console.log('accesstoken:', accessToken);
-        const user = await dbManager.findUser(profile.id);
-        // console.log('searched for user');
-        // console.log(user);
+        const user = await userManager.getUserObject(profile);
+        console.log('searched for user');
+        console.log(user);
 
-        if (user) {
-            // console.log('known user');
-            return done(null, user);
-        } else {
-            // console.log('creating new user');
-            const newUser = await dbManager.createNewUser(profile);
-            return done(null, newUser);
-        }
-
+        
+        return done(null, user);
     }
 ));
 
@@ -158,6 +151,15 @@ app.get('/logout', function (req: any, res) {
 app.get('/', ensureAuthenticated, function (req, res) {
     console.log('req for root');
     console.log('2....request.session-->', req.session);
+    
+    if(req && req.session){
+        console.log(req.session.cookie);
+        if(req.session.passport){
+            req.session.userId = req.session.passport.id;
+        }
+        
+    }
+    
     // console.log(';;;;=>', req);
     res.setHeader('test-field', 'testy');
     res.sendFile(path.join(__dirname + '/../../public/index.html'));
@@ -185,12 +187,12 @@ app.get('/howrwi', function (req, res) {
     console.log('how r wi');
     // res.send(serverState.getServerState());
     var etaseta = req.query.etaseta;
-    if(etaseta == 'chonch0l'){
+    if (etaseta == 'chonch0l') {
         res.send(serverState.getServerState());
-    }else{
+    } else {
         res.send('Cannot GET /howrwi');
     }
-    
+
 });
 
 app.post('/9h109x', function (req, res) {// phionix .... restart routine.
@@ -214,7 +216,10 @@ app.get('/termsofservice', function (req, res) {
 export class DemoServer {
 
     async startServer(portParam: number) {
-        dbManager.init();
+        // dbManager.init();
+
+        // dbManager.insertTestData();
+        // dbManager.testmethod();
         userManager.init();
         // console.log('starting worker');
         workerManager.startWorker();
@@ -239,13 +244,7 @@ export class DemoServer {
                 // const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
                 // console.log(customHeaderItemArray);
                 // const incomingKey = customHeaderItemArray[0];
-                const incomingKey = request.headers['sec-websocket-protocol'];
-                const keyConfig = serverState.userIdToWSMap[incomingKey];
-                if (keyConfig == null || keyConfig == undefined) {
-                    console.log('keyConfig == null || keyConfig == undefined for incoming key', incomingKey);
-                    socket.destroy();
-                    return;
-                }
+
 
 
                 // console.log('a');
@@ -256,6 +255,19 @@ export class DemoServer {
                     // console.log('ea');
                     // console.log(request.session);
                     // console.log('be');
+                    if (!request.session.userId) {
+                        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+                        socket.destroy();
+                        return;
+                    }
+                    const incomingKey = request.headers['sec-websocket-protocol'];
+                    const keyConfig = serverState.userIdToWSMap[incomingKey];
+                    if (keyConfig == null || keyConfig == undefined) {
+                        console.log('keyConfig == null || keyConfig == undefined for incoming key', incomingKey);
+                        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+                        socket.destroy();
+                        return;
+                    }
                     request.session.userId = incomingKey;
                     wss.handleUpgrade(request, socket, head, function (ws) {
                         // console.log('eea');
@@ -272,20 +284,21 @@ export class DemoServer {
                 // const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
                 // console.log(customHeaderItemArray);
                 // const incomingKey = customHeaderItemArray[0];
-                const incomingKey = request.headers['sec-websocket-protocol'];
-                const keyConfig = serverState.userIdToWSMap[incomingKey];
-                request.incomingKey = incomingKey;
-                if (keyConfig == null || keyConfig == undefined) {
-                    console.log('keyConfig == null || keyConfig == undefined for incoming key', incomingKey);
-                    socket.destroy();
-                    return;
-                }
+
 
 
                 sessionParser(request, {}, () => {
                     // console.log('ea');
                     // console.log(request.session);
                     // console.log('be');
+                    const incomingKey = request.headers['sec-websocket-protocol'];
+                    const keyConfig = serverState.userIdToWSMap[incomingKey];
+                    request.incomingKey = incomingKey;
+                    if (keyConfig == null || keyConfig == undefined) {
+                        console.log('keyConfig == null || keyConfig == undefined for incoming key', incomingKey);
+                        socket.destroy();
+                        return;
+                    }
                     request.session.userId = incomingKey;
                     wss.handleUpgrade(request, socket, head, function (ws) {
                         // console.log('eea');
@@ -305,8 +318,8 @@ export class DemoServer {
 
         wss.on('connection', (ws: WebSocket, req: any) => {
             const userId = req.session.userId;
-            const keyConfig = serverState.userIdToWSMap[userId];
-            keyConfig.ws = ws;
+            serverState.userIdToWSMap[userId].ws = ws;
+            
             // if (req.session) {
             // }
             // console.log('start user connection routine-->', req.user);
@@ -385,25 +398,14 @@ function ensureAuthenticated(req: any, res: any, next: any) {
         return next();
     }
     if (req.isAuthenticated()) {
-        console.log('authenticated.');
+        // console.log('authenticated.');
         // req.session.userTest = 1;
         return next();
     }
-    console.log('not authenticated.');
+    // console.log('not authenticated.');
     res.redirect('/login')
 }
 
-// function admitNewConnectionRoutine(req: any, ws: WebSocket) {
-//     const userId_new = req.session.userId;
-//     // // console.log('got new connection:' , ws);
-//     console.log('got new connection');
-//     let userId = userManager.admitNewUser(ws);
-//     if (userId < 0) {
-//         console.log('error: could not connect the new client.');
-//         ws.close();
-//         return;
-//     }
-// }
 
 function getNewKey(requestObject: any) {
     const id = uuid.v4();

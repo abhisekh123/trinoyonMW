@@ -4,6 +4,10 @@ module.exports = {
     state: 'stopped', // stopped -> startingup -> running -> shuttingdown
     userIdToWSMap: {},
     userArrey:[],//saves websocket objects
+    
+    users_db_state: {},
+    users_server_state: {},
+    users_worket_state: {},
 
 
     // wsMapToUserArrayIndex: new Map<WebSocket, number>(), // to get userArray index from websocket.
