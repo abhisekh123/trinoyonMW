@@ -51,7 +51,7 @@ export class RequestProcessor {
     // send message to the client.
     sendMessagePacket(packetType: string, payload: JSON, userId: string){
         // console.log('sending message packet', userId);
-        const ws: WebSocket = serverState.userIdToWSMap[userId].ws;
+        const ws: WebSocket = serverState.users_server_state[userId].ws;
         // console.log('ws=>', ws);
         var container = {type:packetType, message:payload};
         try {

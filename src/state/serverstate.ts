@@ -2,9 +2,8 @@ const world_config = require(__dirname + '/../../../ui/world_config');
 
 module.exports = {
     state: 'stopped', // stopped -> startingup -> running -> shuttingdown
-    userIdToWSMap: {},
-    userArrey:[],//saves websocket objects
-    
+    // userArrey:[],//saves websocket objects
+
     users_db_state: {},
     users_server_state: {},
     users_worket_state: {},

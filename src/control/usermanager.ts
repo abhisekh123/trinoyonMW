@@ -9,13 +9,13 @@ module.exports = {
 
     init: function(){
         dbManager.init(serverState);
-        for(var i = 0; i < environmentState.maxUserCount; ++i){
-            var userObject = {
-                isActive:false,
-                ws:null
-            };
-            serverState.userArrey[i] = userObject;
-        }
+        // for(var i = 0; i < environmentState.maxUserCount; ++i){
+        //     var userObject = {
+        //         isActive:false,
+        //         ws:null
+        //     };
+        //     serverState.userArrey[i] = userObject;
+        // }
     },
 
     getUserObject: async function(profile: any){
@@ -38,32 +38,32 @@ module.exports = {
         return serverState.userMap.get(wsParam);
     },
 
-    admitNewUser: function(wsParam: WebSocket){
-        console.log('trying to admit new user');
-        for(var i = 0; i < environmentState.maxUserCount; ++i){
-            if(!serverState.userArrey[i].isActive == false){
-                serverState.userArrey[i].isActive = true;
-                serverState.userArrey[i].ws = wsParam;
+    // admitNewUser: function(wsParam: WebSocket){
+    //     console.log('trying to admit new user');
+    //     for(var i = 0; i < environmentState.maxUserCount; ++i){
+    //         if(!serverState.userArrey[i].isActive == false){
+    //             serverState.userArrey[i].isActive = true;
+    //             serverState.userArrey[i].ws = wsParam;
 
-                // serverState.wsMapToUserArrayIndex.[wsParam] = i;
-                console.log('successfully added new user:', i);
-                return i;
-            }
-        }
-        return -1;
-    },
+    //             // serverState.wsMapToUserArrayIndex.[wsParam] = i;
+    //             console.log('successfully added new user:', i);
+    //             return i;
+    //         }
+    //     }
+    //     return -1;
+    // },
 
-    removeUser: function(wsParam: WebSocket){
-        var userIndex = this.userMap.get(wsParam);
-        if(userIndex == null || userIndex == undefined){
-            console.error('ERROR: while removing user. userMap does not have any such record.');
-            return null;
-        }else{
-            this.userMap.delete(wsParam);
-            this.userArrey[userIndex].isActive = false;
-            this.userArrey[userIndex].ws = null;
-        }
-        wsParam.close();
-        return userIndex;
-    }
+    // removeUser: function(wsParam: WebSocket){
+    //     var userIndex = this.userMap.get(wsParam);
+    //     if(userIndex == null || userIndex == undefined){
+    //         console.error('ERROR: while removing user. userMap does not have any such record.');
+    //         return null;
+    //     }else{
+    //         this.userMap.delete(wsParam);
+    //         this.userArrey[userIndex].isActive = false;
+    //         this.userArrey[userIndex].ws = null;
+    //     }
+    //     wsParam.close();
+    //     return userIndex;
+    // }
 }
