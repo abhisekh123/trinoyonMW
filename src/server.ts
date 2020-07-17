@@ -160,6 +160,7 @@ if (environmentState.environment == 'server') {
         if(req && req.session){
             console.log(req.session.cookie);
             if(req.session.passport && req.session.passport.user){
+                console.log('setting userID to session:', req.session.passport.user.id);
                 req.session.userId = req.session.passport.user.id;
             }
             
@@ -183,6 +184,16 @@ if (environmentState.environment == 'server') {
 
 app.post('/', ensureAuthenticated, function (req, res) {
     // console.log(req.body);
+    if(req && req.session){
+        console.log(req.session.cookie);
+        if(req.session.passport && req.session.passport.user){
+            console.log('setting userID to session:', req.session.passport.user.id);
+            req.session.userId = req.session.passport.user.id;
+        }
+        
+    }
+    res.setHeader('test-field', 'testy');
+
     res.sendFile(path.join(__dirname + '/../../public/index.html'));
     // res.send('root - post');
 });
@@ -253,7 +264,7 @@ export class DemoServer {
                 cert: fs.readFileSync("/home/trinoyon/ssl.cert")
             }, app);
             server.on('upgrade', function (request, socket, head) {
-                console.log('upgrade: Parsing session from request...1/2', request.session.userId);
+                console.log('upgrade: Parsing session from request...1/2', request.session);
                 console.log('234<' + request.headers['sec-websocket-protocol'] + '>');
                 // const customHeaderItemArray = request.headers['sec-websocket-protocol'].split(',');
                 // const customHeaderItemArray: string[] = request.headers['sec-websocket-protocol'].split(',').map((item: string) => item.trim());
