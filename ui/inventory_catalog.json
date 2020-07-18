@@ -19,6 +19,7 @@
         "manager_world_key": "manager_world.js",
         "manager_sprite_key": "manager_sprite.js",
         "manager_self_key": "manager_self.js",
+        "manager_message_key": "manager_message.js",
         "manager_network_key": "manager_network.js",
         "manager_3dui_key": "manager_3dui.js",
         "pagenavigationmanager_key": "pagenavigationmanager.js",

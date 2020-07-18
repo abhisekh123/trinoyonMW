@@ -264,6 +264,7 @@ tg.initWorld = function(){
     tg.createAmbience();
     
     tg.pn.init();
+    tg.message.init();
     tg.refreshUI = tg.newRefreshFunction;
     
     console.log('tg.rm.pathMap:', tg.rm.pathMap);
