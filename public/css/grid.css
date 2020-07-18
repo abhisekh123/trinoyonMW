@@ -28,6 +28,11 @@
     /* overflow: scroll; */
 }
 
+.gr-ad-container{
+    position: relative;
+    top: 20%;
+}
+
 /* result area 2 / 1 / span 8 / span 13 */
 
 /* team : 2 / 1 / span 8 / span 3 */
@@ -109,6 +114,11 @@
 .hg-ad{
     grid-area: 2 / 14 / span 8 / span 3;
     /* overflow: scroll; */
+}
+
+.hg-ad-container{
+    position: relative;
+    top: 20%;
 }
 
 .hg-botinfo{

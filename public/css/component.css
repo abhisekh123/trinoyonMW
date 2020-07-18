@@ -1,29 +1,28 @@
-
-
-
 .tButton {
-	box-shadow: 0px 0px 10px 2px #a2b39d;
+    box-shadow: 0px 0px 3px 1px #a2b39d;
     background: linear-gradient(to bottom, #181a18 5%, #757a71 100%);
     background-color: #181a18;
-    border-radius: 6px;
-    border: 2px solid #b4c2b6;
+    border-radius: 5px;
+    border: 1px solid #b4c2b6;
     display: inline-block;
     cursor: pointer;
     color: #dbd0db;
     font-family: Arial;
-    font-size: 20px;
+    font-size: 1em;
     font-weight: bold;
-    padding: 7px 50px;
+    padding: 1px 10px;
     text-decoration: none;
-    text-shadow: 2px 3px 5px #4b6347;
+    text-shadow: 1px 2px 3px #4b6347;
 }
+
 .tButton:hover {
-	background:linear-gradient(to bottom, #757a71 5%, #181a18 100%);
-	background-color:#757a71;
+    background: linear-gradient(to bottom, #757a71 5%, #181a18 100%);
+    background-color: #757a71;
 }
+
 .tButton:active {
-	position:relative;
-	top:1px;
+    position: relative;
+    top: 1px;
 }
 
 
@@ -154,3 +153,113 @@
     float: left;
     width: 75%;
 }
+
+
+/* ==============CHAT BOX============== */
+.message-nav-bar {
+    display: block;
+
+
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 25%;
+    height: 16%;
+    z-index: 2;
+
+    border-radius: 6px;
+    border: 2px solid #ccc;
+    box-shadow: 0px 0px 10px 2px #a2b39d;
+    /* background: linear-gradient(to bottom, #181a18 5%, #757a71 100%); */
+    background-color: #181a18;
+    /* cursor: pointer;
+    color: #dbd0db;
+    font-family: Arial;
+    font-size: 20px;
+    font-weight: bold; */
+    /* padding: 7px 50px; */
+    text-decoration: none;
+    text-shadow: 2px 3px 5px #4b6347;
+}
+
+.message-recipients-container{
+    height: 40%;
+    width: 100%;
+    top: 0px;
+    position: relative;
+}
+
+.recipients-select-container{
+    height: 100%;
+    width: 40%;
+    float: left;
+}
+
+/* .message-recipients{
+    width: 100%;
+    height: 100%;
+} */
+
+.container-send-message-button{
+    height: 100%;
+    width: 40%;
+    float: right;
+}
+
+.container-send-message-content{
+    width: 100%;
+    height: 40%;
+    bottom: 0px;
+}
+
+.message-input-container{
+
+}
+
+.message-text-counter{
+    background: none;
+    color: darkseagreen;
+    border: none;
+}
+
+.message-input{
+    float: right;
+}
+
+.arrow-container-message{
+    height: 10px;
+    width: 10px;
+}
+/* CSS ARROW */
+/* <p>Right arrow: <i class="arrow right"></i></p>
+<p>Left arrow: <i class="arrow left"></i></p>
+<p>Up arrow: <i class="arrow up"></i></p>
+<p>Down arrow: <i class="arrow down"></i></p> */
+.arrow {
+    border: solid #aaa;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+  
+  .left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }
+  
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+

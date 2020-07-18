@@ -393,15 +393,15 @@ tg.world.updateWorld = function (updateParam) {
             $('#tower-enemy').html(updateParam.playerConfig.statistics.towerCountTeam2);
             $('#kill-team').html(updateParam.playerConfig.statistics.performance[2].death);
             $('#kill-enemy').html(updateParam.playerConfig.statistics.performance[1].death);
-            $('#attack-team').html(updateParam.playerConfig.statistics.performance[1].damage);
-            $('#attack-enemy').html(updateParam.playerConfig.statistics.performance[2].damage);
+            $('#attack-team').html(updateParam.playerConfig.statistics.performance[1].damage.toFixed());
+            $('#attack-enemy').html(updateParam.playerConfig.statistics.performance[2].damage.toFixed());
         } else {
             $('#tower-team').html(updateParam.playerConfig.statistics.towerCountTeam2);
             $('#tower-enemy').html(updateParam.playerConfig.statistics.towerCountTeam1);
             $('#kill-team').html(updateParam.playerConfig.statistics.performance[1].death);
             $('#kill-enemy').html(updateParam.playerConfig.statistics.performance[2].death);
-            $('#attack-team').html(updateParam.playerConfig.statistics.performance[2].damage);
-            $('#attack-enemy').html(updateParam.playerConfig.statistics.performance[1].damage);
+            $('#attack-team').html(updateParam.playerConfig.statistics.performance[2].damage.toFixed());
+            $('#attack-enemy').html(updateParam.playerConfig.statistics.performance[1].damage.toFixed());
         }
 
     }

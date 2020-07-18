@@ -80,7 +80,7 @@ tg.pn.showMatchResultPage = function(){
     $("#hidejoystick").hide();
     // $("#fullscreenbutton").hide();
 
-    tg.uu.addAmazonAdToContent('gr-ad');
+    tg.uu.addAmazonAdToContent('gr-ad-container');
 };
 
 tg.pn.showMatchPage = function(){
@@ -139,7 +139,7 @@ tg.pn.showHomePage = function(){
         hero: 'lion',
     }
     tg.uu.populatePlayerBot($('#menu-home'));
-    tg.uu.addAmazonAdToContent('hg-ad');
+    tg.uu.addAmazonAdToContent('hg-ad-container');
     // tg.uu.addAmazonAdToContent('gr-ad');
     // tg.sprite.test_plane();
     // tg.pv.advancedTexture.addControl(tg.pv.uiComponents.buttons.playButton);  

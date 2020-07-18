@@ -14,6 +14,8 @@
     <script src="static/js/utils.js"></script>
     <script src="static/js/t.js"></script>
     <script src="static/js/nipplejs.js"></script>
+    <!-- <link rel="stylesheet" href="static/css/font-awesome.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="static/css/grid.css">
     <link rel="stylesheet" href="static/css/w3.css">
@@ -23,153 +25,303 @@
     <script src="static/js/babylon.gui.min.js"></script>
 
 </head>
+
 <body onload="initSystem()" class="parent-body" oncontextmenu="contextMenuFunction()"></body>
 <!-- <body onload="initSystem()" class="parent-body" oncontextmenu="contextMenuFunction()" onbeforeunload="return tg.onAppExit()"> -->
-    <div id="fps">0</div>
-    <canvas id='tc'></canvas>
-    <button onclick="makeFullScreen()" class="fullscreenbutton" id="fullscreenbutton"></button>
-    <button onclick="showjoystick()" class="showjoystick" id="showjoystick"></button>
-    <button onclick="hidejoystick()" class="hidejoystick" id="hidejoystick"></button>
-    <div class="show-controls">
-        <a class="tButton" id="button-show-controls">CONTROLS</a>
-    </div>
-    
-    <!-- <a class="tButton" id="button-home-start">PLAY</a> -->
+<div id="fps">0</div>
+<canvas id='tc'></canvas>
+<button onclick="makeFullScreen()" class="fullscreenbutton" id="fullscreenbutton"></button>
+<button onclick="showjoystick()" class="showjoystick" id="showjoystick"></button>
+<button onclick="hidejoystick()" class="hidejoystick" id="hidejoystick"></button>
+<div class="show-controls">
+    <a class="tButton" id="button-show-controls">CONTROLS</a>
+</div>
 
-    <!-- The Modal -->
-    <div id="menu-modal" class="modal center">
-        <!-- loader -->
-        <div class="load-indicator menu-text" id="load-indicator">
-            <div class="load-indicator-header menu-header" id="load-indicator-header">CHAOS</div>
-            <div class="w3-light-grey">
-                <div id="loader-bar" class="w3-container w3-green" style="height:24px;width:0%"></div>
-            </div>
-            <p id="loader-text" class="align-center menu-text">0% loaded...</p>
+<!-- <a class="tButton" id="button-home-start">PLAY</a> -->
+
+<!-- The Modal -->
+<div id="menu-modal" class="modal center">
+    <!-- loader -->
+    <div class="load-indicator menu-text" id="load-indicator">
+        <div class="load-indicator-header menu-header" id="load-indicator-header">CHAOS</div>
+        <div class="w3-light-grey">
+            <div id="loader-bar" class="w3-container w3-green" style="height:24px;width:0%"></div>
         </div>
+        <p id="loader-text" class="align-center menu-text">0% loaded...</p>
+    </div>
 
-        <!-- home -->
-        <div class="menu-home" id="menu-home">
+    <!-- home -->
+    <div class="menu-home" id="menu-home">
 
-            <div class="hg-container">
-                <div class="hg-header">
-                    <div class="menu-header center-relative">
-                        Choose Your Fighters
-                    </div>
+        <div class="hg-container">
+            <div class="hg-header">
+                <div class="menu-header center-relative">
+                    Choose Your Fighters
                 </div>
+            </div>
 
-                <div class="hg-ad"></div>
+            <div class="hg-ad">
+                <div class="hg-ad-container">
 
-                <div class="hg-botinfo">
-                    <table class="information-table">
-                        <tr>
-                            <td>
-                                <div class="bot-info-header menu-header">
-                                    Header
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="bot-info-description menu-text border-top">
-                                    description
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="bot-info-ability-container menu-sub-header border-top">
-                                    Abilities
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="bot-info-ability-details border-top">
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <div class="ability-introduction">
-                                                    <img src="static/img/sheild.png" alt="static/img/sheild.png"
-                                                        class="ability-Image">
-                                                    <div class="ability-name menu-large-text">name 1</div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="ability-statistics menu-text">
-                                                    Duration: 0 seconds.
-                                                    <br>
-                                                    Reset time: 10 seconds.
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
+                </div>
+            </div>
+
+            <div class="hg-botinfo">
+                <table class="information-table">
+                    <tr>
+                        <td>
+                            <div class="bot-info-header menu-header">
+                                Header
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="bot-info-description menu-text border-top">
+                                description
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="bot-info-ability-container menu-sub-header border-top">
+                                Abilities
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="bot-info-ability-details border-top">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="ability-introduction">
+                                                <img src="static/img/sheild.png" alt="static/img/sheild.png"
+                                                    class="ability-Image">
+                                                <div class="ability-name menu-large-text">name 1</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="ability-statistics menu-text">
+                                                Duration: 0 seconds.
                                                 <br>
-                                                <div class="ability-description menu-text">
-                                                    Ability description
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                                Reset time: 10 seconds.
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <br>
+                                            <div class="ability-description menu-text">
+                                                Ability description
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
 
 
 
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="bot-info-ability-details border-top">
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <div class="ability-introduction">
-                                                    <img src="static/img/sheild.png" alt="static/img/sheild.png"
-                                                        class="ability-Image">
-                                                    <div class="ability-name menu-large-text">name 1</div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="ability-statistics menu-text">
-                                                    Duration: 0 seconds.
-                                                    <br>
-                                                    Reset time: 10 seconds
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="bot-info-ability-details border-top">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="ability-introduction">
+                                                <img src="static/img/sheild.png" alt="static/img/sheild.png"
+                                                    class="ability-Image">
+                                                <div class="ability-name menu-large-text">name 1</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="ability-statistics menu-text">
+                                                Duration: 0 seconds.
                                                 <br>
-                                                <div class="ability-description menu-text">
-                                                    Ability description
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                                                Reset time: 10 seconds
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <br>
+                                            <div class="ability-description menu-text">
+                                                Ability description
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="hg-botimg">
+                <img src="static/img/lion_icon.png" class="hg-bot-image" />
+            </div>
+            <div class="hg-botstat">
+                <table class="information-table">
+                    <tr>
+                        <td>
+                            <div class="bot-stat-header menu-sub-header">
+                                Vitals
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="bot-stat-life menu-text border-top">
+                                Life:
+                                <br>
+                                <br>
+                                Level1 : 10
+                                <br>
+                                Level2 : 20
+                                <br>
+                                Level3 : 30
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="bot-stat-attack menu-text border-top">
+                                Attack:
+                                <br>
+                                <br>
+                                Level1 : 10
+                                <br>
+                                Level2 : 20
+                                <br>
+                                Level3 : 30
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="bot-stat-movement menu-text border-top">
+                                Movement:
+                                <br>
+                                <br>
+                                Level1 : 10
+                                <br>
+                                Level2 : 20
+                                <br>
+                                Level3 : 30
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+
+
+            </div>
+
+
+            <div class="hg-selection">
+                <div class="game-footer-bot-selection selected-bot-footer-item">
+                    <img src="static/img/lion_icon.png" class="image-icon"
+                        onclick="tg.uu.viewSelectedBotDetails(this, 0)" />
+                    <!-- <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 0)">Change</button> -->
                 </div>
-                <div class="hg-botimg">
-                    <img src="static/img/lion_icon.png" class="hg-bot-image" />
+                <div class="game-footer-bot-selection unselected-bot-footer-item">
+                    <img src="static/img/archer_icon.png" class="image-icon"
+                        onclick="tg.uu.viewSelectedBotDetails(this, 1)" />
+                    <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 1)">Change</button>
                 </div>
-                <div class="hg-botstat">
-                    <table class="information-table">
-                        <tr>
-                            <td>
-                                <div class="bot-stat-header menu-sub-header">
-                                    Vitals
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="bot-stat-life menu-text border-top">
+                <div class="game-footer-bot-selection unselected-bot-footer-item">
+                    <img src="static/img/archer_icon.png" class="image-icon"
+                        onclick="tg.uu.viewSelectedBotDetails(this, 2)" />
+                    <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 2)">Change</button>
+                </div>
+                <div class="game-footer-bot-selection unselected-bot-footer-item">
+                    <img src="static/img/swordsman_icon.png" class="image-icon"
+                        onclick="tg.uu.viewSelectedBotDetails(this, 3)" />
+                    <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 3)">Change</button>
+                </div>
+                <div class="game-footer-bot-selection unselected-bot-footer-item">
+                    <img src="static/img/swordsman_icon.png" class="image-icon"
+                        onclick="tg.uu.viewSelectedBotDetails(this, 4)" />
+                    <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 4)">Change</button>
+                </div>
+            </div>
+
+            <div class="hg-footer">
+                <!-- <button id="button-home-start">PLAY</button> -->
+                <!-- <a href="#" class="tButton" id="button-home-start">PLAY</a> -->
+                <a class="tButton" id="button-home-start">PLAY</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- start countdown for starting the game. -->
+    <div class="load-indicator menu-text" id="game-start-countdown">
+        <div class="menu-header align-center">Searching for opponents ...</div>
+        <div class="load-estimate center">
+            <div id="load-estimate" class="center menu-text align-center">Estimated start time 00:00</div>
+        </div>
+        <div class="load-estimate-time-elapsed center">
+            <div id="load-estimate-time-elapsed" class="center menu-text align-center">Time elapsed 00:00</div>
+        </div>
+    </div>
+
+    <div id="game-result-container" class="game-result-container result">
+
+        <div class="grid-result">
+            <div class="gr-header menu-header">
+                <div class="menu-header center-relative">
+                    Result
+                </div>
+            </div>
+
+            <div class="gr-ad">
+                <div class="gr-ad-container"></div>
+            </div>
+
+            <div class="gr-team-header menu-small-text align-center"> Team </div>
+            <div class="gr-team-players">
+                <table class="full-width">
+                    <tr>
+                        <td>
+                            <div class="border-team result-player-container menu-large-text"
+                                onclick="tg.uu.viewSelectedPlayerResultDetails(this, 0)">
+                                t1
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="border-team result-player-container menu-large-text"
+                                onclick="tg.uu.viewSelectedPlayerResultDetails(this, 1)">
+                                t2
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="border-team result-player-container menu-large-text"
+                                onclick="tg.uu.viewSelectedPlayerResultDetails(this, 2)">
+                                t3
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="gr-player-details-header"></div>
+            <div class="gr-player-details-body">
+                <table class="full-width">
+                    <tr>
+                        <td>
+                            <div class="result-bot-details-container">
+                                <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
+                                <div class="align-left menu-small-text result-bot-details">
                                     Life:
                                     <br>
                                     <br>
@@ -179,12 +331,15 @@
                                     <br>
                                     Level3 : 30
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="bot-stat-attack menu-text border-top">
-                                    Attack:
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="result-bot-details-container">
+                                <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
+                                <div class="align-left menu-small-text result-bot-details">
+                                    Life:
                                     <br>
                                     <br>
                                     Level1 : 10
@@ -193,12 +348,15 @@
                                     <br>
                                     Level3 : 30
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="bot-stat-movement menu-text border-top">
-                                    Movement:
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="result-bot-details-container">
+                                <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
+                                <div class="align-left menu-small-text result-bot-details">
+                                    Life:
                                     <br>
                                     <br>
                                     Level1 : 10
@@ -207,238 +365,89 @@
                                     <br>
                                     Level3 : 30
                                 </div>
-                            </td>
-                        </tr>
-                    </table>
-
-
-
-
-                </div>
-
-
-                <div class="hg-selection">
-                    <div class="game-footer-bot-selection selected-bot-footer-item">
-                        <img src="static/img/lion_icon.png" class="image-icon"
-                            onclick="tg.uu.viewSelectedBotDetails(this, 0)" />
-                        <!-- <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 0)">Change</button> -->
-                    </div>
-                    <div class="game-footer-bot-selection unselected-bot-footer-item">
-                        <img src="static/img/archer_icon.png" class="image-icon"
-                            onclick="tg.uu.viewSelectedBotDetails(this, 1)" />
-                        <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 1)">Change</button>
-                    </div>
-                    <div class="game-footer-bot-selection unselected-bot-footer-item">
-                        <img src="static/img/archer_icon.png" class="image-icon"
-                            onclick="tg.uu.viewSelectedBotDetails(this, 2)" />
-                        <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 2)">Change</button>
-                    </div>
-                    <div class="game-footer-bot-selection unselected-bot-footer-item">
-                        <img src="static/img/swordsman_icon.png" class="image-icon"
-                            onclick="tg.uu.viewSelectedBotDetails(this, 3)" />
-                        <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 3)">Change</button>
-                    </div>
-                    <div class="game-footer-bot-selection unselected-bot-footer-item">
-                        <img src="static/img/swordsman_icon.png" class="image-icon"
-                            onclick="tg.uu.viewSelectedBotDetails(this, 4)" />
-                        <button class="btn menu-text" onclick="tg.uu.changeSelectedBot(this, 4)">Change</button>
-                    </div>
-                </div>
-
-                <div class="hg-footer">
-                    <!-- <button id="button-home-start">PLAY</button> -->
-                    <!-- <a href="#" class="tButton" id="button-home-start">PLAY</a> -->
-                    <a class="tButton" id="button-home-start">PLAY</a>
-                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="result-bot-details-container">
+                                <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
+                                <div class="align-left menu-small-text result-bot-details">
+                                    Life:
+                                    <br>
+                                    <br>
+                                    Level1 : 10
+                                    <br>
+                                    Level2 : 20
+                                    <br>
+                                    Level3 : 30
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="result-bot-details-container">
+                                <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
+                                <div class="align-left menu-small-text result-bot-details">
+                                    Life:
+                                    <br>
+                                    <br>
+                                    Level1 : 10
+                                    <br>
+                                    Level2 : 20
+                                    <br>
+                                    Level3 : 30
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
-        </div>
 
-        <!-- start countdown for starting the game. -->
-        <div class="load-indicator menu-text" id="game-start-countdown">
-            <div class="menu-header align-center">Searching for opponents ...</div>
-            <div class="load-estimate center">
-                <div id="load-estimate" class="center menu-text align-center">Estimated start time 00:00</div>
+            <div class="gr-enemy-header menu-small-text align-center"> Enemy </div>
+            <div class="gr-enemy-players">
+                <table class="full-width">
+                    <tr>
+                        <td>
+                            <div class="border-enemy result-player-container menu-large-text"
+                                onclick="tg.uu.viewSelectedPlayerResultDetails(this, 3)">
+                                e1
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="border-enemy result-player-container menu-large-text"
+                                onclick="tg.uu.viewSelectedPlayerResultDetails(this, 4)">
+                                e2
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="border-enemy result-player-container menu-large-text"
+                                onclick="tg.uu.viewSelectedPlayerResultDetails(this, 5)">
+                                e3
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
             </div>
-            <div class="load-estimate-time-elapsed center">
-                <div id="load-estimate-time-elapsed" class="center menu-text align-center">Time elapsed 00:00</div>
-            </div>
-        </div>
 
-        <div id="game-result-container" class="game-result-container result">
-
-            <div class="grid-result">
-                <div class="gr-header menu-header">
-                    <div class="menu-header center-relative">
-                        Result
-                    </div>
-                </div>
-
-                <div class="gr-ad"></div>
-
-                <div class="gr-team-header menu-small-text align-center"> Team </div>
-                <div class="gr-team-players">
-                    <table class="full-width">
-                        <tr>
-                            <td>
-                                <div class="border-team result-player-container menu-large-text"
-                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 0)">
-                                    t1
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="border-team result-player-container menu-large-text"
-                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 1)">
-                                    t2
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="border-team result-player-container menu-large-text"
-                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 2)">
-                                    t3
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="gr-player-details-header"></div>
-                <div class="gr-player-details-body">
-                    <table class="full-width">
-                        <tr>
-                            <td>
-                                <div class="result-bot-details-container">
-                                    <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
-                                    <div class="align-left menu-small-text result-bot-details">
-                                        Life:
-                                        <br>
-                                        <br>
-                                        Level1 : 10
-                                        <br>
-                                        Level2 : 20
-                                        <br>
-                                        Level3 : 30
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="result-bot-details-container">
-                                    <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
-                                    <div class="align-left menu-small-text result-bot-details">
-                                        Life:
-                                        <br>
-                                        <br>
-                                        Level1 : 10
-                                        <br>
-                                        Level2 : 20
-                                        <br>
-                                        Level3 : 30
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="result-bot-details-container">
-                                    <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
-                                    <div class="align-left menu-small-text result-bot-details">
-                                        Life:
-                                        <br>
-                                        <br>
-                                        Level1 : 10
-                                        <br>
-                                        Level2 : 20
-                                        <br>
-                                        Level3 : 30
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="result-bot-details-container">
-                                    <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
-                                    <div class="align-left menu-small-text result-bot-details">
-                                        Life:
-                                        <br>
-                                        <br>
-                                        Level1 : 10
-                                        <br>
-                                        Level2 : 20
-                                        <br>
-                                        Level3 : 30
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="result-bot-details-container">
-                                    <img src="static/img/lion_icon.png" class="result-bot-details-image-icon" />
-                                    <div class="align-left menu-small-text result-bot-details">
-                                        Life:
-                                        <br>
-                                        <br>
-                                        Level1 : 10
-                                        <br>
-                                        Level2 : 20
-                                        <br>
-                                        Level3 : 30
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="gr-enemy-header menu-small-text align-center"> Enemy </div>
-                <div class="gr-enemy-players">
-                    <table class="full-width">
-                        <tr>
-                            <td>
-                                <div class="border-enemy result-player-container menu-large-text"
-                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 3)">
-                                    e1
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="border-enemy result-player-container menu-large-text"
-                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 4)">
-                                    e2
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="border-enemy result-player-container menu-large-text"
-                                    onclick="tg.uu.viewSelectedPlayerResultDetails(this, 5)">
-                                    e3
-                                </div>
-                            </td>
-                        </tr>
-
-                    </table>
-                </div>
-
-                <div class="gr-footer">
-                    <!-- <div class="menu-header center-relative">
+            <div class="gr-footer">
+                <!-- <div class="menu-header center-relative">
                             Result
                         </div> -->
-                    <!-- <button id="button-result-exit">exit</button> -->
-                    <a class="tButton" id="button-result-exit">EXIT</a>
-                </div>
+                <!-- <button id="button-result-exit">exit</button> -->
+                <a class="tButton" id="button-result-exit">EXIT</a>
             </div>
+        </div>
 
 
 
-            <!-- <div class="menu-header" id="game-result-header">Draw!</div>
+        <!-- <div class="menu-header" id="game-result-header">Draw!</div>
             <strong>Your team performance</strong><br>
             <em id="team-owned-tower-count"></em><br>
             <em id="team-total-kill-count"></em><br>
@@ -448,153 +457,179 @@
             <em id="enemy-total-kill-count"></em><br>
             <em id="enemy-total-attack-damage"></em><br>
             <button id="button-result-exit">exit</button> -->
-        </div>
     </div>
+</div>
 
-    <!-- Modal content -->
-    <div class="game-header-menu" id="game-header-menu">
-        <table class="game-header-table">
-            <tr class="header-clock-row">
-                <td class="header-clock-left">TEAM</td>
-                <td class="header-clock-cell" id="header-clock-cell">00:00</td>
-                <td class="header-clock-right">ENEMY</td>
-            </tr>
-            <tr class="header-data-row">
-                <td class="header-cell-left" id="tower-team">0</td>
-                <td class="header-cell-center">TOWERS OWNED</td>
-                <td class="header-cell-right" id="tower-enemy">0</td>
-            </tr>
-            <tr class="header-data-row">
-                <td class="header-cell-left" id="kill-team">0</td>
-                <td class="header-cell-center">TOTAL KILLS</td>
-                <td class="header-cell-right" id="kill-enemy">0</td>
-            </tr>
-            <tr class="header-data-row">
-                <td class="header-cell-left" id="attack-team">0</td>
-                <td class="header-cell-center">TOTAL ATTACK</td>
-                <td class="header-cell-right" id="attack-enemy">0</td>
-            </tr>
-        </table>
-    </div>
-    <!-- Modal content -->
+<!-- Modal content -->
+<div class="game-header-menu" id="game-header-menu">
+    <table class="game-header-table">
+        <tr class="header-clock-row">
+            <td class="header-clock-left">TEAM</td>
+            <td class="header-clock-cell" id="header-clock-cell">00:00</td>
+            <td class="header-clock-right">ENEMY</td>
+        </tr>
+        <tr class="header-data-row">
+            <td class="header-cell-left" id="tower-team">0</td>
+            <td class="header-cell-center">TOWERS OWNED</td>
+            <td class="header-cell-right" id="tower-enemy">0</td>
+        </tr>
+        <tr class="header-data-row">
+            <td class="header-cell-left" id="kill-team">0</td>
+            <td class="header-cell-center">TOTAL KILLS</td>
+            <td class="header-cell-right" id="kill-enemy">0</td>
+        </tr>
+        <tr class="header-data-row">
+            <td class="header-cell-left" id="attack-team">0</td>
+            <td class="header-cell-center">TOTAL ATTACK</td>
+            <td class="header-cell-right" id="attack-enemy">0</td>
+        </tr>
+    </table>
+</div>
+<!-- Modal content -->
 
 
-    <script type="text/javascript">
-        function contextMenuFunction() {
-            //   alert("You right-clicked inside the div!");
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
-        };
+<script type="text/javascript">
+    function contextMenuFunction() {
+        //   alert("You right-clicked inside the div!");
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    };
 
-        function showjoystick() {
-            $("#hidejoystick").show();
-            $("#showjoystick").hide();
-            tg.hl.showJoysticks();
-        };
+    function showjoystick() {
+        $("#hidejoystick").show();
+        $("#showjoystick").hide();
+        tg.hl.showJoysticks();
+    };
 
-        function hidejoystick() {
-            $("#hidejoystick").hide();
-            $("#showjoystick").show();
-            tg.hl.removeJoysticks();
-        };
+    function hidejoystick() {
+        $("#hidejoystick").hide();
+        $("#showjoystick").show();
+        tg.hl.removeJoysticks();
+    };
 
-        function makeFullScreen() {
-            console.log("makeFullScreen");
-            // if (tg.canvas.webkitRequestFullScreen) {
-            //     alert('webkit');
-            //     tg.canvas.webkitRequestFullScreen();
-            //     alert('webkit done');
-            // } else {
-            //     alert('moz');
-            //     tg.canvas.mozRequestFullScreen();
-            // }
-            // alert('webkit');
-            // var htmlElement = tg.canvas;
-            var htmlElement = $('body')[0];
-            if (htmlElement.requestFullscreen) {
-                console.log('webkit 1');
-                htmlElement.requestFullscreen();
-            } else if (htmlElement.mozRequestFullScreen) {
-                /* Firefox */
-                console.log('webkit 2');
-                htmlElement.mozRequestFullScreen();
-            } else if (htmlElement.webkitRequestFullscreen) {
-                /* Chrome, Safari and Opera */
-                console.log('webkit 3');
-                htmlElement.webkitRequestFullscreen();
-            } else if (htmlElement.msRequestFullscreen) {
-                /* IE/Edge */
-                console.log('webkit 4');
-                htmlElement.msRequestFullscreen();
-            } else {
-                htmlElement.requestFullscreen();
-                console.log('webkit 5');
-            }
-        };
-    </script>
+    function makeFullScreen() {
+        console.log("makeFullScreen");
+        // if (tg.canvas.webkitRequestFullScreen) {
+        //     alert('webkit');
+        //     tg.canvas.webkitRequestFullScreen();
+        //     alert('webkit done');
+        // } else {
+        //     alert('moz');
+        //     tg.canvas.mozRequestFullScreen();
+        // }
+        // alert('webkit');
+        // var htmlElement = tg.canvas;
+        var htmlElement = $('body')[0];
+        if (htmlElement.requestFullscreen) {
+            console.log('webkit 1');
+            htmlElement.requestFullscreen();
+        } else if (htmlElement.mozRequestFullScreen) {
+            /* Firefox */
+            console.log('webkit 2');
+            htmlElement.mozRequestFullScreen();
+        } else if (htmlElement.webkitRequestFullscreen) {
+            /* Chrome, Safari and Opera */
+            console.log('webkit 3');
+            htmlElement.webkitRequestFullscreen();
+        } else if (htmlElement.msRequestFullscreen) {
+            /* IE/Edge */
+            console.log('webkit 4');
+            htmlElement.msRequestFullscreen();
+        } else {
+            htmlElement.requestFullscreen();
+            console.log('webkit 5');
+        }
+    };
+</script>
 
-    <!-- match footer menu. -->
-    
-    <div class="footerrow" id="footerrow">
+<!-- match footer menu. -->
 
-        <div class="columnCetral">
-            <div class="game-footer-menu" id="game-footer-menu">
-                <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_0"
-                    onclick="tg.hl.selectBotButtonClick(0)">
-                    <img src="static/img/lion_icon.png" id="footer-image_0" class="image-icon" />
-                    <div class="w3-light-grey footer-bot-life-container">
-                        <div id="footer-bot-life_0" class="w3-green footer-bot-life" style="width:30"></div>
-                    </div>
+<div class="footerrow" id="footerrow">
+
+    <div class="columnCetral">
+        <div class="game-footer-menu" id="game-footer-menu">
+            <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_0"
+                onclick="tg.hl.selectBotButtonClick(0)">
+                <img src="static/img/lion_icon.png" id="footer-image_0" class="image-icon" />
+                <div class="w3-light-grey footer-bot-life-container">
+                    <div id="footer-bot-life_0" class="w3-green footer-bot-life" style="width:30"></div>
                 </div>
-                <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_1"
-                    onclick="tg.hl.selectBotButtonClick(1)">
-                    <img src="static/img/archer_icon.png" id="footer-image_1" class="image-icon" />
-                    <div class="w3-light-grey footer-bot-life-container">
-                        <div id="footer-bot-life_1" class="w3-green footer-bot-life" style="width:30"></div>
-                    </div>
+            </div>
+            <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_1"
+                onclick="tg.hl.selectBotButtonClick(1)">
+                <img src="static/img/archer_icon.png" id="footer-image_1" class="image-icon" />
+                <div class="w3-light-grey footer-bot-life-container">
+                    <div id="footer-bot-life_1" class="w3-green footer-bot-life" style="width:30"></div>
                 </div>
-                <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_2"
-                    onclick="tg.hl.selectBotButtonClick(2)">
-                    <img src="static/img/archer_icon.png" id="footer-image_2" class="image-icon" />
-                    <div class="w3-light-grey footer-bot-life-container">
-                        <div id="footer-bot-life_2" class="w3-green footer-bot-life" style="width:30"></div>
-                    </div>
+            </div>
+            <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_2"
+                onclick="tg.hl.selectBotButtonClick(2)">
+                <img src="static/img/archer_icon.png" id="footer-image_2" class="image-icon" />
+                <div class="w3-light-grey footer-bot-life-container">
+                    <div id="footer-bot-life_2" class="w3-green footer-bot-life" style="width:30"></div>
                 </div>
-                <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_3"
-                    onclick="tg.hl.selectBotButtonClick(3)">
-                    <img src="static/img/archer_icon.png" id="footer-image_3" class="image-icon" />
-                    <div class="w3-light-grey footer-bot-life-container">
-                        <div id="footer-bot-life_3" class="w3-green footer-bot-life" style="width:30"></div>
-                    </div>
+            </div>
+            <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_3"
+                onclick="tg.hl.selectBotButtonClick(3)">
+                <img src="static/img/archer_icon.png" id="footer-image_3" class="image-icon" />
+                <div class="w3-light-grey footer-bot-life-container">
+                    <div id="footer-bot-life_3" class="w3-green footer-bot-life" style="width:30"></div>
                 </div>
-                <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_4"
-                    onclick="tg.hl.selectBotButtonClick(4)">
-                    <img src="static/img/archer_icon.png" id="footer-image_4" class="image-icon" />
-                    <div class="w3-light-grey footer-bot-life-container">
-                        <div id="footer-bot-life_4" class="w3-green footer-bot-life" style="width:30"></div>
-                    </div>
+            </div>
+            <div class="game-footer-bot-selection unselected-bot-footer-item" id="game-footer-bot-selection_4"
+                onclick="tg.hl.selectBotButtonClick(4)">
+                <img src="static/img/archer_icon.png" id="footer-image_4" class="image-icon" />
+                <div class="w3-light-grey footer-bot-life-container">
+                    <div id="footer-bot-life_4" class="w3-green footer-bot-life" style="width:30"></div>
                 </div>
             </div>
         </div>
-
     </div>
 
+</div>
 
-    <div class="rightcolumn" id="rightcolumn">
-        <div class="rightcolumn-button" id="rightcolumn-button-3" onclick="tg.hl.abilityButtonClick(3)">
-            <img class="image-icon" id="rightcolumn-image-3" src="static/img/quake.jpeg" />
+
+<div class="rightcolumn" id="rightcolumn">
+    <div class="rightcolumn-button" id="rightcolumn-button-3" onclick="tg.hl.abilityButtonClick(3)">
+        <img class="image-icon" id="rightcolumn-image-3" src="static/img/quake.jpeg" />
+    </div>
+    <div class="rightcolumn-button" id="rightcolumn-button-2" onclick="tg.hl.abilityButtonClick(2)">
+        <img class="image-icon" id="rightcolumn-image-2" src="static/img/sheild.png" />
+    </div>
+    <div class="rightcolumn-button" id="rightcolumn-button-1" onclick="tg.hl.abilityButtonClick(1)">
+        <img class="image-icon" id="rightcolumn-image-1" src="static/img/flame_arrow_icon.png" />
+    </div>
+    <div class="rightcolumn-button" id="rightcolumn-button-0" onclick="tg.hl.abilityButtonClick(0)">
+        <img class="image-icon" id="rightcolumn-image-0" src="static/img/flag-white.png" />
+    </div>
+</div>
+
+<div class="message-nav-bar menu-sub-header">
+
+    <div class="message-recipients-container">
+        <div class="recipients-select-container">
+            <select class="fully-occupy-parent" onchange="tg.message.recipientSelectionUpdated()">
+                <option value="team" selected="selected">Team</option>
+                <option value="all">All</option>
+            </select>
         </div>
-        <div class="rightcolumn-button" id="rightcolumn-button-2" onclick="tg.hl.abilityButtonClick(2)">
-            <img class="image-icon" id="rightcolumn-image-2" src="static/img/sheild.png" />
+        <div class="container-send-message-button"><a class="tButton fully-occupy-parent">SEND</a></div>
+
+    </div>
+    <div class="container-send-message-content">
+        <div class="message-input-container">
+            <input disabled value="0/128" class="message-text-counter">
+            <input type="text" placeholder="message..." class="message-input" onkeyup="tg.message.messageInputKeyUp(this)"
+                maxlength="128">
         </div>
-        <div class="rightcolumn-button" id="rightcolumn-button-1" onclick="tg.hl.abilityButtonClick(1)">
-            <img class="image-icon" id="rightcolumn-image-1" src="static/img/flame_arrow_icon.png" />
-        </div>
-        <div class="rightcolumn-button" id="rightcolumn-button-0" onclick="tg.hl.abilityButtonClick(0)">
-            <img class="image-icon" id="rightcolumn-image-0" src="static/img/flag-white.png" />
+
+        <!-- <a class="tButton expand-drop-down-modal"></a> -->
+        <div class="arrow-container-message">
+            <i class="arrow down"></i>
         </div>
     </div>
+</div>
 
 </body>
 
