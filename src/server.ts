@@ -98,6 +98,12 @@ app.get("/ox", function (req, res) {
         res.redirect('/login');
     }
 
+    var userConfig = {
+        firstName: serverState.users_db_state[userIdDecimal].firstName,
+        lastName: serverState.users_db_state[userIdDecimal].lastName,
+        userId: serverState.users_db_state[userIdDecimal].userId
+    };
+
     switch (req.query.type) {
         case 'p': // find a parent
             var URL = '';
@@ -110,7 +116,8 @@ app.get("/ox", function (req, res) {
             const wsKey = getNewWSKey();
             respJSON.data = {
                 u: URL,
-                k: wsKey
+                k: wsKey,
+                userConfig: userConfig
             };
             respJSON.status = 'ok';
 
@@ -171,10 +178,10 @@ if (environmentState.environment == 'server') {
 } else {
     app.get('/', function (req, res) {
         // console.log(';;;;=>', req);
-        
+        var givenUserId = req.query.id;
         if(req && req.session){
             console.log(req.session.cookie);
-            req.session.userId = '10210327194683735';
+            req.session.userId = givenUserId;
         }
         res.setHeader('test-field', 'testy');
         res.sendFile(path.join(__dirname + '/../../public/index.html'));

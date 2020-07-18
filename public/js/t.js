@@ -10,11 +10,20 @@ function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-}
+};
 
 tg.updateWorld = function (param) {
 
-}
+};
+
+tg.self = {};
+tg.self.userConfig = null;
+
+tg.self.updateUserConfig = function(userConfig){
+
+    tg.self.userConfig = userConfig;
+    console.log('self userConfig:', tg.self.userConfig);
+};
 
 function initSystem() {
     // console.log('trying to connect to server via WS.');
@@ -23,10 +32,12 @@ function initSystem() {
     window.addEventListener('resize', resizeCanvas, false);
     resizeCanvas();
 
+
     $.get('/ox', {
         type: 'p'
     }, function (data, textStatus, jqXHR) {
         console.log('ox response', data);
+        tg.self.updateUserConfig(data.data.userConfig);
         tg.connectToParent(data.data.u, data.data.k);
     });
     // console.log($('#ad-iframe'));
