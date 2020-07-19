@@ -17,19 +17,20 @@ tg.message.messageInputKeyUp = function (element) {
     }
 }
 
-tg.message.recipientSelectionUpdated = function () {
-    var selectedIndex = $('.message-recipients')[0].selectedIndex;
-    // console.log('selectedIndex:', selectedIndex);
-    switch (selectedIndex) {
-        case 0:
-            tg.message.messageRecipients = 'team';
-            break;
-        case 1:
-            tg.message.messageRecipients = 'all';
-            break;
-        default:
-            break;
-    }
+tg.message.recipientSelectionUpdated = function (element) {
+    // var selectedIndex = $('.message-recipients')[0].selectedIndex;
+    console.log('selectedIndex:', element.value);
+    // switch (selectedIndex) {
+    //     case 0:
+    //         tg.message.messageRecipients = 'team';
+    //         break;
+    //     case 1:
+    //         tg.message.messageRecipients = 'all';
+    //         break;
+    //     default:
+    //         break;
+    // }
+    tg.message.messageRecipients = element.value;
     console.log('tg.message.messageRecipients:', tg.message.messageRecipients);
 }
 
@@ -62,10 +63,20 @@ tg.message.renderMessagesToUI = function () {
 
 };
 
-tg.message.showMessagesUI = function () {
-    tg.message.isUIVisible = true;
+tg.message.toggleMessagesUI = function (element) {
+    var arrowElement = $(element).children[0];
+    // toggle visibility flag
+    tg.message.isUIVisible = !tg.message.isUIVisible;
+    if (tg.message.isUIVisible) {
+        $(arrowElement).removeClass('down');
+        $(arrowElement).addClass('up');
+        $('.message-list-container').show();
+    } else {
+        $(arrowElement).removeClass('up');
+        $(arrowElement).addClass('down');
+        $('.message-list-container').hide();
+    }
+    
+    console.log('tg.message.isUIVisible:' + tg.message.isUIVisible);
 };
 
-tg.message.hideMessagesUI = function () {
-    tg.message.isUIVisible = false;
-};

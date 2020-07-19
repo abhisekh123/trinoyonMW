@@ -78,14 +78,18 @@ canvas {
 /* The Modal (background) */
 .modal {
     display: none;
-    overflow: hidden;
-    /* Hidden by default */
-    position: fixed;
-    /* Stay in place */
+    /* overflow: hidden;
+    position: fixed; */
+
+    display: block;
+    /* width: 64%;
+    height: 80%; */
+    position: absolute;
+    left: 10%;
+    top: 10%;
+
     z-index: 1;
-    /* Fallback color */
     background-color: rgba(0, 0, 0, 0.7);
-    /* Black w/ opacity */
 }
 
 #fps {

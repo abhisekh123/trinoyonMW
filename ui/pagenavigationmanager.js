@@ -71,7 +71,7 @@ tg.pn.showMatchResultPage = function(){
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     // $("#game-footer-menu").show();
     tg.pn.currentPage = 'game-result';
-    tg.pv.setModalDimensionPercentage('100%', '100%');
+    tg.pv.setModalDimensionPercentage('64%', '80%');
     tg.hl.removeJoysticks();
     tg.audio.playAudio(tg.audio.menu);
     tg.audio.stopAudio(tg.audio.match);
@@ -133,7 +133,7 @@ tg.pn.showHomePage = function(){
     }
     tg.pn.currentPage = 'home';
     $("#menu-home").show();
-    tg.pv.setModalDimensionPercentage('80%', '80%');
+    tg.pv.setModalDimensionPercentage('64%', '80%');
     tg.botSelection = {
         botList: ['swordman', 'swordman', 'swordman', 'swordman'],
         hero: 'lion',
