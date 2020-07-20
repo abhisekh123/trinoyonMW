@@ -9,8 +9,8 @@ tg.message.messageInputKeyUp = function (element) {
     var textContent = element.value;
     var counterElement = $('.message-text-counter')[0];
     console.log(textContent);
-    if(textContent.length > 128){
-        element.value = element.value.substring( 0, 128 );
+    if (textContent.length > 128) {
+        element.value = element.value.substring(0, 128);
         counterElement.value = '128/128';
     } else {
         counterElement.value = textContent.length + '/128';
@@ -51,6 +51,26 @@ tg.message.init = function () {
         } else {
             tg.message.latestMessages[i - 1].next = messageObject;
         }
+
+        $("#message-list-table").find('tbody')
+            .append($('<tr>')
+                .append($('<td>')
+                    .append($('<div>') // individual message container
+                        .append($('<div>')
+                            // .attr('src', 'img.png')
+                            .append('<p class="text-enemy">Image cell1</p>')
+                            .addClass("message-item-header")
+                        )
+                        .append($('<div>')
+                            // .attr('src', 'img.png')
+                            .text('Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2')
+                            .addClass("message-item-body")
+                        )
+                        // .addClass("message-item-container")
+                        .addClass("border-top")
+                    )
+                )
+            );
     }
     messageObject.next = tg.message.latestMessages[0];
 };
@@ -64,7 +84,7 @@ tg.message.renderMessagesToUI = function () {
 };
 
 tg.message.toggleMessagesUI = function (element) {
-    var arrowElement = $(element).children[0];
+    var arrowElement = $(element).children()[0];
     // toggle visibility flag
     tg.message.isUIVisible = !tg.message.isUIVisible;
     if (tg.message.isUIVisible) {
@@ -76,7 +96,27 @@ tg.message.toggleMessagesUI = function (element) {
         $(arrowElement).addClass('down');
         $('.message-list-container').hide();
     }
-    
+
     console.log('tg.message.isUIVisible:' + tg.message.isUIVisible);
 };
 
+tg.message.getMeassageTableRowElement = function (type) {
+    var returnElement = null;
+    switch (type) {
+        case 'empty':
+
+            break;
+        case 'message':
+
+            break;
+        case 'invite':
+
+            break;
+        case 'update':
+
+            break;
+        default:
+            break;
+    }
+    return returnElement;
+}

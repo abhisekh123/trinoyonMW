@@ -465,5 +465,15 @@ canvas {
     background-size: contain;
 }
 
+.text-enemy{
+    color: red;
+}
 
+.text-team{
+    color: green;
+}
+
+.text-neutral{
+    color: #aaa;
+}
 
