@@ -50,7 +50,7 @@ module.exports = {
         };
 
         await this.db.users.insert(user);
-        var userCreated = await this.db.users.findUser(profile.id);
+        var userCreated = await this.db.users.findOne({id: profile.id});
         this.serverState.users_db_state[profile.id] = userCreated;
         this.serverState.users_server_state[profile.id] = {};
 
