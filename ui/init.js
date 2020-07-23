@@ -6,28 +6,42 @@ function initClient(){
     // initialise the clock with running status.
     tg.clockTickInterval = 1000;
     tg.clock = setInterval(tg.clockUpdateEventHandler, tg.clockTickInterval);
-    tg.clockTimeElapsed = 0;
+    // tg.clockTimeElapsed = 0;
+    tg.clockStartTime = getCurrentTime ();
+    tg.currentTime = tg.clockStartTime;
 
     tg.debugMode = false;
     // setTimeout(tg.stopClock, 4000);
-}
+};
+
+tg.clockActionFlagObject = {
+    gameStartCountDownTickHandler: {
+        enabled: false,
+        startTime: 0,
+    },
+};
 
 tg.clockUpdateEventHandler = function() {
     // place holder
     // console.log('clock updated:', tg.clockTimeElapsed);
-    tg.clockTimeElapsed += tg.clockTickInterval;
+    tg.hl.divFps.innerHTML = tg.engine.getFps().toFixed() + " fps";
+    // tg.clockTimeElapsed += tg.clockTickInterval;
+    // tg.clockTimeElapsed = tg.currentTime - tg.clockStartTime;
     tg.clockUpdateEventHandler_customActivity();
-}
+};
 
 // this is the custom method which can be overridden to do custom activity for every clock tick.
 tg.clockUpdateEventHandler_customActivity = function(){
     // do nothing
     // console.log('clockUpdateEventHandler_customActivity');
+    if(tg.clockActionFlagObject.gameStartCountDownTickHandler.enabled == true){
+        tg.hl.gameStartCountDownTickHandler();
+    }
 }
 
-tg.resetClockTimeElapsed = function(){
-    tg.clockTimeElapsed = 0;
-}
+// tg.resetClockTimeElapsed = function(){
+//     tg.clockTimeElapsed = 0;
+// }
 
 tg.startClock = function() {
     if(tg.clockUpdateEventHandler != null || tg.clock != null){

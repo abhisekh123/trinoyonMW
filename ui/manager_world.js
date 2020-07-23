@@ -257,6 +257,7 @@ tg.world.processAttackEvent = function (sourceConfig, destinationConfig, eventsA
 
 tg.world.updateWorld = function (updateParam) {
     // console.log('tg.world.updateWorld:', updateParam);
+    
     if (tg.isGameLive == true) {
         // console.log('tg.world.updateWorld:', updateParam);
         const itemStateMap = updateParam.playerConfig.itemState;

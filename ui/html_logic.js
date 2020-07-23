@@ -212,7 +212,7 @@ tg.hl.setLoaderHeaderText = function (textParam) {
 };
 
 tg.hl.gameStartCountDownTickHandler = function () {
-    $('#load-estimate-time-elapsed').html('Time elapsed ' + tg.uu.convertSecondsMMSS(tg.clockTimeElapsed / 1000));
+    $('#load-estimate-time-elapsed').html('Time elapsed ' + tg.uu.convertSecondsMMSS((tg.currentTime - tg.clockActionFlagObject.gameStartCountDownTickHandler.startTime) / 1000));
 };
 
 tg.hl.countDownHandler_idle = function () {

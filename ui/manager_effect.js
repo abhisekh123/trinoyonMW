@@ -30,8 +30,8 @@ tg.effect.addAbilityEffectSprite = function (abilityObject, characterID, positio
 tg.effect.processAbilityStateChangeEvent = function (botObject, updateItemConfig, abilityIndex) {
     var abilityObject = botObject.ability[abilityIndex];
     var abilityConfig = tg.itemConfigs.abilityConfig[abilityObject.action];
-    console.log(abilityObject.action + '::ability state change for bot:', botObject.id);
-    console.log('current value:' + botObject[abilityObject.key] + ' New value:' + updateItemConfig[abilityObject.key]);
+    // console.log(abilityObject.action + '::ability state change for bot:', botObject.id);
+    // console.log('current value:' + botObject[abilityObject.key] + ' New value:' + updateItemConfig[abilityObject.key]);
 
     // if botObject is same as currently selected bot the update bot ability button state
     if(tg.bot.userPlayerConfig.selectedBot != null && tg.bot.userPlayerConfig.selectedBot.id == botObject.id){ 

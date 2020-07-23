@@ -45,7 +45,8 @@ tg.pn.showMatchStartingLoader = function(){
     }
 
     tg.pn.currentPage = 'match-loading';
-    tg.stopClock();
+    // tg.stopClock();
+    tg.clockActionFlagObject.gameStartCountDownTickHandler.enabled = false;
     tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#load-indicator").show();
     tg.pv.setModalDimensionPercentage('50%', '80%');
@@ -97,7 +98,7 @@ tg.pn.showMatchPage = function(){
     }
     tg.static.freezeStaticAssets();
     console.log('print bot grand list::', tg.am.dynamicItems.botsArray);
-    tg.stopClock();
+    // tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#footerrow").show();
     $("#rightcolumn").show();
@@ -160,8 +161,10 @@ tg.pn.showGameStartCountDownPage = function(estimatedTimeInSeconds){
     tg.pn.currentPage = 'startcountdown';
     tg.hl.gameStartCountDownTickHandler(); // call method once to update html before rendering, to avoid glitch.
     // so that on each clock tick our custom method is also executed.
-    tg.clockUpdateEventHandler_customActivity = tg.hl.gameStartCountDownTickHandler; 
-    tg.resetClockTimeElapsed();
+    // tg.clockUpdateEventHandler_customActivity = tg.hl.gameStartCountDownTickHandler; 
+    tg.clockActionFlagObject.gameStartCountDownTickHandler.enabled = true;
+    tg.clockActionFlagObject.gameStartCountDownTickHandler.startTime = tg.currentTime;
+    // tg.resetClockTimeElapsed();
     $('#load-estimate').html('Estimated start time ' + tg.uu.convertSecondsMMSS(estimatedTimeInSeconds));
     tg.pv.setModalDimensionPercentage('50%', '80%');
     $("#game-start-countdown").show();
