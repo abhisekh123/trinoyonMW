@@ -48,7 +48,7 @@ tg.pn.showMatchStartingLoader = function(){
     tg.stopClock();
     tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#load-indicator").show();
-    tg.pv.setModalDimensionPercentage('50%', '90%');
+    tg.pv.setModalDimensionPercentage('50%', '80%');
 };
 
 tg.pn.showMatchResultPage = function(){
@@ -126,6 +126,7 @@ tg.pn.showHomePage = function(){
         case 'landing':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
             $("#load-indicator").hide();
+            $('.message-nav-bar').show();
             break;
     
         default:
@@ -162,7 +163,7 @@ tg.pn.showGameStartCountDownPage = function(estimatedTimeInSeconds){
     tg.clockUpdateEventHandler_customActivity = tg.hl.gameStartCountDownTickHandler; 
     tg.resetClockTimeElapsed();
     $('#load-estimate').html('Estimated start time ' + tg.uu.convertSecondsMMSS(estimatedTimeInSeconds));
-    tg.pv.setModalDimensionPercentage('50%', '90%');
+    tg.pv.setModalDimensionPercentage('50%', '80%');
     $("#game-start-countdown").show();
     
     
@@ -175,7 +176,7 @@ tg.pn.showLandingPage = function(){
     tg.pn.currentPage = 'landing';
     
     $("#load-indicator").show();
-    tg.pv.setModalDimensionPercentage('50%', '90%');
+    tg.pv.setModalDimensionPercentage('50%', '80%');
     // tg.pv.advancedTexture.addControl(tg.pv.loadingText);
 }
 

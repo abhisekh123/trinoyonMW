@@ -37,9 +37,9 @@ tg.uu.getObjectClone = function (objectParam) {
     return JSON.parse(JSON.stringify(objectParam));
 };
 
-// both inputs should be integers.
+// both inputs should be integers from range-start to range-end. 
 tg.uu.getRandom = function (rangeStart, rangeEnd) {
-    return Math.floor(Math.random() * (rangeEnd - rangeStart)) + rangeStart;
+    return Math.round(Math.random() * (rangeEnd - rangeStart)) + rangeStart;
 };
 
 tg.uu.swapArrayElements = function(arrayParam, index1, index2){
@@ -249,6 +249,24 @@ tg.uu.addRemoveClassFromElementArray = function(elementArray, operationType, cla
             }
         }
     }
+};
+
+// order > 0 for increasing order. order < 0 for reverse order.
+tg.uu.getNextArrayIndex = function(currentIndex, order, arrayParam){
+    var nextIndex = 0;
+    if(order > 0){
+        nextIndex = currentIndex + 1;
+    } else {
+        nextIndex = currentIndex - 1;
+    }
+    if(nextIndex < 0){
+        nextIndex = arrayParam.length - 1;
+    }
+
+    if(nextIndex >= arrayParam.length){
+        nextIndex = 0;
+    }
+    return nextIndex;
 };
 
 

@@ -1,86 +1,133 @@
 tg.message = {};
 
 tg.message.latestMessages = [];
-tg.message.firstMessage = null;
+// tg.message.firstMessage = null;
+tg.message.newestMessageIndex = 0;
 tg.message.isUIVisible = false;
 tg.message.messageRecipients = 'team';
+
+tg.message.state = {
+    requestedUsers: [
+
+    ],
+    incomingRequests: [
+
+    ]
+};
+
+
 
 tg.message.messageInputKeyUp = function (element) {
     var textContent = element.value;
     var counterElement = $('.message-text-counter')[0];
-    console.log(textContent);
+    // console.log(textContent);
     if (textContent.length > 128) {
         element.value = element.value.substring(0, 128);
         counterElement.value = '128/128';
     } else {
         counterElement.value = textContent.length + '/128';
     }
-}
+};
+
+tg.message.testUserIds = [{
+        name: 'user12',
+        id: 12
+    },
+    {
+        name: 'user34',
+        id: 34
+    },
+    {
+        name: 'user54',
+        id: 54
+    }
+];
+
 
 tg.message.recipientSelectionUpdated = function (element) {
     // var selectedIndex = $('.message-recipients')[0].selectedIndex;
     console.log('selectedIndex:', element.value);
-    // switch (selectedIndex) {
-    //     case 0:
-    //         tg.message.messageRecipients = 'team';
-    //         break;
-    //     case 1:
-    //         tg.message.messageRecipients = 'all';
+    tg.message.messageRecipients = element.value;
+    console.log('tg.message.messageRecipients:', tg.message.messageRecipients);
+};
+
+tg.message.sendMessage = function () {
+    var sendPacket = {
+        recipients: tg.message.messageRecipients,
+        message: $('.message-input')[0].value,
+        serverTime: 10000343242390847,
+        messageTime: tg.uu.getRandom(0, 10000343242390847),
+    };
+
+    console.log('sendPacket:', sendPacket);
+
+    // test code start
+    sendPacket.senderName = tg.message.testUserIds[tg.uu.getRandom(0, tg.message.testUserIds.length - 1)].name;
+    sendPacket.senderUserId = tg.message.testUserIds[tg.uu.getRandom(0, tg.message.testUserIds.length - 1)].id;
+    sendPacket.senderTeam = tg.uu.getRandom(0, 2);
+
+    tg.message.consumeMessage(sendPacket);
+}
+
+
+tg.message.consumeMessage = function (messageParam) {
+    // replace oldest message with the new message.
+    var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
+
+    var messageObject = tg.message.latestMessages[oldestMessageArrayIndex];
+
+    messageObject.message = messageParam.message;
+    messageObject.time = messageParam.serverTime - messageParam.messageTime;
+    messageObject.sender = messageParam.senderName;
+    messageObject.team = messageParam.senderTeam;
+    messageObject.isValid = true;
+
+    tg.message.newestMessageIndex = oldestMessageArrayIndex;
+    // switch (tg.pn.currentPage) {
+    //     case value:
     //         break;
     //     default:
     //         break;
     // }
-    tg.message.messageRecipients = element.value;
-    console.log('tg.message.messageRecipients:', tg.message.messageRecipients);
-}
-
-tg.message.init = function () {
-    // alert('mm');
-    var messageObject = null;
-    for (var i = 0; i < tg.worldItems.uiConfig.maxMessageBufferSize; ++i) {
-        messageObject = {
-            next: null,
-            message: null,
-            time: null,
-            sender: null,
-            team: null
-        };
-        tg.message.latestMessages.push(messageObject);
-        if (i == 0) {
-            tg.message.firstMessage = messageObject;
-        } else {
-            tg.message.latestMessages[i - 1].next = messageObject;
-        }
-
-        $("#message-list-table").find('tbody')
-            .append($('<tr>')
-                .append($('<td>')
-                    .append($('<div>') // individual message container
-                        .append($('<div>')
-                            // .attr('src', 'img.png')
-                            .append('<p class="text-enemy">Image cell1</p>')
-                            .addClass("message-item-header")
-                        )
-                        .append($('<div>')
-                            // .attr('src', 'img.png')
-                            .text('Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2,Image cell2')
-                            .addClass("message-item-body")
-                        )
-                        // .addClass("message-item-container")
-                        .addClass("border-top")
-                    )
-                )
-            );
-    }
-    messageObject.next = tg.message.latestMessages[0];
-};
-
-tg.message.consumeMessage = function () {
-
+    tg.message.renderMessagesToUI();
 };
 
 tg.message.renderMessagesToUI = function () {
+    var senderNameElementArray = $('.message-sender-name');
+    var messageTextElementArray = $('.message-item-body');
+    var inviteButtonElementArray = $('.invite-button-container');
+    var challengeButtonElementArray = $('.challenge-button-container');
+    var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
+    for (var i = 0, j = tg.message.latestMessages.length - 1; i < tg.message.latestMessages.length; ++i, --j) {
+        var messageObject = tg.message.latestMessages[oldestMessageArrayIndex];
+        $(inviteButtonElementArray[j]).removeClass('hidden-element');
+        $(challengeButtonElementArray[j]).removeClass('hidden-element');
+        if (messageObject.isValid == true) {
+            messageTextElementArray[j].innerHTML = messageObject.message;
+            var className = '';
+            switch (messageObject.team) {
+                case 0:
+                    className = 'text-neutral';
+                    break;
+                case 1:
+                    className = 'text-team';
+                    break;
+                case 2:
+                    className = 'text-enemy';
+                    break;
+                default:
+                    break;
+            }
+            senderNameElementArray[j].innerHTML = '<p class="' + className +'">' + messageObject.sender + '</p>';
+        } else {
+            $(inviteButtonElementArray[j]).addClass('hidden-element');
+            $(challengeButtonElementArray[j]).addClass('hidden-element');
+        }
+        oldestMessageArrayIndex = tg.uu.getNextArrayIndex(oldestMessageArrayIndex, 1, tg.message.latestMessages);
 
+        // add remove class to set color to name
+
+    }
 };
 
 tg.message.toggleMessagesUI = function (element) {
@@ -119,4 +166,51 @@ tg.message.getMeassageTableRowElement = function (type) {
             break;
     }
     return returnElement;
-}
+};
+
+
+
+tg.message.init = function () {
+    // alert('mm');
+    var messageObject = null;
+    for (var i = 0; i < tg.worldItems.uiConfig.maxMessageBufferSize; ++i) {
+        messageObject = {
+            // next: null,
+            message: null,
+            time: null,
+            sender: null,
+            team: null,
+            isValid: false,
+        };
+        tg.message.latestMessages.push(messageObject);
+
+        // if (i == 0) {
+        //     tg.message.firstMessage = messageObject;
+        // } else {
+        //     tg.message.latestMessages[i - 1].next = messageObject;
+        // }
+
+        $("#message-list-table").find('tbody')
+            .append($('<tr>')
+                .append($('<td>')
+                    .append($('<div>') // individual message container
+                        .append($('<div>')
+                            // .attr('src', 'img.png')
+                            .append('<div class="message-sender-name"><p class="text-enemy"></p></div>')
+                            .append('<div class="invite-button-container hidden-element"><button class="btn-invite menu-text" onclick="tg.uu.changeSelectedBot(this, 1)">invite</button></div>')
+                            .append('<div class="challenge-button-container hidden-element"><button class="btn-challenge menu-text" onclick="tg.uu.changeSelectedBot(this, 1)">challenge</button></div>')
+                            .addClass("message-item-header")
+                        )
+                        .append($('<div>')
+                            // .attr('src', 'img.png')
+                            .text('')
+                            .addClass("message-item-body")
+                        )
+                        // .addClass("message-item-container")
+                        .addClass("border-top")
+                    )
+                )
+            );
+    }
+    tg.message.newestMessageIndex = tg.message.latestMessages.length - 1;
+};

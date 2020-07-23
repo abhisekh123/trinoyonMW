@@ -477,3 +477,7 @@ canvas {
     color: #aaa;
 }
 
+.hidden-element{
+    display: none;
+}
+

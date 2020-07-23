@@ -297,6 +297,7 @@
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    border-spacing: 0px;
 }
 
 .message-item-header{
@@ -322,3 +323,31 @@
     height: 5em;
 } */
 
+.message-sender-name{
+    font-size: 0.9em;
+    font-weight: bolder;
+    width: 50%;
+    overflow: hidden;
+    float: left;
+}
+
+.btn-invite {
+    background-color: darkslategray;
+    /* border: none; */
+}
+
+.btn-challenge {
+    background-color: darkslateblue;
+    /* border: none; */
+    
+}
+
+.invite-button-container{
+    width: 19%;
+    float: left;
+}
+
+.challenge-button-container{
+    width: 31%;
+    float: left;
+}
