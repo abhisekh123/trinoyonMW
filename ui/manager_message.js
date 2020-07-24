@@ -12,7 +12,9 @@ tg.message.state = {
     ],
     incomingRequests: [
 
-    ]
+    ],
+    messageSent: false,
+    messageSentTime: 0,
 };
 
 
@@ -43,12 +45,36 @@ tg.message.testUserIds = [{
     }
 ];
 
+tg.message.autoResetUI = function(){
+    if(tg.message.state.messageSent == true){
+        if((tg.currentTime - tg.message.state.messageSentTime) > 2000){
+            tg.message.state.messageSent = false;
+            $('.container-send-message-button').removeClass("disabled-element");
+        }
+    }
+    
+}
+
 
 tg.message.recipientSelectionUpdated = function (element) {
     // var selectedIndex = $('.message-recipients')[0].selectedIndex;
     console.log('selectedIndex:', element.value);
     tg.message.messageRecipients = element.value;
     console.log('tg.message.messageRecipients:', tg.message.messageRecipients);
+};
+
+tg.message.invitePlayer = function(index){
+    var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
+    var messageArrayIndex = (oldestMessageArrayIndex + index) % tg.message.latestMessages.length;
+    var messageObject = tg.message.latestMessages[messageArrayIndex];
+    console.log('invite:', messageObject);
+};
+
+tg.message.challengePlayer = function(index){
+    var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
+    var messageArrayIndex = (oldestMessageArrayIndex + index) % tg.message.latestMessages.length;
+    var messageObject = tg.message.latestMessages[messageArrayIndex];
+    console.log('challenge:', messageObject);
 };
 
 tg.message.sendMessage = function () {
@@ -58,6 +84,10 @@ tg.message.sendMessage = function () {
         serverTime: 10000343242390847,
         messageTime: tg.uu.getRandom(0, 10000343242390847),
     };
+
+    $('.container-send-message-button').addClass("disabled-element");
+    tg.message.state.messageSent = true;
+    tg.message.state.messageSentTime = tg.currentTime;
 
     console.log('sendPacket:', sendPacket);
 
@@ -197,8 +227,8 @@ tg.message.init = function () {
                         .append($('<div>')
                             // .attr('src', 'img.png')
                             .append('<div class="message-sender-name"><p class="text-enemy"></p></div>')
-                            .append('<div class="invite-button-container hidden-element"><button class="btn-invite menu-text" onclick="tg.uu.changeSelectedBot(this, 1)">invite</button></div>')
-                            .append('<div class="challenge-button-container hidden-element"><button class="btn-challenge menu-text" onclick="tg.uu.changeSelectedBot(this, 1)">challenge</button></div>')
+                            .append('<div class="invite-button-container hidden-element"><button class="btn-invite menu-text" onclick="tg.message.invitePlayer(' + (tg.worldItems.uiConfig.maxMessageBufferSize - (i + 1)) + ')">invite</button></div>')
+                            .append('<div class="challenge-button-container hidden-element"><button class="btn-challenge menu-text" onclick="tg.message.challengePlayer(' + (tg.worldItems.uiConfig.maxMessageBufferSize - (i + 1)) + ')">challenge</button></div>')
                             .addClass("message-item-header")
                         )
                         .append($('<div>')

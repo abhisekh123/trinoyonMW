@@ -37,6 +37,7 @@ tg.clockUpdateEventHandler_customActivity = function(){
     if(tg.clockActionFlagObject.gameStartCountDownTickHandler.enabled == true){
         tg.hl.gameStartCountDownTickHandler();
     }
+    tg.message.autoResetUI();
 }
 
 // tg.resetClockTimeElapsed = function(){
