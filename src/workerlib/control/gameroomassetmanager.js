@@ -159,22 +159,22 @@ module.exports = {
     /**
      * update ds in the game regarding player admission.
      */
-    completePlayerAdmissionFormalities: function(selectedTeamPlayer, newUserToAdmit, botSelection) {
-        selectedTeamPlayer.userId = newUserToAdmit;
-        selectedTeamPlayer.botList = botSelection.botList;
-        selectedTeamPlayer.hero = botSelection.hero;
+    completePlayerAdmissionFormalities: function(gameRoomPlayerConfig, userId, botSelection) {
+        gameRoomPlayerConfig.userId = userId;
+        gameRoomPlayerConfig.botList = botSelection.botList;
+        gameRoomPlayerConfig.hero = botSelection.hero;
 
-        selectedTeamPlayer.isConnected = true;
-        selectedTeamPlayer.lastCommunication = workerState.currentTime;
-        selectedTeamPlayer.isAIDriven = false;
+        gameRoomPlayerConfig.isConnected = true;
+        gameRoomPlayerConfig.lastCommunication = workerState.currentTime;
+        gameRoomPlayerConfig.isAIDriven = false;
 
-        console.log('selectedTeamPlayer:', selectedTeamPlayer);
-        this.setBotObjectAttributes(selectedTeamPlayer.hero, selectedTeamPlayer.botObjectList[0]); // rewrite the hero bot object with new hero config.
-        for(var i = 0; i < selectedTeamPlayer.botList.length; ++i){
-            this.setBotObjectAttributes(selectedTeamPlayer.botList[i], selectedTeamPlayer.botObjectList[i + 1]);
+        console.log('selectedTeamPlayer:', gameRoomPlayerConfig);
+        this.setBotObjectAttributes(gameRoomPlayerConfig.hero, gameRoomPlayerConfig.botObjectList[0]); // rewrite the hero bot object with new hero config.
+        for(var i = 0; i < gameRoomPlayerConfig.botList.length; ++i){
+            this.setBotObjectAttributes(gameRoomPlayerConfig.botList[i], gameRoomPlayerConfig.botObjectList[i + 1]);
         }
 
-        workerState.userToPlayerMap[newUserToAdmit] = selectedTeamPlayer;
+        workerState.userToPlayerMap[userId] = gameRoomPlayerConfig;
         
     },
 
@@ -188,28 +188,6 @@ module.exports = {
         gameRoomPlayerConfig.lastCommunication = 0;
         gameRoomPlayerConfig.joinTime = 0;
         gameRoomPlayerConfig.isAIDriven = true;
-    },
-
-    processUserConnectionDropEvent: function(userId){
-        var playerConfig = workerState.userToPlayerMap[userId];
-        if(playerConfig == undefined || playerConfig == null){
-            // console.log('user not playing. nothng to do for disconnect event');
-            return;
-        }
-        playerConfig.isAIDriven = true;
-        playerConfig.isConnected = false;
-    },
-
-    processUserReconnectEvent: function(){
-        var playerConfig = workerState.userToPlayerMap[userId];
-        if(playerConfig == undefined || playerConfig == null){
-            // console.log('user not playing. nothng to do for disconnect event');
-            return;
-        }
-        playerConfig.isAIDriven = false;
-        playerConfig.isConnected = true;
-        playerConfig.lastCommunication = workerState.currentTime;
-        // TODO: send game config to player(incase browser page was refreshed ... tricky)
     },
 
 

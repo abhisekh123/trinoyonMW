@@ -77,7 +77,8 @@ app.use(sessionParser);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// miscellanious 
+// new session handshake protocol. tells the client what to do next.
+// if an existing session is detected, then it is purged.
 app.get("/ox", function (req, res) {
     console.log('ox called');
     console.log(req.query);
@@ -101,7 +102,8 @@ app.get("/ox", function (req, res) {
     var userConfig = {
         firstName: serverState.users_db_state[userIdDecimal].firstName,
         lastName: serverState.users_db_state[userIdDecimal].lastName,
-        userId: serverState.users_db_state[userIdDecimal].userId
+        userId: serverState.users_db_state[userIdDecimal].userId,
+        state: serverState.users_server_state[userIdDecimal].state
     };
 
     switch (req.query.type) {
@@ -121,7 +123,7 @@ app.get("/ox", function (req, res) {
             };
             respJSON.status = 'ok';
 
-            serverState.users_server_state[userIdDecimal].wsKey = wsKey;
+            userManager.disconnectUser(userIdDecimal);
             break;
 
         default:
@@ -357,6 +359,9 @@ export class DemoServer {
         wss.on('connection', (ws: WebSocket, req: any) => {
             const userId = req.session.userId;
             serverState.users_server_state[userId].ws = ws;
+            serverState.users_server_state[userId].isOnline = true;
+
+            userManager.updateWorkerWithNewUserConnection(userId);
             
             // if (req.session) {
             // }
@@ -371,6 +376,7 @@ export class DemoServer {
             // console.log('aa');
             // console.log(req.session);
             // console.log('ba');
+            
             ws.on('message', (message: string) => {
                 //log the received message and send it back to the client
                 // ws.send('hi');   
@@ -388,12 +394,14 @@ export class DemoServer {
             });
             ws.on('close', (message: string) => {
                 console.log('closed connection.', message);
-                this.removeUser(userId);
+                ws.close();
+                userManager.disconnectUser(userId);
             });
 
             ws.on('error', (message: string) => {
                 console.log('error connection.', message);
-                this.removeUser(userId);
+                ws.close();
+                userManager.disconnectUser(userId);
             });
 
         });
@@ -416,16 +424,6 @@ export class DemoServer {
                 console.log('>>>>>>>>>>>>>>>>> local server started.');
             });
         }
-    }
-
-    removeUser(wsParam: WebSocket) {
-        console.log('removeUser start');
-        // requestProcessor.process({
-        //     type: 'client_disconnected',
-        //     userId: '',
-        //     team: 0,
-        //     message: {}
-        // } as request_message, wsParam);
     }
 }
 

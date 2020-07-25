@@ -38,9 +38,9 @@ export class RequestProcessor {
             case 'request_game_exit':
             case 'client_disconnected':
                 // console.log('got message with type:', requestJSON.type);
-                const userId = userManager.removeUser(requestJSON.userId);
-                requestJSON.userId = userId;
-                workermanager.postMessage(requestJSON);
+                userManager.disconnectUser(requestJSON.userId);
+                // requestJSON.userId = userId;
+                // workermanager.postMessage(requestJSON);
                 break;
             default:
                 console.log('ERROR: unknown message type:<' + requestJSON.type + '>');

@@ -242,22 +242,26 @@ module.exports = {
                     gameRoomAssetManager.addUserToWaitingList(currentMessage);
                     
                     break;
+                case 'client_reconnect':
+                    var userId = currentMessage.userId;
+                    workerState.processUserReconnectEvent(userId);
+                    break;
                 case 'request_game_exit':
                 case 'client_disconnected':
                     // console.log('process action:', currentMessage.type);
-                    // this.updateBotAction(currentMessage);
                     // routine to send world details to main worker.
                     var userId = currentMessage.userId;
+                    workerState.processUserConnectionDropEvent(userId);
 
                     // console.log('get exit request from client:' + userId);
 
-                    playerID = gameRoomAssetManager.getPlayerID(userId);
-                    if(playerID == null || playerID == undefined){
-                        console.error('ERROR removing player from worker with userId:' + userId + ' Client already not existing.');
-                        return;
-                    }
-                    this.removePlayer(userId);
-                    gameRoomAssetManager.removePlayer(userId);
+                    // playerID = gameRoomAssetManager.getPlayerID(userId);
+                    // if(playerID == null || playerID == undefined){
+                    //     console.error('ERROR removing player from worker with userId:' + userId + ' Client already not existing.');
+                    //     return;
+                    // }
+                    // this.removePlayer(userId);
+                    // gameRoomAssetManager.removePlayer(userId);
                     break;
                 default:
                     // console.log('ERROR@WebWorker:Received message with unknown type:' + currentMessage);

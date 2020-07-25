@@ -11,7 +11,10 @@ module.exports = {
     // players
     // players: null,
     waitingUsersLinkedList: null,
-    userToPlayerMap: {},
+    userToPlayerMap: {}, // need to be removed
+    userState: {
+
+    },
 
     // user
     // waitingUserCount: 0,
@@ -59,6 +62,37 @@ module.exports = {
     },
     getItemConfig: function() {
         return itemConfig;
+    },
+
+    isUserPlayingNow: function(userId){
+        var playerConfig = workerState.userToPlayerMap[userId];
+        if(playerConfig == null || playerConfig == undefined){
+            return false;
+        } else {
+            return true;
+        }
+    },
+
+    processUserConnectionDropEvent: function(userId){
+        var playerConfig = workerState.userToPlayerMap[userId];
+        if(playerConfig == undefined || playerConfig == null){
+            // console.log('user not playing. nothng to do for disconnect event');
+            return;
+        }
+        playerConfig.isAIDriven = true;
+        playerConfig.isConnected = false;
+    },
+
+    processUserReconnectEvent: function(){
+        var playerConfig = workerState.userToPlayerMap[userId];
+        if(playerConfig == undefined || playerConfig == null){
+            // console.log('user not playing. nothng to do for disconnect event');
+            return;
+        }
+        playerConfig.isAIDriven = false;
+        playerConfig.isConnected = true;
+        playerConfig.lastCommunication = workerState.currentTime;
+        // TODO: send game config to player(incase browser page was refreshed ... tricky)
     },
 
     init: function() {

@@ -8,6 +8,8 @@ module.exports = {
     users_server_state: {},
     users_worket_state: {},
 
+    user_matchMaking: [],
+
 
     // wsMapToUserArrayIndex: new Map<WebSocket, number>(), // to get userArray index from websocket.
     // keyToWSMap: {},

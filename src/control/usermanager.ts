@@ -1,13 +1,14 @@
 import * as WebSocket from 'ws';
 const serverState = require('../state/serverstate');
-const environmentState = require('../state/environmentstate');
+// const environmentState = require('../state/environmentstate');
 const dbManager = require('../persistance/dbmanager');
+const workermanager = require('../workermanager');
 
 // TODO: On user join : send status (queue status)
 
 module.exports = {
 
-    init: function(){
+    init: function () {
         dbManager.init(serverState);
         // for(var i = 0; i < environmentState.maxUserCount; ++i){
         //     var userObject = {
@@ -18,7 +19,7 @@ module.exports = {
         // }
     },
 
-    getUserObject: async function(profile: any){
+    getUserObject: async function (profile: any) {
         const user = await dbManager.findUser(profile.id);
         if (user) {
             // console.log('known user');
@@ -30,12 +31,47 @@ module.exports = {
         }
     },
 
-    sendMessageToUser: function(ws:WebSocket, messageObject: JSON){
+    sendMessageToUser: function (ws: WebSocket, messageObject: JSON) {
         ws.send(JSON.stringify(messageObject));
     },
 
-    getUserIndexFromWebsocket: function(wsParam: WebSocket) {
+    getUserIndexFromWebsocket: function (wsParam: WebSocket) {
         return serverState.userMap.get(wsParam);
     },
 
+    disconnectUser: function (userId: string) {
+        console.log('disconnectUser:', userId);
+        if (serverState.users_server_state[userId].ws != null) {
+            serverState.users_server_state[userId].ws.close();
+            serverState.users_server_state[userId].ws = null;
+        }
+
+        serverState.users_server_state[userId].isOnline = false;
+        var requestJSON = {
+            type: 'client_disconnected',
+            userId: userId
+        };
+        workermanager.postMessage(requestJSON);
+    },
+
+    updateWorkerWithNewUserConnection: function (userId: string) {
+        var userState = serverState.users_server_state[userId].state;
+        switch (userState) {
+            case 'idle':
+
+                break;
+            case 'playing':
+            case 'matchmaking':
+                var requestJSON = {
+                    type: 'client_reconnect',
+                    userId: userId
+                }
+                workermanager.postMessage(requestJSON);
+                break;
+            default:
+                break;
+        }
+    }
 }
+
+

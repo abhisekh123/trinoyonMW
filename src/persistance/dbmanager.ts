@@ -26,7 +26,12 @@ module.exports = {
             // console.log(allUsers[i].userId);
             // console.log(parseInt(allUsers[i].id, 32).toString(10));
             this.serverState.users_db_state[allUsers[i].id] = allUsers[i];
-            this.serverState.users_server_state[allUsers[i].id] = {};
+            this.serverState.users_server_state[allUsers[i].id] = {
+                isOnline: false,
+                ws: null,
+                state: 'idle', // possible state: idle, playing, matchmaking
+                wsKey: null
+            };
             // console.log('updating:', allUsers[i].id);
             // console.log('result:', result);
             // var result = await this.db.users.update({ id: allUsers[i].id }, { $set: { userId: allUsers[i].userId } }, { multi: true });
@@ -44,6 +49,7 @@ module.exports = {
             lastLogin: now,
             isOnline: true,
             gold: 0,
+            trophy: 0,
             firstName: profile._json.first_name,
             lastName: profile._json.last_name,
             email: profile._json.email,
@@ -52,7 +58,12 @@ module.exports = {
         await this.db.users.insert(user);
         var userCreated = await this.db.users.findOne({id: profile.id});
         this.serverState.users_db_state[profile.id] = userCreated;
-        this.serverState.users_server_state[profile.id] = {};
+        this.serverState.users_server_state[profile.id] = {
+            isOnline: false,
+            ws: null,
+            state: 'idle', // possible state: idle, playing, matchmaking
+            wsKey: null
+        };
 
         return user;
     },
@@ -63,6 +74,7 @@ module.exports = {
         // console.log(searchResult);
         return searchResult;
     },
+
     updateUser: function () {
 
     },
@@ -76,7 +88,6 @@ module.exports = {
             { "id": "1190500853", "joiniing": 1581803155426, "lastLogin": 1581803155426, "isOnline": true, "gold": 0, "firstName": "Abhisekh", "lastName": "Biswas", "email": "avi.priceless@gmail.com", "_id": "CXSXRzAYEj3S3yuk" },
             { "id": "100000472612598", "joiniing": 1588746445397, "lastLogin": 1588746445397, "isOnline": true, "gold": 0, "firstName": "Rahul", "lastName": "Banerjee", "_id": "dqzQRwuFCCiU4aC4" },
             { "id": "10210327194683735", "joiniing": 1594790501574, "lastLogin": 1594790501574, "isOnline": true, "gold": 0, "firstName": "গৌরব", "lastName": "ভট্টাচার্য্য", "email": "gourabb003@gmail.com", "_id": "apBqA62qHGKW6im0" }
-
         ];
         for (var i = 0; i < testData.length; ++i) {
             this.createNewUser({
