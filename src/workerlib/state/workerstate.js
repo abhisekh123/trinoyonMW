@@ -65,7 +65,7 @@ module.exports = {
     },
 
     isUserPlayingNow: function(userId){
-        var playerConfig = workerState.userToPlayerMap[userId];
+        var playerConfig = this.userToPlayerMap[userId];
         if(playerConfig == null || playerConfig == undefined){
             return false;
         } else {
@@ -74,7 +74,7 @@ module.exports = {
     },
 
     processUserConnectionDropEvent: function(userId){
-        var playerConfig = workerState.userToPlayerMap[userId];
+        var playerConfig = this.userToPlayerMap[userId];
         if(playerConfig == undefined || playerConfig == null){
             // console.log('user not playing. nothng to do for disconnect event');
             return;
@@ -84,14 +84,14 @@ module.exports = {
     },
 
     processUserReconnectEvent: function(){
-        var playerConfig = workerState.userToPlayerMap[userId];
+        var playerConfig = this.userToPlayerMap[userId];
         if(playerConfig == undefined || playerConfig == null){
             // console.log('user not playing. nothng to do for disconnect event');
             return;
         }
         playerConfig.isAIDriven = false;
         playerConfig.isConnected = true;
-        playerConfig.lastCommunication = workerState.currentTime;
+        playerConfig.lastCommunication = this.currentTime;
         // TODO: send game config to player(incase browser page was refreshed ... tricky)
     },
 

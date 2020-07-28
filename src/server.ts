@@ -122,6 +122,7 @@ app.get("/ox", function (req, res) {
                 userConfig: userConfig
             };
             respJSON.status = 'ok';
+            serverState.users_server_state[userIdDecimal].wsKey = wsKey;
 
             userManager.disconnectUser(userIdDecimal);
             break;
@@ -285,6 +286,7 @@ export class DemoServer {
                 // console.log('a');
                 // console.log(request.session);
                 // console.log('b');
+                console.log('serverState.users_server_state:', serverState.users_server_state);
                 sessionParser(request, {}, () => {
                     // console.log('ea');
                     // console.log(request.session);
@@ -297,6 +299,7 @@ export class DemoServer {
                     const incomingKey = request.headers['sec-websocket-protocol'];
                     let keyConfig = null;
                     if(serverState.users_server_state[request.session.userId] != undefined){
+                        console.log(serverState.users_server_state[request.session.userId]);
                         keyConfig = serverState.users_server_state[request.session.userId].wsKey;
                     }
                     if (keyConfig == null || keyConfig == undefined || keyConfig != incomingKey) {
@@ -335,7 +338,8 @@ export class DemoServer {
                     }
                     
                     if (keyConfig == null || keyConfig == undefined || keyConfig != incomingKey) {
-                        console.log('keyConfig == null || keyConfig == undefined for incoming key', incomingKey);
+                        console.log(serverState.users_server_state[request.session.userId]);
+                        console.log('keyConfig == null || keyConfig == undefined for incoming key::', incomingKey);
                         socket.destroy();
                         return;
                     }

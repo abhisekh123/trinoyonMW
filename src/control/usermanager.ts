@@ -40,18 +40,19 @@ module.exports = {
     },
 
     disconnectUser: function (userId: string) {
-        console.log('disconnectUser:', userId);
+        
         if (serverState.users_server_state[userId].ws != null) {
+            console.log('disconnectUser:', userId);
             serverState.users_server_state[userId].ws.close();
             serverState.users_server_state[userId].ws = null;
-        }
 
-        serverState.users_server_state[userId].isOnline = false;
-        var requestJSON = {
-            type: 'client_disconnected',
-            userId: userId
-        };
-        workermanager.postMessage(requestJSON);
+            serverState.users_server_state[userId].isOnline = false;
+            var requestJSON = {
+                type: 'client_disconnected',
+                userId: userId
+            };
+            workermanager.postMessage(requestJSON);
+        }
     },
 
     updateWorkerWithNewUserConnection: function (userId: string) {
