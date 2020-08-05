@@ -10,6 +10,7 @@ const assetManager = require('./asset_manager/asset_manager');
 const workermanager = require('./workermanager');
 const userManager = require('./control/usermanager');
 const serverState = require('./state/serverstate');
+const clientBroadcaster = require('./clientbroadcaster');
 // const serverstate = require('./state/serverstate');
 
 export class RequestProcessor {
@@ -22,6 +23,10 @@ export class RequestProcessor {
                 // console.log('got action update from client');
                 // console.log(requestJSON);
                 workermanager.postMessage(requestJSON);
+                break;
+            case 'message':
+                console.log('got message:', requestJSON);
+                this.processIncomingMessages(requestJSON);
                 break;
             case 'binary':
             case 'init':
@@ -48,17 +53,27 @@ export class RequestProcessor {
         }
     }
 
+    processIncomingMessages(requestJSON: any){
+        switch (requestJSON.sub) {
+            case 'text':
+                clientBroadcaster.forewardToAllOnlineNonPlayingUser(requestJSON);
+                break;
+            case 'invite':
+                console.log('got invite');
+                // clientBroadcaster.forewardToAllOnlineNonPlayingUser(requestJSON);
+                break;
+            default:
+                break;
+        }
+    }
+
     // send message to the client.
     sendMessagePacket(packetType: string, payload: JSON, userId: string){
         // console.log('sending message packet', userId);
-        const ws: WebSocket = serverState.users_server_state[userId].ws;
+        // const ws: WebSocket = serverState.users_server_state[userId].ws;
         // console.log('ws=>', ws);
         var container = {type:packetType, message:payload};
-        try {
-            ws.send(JSON.stringify(container));    
-        } catch (error) {
-            console.log(error);
-        }
+        clientBroadcaster.sendMessageToRecipientByUserID(userId, JSON.stringify(container));
     }
 
 }

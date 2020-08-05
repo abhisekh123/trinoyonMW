@@ -1,10 +1,13 @@
 
+
+
 module.exports = {
     environment: 'local',
     // environment: 'server',
 
     maxUserCount: 60,
     maxGameCount: 10,
+    maxMatchMakingRoomCount: 10,
     maxPlayerPerTeam: 3,
 
     'facebookAuth': {

@@ -31,9 +31,9 @@ module.exports = {
         }
     },
 
-    sendMessageToUser: function (ws: WebSocket, messageObject: JSON) {
-        ws.send(JSON.stringify(messageObject));
-    },
+    // sendMessageToUser: function (ws: WebSocket, messageObject: JSON) {
+    //     ws.send(JSON.stringify(messageObject));
+    // },
 
     getUserIndexFromWebsocket: function (wsParam: WebSocket) {
         return serverState.userMap.get(wsParam);
@@ -55,24 +55,36 @@ module.exports = {
         }
     },
 
-    updateWorkerWithNewUserConnection: function (userId: string) {
-        var userState = serverState.users_server_state[userId].state;
-        switch (userState) {
-            case 'idle':
+    connectUser: function(userId: string, ws: WebSocket){
+        serverState.users_server_state[userId].ws = ws;
+        serverState.users_server_state[userId].isOnline = true;
+    },
 
-                break;
-            case 'playing':
-            case 'matchmaking':
-                var requestJSON = {
-                    type: 'client_reconnect',
-                    userId: userId
-                }
-                workermanager.postMessage(requestJSON);
-                break;
-            default:
-                break;
+    isUserOnline: function(userId: string){
+        if(serverState.users_server_state[userId].ws == null || serverState.users_server_state[userId].isOnline == false){
+            return false;
         }
-    }
+        return true;
+    },
+
+    // updateWorkerWithNewUserConnection: function (userId: string) {
+    //     var userState = serverState.users_server_state[userId].state;
+    //     switch (userState) {
+    //         case 'idle':
+
+    //             break;
+    //         case 'playing':
+    //         case 'matchmaking':
+    //             var requestJSON = {
+    //                 type: 'client_reconnect',
+    //                 userId: userId
+    //             }
+    //             workermanager.postMessage(requestJSON);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 }
 
 

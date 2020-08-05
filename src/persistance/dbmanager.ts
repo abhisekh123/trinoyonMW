@@ -26,17 +26,26 @@ module.exports = {
             // console.log(allUsers[i].userId);
             // console.log(parseInt(allUsers[i].id, 32).toString(10));
             this.serverState.users_db_state[allUsers[i].id] = allUsers[i];
-            this.serverState.users_server_state[allUsers[i].id] = {
-                isOnline: false,
-                ws: null,
-                state: 'idle', // possible state: idle, playing, matchmaking
-                wsKey: null
-            };
+            this.serverState.users_server_state[allUsers[i].id] = this.getEmptyUserServerState();
+            serverState.users_server_state[allUsers[i].id].ws = null;
+            serverState.users_server_state[allUsers[i].id].isOnline = false;
+            serverState.user_id_list.push(allUsers[i].id);
             // console.log('updating:', allUsers[i].id);
             // console.log('result:', result);
             // var result = await this.db.users.update({ id: allUsers[i].id }, { $set: { userId: allUsers[i].userId } }, { multi: true });
             // console.log(i + '::completed update', result);
         }
+    },
+
+    getEmptyUserServerState: function(){
+        return {
+            isOnline: false,
+            ws: null,
+            state: 'idle', // possible state: idle, playing, matchmaking
+            wsKey: null,
+            roomIndex: null,
+            team: 0
+        };
     },
 
     createNewUser: async function (profile: any) {
@@ -58,12 +67,8 @@ module.exports = {
         await this.db.users.insert(user);
         var userCreated = await this.db.users.findOne({id: profile.id});
         this.serverState.users_db_state[profile.id] = userCreated;
-        this.serverState.users_server_state[profile.id] = {
-            isOnline: false,
-            ws: null,
-            state: 'idle', // possible state: idle, playing, matchmaking
-            wsKey: null
-        };
+        this.serverState.users_server_state[profile.id] = this.getEmptyUserServerState();
+        serverState.user_id_list.push(profile.id);
 
         return user;
     },

@@ -103,7 +103,8 @@ app.get("/ox", function (req, res) {
         firstName: serverState.users_db_state[userIdDecimal].firstName,
         lastName: serverState.users_db_state[userIdDecimal].lastName,
         userId: serverState.users_db_state[userIdDecimal].userId,
-        state: serverState.users_server_state[userIdDecimal].state
+        state: serverState.users_server_state[userIdDecimal].state,
+        team: serverState.users_server_state[userIdDecimal].team,
     };
 
     switch (req.query.type) {
@@ -257,6 +258,7 @@ export class DemoServer {
         // dbManager.insertTestData();
         // dbManager.testmethod();
         userManager.init();
+        serverState.init();
         // console.log('starting worker');
         workerManager.startWorker();
 
@@ -362,10 +364,11 @@ export class DemoServer {
 
         wss.on('connection', (ws: WebSocket, req: any) => {
             const userId = req.session.userId;
-            serverState.users_server_state[userId].ws = ws;
-            serverState.users_server_state[userId].isOnline = true;
+            // serverState.users_server_state[userId].ws = ws;
+            // serverState.users_server_state[userId].isOnline = true;
+            userManager.connectUser(userId, ws);
 
-            userManager.updateWorkerWithNewUserConnection(userId);
+            // userManager.updateWorkerWithNewUserConnection(userId);
             
             // if (req.session) {
             // }
@@ -398,12 +401,14 @@ export class DemoServer {
             });
             ws.on('close', (message: string) => {
                 console.log('closed connection.', message);
+                console.log('client disconnect. userId:' + userId);
                 ws.close();
                 userManager.disconnectUser(userId);
             });
 
             ws.on('error', (message: string) => {
                 console.log('error connection.', message);
+                console.log('client disconnect. userId:' + userId);
                 ws.close();
                 userManager.disconnectUser(userId);
             });

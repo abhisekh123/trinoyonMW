@@ -78,11 +78,18 @@ tg.message.challengePlayer = function(index){
 };
 
 tg.message.sendMessage = function () {
+    // var sendPacket = {
+    //     recipients: tg.message.messageRecipients,
+    //     message: $('.message-input')[0].value,
+    //     serverTime: 10000343242390847,
+    //     messageTime: tg.uu.getRandom(0, 10000343242390847),
+    // };
+
     var sendPacket = {
-        recipients: tg.message.messageRecipients,
+        // recipients: tg.message.messageRecipients,
         message: $('.message-input')[0].value,
-        serverTime: 10000343242390847,
-        messageTime: tg.uu.getRandom(0, 10000343242390847),
+        // serverTime: 10000343242390847,
+        // messageTime: tg.uu.getRandom(0, 10000343242390847),
     };
 
     $('.container-send-message-button').addClass("disabled-element");
@@ -92,21 +99,23 @@ tg.message.sendMessage = function () {
     console.log('sendPacket:', sendPacket);
 
     // test code start
-    sendPacket.senderName = tg.message.testUserIds[tg.uu.getRandom(0, tg.message.testUserIds.length - 1)].name;
-    sendPacket.senderUserId = tg.message.testUserIds[tg.uu.getRandom(0, tg.message.testUserIds.length - 1)].id;
-    sendPacket.senderTeam = tg.uu.getRandom(0, 2);
+    // sendPacket.senderName = tg.message.testUserIds[tg.uu.getRandom(0, tg.message.testUserIds.length - 1)].name;
+    // sendPacket.senderUserId = tg.message.testUserIds[tg.uu.getRandom(0, tg.message.testUserIds.length - 1)].id;
+    // sendPacket.senderTeam = tg.self.userConfig.team;
 
-    tg.message.consumeMessage(sendPacket);
+    // tg.message.consumeMessage(sendPacket);
+    tg.network.sendTextMessage(sendPacket);
 }
 
 
 tg.message.consumeMessage = function (messageParam) {
+    console.log('consume message:', messageParam);
     // replace oldest message with the new message.
     var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
 
     var messageObject = tg.message.latestMessages[oldestMessageArrayIndex];
 
-    messageObject.message = messageParam.message;
+    messageObject.message = messageParam.payload.message;
     messageObject.time = messageParam.serverTime - messageParam.messageTime;
     messageObject.sender = messageParam.senderName;
     messageObject.team = messageParam.senderTeam;
