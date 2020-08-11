@@ -38,6 +38,8 @@ module.exports = {
             this.user_matchMaking_rooms[i] = {
                 isActive: false,
                 creationTime: 0,
+                team1PlayerCount: 0,
+                team2PlayerCount: 0,
                 players_1: players_1,
                 players_2: players_2,
             }

@@ -59,8 +59,11 @@ export class RequestProcessor {
                 clientBroadcaster.forewardToAllOnlineNonPlayingUser(requestJSON);
                 break;
             case 'invite':
-                console.log('got invite');
-                // clientBroadcaster.forewardToAllOnlineNonPlayingUser(requestJSON);
+            case 'challenge':
+                // console.log('got ' + requestJSON.sub);
+                clientBroadcaster.sendMessageToRecipientByUserID(
+                    requestJSON.payload.recipientId, JSON.stringify(requestJSON)
+                );
                 break;
             default:
                 break;

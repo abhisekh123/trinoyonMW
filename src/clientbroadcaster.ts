@@ -27,7 +27,7 @@ module.exports = {
             if(userManager.isUserOnline(userId)){
                 const userWebSocket = serverState.users_server_state[userId].ws;
                 try {
-                    userWebSocket.send(JSON.stringify(requestJSON));
+                    userWebSocket.send(messageString);
                 } catch (error) {
                     console.log(error);
                 }

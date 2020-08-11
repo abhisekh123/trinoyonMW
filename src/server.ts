@@ -103,6 +103,7 @@ app.get("/ox", function (req, res) {
         firstName: serverState.users_db_state[userIdDecimal].firstName,
         lastName: serverState.users_db_state[userIdDecimal].lastName,
         userId: serverState.users_db_state[userIdDecimal].userId,
+        id: serverState.users_db_state[userIdDecimal].id,
         state: serverState.users_server_state[userIdDecimal].state,
         team: serverState.users_server_state[userIdDecimal].team,
     };

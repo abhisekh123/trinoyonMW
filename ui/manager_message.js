@@ -45,14 +45,14 @@ tg.message.testUserIds = [{
     }
 ];
 
-tg.message.autoResetUI = function(){
-    if(tg.message.state.messageSent == true){
-        if((tg.currentTime - tg.message.state.messageSentTime) > 2000){
+tg.message.autoResetUI = function () {
+    if (tg.message.state.messageSent == true) {
+        if ((tg.currentTime - tg.message.state.messageSentTime) > 2000) {
             tg.message.state.messageSent = false;
             $('.container-send-message-button').removeClass("disabled-element");
         }
     }
-    
+
 }
 
 
@@ -63,18 +63,38 @@ tg.message.recipientSelectionUpdated = function (element) {
     console.log('tg.message.messageRecipients:', tg.message.messageRecipients);
 };
 
-tg.message.invitePlayer = function(index){
+tg.message.invitePlayer = function (index) {
     var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
     var messageArrayIndex = (oldestMessageArrayIndex + index) % tg.message.latestMessages.length;
     var messageObject = tg.message.latestMessages[messageArrayIndex];
     console.log('invite:', messageObject);
+
+    var senderId = tg.self.userConfig.id;
+    var recipientId = messageObject.userId;
+
+    var sendPacket = {
+        senderId: senderId,
+        recipientId: recipientId
+    };
+
+    tg.network.sendInvite('invite', sendPacket);
 };
 
-tg.message.challengePlayer = function(index){
+tg.message.challengePlayer = function (index) {
     var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
     var messageArrayIndex = (oldestMessageArrayIndex + index) % tg.message.latestMessages.length;
     var messageObject = tg.message.latestMessages[messageArrayIndex];
     console.log('challenge:', messageObject);
+
+    var senderId = tg.self.userConfig.id;
+    var recipientId = messageObject.userId;
+
+    var sendPacket = {
+        senderId: senderId,
+        recipientId: recipientId
+    };
+
+    tg.network.sendInvite('challenge', sendPacket);
 };
 
 tg.message.sendMessage = function () {
@@ -110,25 +130,45 @@ tg.message.sendMessage = function () {
 
 tg.message.consumeMessage = function (messageParam) {
     console.log('consume message:', messageParam);
-    // replace oldest message with the new message.
-    var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
 
-    var messageObject = tg.message.latestMessages[oldestMessageArrayIndex];
+    switch (messageParam.sub) {
+        case 'text':
+            // replace oldest message with the new message.
+            var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
 
-    messageObject.message = messageParam.payload.message;
-    messageObject.time = messageParam.serverTime - messageParam.messageTime;
-    messageObject.sender = messageParam.senderName;
-    messageObject.team = messageParam.senderTeam;
-    messageObject.isValid = true;
+            var messageObject = tg.message.latestMessages[oldestMessageArrayIndex];
 
-    tg.message.newestMessageIndex = oldestMessageArrayIndex;
-    // switch (tg.pn.currentPage) {
-    //     case value:
-    //         break;
-    //     default:
-    //         break;
-    // }
-    tg.message.renderMessagesToUI();
+            messageObject.message = messageParam.payload.message;
+            messageObject.time = messageParam.serverTime - messageParam.messageTime;
+            messageObject.sender = messageParam.senderName;
+            messageObject.team = messageParam.senderTeam;
+            messageObject.isValid = true;
+            messageObject.userId = messageParam.userId;
+
+            tg.message.newestMessageIndex = oldestMessageArrayIndex;
+            // switch (tg.pn.currentPage) {
+            //     case value:
+            //         break;
+            //     default:
+            //         break;
+            // }
+            tg.message.renderMessagesToUI();
+            break;
+
+        case 'invite':
+        case 'challenge':
+            var userResponse = confirm("You received a " + messageParam.sub + " request.");
+            if (userResponse == true) {
+                console.log("You pressed OK!");
+            } else {
+                console.log("You pressed Cancel!");
+            }
+            break;
+
+        default:
+            break;
+    }
+
 };
 
 tg.message.renderMessagesToUI = function () {
@@ -157,7 +197,7 @@ tg.message.renderMessagesToUI = function () {
                 default:
                     break;
             }
-            senderNameElementArray[j].innerHTML = '<p class="' + className +'">' + messageObject.sender + '</p>';
+            senderNameElementArray[j].innerHTML = '<p class="' + className + '">' + messageObject.sender + '</p>';
         } else {
             $(inviteButtonElementArray[j]).addClass('hidden-element');
             $(challengeButtonElementArray[j]).addClass('hidden-element');

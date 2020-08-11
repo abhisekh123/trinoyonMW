@@ -6,9 +6,9 @@ module.exports = {
     // environment: 'server',
 
     maxUserCount: 60,
-    maxGameCount: 10,
-    maxMatchMakingRoomCount: 10,
-    maxPlayerPerTeam: 3,
+    maxGameCount: 6,
+    maxMatchMakingRoomCount: 30,
+    maxPlayerPerTeam: 5,
 
     'facebookAuth': {
         'clientID': '183311358526115', // your App ID
