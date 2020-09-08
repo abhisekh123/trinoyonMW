@@ -23,6 +23,7 @@ tg.self.updateUserConfig = function(userConfig){
 
     tg.self.userConfig = userConfig;
     console.log('self userConfig:', tg.self.userConfig);
+    $('#hg-player').text(tg.self.userConfig.firstName + ' ' + tg.self.userConfig.lastName);
 };
 
 function initSystem() {

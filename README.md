@@ -8,3 +8,4 @@ to toggle between server and local:
 2>update ts.js :: new WebSocket("ws://" OR new WebSocket("wss://"
 
 localhost:8080
+http://localhost:8080/?id=10210327194683735
