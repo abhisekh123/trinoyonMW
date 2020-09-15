@@ -829,6 +829,21 @@
     </div>
 
 </div>
+
+<div class="notification-modal center" id="notification-modal">
+    <div class="notification-modal-content" id="notification-modal-content">
+        NOTIFICATION PLACEHOLDER
+    </div>
+    <div class="notification-modal-controls" id="notification-modal-controls-acknowledgement">
+        <a class="tButton" onclick="tg.notification.processAcknowledgementEvent(this)">OK</a>
+    </div>
+    <div class="notification-modal-controls" id="notification-modal-controls-choice">
+        <a class="tButton" onclick="tg.notification.processNoResponse(this)">NO</a>
+        <a class="tButton" onclick="tg.notification.processYesResponse(this)">YES</a>
+    </div>
+</div>
+
+
 <div class="message-list-container">
     <table class="message-list-table" id="message-list-table">
         <tbody>

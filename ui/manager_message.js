@@ -157,12 +157,13 @@ tg.message.consumeMessage = function (messageParam) {
 
         case 'invite':
         case 'challenge':
-            var userResponse = confirm("You received a " + messageParam.sub + " request.");
-            if (userResponse == true) {
-                console.log("You pressed OK!");
-            } else {
-                console.log("You pressed Cancel!");
-            }
+            tg.notification.showNotification(messageParam.sub, messageParam);
+            // var userResponse = confirm("You received a " + messageParam.sub + " request.");
+            // if (userResponse == true) {
+            //     console.log("You pressed OK!");
+            // } else {
+            //     console.log("You pressed Cancel!");
+            // }
             break;
 
         default:
