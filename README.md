@@ -9,3 +9,11 @@ to toggle between server and local:
 
 localhost:8080
 http://localhost:8080/?id=10210327194683735
+http://localhost:8080/?id=681734469306879
+
+
+
+
+dev blog:
+17 sept:
+for message exchange search for 'invite' or 'challenge'

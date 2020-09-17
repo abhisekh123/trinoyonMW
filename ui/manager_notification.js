@@ -8,15 +8,18 @@ tg.notification.hideNotification = function(){
 }
 
 tg.notification.showNotification = function(type, message){
+    $('#notification-modal-content').text(message);
+    $('#notification-modal').show();
+
     switch (type) {
         case 'challenge':
         case 'invite':
-            $('#notification-modal-content').text(message);
-            $('#notification-modal').show();
             $('#notification-modal-controls-acknowledgement').hide();
             $('#notification-modal-controls-choice').show();
             break;
-    
+        case 'ack':
+            $('#notification-modal-controls-acknowledgement').hide();
+            $('#notification-modal-controls-choice').show();
         default:
             break;
     }

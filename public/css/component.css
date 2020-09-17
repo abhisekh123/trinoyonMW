@@ -386,22 +386,36 @@
     border: 2px solid #ccc;
 }
 
+.unknown-player-container{
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
 .matchmaking-player-container{
+    display: block;
+    /* border: 2px solid #ccc; */
+    width: 100%;
+}
+
+.joined-player-container{
     display: none;
-    border: 2px solid #ccc;
+    width: 100%;
+    height: 100%;
 }
 
 .hg-matchmaking-team-player-container{
     color: green;
     height: 25%;
-    width: 100%;
+    /* width: 100%; */
     position: relative;
 }
 
 .hg-matchmaking-enemy-player-container{
     color: red;
     height: 20%;
-    width: 100%;
+    /* width: 100%; */
     position: relative;
 }
 
