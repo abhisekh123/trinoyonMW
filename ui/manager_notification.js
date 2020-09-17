@@ -11,7 +11,7 @@ tg.notification.showNotification = function(type, message){
     switch (type) {
         case 'challenge':
         case 'invite':
-            $('#notification-modal-content').text("You received a " + messageParam.sub + " request.");
+            $('#notification-modal-content').text(message);
             $('#notification-modal').show();
             $('#notification-modal-controls-acknowledgement').hide();
             $('#notification-modal-controls-choice').show();

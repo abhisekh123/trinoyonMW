@@ -79,7 +79,7 @@ module.exports = {
  
     
     postMessage: function(messageJSON: request_message){
-        // console.log('sending message to worker::' , messageJSON);
+        console.log('sending message to worker::' , messageJSON);
         try {
             serverState.workerHandle.postMessage(messageJSON);    
         } catch (error) {

@@ -258,7 +258,7 @@ export class DemoServer {
 
         // dbManager.insertTestData();
         // dbManager.testmethod();
-        userManager.init();
+        userManager.init(workerManager);
         serverState.init();
         // console.log('starting worker');
         workerManager.startWorker();

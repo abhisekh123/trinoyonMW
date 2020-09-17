@@ -157,7 +157,7 @@ tg.message.consumeMessage = function (messageParam) {
 
         case 'invite':
         case 'challenge':
-            tg.notification.showNotification(messageParam.sub, messageParam);
+            tg.notification.showNotification(messageParam.sub, "You received a " + messageParam.sub + " request.");
             // var userResponse = confirm("You received a " + messageParam.sub + " request.");
             // if (userResponse == true) {
             //     console.log("You pressed OK!");

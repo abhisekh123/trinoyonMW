@@ -2,14 +2,16 @@ import * as WebSocket from 'ws';
 const serverState = require('../state/serverstate');
 // const environmentState = require('../state/environmentstate');
 const dbManager = require('../persistance/dbmanager');
-const workermanager = require('../workermanager');
+// const workermanager = require('../workermanager'); // somehow this doesnot work :(
 
 // TODO: On user join : send status (queue status)
 
 module.exports = {
 
-    init: function () {
+    workerManager: null,
+    init: function (workerManagerParam: any) {
         dbManager.init(serverState);
+        this.workerManager = workerManagerParam;
         // for(var i = 0; i < environmentState.maxUserCount; ++i){
         //     var userObject = {
         //         isActive:false,
@@ -51,7 +53,9 @@ module.exports = {
                 type: 'client_disconnected',
                 userId: userId
             };
-            workermanager.postMessage(requestJSON);
+            console.log(this.workerManager);
+            // this.workermanager.postMessage()
+            this.workerManager.postMessage(requestJSON);
         }
     },
 
