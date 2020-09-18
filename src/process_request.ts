@@ -60,6 +60,7 @@ export class RequestProcessor {
                 break;
             case 'invite':
             case 'challenge':
+            case 'rejectmatchmakingrequest':
                 // console.log('got ' + requestJSON.sub);
                 clientBroadcaster.sendMessageToRecipientByUserID(
                     requestJSON.payload.recipientId, JSON.stringify(requestJSON)

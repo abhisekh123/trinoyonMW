@@ -63,6 +63,16 @@ tg.message.recipientSelectionUpdated = function (element) {
     console.log('tg.message.messageRecipients:', tg.message.messageRecipients);
 };
 
+tg.message.rejectMatchmakingRequest = function (messajeJSONParam) {
+
+    var sendPacket = {
+        senderId: tg.self.userConfig.id,
+        recipientId: messajeJSONParam.userId
+    };
+
+    tg.network.sendInvite('rejectmatchmakingrequest', sendPacket);
+};
+
 tg.message.invitePlayer = function (index) {
     var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
     var messageArrayIndex = (oldestMessageArrayIndex + index) % tg.message.latestMessages.length;
@@ -157,13 +167,16 @@ tg.message.consumeMessage = function (messageParam) {
 
         case 'invite':
         case 'challenge':
-            tg.notification.showNotification(messageParam.sub, "You received a " + messageParam.sub + " request.");
+            tg.notification.showNotification(messageParam.sub, "You received a " + messageParam.sub + " request.", messageParam);
             // var userResponse = confirm("You received a " + messageParam.sub + " request.");
             // if (userResponse == true) {
             //     console.log("You pressed OK!");
             // } else {
             //     console.log("You pressed Cancel!");
             // }
+            break;
+        case 'rejectmatchmakingrequest':
+            tg.notification.showNotification(messageParam.sub, "Your matchmaking request is rejected by the player.", messageParam);
             break;
 
         default:
