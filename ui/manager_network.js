@@ -7,7 +7,8 @@ tg.network.requestGameAdmit = function() {
     tg.sendMessageToWS(message);
 };
 
-tg.network.sendInvite = function(subParam, payload) {
+
+tg.network.sendMatchmakingInstruction = function(subParam, payload) {
     var message = tg.getEmptyMessagePacket('message');
     message.sub = subParam;
     message.payload = payload;

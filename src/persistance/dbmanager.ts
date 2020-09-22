@@ -27,6 +27,7 @@ module.exports = {
             // console.log(parseInt(allUsers[i].id, 32).toString(10));
             this.serverState.users_db_state[allUsers[i].id] = allUsers[i];
             this.serverState.users_server_state[allUsers[i].id] = this.getEmptyUserServerState();
+            this.serverState.users_server_state[allUsers[i].id].id = allUsers[i].id;
             serverState.users_server_state[allUsers[i].id].ws = null;
             serverState.users_server_state[allUsers[i].id].isOnline = false;
             serverState.user_id_list.push(allUsers[i].id);
@@ -43,8 +44,8 @@ module.exports = {
             ws: null,
             state: 'idle', // possible state: idle, playing, matchmaking
             wsKey: null,
-            roomIndex: null,
-            team: 0
+            matchmakingRoomIndex: null,
+            // team: 0
         };
     },
 

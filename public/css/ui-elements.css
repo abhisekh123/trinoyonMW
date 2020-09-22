@@ -1,0 +1,16 @@
+/* FINAL UI ELEMENTS WITH CASE PECIFIC PARAMETERS */
+
+
+.gameplay-footer-container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+
+.matchmaking-footer-container{
+    display: none;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}

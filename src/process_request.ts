@@ -60,11 +60,19 @@ export class RequestProcessor {
                 break;
             case 'invite':
             case 'challenge':
+                serverState.allocateNewGameRoomIfNeeded(requestJSON);
+                clientBroadcaster.sendMessageToRecipientByUserID(
+                    requestJSON.payload.recipientId, JSON.stringify(requestJSON)
+                );
+                break;
             case 'rejectmatchmakingrequest':
                 // console.log('got ' + requestJSON.sub);
                 clientBroadcaster.sendMessageToRecipientByUserID(
                     requestJSON.payload.recipientId, JSON.stringify(requestJSON)
                 );
+                break;
+            case 'acceptmatchmakingrequest':
+                serverState.admitPlayerToMatchmakingRoom(requestJSON);
                 break;
             default:
                 break;

@@ -192,6 +192,7 @@ tg.hl.makeThumbArea = function (name, thickness, color, background, curves) {
 
 $('#button-result-exit').click(function () {
     console.log('clicked button-result-exit');
+    $('#game-result-container').hide();
     tg.engine.dispose();
     tg.initVideo();
     tg.initWorld();

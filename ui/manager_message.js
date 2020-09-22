@@ -63,6 +63,17 @@ tg.message.recipientSelectionUpdated = function (element) {
     console.log('tg.message.messageRecipients:', tg.message.messageRecipients);
 };
 
+tg.message.acceptMatchmakingRequest = function (messajeJSONParam) {
+
+    var sendPacket = {
+        senderId: tg.self.userConfig.id,
+        recipientId: messajeJSONParam.userId,
+        selection: tg.botSelection,
+    };
+
+    tg.network.sendMatchmakingInstruction('acceptmatchmakingrequest', sendPacket);
+};
+
 tg.message.rejectMatchmakingRequest = function (messajeJSONParam) {
 
     var sendPacket = {
@@ -70,7 +81,7 @@ tg.message.rejectMatchmakingRequest = function (messajeJSONParam) {
         recipientId: messajeJSONParam.userId
     };
 
-    tg.network.sendInvite('rejectmatchmakingrequest', sendPacket);
+    tg.network.sendMatchmakingInstruction('rejectmatchmakingrequest', sendPacket);
 };
 
 tg.message.invitePlayer = function (index) {
@@ -84,10 +95,11 @@ tg.message.invitePlayer = function (index) {
 
     var sendPacket = {
         senderId: senderId,
-        recipientId: recipientId
+        recipientId: recipientId,
+        selection: tg.botSelection,
     };
 
-    tg.network.sendInvite('invite', sendPacket);
+    tg.network.sendMatchmakingInstruction('invite', sendPacket);
 };
 
 tg.message.challengePlayer = function (index) {
@@ -101,10 +113,11 @@ tg.message.challengePlayer = function (index) {
 
     var sendPacket = {
         senderId: senderId,
-        recipientId: recipientId
+        recipientId: recipientId,
+        selection: tg.botSelection,
     };
 
-    tg.network.sendInvite('challenge', sendPacket);
+    tg.network.sendMatchmakingInstruction('challenge', sendPacket);
 };
 
 tg.message.sendMessage = function () {

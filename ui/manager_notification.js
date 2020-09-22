@@ -48,7 +48,7 @@ tg.notification.processUserReaction = function(reactionFlag){
         case 'invite':
             console.log(tg.notification.payload);
             if(reactionFlag == true){ // accepted matchmaking request
-
+                tg.message.acceptMatchmakingRequest(tg.notification.payload);
             } else { // rejected matchmaking request
                 tg.message.rejectMatchmakingRequest(tg.notification.payload);
             }
