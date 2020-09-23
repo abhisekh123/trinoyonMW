@@ -21,7 +21,6 @@ for message exchange search for 'invite' or 'challenge'
 mmr: matchmakingroom
 
 ---------- matchmakingroom
-
 allocate(player with no game room sends invite or challenge),
 admit(player accepted invite/challenge),
 remove(player got disconnected, player clicked leave),
