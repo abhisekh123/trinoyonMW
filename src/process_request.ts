@@ -9,11 +9,15 @@ import * as WebSocket from 'ws';
 const assetManager = require('./asset_manager/asset_manager');
 const workermanager = require('./workermanager');
 const userManager = require('./control/usermanager');
-const serverState = require('./state/serverstate');
 const clientBroadcaster = require('./clientbroadcaster');
-// const serverstate = require('./state/serverstate');
 
 export class RequestProcessor {
+
+    serverState: any = null;
+    init(serverState: any){
+        this.serverState = serverState;
+        clientBroadcaster.init(serverState);
+    };
     
     process(requestJSON: request_message) {
         
@@ -51,7 +55,7 @@ export class RequestProcessor {
                 console.log('ERROR: unknown message type:<' + requestJSON.type + '>');
                 break;
         }
-    }
+    };
 
     processIncomingMessages(requestJSON: any){
         switch (requestJSON.sub) {
@@ -60,7 +64,7 @@ export class RequestProcessor {
                 break;
             case 'invite':
             case 'challenge':
-                serverState.allocateNewGameRoomIfNeeded(requestJSON);
+                this.serverState.allocateNewGameRoomIfNeeded(requestJSON);
                 clientBroadcaster.sendMessageToRecipientByUserID(
                     requestJSON.payload.recipientId, JSON.stringify(requestJSON)
                 );
@@ -72,12 +76,12 @@ export class RequestProcessor {
                 );
                 break;
             case 'acceptmatchmakingrequest':
-                serverState.admitPlayerToMatchmakingRoom(requestJSON);
+                this.serverState.admitPlayerToMatchmakingRoom(requestJSON);
                 break;
             default:
                 break;
         }
-    }
+    };
 
     // send message to the client.
     sendMessagePacket(packetType: string, payload: JSON, userId: string){
@@ -86,7 +90,7 @@ export class RequestProcessor {
         // console.log('ws=>', ws);
         var container = {type:packetType, message:payload};
         clientBroadcaster.sendMessageToRecipientByUserID(userId, JSON.stringify(container));
-    }
+    };
 
 }
 

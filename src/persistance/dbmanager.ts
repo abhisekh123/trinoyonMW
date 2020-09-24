@@ -15,6 +15,7 @@ module.exports = {
     serverState: null,
     init: async function (serverState: any) {
         this.serverState = serverState;
+        // console.log('---serverstate:', serverState);
         this.db.users = new datastore({
             filename: '../data_trinoyonMW/users.db',
             autoload: true
@@ -28,9 +29,9 @@ module.exports = {
             this.serverState.users_db_state[allUsers[i].id] = allUsers[i];
             this.serverState.users_server_state[allUsers[i].id] = this.getEmptyUserServerState();
             this.serverState.users_server_state[allUsers[i].id].id = allUsers[i].id;
-            serverState.users_server_state[allUsers[i].id].ws = null;
-            serverState.users_server_state[allUsers[i].id].isOnline = false;
-            serverState.user_id_list.push(allUsers[i].id);
+            this.serverState.users_server_state[allUsers[i].id].ws = null;
+            this.serverState.users_server_state[allUsers[i].id].isOnline = false;
+            this.serverState.user_id_list.push(allUsers[i].id);
             // console.log('updating:', allUsers[i].id);
             // console.log('result:', result);
             // var result = await this.db.users.update({ id: allUsers[i].id }, { $set: { userId: allUsers[i].userId } }, { multi: true });
@@ -69,7 +70,7 @@ module.exports = {
         var userCreated = await this.db.users.findOne({id: profile.id});
         this.serverState.users_db_state[profile.id] = userCreated;
         this.serverState.users_server_state[profile.id] = this.getEmptyUserServerState();
-        serverState.user_id_list.push(profile.id);
+        this.serverState.user_id_list.push(profile.id);
 
         return user;
     },

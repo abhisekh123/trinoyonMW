@@ -1,5 +1,5 @@
 import * as WebSocket from 'ws';
-const serverState = require('../state/serverstate');
+// const serverState = require('../state/serverstate');
 // const environmentState = require('../state/environmentstate');
 const dbManager = require('../persistance/dbmanager');
 // const workermanager = require('../workermanager'); // somehow this doesnot work :(
@@ -7,11 +7,12 @@ const dbManager = require('../persistance/dbmanager');
 // TODO: On user join : send status (queue status)
 
 module.exports = {
-
+    serverState: null,
     workerManager: null,
-    init: function (workerManagerParam: any) {
-        dbManager.init(serverState);
+    init: function (workerManagerParam: any, serverState: any) {
         this.workerManager = workerManagerParam;
+        this.serverState = serverState;
+        dbManager.init(this.serverState);
         // for(var i = 0; i < environmentState.maxUserCount; ++i){
         //     var userObject = {
         //         isActive:false,
@@ -38,17 +39,17 @@ module.exports = {
     // },
 
     getUserIndexFromWebsocket: function (wsParam: WebSocket) {
-        return serverState.userMap.get(wsParam);
+        return this.serverState.userMap.get(wsParam);
     },
 
     disconnectUser: function (userId: string) {
         
-        if (serverState.users_server_state[userId].ws != null) {
+        if (this.serverState.users_server_state[userId].ws != null) {
             console.log('disconnectUser:', userId);
-            serverState.users_server_state[userId].ws.close();
-            serverState.users_server_state[userId].ws = null;
+            this.serverState.users_server_state[userId].ws.close();
+            this.serverState.users_server_state[userId].ws = null;
 
-            serverState.users_server_state[userId].isOnline = false;
+            this.serverState.users_server_state[userId].isOnline = false;
             var requestJSON = {
                 type: 'client_disconnected',
                 userId: userId
@@ -60,12 +61,12 @@ module.exports = {
     },
 
     connectUser: function(userId: string, ws: WebSocket){
-        serverState.users_server_state[userId].ws = ws;
-        serverState.users_server_state[userId].isOnline = true;
+        this.serverState.users_server_state[userId].ws = ws;
+        this.serverState.users_server_state[userId].isOnline = true;
     },
 
     isUserOnline: function(userId: string){
-        if(serverState.users_server_state[userId].ws == null || serverState.users_server_state[userId].isOnline == false){
+        if(this.serverState.users_server_state[userId].ws == null || this.serverState.users_server_state[userId].isOnline == false){
             return false;
         }
         return true;
