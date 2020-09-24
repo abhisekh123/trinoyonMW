@@ -181,12 +181,15 @@ tg.message.consumeMessage = function (messageParam) {
         case 'invite':
         case 'challenge':
             tg.notification.showNotification(messageParam.sub, "You received a " + messageParam.sub + " request.", messageParam);
-            // var userResponse = confirm("You received a " + messageParam.sub + " request.");
-            // if (userResponse == true) {
-            //     console.log("You pressed OK!");
-            // } else {
-            //     console.log("You pressed Cancel!");
-            // }
+            break;
+        case 'matchmakingroomupdate':
+            tg.view.processMMRUpdate(messageParam);
+            break;
+            case 'matchmakingroomexpel':
+            tg.view.processMMRExpel(messageParam);
+            break;
+            case 'matchmakingroomadmit':
+            tg.view.processMMRAdmit(messageParam);
             break;
         case 'rejectmatchmakingrequest':
             tg.notification.showNotification(messageParam.sub, "Your matchmaking request is rejected by the player.", messageParam);

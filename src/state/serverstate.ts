@@ -49,6 +49,21 @@ module.exports = {
         }
     },
 
+
+    notifyPlayerMatchmakingRoomAdmit: function(requestJSONParam: any) {
+        console.log('notifyPlayerMatchmakingRoomAdmit requestJSONParam:', requestJSONParam);
+        clientBroadcaster.sendMessageToRecipientByUserID(
+            requestJSONParam.payload.recipientId, JSON.stringify(requestJSONParam)
+        );
+    },
+
+    notifyPlayerMatchmakingRoomExpel: function(requestJSONParam: any) {
+        console.log('notifyPlayerMatchmakingRoomExpel requestJSONParam:', requestJSONParam);
+        clientBroadcaster.sendMessageToRecipientByUserID(
+            requestJSONParam.payload.recipientId, JSON.stringify(requestJSONParam)
+        );
+    },
+
     // if a person sends challenge/invite and is not already member of a matchmaking room
     // then create a new matchmaking room
     allocateNewGameRoomIfNeeded: function(messageJSONParam: any){ 
@@ -64,20 +79,6 @@ module.exports = {
                 }
             }
         }
-    },
-
-    notifyPlayerMatchmakingRoomAdmit: function(requestJSONParam: any) {
-        console.log('notifyPlayerMatchmakingRoomAdmit requestJSONParam:', requestJSONParam);
-        clientBroadcaster.sendMessageToRecipientByUserID(
-            requestJSONParam.payload.recipientId, JSON.stringify(requestJSONParam)
-        );
-    },
-
-    notifyPlayerMatchmakingRoomExpel: function(requestJSONParam: any) {
-        console.log('notifyPlayerMatchmakingRoomExpel requestJSONParam:', requestJSONParam);
-        clientBroadcaster.sendMessageToRecipientByUserID(
-            requestJSONParam.payload.recipientId, JSON.stringify(requestJSONParam)
-        );
     },
 
     removePlayerFromMatchmakingRoom: function(messageJSONParam: any){
@@ -116,9 +117,11 @@ module.exports = {
         console.log('admitPlayerToMatchmakingRoom:', messageJSONParam);
         const requesterUserObject = this.users_server_state[messageJSONParam.payload.recipientId];
         const joineeUserObject = this.users_server_state[messageJSONParam.payload.senderId];
+
+        // notify player admit update
     },
 
-    clearMatchMakingRoom: function(index: number){
+    deallocateMatchMakingRoom: function(index: number){
         var matchRoom = this.user_matchMaking_rooms[index];
         matchRoom.isActive = false;
         // matchRoom.owner = null;
@@ -126,6 +129,11 @@ module.exports = {
             matchRoom.players_1[i] = null;
             matchRoom.players_2[i] = null;
         }
+    },
+
+    evolveMatchMakingRoom: function(index: number){
+        // TOD communicate with workers to queue matchmaking room
+        this.deallocateMatchMakingRoom(index);
     },
 
     setServerState: function(dataParam:any){

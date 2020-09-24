@@ -24,8 +24,8 @@ mmr: matchmakingroom
 allocate(player with no game room sends invite or challenge),
 admit(player accepted invite/challenge),
 remove(player got disconnected, player clicked leave),
-deallocate(all players have left, mmr has progressed),
-progress(all players are ready)
+deallocate(all players have left, mmr has progressed, timeout has expired),
+evolve(all players are ready)
 
 ---------- UI(from server):
 mmr update(player changes troop configuration),
@@ -36,6 +36,9 @@ nack : (challenge acceptance and invite acceptance, message: no room)
 ---------- Backend(from UI):
 invite/challenge: check and allocate if needed.
 invite ack / challenge ack: check sender team and check availability accordingly and admit if possible. send appropriate response.
+
+---------------------big lake
+
 ready: update mmr state. if everyone is ready then progress.
 leave: remove player. update stats. if no playres, then deallocate.
 
