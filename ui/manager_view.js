@@ -81,8 +81,8 @@ tg.view.processMMRUpdate = function (updateParam) {
 
 tg.view.updateBotImages = function(updateParam, parentElement, querySelector) {
     var imageElementList = $(parentElement).find(querySelector);
-    for(var j = 1; j < updateParam.length; ++j){
-        imageElementList[j].src = tg.uu.getIconURLFromType('item', updateParam[j]);
+    for(var j = 0; j < updateParam.selection.botList.length; ++j){
+        imageElementList[j + 1].src = tg.uu.getIconURLFromType('item', updateParam.selection.botList[j]);
     }
 }
 
