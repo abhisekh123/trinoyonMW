@@ -47,7 +47,7 @@ module.exports = {
             ws: null,
             state: 'idle', // possible state: idle, playing, matchmaking
             wsKey: null,
-            matchmakingRoomIndex: null,
+            mmrIndex: null,
             // team: 0
         };
     },

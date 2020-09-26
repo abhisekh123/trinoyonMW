@@ -57,6 +57,18 @@ export class RequestProcessor {
         }
     };
 
+    setMMRRequestTeam(team: number, requestType: string){
+        if(requestType == 'challenge'){
+            if(team == 1){
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            return team;
+        }
+    };
+
     processIncomingMessages(requestJSON: any){
         switch (requestJSON.sub) {
             case 'text':
@@ -64,10 +76,19 @@ export class RequestProcessor {
                 break;
             case 'invite':
             case 'challenge':
-                this.serverState.allocateNewGameRoomIfNeeded(requestJSON);
+                if(requestJSON.payload.recipientId == requestJSON.payload.sederId){
+                    // can not self invite/challenge
+                    return;
+                }
+                const userObject = this.serverState.allocateNewGameRoomIfNeeded(requestJSON);
+                requestJSON.mmrIndex = userObject.mmrIndex;
+                requestJSON.team = this.setMMRRequestTeam(userObject.team, requestJSON.sub);
                 clientBroadcaster.sendMessageToRecipientByUserID(
                     requestJSON.payload.recipientId, JSON.stringify(requestJSON)
                 );
+                break;
+            case 'mmrselectionchange':
+                this.serverState.processUserSelectionUpdateForMMR(requestJSON);
                 break;
             case 'rejectmatchmakingrequest':
                 // console.log('got ' + requestJSON.sub);
@@ -76,7 +97,12 @@ export class RequestProcessor {
                 );
                 break;
             case 'acceptmatchmakingrequest':
-                this.serverState.admitPlayerToMatchmakingRoom(requestJSON);
+                if(this.serverState.admitPlayerToMatchmakingRoom(requestJSON, requestJSON.payload.mmrIndex, requestJSON.payload.team) == false){
+                    requestJSON.sub = 'mmrfull';
+                    clientBroadcaster.sendMessageToRecipientByUserID(
+                        requestJSON.payload.sederId, JSON.stringify(requestJSON)
+                    );
+                }
                 break;
             default:
                 break;

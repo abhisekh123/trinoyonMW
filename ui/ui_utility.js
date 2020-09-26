@@ -192,6 +192,10 @@ tg.uu.changeSelectedBot = function(element, botIndex){
     tg.uu.displaySelectedBotDetails(parentElement.parent().parent(), botIndex);
 
     tg.uu.markSelectedItem(selectedBotContainerList, botIndex);
+
+    if(tg.self.userConfig.joinedMMR){
+        tg.message.mmrSelectionChangeUpdate();
+    }
 };
 
 tg.uu.populatePlayerBot = function(parentElement){

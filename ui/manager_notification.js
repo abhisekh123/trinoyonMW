@@ -21,6 +21,7 @@ tg.notification.showNotification = function(type, message, payload){
             $('#notification-modal-controls-choice').show();
             break;
         case 'rejectmatchmakingrequest':
+        case 'mmrfull':
             $('#notification-modal-controls-acknowledgement').show();
             $('#notification-modal-controls-choice').hide();
         default:

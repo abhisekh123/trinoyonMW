@@ -65,13 +65,17 @@ tg.message.recipientSelectionUpdated = function (element) {
 
 tg.message.acceptMatchmakingRequest = function (messajeJSONParam) {
 
-    var sendPacket = {
-        senderId: tg.self.userConfig.id,
-        recipientId: messajeJSONParam.userId,
-        selection: tg.botSelection,
-    };
+    // var sendPacket = {
+    //     senderId: tg.self.userConfig.id,
+    //     recipientId: messajeJSONParam.userId,
+    //     selection: tg.botSelection,
+    // };
 
-    tg.network.sendMatchmakingInstruction('acceptmatchmakingrequest', sendPacket);
+    messajeJSONParam.senderId = tg.self.userConfig.id;
+    messajeJSONParam.recipientId = messajeJSONParam.userId;
+    messajeJSONParam.selection = tg.botSelection;
+
+    tg.network.sendMatchmakingInstruction('acceptmatchmakingrequest', messajeJSONParam);
 };
 
 tg.message.rejectMatchmakingRequest = function (messajeJSONParam) {
@@ -100,6 +104,14 @@ tg.message.invitePlayer = function (index) {
     };
 
     tg.network.sendMatchmakingInstruction('invite', sendPacket);
+};
+
+tg.message.mmrSelectionChangeUpdate = function () {
+    var sendPacket = {
+        senderId: tg.self.userConfig.id,
+        selection: tg.botSelection,
+    };
+    tg.network.sendMatchmakingInstruction('mmrselectionchange', sendPacket);
 };
 
 tg.message.challengePlayer = function (index) {
@@ -182,13 +194,22 @@ tg.message.consumeMessage = function (messageParam) {
         case 'challenge':
             tg.notification.showNotification(messageParam.sub, "You received a " + messageParam.sub + " request.", messageParam);
             break;
+        case 'mmrfull':
+            tg.notification.showNotification(messageParam.sub, "Could not join. Team is already at full capacity.", messageParam);
+            break;
         case 'mmrupdate':
             tg.view.processMMRUpdate(messageParam);
             break;
         case 'mmrexpel':
+            tg.self.userConfig.joinedMMR = false;
+            tg.self.userConfig.team = null;
+            tg.self.userConfig.mmrIndex = null;
             tg.view.processMMRExpel(messageParam);
             break;
         case 'mmradmit':
+            tg.self.userConfig.joinedMMR = true;
+            tg.self.userConfig.team = messageParam.team;
+            tg.self.userConfig.mmrIndex = messageParam.mmrIndex;
             tg.view.processMMRAdmit(messageParam);
             break;
         case 'rejectmatchmakingrequest':
