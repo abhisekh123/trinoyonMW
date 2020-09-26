@@ -96,7 +96,7 @@ module.exports = {
         // will be used to schedule next iteration of engine loop
         // console.log('*******current time', utilityFunctions.getCurrentTime());
         let timeElapsed = utilityFunctions.getCurrentTime() - workerState.timePreviousGameLoopStart;
-        console.log('refreshWorld cycle duration:' + timeElapsed);
+        // console.log('refreshWorld cycle duration:' + timeElapsed);
         if(timeElapsed > workerState.gameLoopInterval){
             setTimeout((()=>{this.engineLoop()}), 0);
         }else{

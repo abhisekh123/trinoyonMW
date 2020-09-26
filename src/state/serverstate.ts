@@ -25,6 +25,7 @@ module.exports = {
     // onlinePlayers:{},
     // onlineUsers:{},
     workerHandle: null,
+    updateMMRIntervalHandle: null,
 
     init: function(){
         var players_1: any[] = [];
@@ -47,34 +48,141 @@ module.exports = {
                 // ownerTeam: null,
             }
         }
+        this.updateMMRIntervalHandle = setInterval(this.sendMMRUpdateToPlayers.bind(this), 2000);
     },
 
+    getMMRConfig: function(mmrParam: any){
+        const mmrConfig: any = {
+            players_1: [],
+            players_2: [],
+        }
+
+        for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
+            // check team 1
+            if(mmrParam.players_1[i] != null){
+                mmrParam.players_1[i] = {
+                    id: mmrParam.players_1[i].id,
+                    lastName: mmrParam.players_1[i].lastName,
+                    firstName: mmrParam.players_1[i].firstName,
+                    selection: mmrParam.players_1[i].selection
+                }
+            } else {
+                mmrConfig.players_1[i] = null;
+            }
+            // check team 2
+            if(mmrParam.players_2[i] != null){
+                mmrParam.players_2[i] = {
+                    id: mmrParam.players_2[i].id,
+                    lastName: mmrParam.players_2[i].lastName,
+                    firstName: mmrParam.players_2[i].firstName,
+                    selection: mmrParam.players_2[i].selection
+                }
+            } else {
+                mmrConfig.players_2[i] = null;
+            }
+        }
+
+        return mmrConfig;
+    },
+
+    sendMMRUpdateToPlayers: function(){
+        for(var i = 0; i < environmentState.maxMatchMakingRoomCount; ++i){
+            if(this.user_matchMaking_rooms[i].isActive == true){
+                const mmr = this.user_matchMaking_rooms[i];
+                const mmrConfig = this.getMMRConfig(mmr);
+                const mmrUpdateString = JSON.stringify({type:'message', sub:'mmrupdate', message:mmrConfig});
+                
+                for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
+                    // check team 1
+                    if(mmr.players_1[i] != null){
+                        clientBroadcaster.sendMessageToRecipientByUserID(mmr.players_1[i].id, mmrUpdateString);
+                    }
+                    // check team 2
+                    if(mmr.players_2[i] != null){
+                        clientBroadcaster.sendMessageToRecipientByUserID(mmr.players_2[i].id, mmrUpdateString);
+                    }
+                }
+            }
+        }
+
+        // console.log('mmr update');
+    },
 
     notifyPlayerMatchmakingRoomAdmit: function(requestJSONParam: any) {
+        requestJSONParam.type = 'message';
+        requestJSONParam.sub = 'mmradmit';
         console.log('notifyPlayerMatchmakingRoomAdmit requestJSONParam:', requestJSONParam);
         clientBroadcaster.sendMessageToRecipientByUserID(
-            requestJSONParam.payload.recipientId, JSON.stringify(requestJSONParam)
+            requestJSONParam.payload.senderId, JSON.stringify(requestJSONParam)
         );
     },
 
     notifyPlayerMatchmakingRoomExpel: function(requestJSONParam: any) {
+        requestJSONParam.sub = 'mmrexpel';
+        requestJSONParam.type = 'message';
         console.log('notifyPlayerMatchmakingRoomExpel requestJSONParam:', requestJSONParam);
         clientBroadcaster.sendMessageToRecipientByUserID(
-            requestJSONParam.payload.recipientId, JSON.stringify(requestJSONParam)
+            requestJSONParam.payload.senderId, JSON.stringify(requestJSONParam)
         );
     },
+
+
+    findEmptySlotInTeam: function(team: number, mmrParam: any){
+        let players = null;
+        if(team == 1){
+            players = mmrParam.players_1;
+        } else {
+            players = mmrParam.players_2;
+        }
+
+        for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
+            if(players[i] == null){
+                return i;
+            }
+        }
+        return -1; // no empty slot
+    },
+    // searchUserFromMatchmakingRoom
+
+    admitPlayerToMatchmakingRoom: function(messageJSONParam: any, mmrIndex: number, team: number){
+        console.log('admitPlayerToMatchmakingRoom:', messageJSONParam);
+        var mmr = this.user_matchMaking_rooms[mmrIndex];
+        if(team == 1){
+            if(mmr.team1PlayerCount < environmentState.maxPlayerPerTeam){
+                ++mmr.team1PlayerCount;
+            } else { // no empty slot in the given team
+                return false;
+            }
+        } else {
+            if(mmr.team2PlayerCount < environmentState.maxPlayerPerTeam){
+                ++mmr.team2PlayerCount;
+            } else { // no empty slot in the given team
+                return false;
+            }
+        }
+        // const requesterUserObject = this.users_server_state[messageJSONParam.payload.recipientId];
+        const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
+        requesterUserObject.selection = messageJSONParam.payload.selection;
+        requesterUserObject.matchmakingRoomIndex = mmrIndex;
+        this.notifyPlayerMatchmakingRoomAdmit(messageJSONParam);
+        // notify player admit update
+        return true;
+    },
+
 
     // if a person sends challenge/invite and is not already member of a matchmaking room
     // then create a new matchmaking room
     allocateNewGameRoomIfNeeded: function(messageJSONParam: any){ 
+        console.log('allocateNewGameRoomIfNeeded');
         const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
         if(requesterUserObject.matchmakingRoomIndex == null){
             for(var i = 0; i < environmentState.maxMatchMakingRoomCount; ++i){
                 if(this.user_matchMaking_rooms[i].isActive == false){ // found unused game room
                     this.user_matchMaking_rooms[i].isActive = true;
-                    requesterUserObject.matchmakingRoomIndex = i;
+                    this.admitPlayerToMatchmakingRoom(messageJSONParam, i);
+                    
                     this.user_matchMaking_rooms[i].players_1[0] = requesterUserObject;
-                    this.notifyPlayerMatchmakingRoomAdmit(messageJSONParam);
+                    
                     break;
                 }
             }
@@ -97,6 +205,7 @@ module.exports = {
                 if(requesterMatchmakingRoom.players_1[i].id == joineeUserObject.id){ // found match
                     requesterMatchmakingRoom.players_1[i] = null;
                     --requesterMatchmakingRoom.team1PlayerCount;
+                    break;
                 }
             }
             // check team 2
@@ -104,22 +213,20 @@ module.exports = {
                 if(requesterMatchmakingRoom.players_2[i].id == joineeUserObject.id){ // found match
                     requesterMatchmakingRoom.players_2[i] = null;
                     --requesterMatchmakingRoom.team2PlayerCount;
+                    break;
                 }
             }
         }
 
         joineeUserObject.matchmakingRoomIndex = null;
+        this.notifyPlayerMatchmakingRoomExpel(messageJSONParam);
+
+        // if all players left the room.
+        if(requesterMatchmakingRoom.team1PlayerCount == 0 && requesterMatchmakingRoom.team2PlayerCount == 0){
+            requesterMatchmakingRoom.isActive = false;
+        }
     },
 
-    // searchUserFromMatchmakingRoom
-
-    admitPlayerToMatchmakingRoom: function(messageJSONParam: any){
-        console.log('admitPlayerToMatchmakingRoom:', messageJSONParam);
-        const requesterUserObject = this.users_server_state[messageJSONParam.payload.recipientId];
-        const joineeUserObject = this.users_server_state[messageJSONParam.payload.senderId];
-
-        // notify player admit update
-    },
 
     deallocateMatchMakingRoom: function(index: number){
         var matchRoom = this.user_matchMaking_rooms[index];
@@ -129,6 +236,8 @@ module.exports = {
             matchRoom.players_1[i] = null;
             matchRoom.players_2[i] = null;
         }
+        matchRoom.team1PlayerCount = 0;
+        matchRoom.team2PlayerCount = 0;
     },
 
     evolveMatchMakingRoom: function(index: number){

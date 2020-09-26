@@ -159,3 +159,11 @@
 }
 
 
+#team-player-container-parent{
+    display: none;
+}
+
+#enemy-player-container-parent{
+    display: none;
+}
+
