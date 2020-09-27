@@ -220,7 +220,7 @@ module.exports = {
      */
     processIncomingMessages: function(){
         console.log('woreker@processIncomingMessages');
-        var playerID = -1;
+        // var playerID = -1;
         for(var i = 0; i < mainThreadStub.messagebuffer.length; ++i){
             console.log(i + '>processIncomingMessages::' + mainThreadStub.messagebuffer[i]);
             var currentMessage = mainThreadStub.messagebuffer[i];
@@ -232,6 +232,9 @@ module.exports = {
                 case 'si':
                     // // console.log('process action');
                     this.updateBotAction(currentMessage);
+                    break;
+                case 'request_game_admit_mmr':
+                    gameRoomAssetManager.addMMRUsersToWaitingList(currentMessage);
                     break;
                 case 'request_game_admit':
                     console.log('request game admit', currentMessage);

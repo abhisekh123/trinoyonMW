@@ -61,8 +61,9 @@ module.exports = {
                 console.log('get request_game_admit_ack for :' + userIdList);
                 // let clientWS = clientregistry.clientArrey[userId].ws;
                 // clientregistry.sendMessageToClient(clientWS, ev.data);
+                var jsonDataString = JSON.stringify(jsonData);
                 for (var i = 0; i < userIdList.length; ++i){
-                    clientBroadcaster.sendMessageToRecipientByUserID(userIdList[i], JSON.stringify(jsonData));
+                    clientBroadcaster.sendMessageToRecipientByUserID(userIdList[i], jsonDataString);
                 }
                 
                 break;

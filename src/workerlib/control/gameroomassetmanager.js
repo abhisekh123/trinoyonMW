@@ -30,7 +30,38 @@ module.exports = {
         }
     },
 
-    addUserToWaitingList: function(userMessage){
+    addMMRUsersToWaitingList: function(userMessage) {
+        // const userId = userMessage.userId;
+        const mmrConfig = requestJSON.mmrConfig;
+        userMessage.players = [];
+
+        for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
+            // check team 1
+            if(mmrConfig.players_1[i] != null){
+                userMessage.players.push(mmrConfig.players_1[i].id);
+            }
+            if(mmrConfig.players_2[i] != null){
+                userMessage.players.push(mmrConfig.players_2[i].id);
+            }
+        }
+        
+        console.log('addUserToWaitingList:', userMessage);
+
+        if(this.canAdmitNewPlayer()){
+            userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
+            workerState.waitingUsersLinkedList.add(userMessage);
+            const estimatedTimeInSeconds = this.getPlayStartTimeEstimate();
+            userMessage.estimatedTimeInSeconds = estimatedTimeInSeconds;
+            userMessage.type = 'request_game_admit_ack';
+            // mainThreadStub.postMessage(userMessage, '');
+        } else {
+            userMessage.type = 'request_game_admit_nack';
+            // mainThreadStub.postMessage(userMessage, '');
+        }
+        mainThreadStub.postMessage(userMessage, '');
+    },
+
+    addUserToWaitingList: function(userMessage) {
         // const userId = userMessage.userId;
         userMessage.players = [userMessage.userId];
         console.log('addUserToWaitingList:', userMessage);

@@ -28,10 +28,12 @@ module.exports = {
     // userRequest:{},
     // onlinePlayers:{},
     // onlineUsers:{},
-    workerHandle: null,
+    workerManager: null,
     updateMMRIntervalHandle: null,
 
-    init: function(){
+    init: function(workerManagerParam: any){
+        this.workerManager = workerManagerParam;
+
         var players_1: any[] = [];
         var players_2: any[] = [];
 
@@ -130,7 +132,7 @@ module.exports = {
                 // TODO: add check if all plears are ready
                 if(mmrConfig.areAllPlayersReady == true){
                     // all players are ready.
-                    this.evolveMatchMakingRoom(i);
+                    this.evolveMatchMakingRoom(i, mmrConfig);
                 }
             }
         }
@@ -321,8 +323,14 @@ module.exports = {
         matchRoom.team2PlayerCount = 0;
     },
 
-    evolveMatchMakingRoom: function(index: number){
+    evolveMatchMakingRoom: function(index: number, mmrConfigParam: any){
         // TOD communicate with workers to queue matchmaking room
+        // const mmrthis.user_matchMaking_rooms[index];
+        const requestJSON: any = {};
+        requestJSON.type = 'request_game_admit_mmr';
+        requestJSON.mmrConfig = mmrConfigParam;
+        this.workermanager.postMessage(requestJSON);
+
         this.deallocateMatchMakingRoom(index);
     },
 
