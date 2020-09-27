@@ -90,6 +90,12 @@ export class RequestProcessor {
             case 'mmrselectionchange':
                 this.serverState.processUserSelectionUpdateForMMR(requestJSON);
                 break;
+            case 'mmrready':
+                this.serverState.processUserSelectionUpdateForMMR(requestJSON);
+                break;
+            case 'mmrleave':
+                this.serverState.removePlayerFromMatchmakingRoom(requestJSON);
+                break;
             case 'rejectmatchmakingrequest':
                 // console.log('got ' + requestJSON.sub);
                 clientBroadcaster.sendMessageToRecipientByUserID(

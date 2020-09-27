@@ -29,6 +29,7 @@ module.exports = {
             this.serverState.users_db_state[allUsers[i].id] = allUsers[i];
             this.serverState.users_server_state[allUsers[i].id] = this.getEmptyUserServerState();
             this.serverState.users_server_state[allUsers[i].id].id = allUsers[i].id;
+            this.serverState.users_server_state[allUsers[i].id].isMMRReady = false;
             this.serverState.users_server_state[allUsers[i].id].firstName = allUsers[i].firstName;
             this.serverState.users_server_state[allUsers[i].id].lastName = allUsers[i].lastName;
             this.serverState.users_server_state[allUsers[i].id].ws = null;

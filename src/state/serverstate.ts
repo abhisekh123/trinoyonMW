@@ -62,6 +62,8 @@ module.exports = {
             
         }
 
+        let areAllPlayersReady = true;
+
         for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
             // check team 1
             if(mmrParam.players_1[i] != null){
@@ -69,7 +71,11 @@ module.exports = {
                     id: mmrParam.players_1[i].id,
                     lastName: mmrParam.players_1[i].lastName,
                     firstName: mmrParam.players_1[i].firstName,
-                    selection: mmrParam.players_1[i].selection
+                    selection: mmrParam.players_1[i].selection,
+                    isMMRReady: mmrParam.players_1[i].isMMRReady
+                }
+                if(mmrParam.players_1[i].isMMRReady == false){
+                    areAllPlayersReady = false;
                 }
             } else {
                 mmrConfig.players_1[i] = null;
@@ -80,13 +86,18 @@ module.exports = {
                     id: mmrParam.players_2[i].id,
                     lastName: mmrParam.players_2[i].lastName,
                     firstName: mmrParam.players_2[i].firstName,
-                    selection: mmrParam.players_2[i].selection
+                    selection: mmrParam.players_2[i].selection,
+                    isMMRReady: mmrParam.players_2[i].isMMRReady
+                }
+                if(mmrParam.players_2[i].isMMRReady == false){
+                    areAllPlayersReady = false;
                 }
             } else {
                 mmrConfig.players_2[i] = null;
             }
         }
 
+        mmrConfig.areAllPlayersReady = areAllPlayersReady;
         return mmrConfig;
     },
 
@@ -114,6 +125,12 @@ module.exports = {
                     if(mmr.players_2[i] != null){
                         clientBroadcaster.sendMessageToRecipientByUserID(mmr.players_2[i].id, mmrUpdateString);
                     }
+                }
+                
+                // TODO: add check if all plears are ready
+                if(mmrConfig.areAllPlayersReady == true){
+                    // all players are ready.
+                    this.evolveMatchMakingRoom(i);
                 }
             }
         }
@@ -165,10 +182,25 @@ module.exports = {
     processUserSelectionUpdateForMMR: function(messageJSONParam: any) {
         const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
         requesterUserObject.selection = messageJSONParam.payload.selection;
-        
+    },
+
+    // processLeaveMMRRequest: function(messageJSONParam: any) {
+    //     const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
+    //     requesterUserObject.selection = messageJSONParam.payload.selection;
+    // },
+
+    processMMRReadyRequest: function(messageJSONParam: any) {
+        const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
+        requesterUserObject.isMMRReady = true;
     },
 
     admitPlayerToMatchmakingRoom: function(messageJSONParam: any, mmrIndex: number, team: number){
+        const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
+        if(requesterUserObject.mmrIndex != null){
+            this.removePlayerFromMatchmakingRoom(requesterUserObject);
+        }
+        requesterUserObject.isMMRReady = false;
+        // check if already in any mmr
         console.log('admitPlayerToMatchmakingRoom:', messageJSONParam);
         console.log('team:', team);
         var mmr = this.user_matchMaking_rooms[mmrIndex];
@@ -190,7 +222,7 @@ module.exports = {
             }
         }
         // const requesterUserObject = this.users_server_state[messageJSONParam.payload.recipientId];
-        const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
+        
         requesterUserObject.selection = messageJSONParam.payload.selection;
         requesterUserObject.mmrIndex = mmrIndex;
         requesterUserObject.team = team;

@@ -114,6 +114,21 @@ tg.message.mmrSelectionChangeUpdate = function () {
     tg.network.sendMatchmakingInstruction('mmrselectionchange', sendPacket);
 };
 
+
+tg.message.readyMMR = function(){
+    var sendPacket = {
+        senderId: tg.self.userConfig.id,
+    };
+    tg.network.sendMatchmakingInstruction('mmrready', sendPacket);
+}
+
+tg.message.leaveMMR = function(){
+    var sendPacket = {
+        senderId: tg.self.userConfig.id,
+    };
+    tg.network.sendMatchmakingInstruction('mmrleave', sendPacket);
+}
+
 tg.message.challengePlayer = function (index) {
     var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
     var messageArrayIndex = (oldestMessageArrayIndex + index) % tg.message.latestMessages.length;

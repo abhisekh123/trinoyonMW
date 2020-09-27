@@ -34,7 +34,7 @@ tg.view.processMMRUpdate = function (updateParam) {
         } else {
             $(unknownPlayerContainer).hide();
             $(joinedPlayerContainer).show();
-            
+            $(joinedPlayerContainer).find('.hg-matchmaking-player-name')[0].innerHTML = teamUpdate[j].firstName;
             tg.view.updateBotImages(teamUpdate[i], joinedPlayerContainer, '.hg-bot-image');
         }
         ++elementIndex;
@@ -46,13 +46,13 @@ tg.view.processMMRUpdate = function (updateParam) {
         const unknownPlayerContainer = $(parentElement).find('.unknown-player-container')[0];
         const joinedPlayerContainer = $(parentElement).find('.joined-player-container')[0];
 
-        if(teamUpdate[i] == null){
+        if(enemyUpdate[j] == null){
             $(unknownPlayerContainer).show();
             $(joinedPlayerContainer).hide();
         } else {
             $(unknownPlayerContainer).hide();
             $(joinedPlayerContainer).show();
-            
+            $(joinedPlayerContainer).find('.hg-matchmaking-player-name')[0].innerHTML = enemyUpdate[j].firstName;
             tg.view.updateBotImages(enemyUpdate[j], joinedPlayerContainer, '.hg-bot-image');
         }
     }
