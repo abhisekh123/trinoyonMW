@@ -34,7 +34,7 @@ tg.view.processMMRUpdate = function (updateParam) {
         } else {
             $(unknownPlayerContainer).hide();
             $(joinedPlayerContainer).show();
-            $(joinedPlayerContainer).find('.hg-matchmaking-player-name')[0].innerHTML = teamUpdate[j].firstName;
+            $(joinedPlayerContainer).find('.hg-matchmaking-player-name')[0].innerHTML = teamUpdate[i].firstName;
             tg.view.updateBotImages(teamUpdate[i], joinedPlayerContainer, '.hg-bot-image');
         }
         ++elementIndex;

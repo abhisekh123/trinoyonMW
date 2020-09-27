@@ -36,11 +36,11 @@ module.exports = {
     // player count cache to optimise when too many request.
     // if false for a given player count in previous search attempt, 
     // then no need to seach games again for other request with same player count.
-    playerFitCache: { // will be reset by game start routine @ game manager.
-        1: true,
-        2: true,
-        3: true,
-    }, 
+    // playerFitCache: { // will be reset by game start routine @ game manager.
+    //     1: true,
+    //     2: true,
+    //     3: true,
+    // }, 
 
     // time
     timePreviousGameLoopStart: 0,

@@ -44,11 +44,12 @@ module.exports = {
                 userMessage.players.push(mmrConfig.players_2[i].id);
             }
         }
-        
-        console.log('addUserToWaitingList:', userMessage);
+
+        console.log('addUserToWaitingList mmr:', userMessage);
 
         if(this.canAdmitNewPlayer()){
             userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
+            userMessage.sub = "mmr";
             workerState.waitingUsersLinkedList.add(userMessage);
             const estimatedTimeInSeconds = this.getPlayStartTimeEstimate();
             userMessage.estimatedTimeInSeconds = estimatedTimeInSeconds;
@@ -68,6 +69,7 @@ module.exports = {
 
         if(this.canAdmitNewPlayer()){
             userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
+            userMessage.sub = "individual";
             workerState.waitingUsersLinkedList.add(userMessage);
             const estimatedTimeInSeconds = this.getPlayStartTimeEstimate();
             userMessage.estimatedTimeInSeconds = estimatedTimeInSeconds;
@@ -78,13 +80,6 @@ module.exports = {
             // mainThreadStub.postMessage(userMessage, '');
         }
         mainThreadStub.postMessage(userMessage, '');
-
-        /**
-         * userMessage{
-         *      userId
-         *      users: [userId]
-         * }
-         */
     },
 
     getPlayStartTimeEstimate: function() {
@@ -100,6 +95,7 @@ module.exports = {
         var response = false;
 
         // iterate through user list
+        // TODO: is this validation needed?
         if(workerState.waitingUsersLinkedList.isEmpty()){
             console.log('no pending admit request.');
             return response;
@@ -113,23 +109,40 @@ module.exports = {
 
         // const gameMapPlayers = {};
         while(currentNode != null){ // search each request and try to admit to game.
-            
-            if(!workerState.playerFitCache[currentNode.element.players.length]){// no point search
-                console.log('!workerState.playerFitCache[currentNode.element.players.length');
-            } else {
-                const admitResponse = this.tryAdmitingNewPlayersToGame(currentNode.element, gameRoom);
-                if(!admitResponse){ // could not admit
-                    console.log('could not admit:', currentNode.element);
-                    workerState.playerFitCache[currentNode.element.players.length] = false;
-                }else{
-                    // admitted successfully. remove the current request node, move to next node.
-                    console.log('successfully admitted:', currentNode.element);
-                    currentNode = workerState.waitingUsersLinkedList.removeCurrentNode();
-                    
-                    response = true;
-                    continue;
-                }
+            let admitResponse = null;
+            if(currentNode.element.sub == 'mmr'){
+                admitResponse = this.tryAdmitingNewMMRPlayersToGame(currentNode.element, gameRoom);
+            }else{
+                admitResponse = this.tryAdmitingNewPlayersToGame(currentNode.element, gameRoom);
             }
+            
+            if(!admitResponse){ // could not admit
+                console.log('could not admit:', currentNode.element);
+                // workerState.playerFitCache[currentNode.element.players.length] = false;
+            }else{
+                // admitted successfully. remove the current request node, move to next node.
+                console.log('successfully admitted:', currentNode.element);
+                currentNode = workerState.waitingUsersLinkedList.removeCurrentNode();
+                
+                response = true;
+                continue;
+            }
+            // if(!workerState.playerFitCache[currentNode.element.players.length]){ // no point search
+            //     console.log('!workerState.playerFitCache[currentNode.element.players.length');
+            // } else {
+            //     const admitResponse = this.tryAdmitingNewPlayersToGame(currentNode.element, gameRoom);
+            //     if(!admitResponse){ // could not admit
+            //         console.log('could not admit:', currentNode.element);
+            //         workerState.playerFitCache[currentNode.element.players.length] = false;
+            //     }else{
+            //         // admitted successfully. remove the current request node, move to next node.
+            //         console.log('successfully admitted:', currentNode.element);
+            //         currentNode = workerState.waitingUsersLinkedList.removeCurrentNode();
+                    
+            //         response = true;
+            //         continue;
+            //     }
+            // }
             currentNode = workerState.waitingUsersLinkedList.moveToNextNode();
             
         }
@@ -137,6 +150,39 @@ module.exports = {
         // console.log('game room:', gameRoom);
         // console.log('returning:', response);
         return response;
+    },
+
+
+    tryAdmitingNewMMRPlayersToGame: function(admitRequest, gameRoom){
+        console.log('tryAdmitingNewPlayersToGame:', admitRequest);
+        
+        if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_1) >= admitRequest.players_1.length
+            && this.getEmptyPlayerSlotsInTeam(gameRoom.players_2) >= admitRequest.players_2.length){
+                let player1Index = 0;
+                let player2Index = 0;
+                for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
+                    // check team 1
+                    if(mmrParam.players_1[i] != null){
+                        while(gameRoom.players_1[player1Index].userId != null){
+                            ++player1Index;
+                        }
+                        const selectedTeamPlayer = gameRoom.players_1[player1Index];
+                        this.completePlayerAdmissionFormalities(selectedTeamPlayer, mmrParam.players_1[i].id, mmrParam.players_1[i].selection);
+                    }
+                    // check team 2
+                    if(mmrParam.players_2[i] != null){
+                        while(gameRoom.players_2[player2ndex].userId != null){
+                            ++player2Index;
+                        }
+                        const selectedTeamPlayer = gameRoom.players_2[player2Index];
+                        this.completePlayerAdmissionFormalities(selectedTeamPlayer, mmrParam.players_2[i].id, mmrParam.players_2[i].selection);
+                    }
+
+                }
+            return true;
+        } else {
+            return false;
+        }
     },
 
     tryAdmitingNewPlayersToGame: function(admitRequest, gameRoom){

@@ -277,9 +277,11 @@ module.exports = {
             if(gameRoom.isActive == false){
                 console.log('found an empty gameroom. trying to start');
 
-                workerState.playerFitCache["1"] = true;
-                workerState.playerFitCache["2"] = true;
-                workerState.playerFitCache["3"] = true;
+                // workerState.playerFitCache["1"] = true;
+                // workerState.playerFitCache["2"] = true;
+                // workerState.playerFitCache["3"] = true;
+                // workerState.playerFitCache["4"] = true;
+                // workerState.playerFitCache["5"] = true;
                 const admitResponse = gameRoomAssetManager.processWaitingUserAdmitRequests(gameRoom);
                 if(admitResponse == false){
                     console.log('failed to admit players. skipping game start attempt for now.');
@@ -289,6 +291,12 @@ module.exports = {
                 }
                 
                 // break;
+            }
+
+            // TODO: would work without this also.
+            if(workerState.waitingUsersLinkedList.isEmpty()){
+                // console.log('no pending admit request.');
+                break;
             }
         }
     },

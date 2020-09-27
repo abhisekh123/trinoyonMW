@@ -44,6 +44,7 @@ module.exports = {
                 }
                 ++totalActiveGameRoomCount;
                 // console.log('updating snapshot for gameRoom:', gameRoom);
+                // TODO: is it a onetime only event. should we break??
                 snapShotManager.startNewSnapshotLoop(
                     workerState.timePreviousGameLoopStart,
                     currentTime,
