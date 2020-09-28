@@ -76,7 +76,8 @@ export class RequestProcessor {
                 break;
             case 'invite':
             case 'challenge':
-                if(requestJSON.payload.recipientId == requestJSON.payload.sederId){
+                console.log(requestJSON.payload.recipientId + '=from=' + requestJSON.payload.senderId);
+                if(requestJSON.payload.recipientId == requestJSON.payload.senderId){
                     // can not self invite/challenge
                     return;
                 }
@@ -91,7 +92,7 @@ export class RequestProcessor {
                 this.serverState.processUserSelectionUpdateForMMR(requestJSON);
                 break;
             case 'mmrready':
-                this.serverState.processUserSelectionUpdateForMMR(requestJSON);
+                this.serverState.processMMRReadyRequest(requestJSON);
                 break;
             case 'mmrleave':
                 this.serverState.removePlayerFromMatchmakingRoom(requestJSON);

@@ -32,7 +32,7 @@ module.exports = {
 
     addMMRUsersToWaitingList: function(userMessage) {
         // const userId = userMessage.userId;
-        const mmrConfig = requestJSON.mmrConfig;
+        const mmrConfig = userMessage.mmrConfig;
         userMessage.players = [];
 
         for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
@@ -155,27 +155,29 @@ module.exports = {
 
     tryAdmitingNewMMRPlayersToGame: function(admitRequest, gameRoom){
         console.log('tryAdmitingNewPlayersToGame:', admitRequest);
-        
-        if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_1) >= admitRequest.players_1.length
-            && this.getEmptyPlayerSlotsInTeam(gameRoom.players_2) >= admitRequest.players_2.length){
-                let player1Index = 0;
-                let player2Index = 0;
+        const mmrConfig = admitRequest.mmrConfig;
+        if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_1) >= mmrConfig.players_1.length
+            && this.getEmptyPlayerSlotsInTeam(gameRoom.players_2) >= mmrConfig.players_2.length){
+                var player1Index = 0;
+                var player2Index = 0;
                 for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
+                    console.log('mmrConfig.players_1[i]:', mmrConfig.players_1[i]);
+                    console.log('mmrConfig.players_2[i]:', mmrConfig.players_2[i]);
                     // check team 1
-                    if(mmrParam.players_1[i] != null){
+                    if(mmrConfig.players_1[i] != null){
                         while(gameRoom.players_1[player1Index].userId != null){
                             ++player1Index;
                         }
                         const selectedTeamPlayer = gameRoom.players_1[player1Index];
-                        this.completePlayerAdmissionFormalities(selectedTeamPlayer, mmrParam.players_1[i].id, mmrParam.players_1[i].selection);
+                        this.completePlayerAdmissionFormalities(selectedTeamPlayer, mmrConfig.players_1[i].id, mmrConfig.players_1[i].selection);
                     }
                     // check team 2
-                    if(mmrParam.players_2[i] != null){
-                        while(gameRoom.players_2[player2ndex].userId != null){
+                    if(mmrConfig.players_2[i] != null){
+                        while(gameRoom.players_2[player2Index].userId != null){
                             ++player2Index;
                         }
                         const selectedTeamPlayer = gameRoom.players_2[player2Index];
-                        this.completePlayerAdmissionFormalities(selectedTeamPlayer, mmrParam.players_2[i].id, mmrParam.players_2[i].selection);
+                        this.completePlayerAdmissionFormalities(selectedTeamPlayer, mmrConfig.players_2[i].id, mmrConfig.players_2[i].selection);
                     }
 
                 }

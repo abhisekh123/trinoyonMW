@@ -99,6 +99,8 @@ module.exports = {
             }
         }
 
+        // console.log(mmrConfig);
+
         mmrConfig.areAllPlayersReady = areAllPlayersReady;
         return mmrConfig;
     },
@@ -106,26 +108,29 @@ module.exports = {
     sendMMRUpdateToPlayers: function(){
         this.serverTime = utilityFunctions.getCurrentTime();
         for(var i = 0; i < environmentState.maxMatchMakingRoomCount; ++i){
-            if(this.user_matchMaking_rooms[i].isActive == true){
-                if(this.serverTime - this.user_matchMaking_rooms[i].creationTime > this.mmrLifeSpan){
+            const mmr = this.user_matchMaking_rooms[i];
+
+            if(mmr.isActive == true){
+                console.log('sendMMRUpdateToPlayers:', i);
+
+                if(this.serverTime - mmr.creationTime > this.mmrLifeSpan){
                     console.log('mmr lifespan expired.');
                     this.deallocateMatchMakingRoom(i);
                     continue;
                 }
 
-                const mmr = this.user_matchMaking_rooms[i];
                 const mmrConfig = this.getMMRConfig(mmr);
-                mmrConfig.timeRemaining = ((this.serverTime - this.user_matchMaking_rooms[i].creationTime) / 1000);
+                mmrConfig.timeRemaining = Math.round((this.mmrLifeSpan - (this.serverTime - mmr.creationTime)) / 1000);
                 const mmrUpdateString = JSON.stringify({type:'message', sub:'mmrupdate', message:mmrConfig});
                 // console.log('mmrUpdateString:', mmrUpdateString);
-                for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
+                for(var j = 0; j < environmentState.maxPlayerPerTeam; ++j){
                     // check team 1
-                    if(mmr.players_1[i] != null){
-                        clientBroadcaster.sendMessageToRecipientByUserID(mmr.players_1[i].id, mmrUpdateString);
+                    if(mmr.players_1[j] != null){
+                        clientBroadcaster.sendMessageToRecipientByUserID(mmr.players_1[j].id, mmrUpdateString);
                     }
                     // check team 2
-                    if(mmr.players_2[i] != null){
-                        clientBroadcaster.sendMessageToRecipientByUserID(mmr.players_2[i].id, mmrUpdateString);
+                    if(mmr.players_2[j] != null){
+                        clientBroadcaster.sendMessageToRecipientByUserID(mmr.players_2[j].id, mmrUpdateString);
                     }
                 }
                 
@@ -182,6 +187,7 @@ module.exports = {
     // searchUserFromMatchmakingRoom
 
     processUserSelectionUpdateForMMR: function(messageJSONParam: any) {
+        console.log('got selection update for:', messageJSONParam.payload.senderId);
         const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
         requesterUserObject.selection = messageJSONParam.payload.selection;
     },
@@ -308,6 +314,9 @@ module.exports = {
     deallocateMatchMakingRoom: function(index: number){
         var matchRoom = this.user_matchMaking_rooms[index];
         matchRoom.isActive = false;
+
+        console.log('deallocateMatchMakingRoom:', index);
+
         // matchRoom.owner = null;
         for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
             if(matchRoom.players_1[i] != null){
@@ -324,12 +333,13 @@ module.exports = {
     },
 
     evolveMatchMakingRoom: function(index: number, mmrConfigParam: any){
+        console.log('evolveMatchMakingRoom:', index);
         // TOD communicate with workers to queue matchmaking room
         // const mmrthis.user_matchMaking_rooms[index];
         const requestJSON: any = {};
         requestJSON.type = 'request_game_admit_mmr';
         requestJSON.mmrConfig = mmrConfigParam;
-        this.workermanager.postMessage(requestJSON);
+        this.workerManager.postMessage(requestJSON);
 
         this.deallocateMatchMakingRoom(index);
     },
