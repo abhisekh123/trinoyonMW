@@ -82,7 +82,7 @@ module.exports = {
         var strategyMatrix = new Array();
         var binaryStringArray = [];
         for (var x = 0; x < this.worldConfig.gridSide; ++x) { // scan floor along x axis
-            console.log('computing grid x:' + x);
+            // console.log('computing grid x:' + x);
             strategyMatrix[x] = new Array();
             for (var z = 0; z < this.worldConfig.gridSide; ++z) { // scan floor along z axis
                 // // console.log('z:' + z);
@@ -147,7 +147,7 @@ module.exports = {
         }
         workerState.strategyMatrix = strategyMatrix;
 
-        console.log('completed creating the visibility graph.');
+        // console.log('completed creating the visibility graph.');
         writeStream.end();
         writeStream.on('finish', () => {
             // console.log('wrote all data to file');

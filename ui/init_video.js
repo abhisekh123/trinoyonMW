@@ -29,7 +29,7 @@ tg.createScene = function () {
 
 tg.refreshUI = function () {
     //placeholder function.will be replaced by other methods.
-    console.log('refreshUI');
+    // console.log('refreshUI');
 
 };
 
@@ -91,13 +91,13 @@ tg.video.leftJoystickActive = false;
 tg.video.rightJoystickActive = false;
 
 tg.video.cameraPan = function (angleParam) {
-    console.log('camera pan:', angleParam);
+    // console.log('camera pan:', angleParam);
     tg.video.moveCameraSideway(Math.cos(angleParam));
     tg.video.moveCameraStraight(-Math.sin(angleParam));
 };
 
 tg.video.cameraChangeView = function (angleParam) {
-    console.log('camera view:', angleParam);
+    // console.log('camera view:', angleParam);
     tg.video.cameraRotate(Math.cos(angleParam));
     tg.video.cameraZoom(-Math.sin(angleParam));
 };

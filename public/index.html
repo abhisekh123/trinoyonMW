@@ -767,7 +767,7 @@
     };
 
     function makeFullScreen() {
-        console.log("makeFullScreen");
+        // console.log("makeFullScreen");
         // if (tg.canvas.webkitRequestFullScreen) {
         //     alert('webkit');
         //     tg.canvas.webkitRequestFullScreen();
@@ -780,23 +780,23 @@
         // var htmlElement = tg.canvas;
         var htmlElement = $('body')[0];
         if (htmlElement.requestFullscreen) {
-            console.log('webkit 1');
+            // console.log('webkit 1');
             htmlElement.requestFullscreen();
         } else if (htmlElement.mozRequestFullScreen) {
             /* Firefox */
-            console.log('webkit 2');
+            // console.log('webkit 2');
             htmlElement.mozRequestFullScreen();
         } else if (htmlElement.webkitRequestFullscreen) {
             /* Chrome, Safari and Opera */
-            console.log('webkit 3');
+            // console.log('webkit 3');
             htmlElement.webkitRequestFullscreen();
         } else if (htmlElement.msRequestFullscreen) {
             /* IE/Edge */
-            console.log('webkit 4');
+            // console.log('webkit 4');
             htmlElement.msRequestFullscreen();
         } else {
             htmlElement.requestFullscreen();
-            console.log('webkit 5');
+            // console.log('webkit 5');
         }
     };
 </script>

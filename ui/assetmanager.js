@@ -93,12 +93,12 @@ tg.am.preloadAssets = function(){
 }
 
 tg.am.updateNewAssetLoaded = function(count){
-    console.log('tg.am.updateNewAssetLoaded');
+    // console.log('tg.am.updateNewAssetLoaded');
     tg.am.totalAssetsLoaded_tillNow += count;
     tg.pv.refreshAssetLoadedAlert(tg.am.totalAssetsLoaded_tillNow, tg.am.totalAssetsToBeLoaded);
 
     if(tg.am.totalAssetsLoaded_tillNow >= tg.am.totalAssetsToBeLoaded){
-        console.log('(tg.am.totalAssetsLoaded_tillNow >= tg.am.totalAssetsToBeLoaded)');
+        // console.log('(tg.am.totalAssetsLoaded_tillNow >= tg.am.totalAssetsToBeLoaded)');
         tg.am.onLoadCompleteActionHandler();
     }
 };
@@ -122,7 +122,7 @@ tg.am.getMaterialsForPlane = function(configParam, idPrefix){
 };
 
 tg.am.createMaterials = function () {
-    console.log('creating materials');
+    // console.log('creating materials');
 
     // material for crates
     var boxMaterial = new BABYLON.StandardMaterial("material_box", tg.scene);
@@ -354,7 +354,7 @@ tg.am.createMaterials = function () {
     material_neutral_hpbarcontainer.freeze();
     tg.am.material_neutral_hpbarcontainer = material_neutral_hpbarcontainer;
 
-    console.log('complete creating materials');
+    // console.log('complete creating materials');
 };
 
 tg.am.initialiseBotMetaDataFactory = function(playerConfigArray){
@@ -391,7 +391,7 @@ tg.am.initialiseBotMetaDataFactory = function(playerConfigArray){
         }
     }
 
-    console.log('metaDataRequirement:', metaDataRequirement);
+    // console.log('metaDataRequirement:', metaDataRequirement);
 
     // initialise factory objects
 

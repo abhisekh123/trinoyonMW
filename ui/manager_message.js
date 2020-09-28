@@ -58,9 +58,9 @@ tg.message.autoResetUI = function () {
 
 tg.message.recipientSelectionUpdated = function (element) {
     // var selectedIndex = $('.message-recipients')[0].selectedIndex;
-    console.log('selectedIndex:', element.value);
+    // console.log('selectedIndex:', element.value);
     tg.message.messageRecipients = element.value;
-    console.log('tg.message.messageRecipients:', tg.message.messageRecipients);
+    // console.log('tg.message.messageRecipients:', tg.message.messageRecipients);
 };
 
 tg.message.acceptMatchmakingRequest = function (messajeJSONParam) {
@@ -92,7 +92,7 @@ tg.message.invitePlayer = function (index) {
     var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
     var messageArrayIndex = (oldestMessageArrayIndex + index) % tg.message.latestMessages.length;
     var messageObject = tg.message.latestMessages[messageArrayIndex];
-    console.log('invite:', messageObject);
+    // console.log('invite:', messageObject);
 
     var senderId = tg.self.userConfig.id;
     var recipientId = messageObject.userId;
@@ -134,7 +134,7 @@ tg.message.challengePlayer = function (index) {
     var oldestMessageArrayIndex = tg.uu.getNextArrayIndex(tg.message.newestMessageIndex, 1, tg.message.latestMessages);
     var messageArrayIndex = (oldestMessageArrayIndex + index) % tg.message.latestMessages.length;
     var messageObject = tg.message.latestMessages[messageArrayIndex];
-    console.log('challenge:', messageObject);
+    // console.log('challenge:', messageObject);
 
     var senderId = tg.self.userConfig.id;
     var recipientId = messageObject.userId;
@@ -167,7 +167,7 @@ tg.message.sendMessage = function () {
     tg.message.state.messageSent = true;
     tg.message.state.messageSentTime = tg.currentTime;
 
-    console.log('sendPacket:', sendPacket);
+    // console.log('sendPacket:', sendPacket);
 
     // test code start
     // sendPacket.senderName = tg.message.testUserIds[tg.uu.getRandom(0, tg.message.testUserIds.length - 1)].name;
@@ -180,7 +180,7 @@ tg.message.sendMessage = function () {
 
 
 tg.message.consumeMessage = function (messageParam) {
-    console.log('consume message:', messageParam);
+    // console.log('consume message:', messageParam);
 
     switch (messageParam.sub) {
         case 'text':
@@ -293,7 +293,7 @@ tg.message.toggleMessagesUI = function (element) {
         $('.message-list-container').hide();
     }
 
-    console.log('tg.message.isUIVisible:' + tg.message.isUIVisible);
+    // console.log('tg.message.isUIVisible:' + tg.message.isUIVisible);
 };
 
 tg.message.getMeassageTableRowElement = function (type) {

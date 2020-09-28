@@ -4,7 +4,7 @@ module.exports = {
     myname:'wer',
     messagebuffer:null,
     consumeMessage: function(data){
-        console.log('@@@WRKR@@@' + this.myname + '/t worker got message:' + data);
+        // console.log('@@@WRKR@@@' + this.myname + '/t worker got message:' + data);
         // // console.log(this.messagebuffer);
         this.messagebuffer.push(data);
 

@@ -178,17 +178,17 @@ module.exports = function () {
     }
     // gives the size of the list 
     this.sizeOfList = function () {
-        console.log(this.size);
+        // console.log(this.size);
     }
     // prints the list items 
     this.printList = function () {
         var curr = this.head;
         // var str = "";
-        console.log(this.size);
+        // console.log(this.size);
         while (curr) {
-            console.log('---');
+            // console.log('---');
             // str +  = curr.element + " ";
-            console.log(curr);
+            // console.log(curr);
             curr = curr.next;
         }
         // console.log(str);

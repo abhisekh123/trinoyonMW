@@ -2,7 +2,7 @@ tg.bot = {};
 tg.bot.userPlayerConfig = null;
 
 tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComplete) {
-    console.log('start tg.bot.reloadBots');
+    // console.log('start tg.bot.reloadBots');
     tg.bot.characters = {};
     tg.bot.playerConfigArray = playerConfigArray;
 
@@ -17,7 +17,7 @@ tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComple
 
     for (let i = 0; i < playerConfigArray.length; i++) {
         const playerBotArray = playerConfigArray[i].botObjectList;
-        console.log('playerBotArray:', playerBotArray);
+        // console.log('playerBotArray:', playerBotArray);
         if (i == playerSelfIndex) {
             tg.bot.userPlayerConfig = playerConfigArray[i];
             tg.bot.userPlayerConfig.selectedBot = null;
@@ -40,7 +40,7 @@ tg.bot.loadCharacters = function (
     team
 ) {
     // const characterName = botConfig.type;
-    console.log('start tg.bot.loadCharacters');
+    // console.log('start tg.bot.loadCharacters');
     // console.log('--------->' + characterName);
     var characterConfig = tg.itemConfigs.items[botConfig.type];
 
@@ -55,7 +55,7 @@ tg.bot.loadCharacters = function (
             skeletons,
             animationGroups,
         ) {
-            console.log('load character with id:' + botConfig.id);
+            // console.log('load character with id:' + botConfig.id);
             tg.bot.processLoadedModel(newMeshes,
                 particleSystems,
                 skeletons,
@@ -83,7 +83,7 @@ tg.bot.processLoadedModel = function (
     team,
     playerID
 ) {
-    console.log('start tg.bot.processLoadedModel');
+    // console.log('start tg.bot.processLoadedModel');
     const rotationParam = botConfig.rotation;
     const characterName = botConfig.type;
     const characterID = botConfig.id;
@@ -282,7 +282,7 @@ tg.bot.processLoadedModel = function (
     // }
 
     tg.audio.initGameDynamicObjectAudio(botObject, characterConfig);
-    console.log(botObject.ability);
+    // console.log(botObject.ability);
 
     tg.am.updateNewAssetLoaded(1);
 };
@@ -290,7 +290,7 @@ tg.bot.processLoadedModel = function (
 // add additional data/asset to the botconfig based on bot type
 tg.bot.addMetaDataToBot = function (botObject, characterConfig, characterID, positionParam) {
     // populate character type assets
-    console.log('tg.bot.addMetaDataToBot:', characterID);
+    // console.log('tg.bot.addMetaDataToBot:', characterID);
     switch (botObject.type) {
         case 'lion':
             botObject.projectile = null;
@@ -347,7 +347,7 @@ tg.bot.addMetaDataToBot = function (botObject, characterConfig, characterID, pos
             break;
 
         default:
-            console.log('unknown bot type:', botObject.type);
+            // console.log('unknown bot type:', botObject.type);
             break;
     }
 

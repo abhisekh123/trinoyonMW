@@ -1,7 +1,7 @@
 tg.view = {};
 
 tg.view.processMMRUpdate = function (updateParam) {
-    console.log('got mmr update:', updateParam);
+    // console.log('got mmr update:', updateParam);
 
     const enemyElementList = $('.hg-matchmaking-enemy-player-container');
     const teamElementList = $('.hg-matchmaking-team-player-container');

@@ -9,10 +9,10 @@ tg.static.loadStaticModel = function (
     itemType,
     team
 ) {
-    console.log('loadStaticModel:', itemID);
-    console.log('positionParam:', positionParam);
-    console.log('rotation:', rotation);
-    console.log('scale:', scale);
+    // console.log('loadStaticModel:', itemID);
+    // console.log('positionParam:', positionParam);
+    // console.log('rotation:', rotation);
+    // console.log('scale:', scale);
 
     var hpBarMaterial = tg.am.material_neutral_hpbar;
     var hpBarContainerMaterial = tg.am.material_neutral_hpbarcontainer;
@@ -223,7 +223,7 @@ tg.static.loadStaticModel = function (
 
     tg.am.updateNewAssetLoaded(1);
 
-    console.log('loadStaticModel end:', itemID);
+    // console.log('loadStaticModel end:', itemID);
 };
 
 tg.static.freezeStaticAssets = function(){
@@ -304,7 +304,7 @@ tg.static.loadGLTFAssetFileForStaticMeshes = function (
             skeletons,
             animationGroups
         ){
-            console.log('inner function', filenameParam);
+            // console.log('inner function', filenameParam);
             // this.meshes = newMeshes;
             tg.static.loadStaticModel(
                 newMeshes,
@@ -324,7 +324,7 @@ tg.static.loadGLTFAssetFileForStaticMeshes = function (
  * @param {*} actionOnComplete : action to be performed once all assets has been loadded
  */
 tg.static.loadStaticAssets = function (actionOnComplete) {
-    console.log('load gltf assets for static items.');
+    // console.log('load gltf assets for static items.');
     var staticItemCount = 0;
     tg.am.onLoadComplete = actionOnComplete;
 
@@ -335,7 +335,7 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
 
     tg.am.totalAssetsToBeLoaded += tg.audio.loadAudioAssets();
     tg.am.totalAssetsToBeLoaded += tg.am.preloadAssets();
-    console.log('total asset to be loaded:' + tg.am.totalAssetsToBeLoaded);
+    // console.log('total asset to be loaded:' + tg.am.totalAssetsToBeLoaded);
 
     // defence team 1
     for (let index = 0; index < tg.worldItems.defenceTop.length; index++) {
@@ -418,7 +418,7 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
 };
 
 tg.static.resetStaticItems = function () {
-    console.log('tg.static.resetStaticItems()');
+    // console.log('tg.static.resetStaticItems()');
 };
 
 

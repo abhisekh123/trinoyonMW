@@ -49,7 +49,7 @@ tg.notification.processUserReaction = function(reactionFlag){
     switch (tg.notification.currentState) {
         case 'challenge':
         case 'invite':
-            console.log(tg.notification.payload);
+            // console.log(tg.notification.payload);
             if(reactionFlag == true){ // accepted matchmaking request
                 tg.message.acceptMatchmakingRequest(tg.notification.payload);
             } else { // rejected matchmaking request

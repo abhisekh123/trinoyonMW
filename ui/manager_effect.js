@@ -110,7 +110,7 @@ tg.effect.processAbilityStateChangeEvent = function (botObject, updateItemConfig
 
 
 tg.effect.addAbilityEffectPlane = function (abilityObject, characterID, positionParam, abilityConfig) {
-    console.log(abilityObject.action + '::tg.effect.addAbilityEffectPlane:', characterID);
+    // console.log(abilityObject.action + '::tg.effect.addAbilityEffectPlane:', characterID);
     var faceUV = new BABYLON.Vector4(0, 0, 1, 1);
 
     var options = {

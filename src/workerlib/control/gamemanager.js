@@ -160,7 +160,7 @@ module.exports = {
     },
 
     startNewGame: function(gameRoom, startTime) {
-        console.log('starting new game room');
+        // console.log('starting new game room');
         // by this time all user admission is complete.
         gameRoom.gameStartTime = startTime;
         gameRoom.timeElapsed = 0;
@@ -183,7 +183,7 @@ module.exports = {
         snapShotManager.setNewSnapshotObject(gameRoom);
         messageManager.broadcastGameConfigToPlayers(gameRoom);
 
-        console.log('game started:', workerState.userToPlayerMap);
+        // console.log('game started:', workerState.userToPlayerMap);
     },
 
     setNewStatisticsObject: function(gameRoom){

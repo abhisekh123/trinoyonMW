@@ -211,7 +211,7 @@ module.exports = {
         }
         if (buildingConfig.life <= 0 && buildingConfig.isActive) { // building that got destroyed in the last cycle.
             if (buildingConfig.type == 'base') {
-                console.log('base destroyed.');
+                // console.log('base destroyed.');
                 this.terminateGame(gameRoom);
                 // this.resetGame(gameRoom);
                 return;
@@ -465,8 +465,8 @@ module.exports = {
 
     terminateGame: function (gameRoom) { // either base destroyed or time completed.
         console.log('###################################');
-        console.log('###################################');
-        console.log('###################################');
+        // console.log('###################################');
+        // console.log('###################################');
         gameRoom.isActive = false;
         this.generateGameResult(gameRoom);
         messageManager.broadcastGameResultToPlayers(gameRoom);

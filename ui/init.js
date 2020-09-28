@@ -1,7 +1,7 @@
 
 
 function initClient(){
-    console.log('initClient');
+    // console.log('initClient');
 
     // initialise the clock with running status.
     tg.clockTickInterval = 1000;
@@ -46,7 +46,7 @@ tg.clockUpdateEventHandler_customActivity = function(){
 
 tg.startClock = function() {
     if(tg.clockUpdateEventHandler != null || tg.clock != null){
-        console.log('clock seems to be running already');
+        // console.log('clock seems to be running already');
     }
 
     // tg.clockUpdateEventHandler = callBackFunction;
@@ -54,7 +54,7 @@ tg.startClock = function() {
 }
 
 tg.stopClock = function() {
-    console.log('stopping the clock.');
+    // console.log('stopping the clock.');
     clearInterval(tg.clock);
     tg.clock = null;
     // tg.clockUpdateEventHandler = null;
@@ -79,7 +79,7 @@ function entrypoint(){
     tg.network.initNetworkManager();
     // console.log('1');
     var packet = tg.getEmptyMessagePacket('init_ui');
-    console.log(packet);
+    // console.log(packet);
     tg.sendMessageToWS(packet);
 }
 

@@ -2,7 +2,7 @@ tg.input = {};
 tg.input.keyMap = {}; //object for multiple key presses
 
 tg.input.init = function() {
-    console.log('init input');
+    // console.log('init input');
 
     //     var el = document.getElementsByTagName("canvas")[0];
     //   el.addEventListener("touchstart", handleStart, false);
@@ -37,7 +37,7 @@ tg.input.onPointerDownFunction = function (evt, pickResult) {
             }
         }else{
             var botIndex = tg.bot.userBotIdMap[pickResult.pickedMesh.name];
-            console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
+            // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
             if(botIndex != null && botIndex != undefined){
                 tg.hl.selectSelfBot(botIndex, false);
             }

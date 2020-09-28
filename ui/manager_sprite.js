@@ -69,7 +69,7 @@ tg.sprite.refresh = function(){
 tg.sprite.test_boxAnimation = function () {
     // alert('sprite_manager');
     // alert('sprite_manager');
-    console.log('--------sprite_manager--------');
+    // console.log('--------sprite_manager--------');
 
     var mat = new BABYLON.StandardMaterial("mat1", tg.scene);
     mat.alpha = 1.0;

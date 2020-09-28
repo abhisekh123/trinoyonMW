@@ -151,7 +151,7 @@ tg.world.processResult = function (resultObject) {
 
 
 tg.world.updateBuildingTeamMarker = function () {
-    console.log('updateBuildingTeamMarker');
+    // console.log('updateBuildingTeamMarker');
     for (var i = 0; i < tg.am.staticItems.buildingsArray.length; ++i) {
         var buildingConfig = tg.am.staticItems.buildingsArray[i];
         tg.static.updateBuildingTeam(buildingConfig, buildingConfig.team);
@@ -161,7 +161,7 @@ tg.world.updateBuildingTeamMarker = function () {
 
 // method that triggers when all the assets for the current match has been loaded.
 tg.world.handleNewMatchStartReadyTrigger = function () {
-    console.log('all assets loaded');
+    // console.log('all assets loaded');
     // tg.sprite.test();
     tg.isGameLive = true;
 
@@ -218,7 +218,7 @@ tg.world.processAttackEvent = function (sourceConfig, destinationConfig, eventsA
             ))
         );
     } else {
-        console.log('building attack event:', eventsArrayItem);
+        // console.log('building attack event:', eventsArrayItem);
     }
 
     // if (sourceConfig.projectile == null) { // source config has melee attack
@@ -461,7 +461,7 @@ tg.world.updateWorldDormant = function (updateParam) {};
 
 
 tg.world.testResultRendering = function () {
-    console.log('test result rendering');
+    // console.log('test result rendering');
 
     tg.world.processResult({
         "towerCountTeam1": 5,

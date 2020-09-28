@@ -45,7 +45,7 @@ module.exports = {
             }
         }
 
-        console.log('addUserToWaitingList mmr:', userMessage);
+        // console.log('addUserToWaitingList mmr:', userMessage);
 
         if(this.canAdmitNewPlayer()){
             userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
@@ -65,7 +65,7 @@ module.exports = {
     addUserToWaitingList: function(userMessage) {
         // const userId = userMessage.userId;
         userMessage.players = [userMessage.userId];
-        console.log('addUserToWaitingList:', userMessage);
+        // console.log('addUserToWaitingList:', userMessage);
 
         if(this.canAdmitNewPlayer()){
             userMessage.timeWhenAddedToList = utilityFunctions.getCurrentTime();
@@ -97,7 +97,7 @@ module.exports = {
         // iterate through user list
         // TODO: is this validation needed?
         if(workerState.waitingUsersLinkedList.isEmpty()){
-            console.log('no pending admit request.');
+            // console.log('no pending admit request.');
             return response;
         }
         // console.log('start processWaitingUserAdmitRequests');
@@ -117,11 +117,11 @@ module.exports = {
             }
             
             if(!admitResponse){ // could not admit
-                console.log('could not admit:', currentNode.element);
+                // console.log('could not admit:', currentNode.element);
                 // workerState.playerFitCache[currentNode.element.players.length] = false;
             }else{
                 // admitted successfully. remove the current request node, move to next node.
-                console.log('successfully admitted:', currentNode.element);
+                // console.log('successfully admitted:', currentNode.element);
                 currentNode = workerState.waitingUsersLinkedList.removeCurrentNode();
                 
                 response = true;
@@ -154,15 +154,15 @@ module.exports = {
 
 
     tryAdmitingNewMMRPlayersToGame: function(admitRequest, gameRoom){
-        console.log('tryAdmitingNewPlayersToGame:', admitRequest);
+        // console.log('tryAdmitingNewPlayersToGame:', admitRequest);
         const mmrConfig = admitRequest.mmrConfig;
         if(this.getEmptyPlayerSlotsInTeam(gameRoom.players_1) >= mmrConfig.players_1.length
             && this.getEmptyPlayerSlotsInTeam(gameRoom.players_2) >= mmrConfig.players_2.length){
                 var player1Index = 0;
                 var player2Index = 0;
                 for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
-                    console.log('mmrConfig.players_1[i]:', mmrConfig.players_1[i]);
-                    console.log('mmrConfig.players_2[i]:', mmrConfig.players_2[i]);
+                    // console.log('mmrConfig.players_1[i]:', mmrConfig.players_1[i]);
+                    // console.log('mmrConfig.players_2[i]:', mmrConfig.players_2[i]);
                     // check team 1
                     if(mmrConfig.players_1[i] != null){
                         while(gameRoom.players_1[player1Index].userId != null){
@@ -188,7 +188,7 @@ module.exports = {
     },
 
     tryAdmitingNewPlayersToGame: function(admitRequest, gameRoom){
-        console.log('tryAdmitingNewPlayersToGame:', admitRequest);
+        // console.log('tryAdmitingNewPlayersToGame:', admitRequest);
         const usersToJoin = admitRequest.players;
         let selectedTeam = null;
 
@@ -247,7 +247,7 @@ module.exports = {
         gameRoomPlayerConfig.lastCommunication = workerState.currentTime;
         gameRoomPlayerConfig.isAIDriven = false;
 
-        console.log('selectedTeamPlayer:', gameRoomPlayerConfig);
+        // console.log('selectedTeamPlayer:', gameRoomPlayerConfig);
         this.setBotObjectAttributes(gameRoomPlayerConfig.hero, gameRoomPlayerConfig.botObjectList[0]); // rewrite the hero bot object with new hero config.
         for(var i = 0; i < gameRoomPlayerConfig.botList.length; ++i){
             this.setBotObjectAttributes(gameRoomPlayerConfig.botList[i], gameRoomPlayerConfig.botObjectList[i + 1]);

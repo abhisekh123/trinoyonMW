@@ -58,7 +58,7 @@ module.exports = {
             case 'request_game_admit_nack': // client has been granted admission to the game.
             case 'request_game_admit_ack': // client has been granted admission to the game.
                 var userIdList = jsonData.players;
-                console.log('get request_game_admit_ack for :' + userIdList);
+                // console.log('get request_game_admit_ack for :' + userIdList);
                 // let clientWS = clientregistry.clientArrey[userId].ws;
                 // clientregistry.sendMessageToClient(clientWS, ev.data);
                 var jsonDataString = JSON.stringify(jsonData);
@@ -80,7 +80,7 @@ module.exports = {
  
     
     postMessage: function(messageJSON: request_message){
-        console.log('sending message to worker::' , messageJSON);
+        // console.log('sending message to worker::' , messageJSON);
         try {
             serverState.workerHandle.postMessage(messageJSON);    
         } catch (error) {

@@ -103,7 +103,7 @@ tg.uu.viewSelectedPlayerResultDetails = function (elementParam, playerIndex) {
 };
 
 tg.uu.displaySelectedBotDetails = function(elementParam, botIndex){
-    console.log('displaySelectedBotDetails');
+    // console.log('displaySelectedBotDetails');
     var selectedBotDetailsImage = elementParam.find('.hg-bot-image');
     var selectedBotDetailsInformation = elementParam.find('.hg-botinfo');
     var selectedBotDetailsAbilityImage = elementParam.find('.ability-Image');

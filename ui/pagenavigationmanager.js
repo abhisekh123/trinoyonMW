@@ -31,7 +31,7 @@ tg.pn.showControls = function() {
 };
 
 tg.pn.showMatchStartingLoader = function(){
-    console.log('showMatchStartingLoader. current page:', tg.pn.currentPage);
+    // console.log('showMatchStartingLoader. current page:', tg.pn.currentPage);
     switch (tg.pn.currentPage) {
         case 'startcountdown':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
@@ -53,7 +53,7 @@ tg.pn.showMatchStartingLoader = function(){
 };
 
 tg.pn.showMatchResultPage = function(){
-    console.log('showMatchResultPage');
+    // console.log('showMatchResultPage');
     switch (tg.pn.currentPage) {
         case 'game-play':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
@@ -85,7 +85,7 @@ tg.pn.showMatchResultPage = function(){
 };
 
 tg.pn.showMatchPage = function(){
-    console.log('showMatchPage');
+    // console.log('showMatchPage');
     switch (tg.pn.currentPage) {
         case 'match-loading':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
@@ -97,7 +97,7 @@ tg.pn.showMatchPage = function(){
             break;
     }
     tg.static.freezeStaticAssets();
-    console.log('print bot grand list::', tg.am.dynamicItems.botsArray);
+    // console.log('print bot grand list::', tg.am.dynamicItems.botsArray);
     // tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#footerrow").show();
@@ -122,7 +122,7 @@ tg.pn.showMatchPage = function(){
 
 // display home page.
 tg.pn.showHomePage = function(){
-    console.log('showHomePage');
+    // console.log('showHomePage');
     switch (tg.pn.currentPage) {
         case 'landing':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
@@ -148,7 +148,7 @@ tg.pn.showHomePage = function(){
 }
 
 tg.pn.showGameStartCountDownPage = function(estimatedTimeInSeconds){
-    console.log('show GameStartCountDown page');
+    // console.log('show GameStartCountDown page');
     switch (tg.pn.currentPage) {
         case 'home':
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
@@ -175,7 +175,7 @@ tg.pn.showGameStartCountDownPage = function(estimatedTimeInSeconds){
 
 
 tg.pn.showLandingPage = function(){
-    console.log('show landing page');
+    // console.log('show landing page');
     tg.pn.currentPage = 'landing';
     
     $("#load-indicator").show();

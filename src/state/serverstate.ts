@@ -117,10 +117,10 @@ module.exports = {
             const mmr = this.user_matchMaking_rooms[i];
 
             if(mmr.isActive == true){
-                console.log('sendMMRUpdateToPlayers:', i);
+                // console.log('sendMMRUpdateToPlayers:', i);
 
                 if(this.serverTime - mmr.creationTime > this.mmrLifeSpan){
-                    console.log('mmr lifespan expired.');
+                    // console.log('mmr lifespan expired.');
                     this.deallocateMatchMakingRoom(i);
                     continue;
                 }
@@ -193,7 +193,7 @@ module.exports = {
     // searchUserFromMatchmakingRoom
 
     processUserSelectionUpdateForMMR: function(messageJSONParam: any) {
-        console.log('got selection update for:', messageJSONParam.payload.senderId);
+        // console.log('got selection update for:', messageJSONParam.payload.senderId);
         const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
         requesterUserObject.selection = messageJSONParam.payload.selection;
     },
@@ -215,8 +215,8 @@ module.exports = {
         }
         requesterUserObject.isMMRReady = false;
         // check if already in any mmr
-        console.log('admitPlayerToMatchmakingRoom:', messageJSONParam);
-        console.log('team:', team);
+        // console.log('admitPlayerToMatchmakingRoom:', messageJSONParam);
+        // console.log('team:', team);
         var mmr = this.user_matchMaking_rooms[mmrIndex];
         let playerArray = null;
 
@@ -249,7 +249,7 @@ module.exports = {
             }
         }
 
-        console.log('after admit:', mmr);
+        // console.log('after admit:', mmr);
         this.notifyPlayerMatchmakingRoomAdmit(messageJSONParam.payload.senderId);
         // notify player admit update
         return true;
@@ -259,7 +259,7 @@ module.exports = {
     // if a person sends challenge/invite and is not already member of a matchmaking room
     // then create a new matchmaking room
     allocateNewGameRoomIfNeeded: function(messageJSONParam: any){ 
-        console.log('allocateNewGameRoomIfNeeded');
+        // console.log('allocateNewGameRoomIfNeeded');
         const requesterUserObject = this.users_server_state[messageJSONParam.payload.senderId];
         if(requesterUserObject.mmrIndex == null){ // allocate new mmr
             for(var i = 0; i < environmentState.maxMatchMakingRoomCount; ++i){
@@ -319,7 +319,7 @@ module.exports = {
         var matchRoom = this.user_matchMaking_rooms[index];
         matchRoom.isActive = false;
 
-        console.log('deallocateMatchMakingRoom:', index);
+        // console.log('deallocateMatchMakingRoom:', index);
 
         // matchRoom.owner = null;
         for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
@@ -339,7 +339,7 @@ module.exports = {
     },
 
     evolveMatchMakingRoom: function(index: number, mmrConfigParam: any){
-        console.log('evolveMatchMakingRoom:', index);
+        // console.log('evolveMatchMakingRoom:', index);
         // TOD communicate with workers to queue matchmaking room
         // const mmrthis.user_matchMaking_rooms[index];
         const requestJSON: any = {};

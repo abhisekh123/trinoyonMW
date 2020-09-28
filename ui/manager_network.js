@@ -40,5 +40,5 @@ tg.network.sendAbilityInstruction = function(botIdParam, abilityIndex) {
 };
 
 tg.network.initNetworkManager = function() {
-    console.log('initNetworkManager');
+    // console.log('initNetworkManager');
 };

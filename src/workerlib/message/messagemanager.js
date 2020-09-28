@@ -38,7 +38,7 @@ module.exports = {
 
 
 
-        console.log('sending game config');
+        // console.log('sending game config');
         // send config to players in team  1
         payload.playerIDList = playerArrayTeam1;
         var responseJSON = mainThreadStub.getResponseEmptyPacket('game_config', payload);
@@ -155,7 +155,7 @@ module.exports = {
      */
 
     updateBotAction: function(userMessageObject){
-        console.log('update bot action:', userMessageObject);
+        // console.log('update bot action:', userMessageObject);
         var userId = userMessageObject.userId;
         
         var userPlayerObject = workerState.userToPlayerMap[userId];
@@ -219,10 +219,10 @@ module.exports = {
      * PROCESS INCOMING MESSAGE
      */
     processIncomingMessages: function(){
-        console.log('woreker@processIncomingMessages');
+        // console.log('woreker@processIncomingMessages');
         // var playerID = -1;
         for(var i = 0; i < mainThreadStub.messagebuffer.length; ++i){
-            console.log(i + '>processIncomingMessages::' + mainThreadStub.messagebuffer[i]);
+            // console.log(i + '>processIncomingMessages::' + mainThreadStub.messagebuffer[i]);
             var currentMessage = mainThreadStub.messagebuffer[i];
             if(currentMessage == null || currentMessage == undefined || currentMessage.type == undefined || currentMessage.type == null){
                 continue;
@@ -237,7 +237,7 @@ module.exports = {
                     gameRoomAssetManager.addMMRUsersToWaitingList(currentMessage);
                     break;
                 case 'request_game_admit':
-                    console.log('request game admit', currentMessage);
+                    // console.log('request game admit', currentMessage);
                     // var userId = currentMessage.userId;
                     // console.log(gameRoomAssetManager);
                     // console.log(messageFactory);

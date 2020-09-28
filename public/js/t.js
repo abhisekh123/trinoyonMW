@@ -23,7 +23,7 @@ tg.self.updateUserConfig = function(userConfig){
 
     tg.self.userConfig = userConfig;
     tg.self.userConfig.joinedMMR = false;
-    console.log('self userConfig:', tg.self.userConfig);
+    // console.log('self userConfig:', tg.self.userConfig);
     $('#hg-player').text(tg.self.userConfig.firstName + ' ' + tg.self.userConfig.lastName);
 };
 
@@ -38,7 +38,7 @@ function initSystem() {
     $.get('/ox', {
         type: 'p'
     }, function (data, textStatus, jqXHR) {
-        console.log('ox response', data);
+        // console.log('ox response', data);
         tg.self.updateUserConfig(data.data.userConfig);
         tg.connectToParent(data.data.u, data.data.k);
     });
@@ -72,8 +72,8 @@ tg.onAppExit = function(){
 
 tg.connectToParent = function (parentEndPoint, keyIdentifier) {
     // parentEndPoint = window.location.hostname;
-    console.log('parentEndPoint:', parentEndPoint);
-    console.log('keyIdentifier:', keyIdentifier);
+    // console.log('parentEndPoint:', parentEndPoint);
+    // console.log('keyIdentifier:', keyIdentifier);
     tg.socket = new WebSocket(parentEndPoint, keyIdentifier);
     // if(window.location.port == ''){
     //     tg.socket = new WebSocket("wss://" + parentEndPoint, [keyIdentifier, "protocolTwo"]);
@@ -81,7 +81,7 @@ tg.connectToParent = function (parentEndPoint, keyIdentifier) {
     //     tg.socket = new WebSocket("ws://" + parentEndPoint + ":" + window.location.port , [keyIdentifier, "protocolTwo"]);
     // }
     tg.socket.onopen = function (event) {
-        console.log('connected to websocket server.');
+        // console.log('connected to websocket server.');
         tg.sendMessageToWS(tg.getEmptyMessagePacket('init'));
     };
 
@@ -92,16 +92,16 @@ tg.connectToParent = function (parentEndPoint, keyIdentifier) {
             // console.log('processing update.', responseJSON);
             tg.updateWorld(responseJSON);
         } else if (responseJSON.type == 'message') {
-            console.log('processing message.', responseJSON);
+            // console.log('processing message.', responseJSON);
             // tg.world.startNewMatch(responseJSON.playerConfig, responseJSON.playerIndex);
             tg.message.consumeMessage(responseJSON);
             // alert('could not join. game is full.');
         } else if (responseJSON.type == 'game_config') {
-            console.log('processing game_config.', responseJSON);
+            // console.log('processing game_config.', responseJSON);
             tg.world.startNewMatch(responseJSON.playerConfig, responseJSON.playerIndex);
             // alert('could not join. game is full.');
         } else if (responseJSON.type == 'result') {
-            console.log('processing result.', responseJSON);
+            // console.log('processing result.', responseJSON);
             tg.world.processResult(responseJSON.playerConfig);
             // tg.world.startNewMatch(responseJSON.playerConfig, responseJSON.playerIndex);
             // alert('could not join. game is full.');

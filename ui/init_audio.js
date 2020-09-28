@@ -146,7 +146,7 @@ tg.audio.playItemEventAudio = function (objectParam, eventType) {
                 
             // }
             if(objectParam.playerID == tg.bot.userPlayerConfig.id){
-                console.log('level up:', objectParam.id);
+                // console.log('level up:', objectParam.id);
                 tg.audio.playGameAudio(
                     objectParam.sound,
                     objectParam.animations.teamLevelUpAnimation.offset,

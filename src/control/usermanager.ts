@@ -45,7 +45,7 @@ module.exports = {
     disconnectUser: function (userId: string) {
         
         if (this.serverState.users_server_state[userId].ws != null) {
-            console.log('disconnectUser:', userId);
+            // console.log('disconnectUser:', userId);
             this.serverState.users_server_state[userId].ws.close();
             this.serverState.users_server_state[userId].ws = null;
 
@@ -54,7 +54,7 @@ module.exports = {
                 type: 'client_disconnected',
                 userId: userId
             };
-            console.log(this.workerManager);
+            // console.log(this.workerManager);
             // this.workermanager.postMessage()
             this.workerManager.postMessage(requestJSON);
         }

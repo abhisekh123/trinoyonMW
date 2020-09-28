@@ -29,7 +29,7 @@ export class RequestProcessor {
                 workermanager.postMessage(requestJSON);
                 break;
             case 'message':
-                console.log('got message:', requestJSON);
+                // console.log('got message:', requestJSON);
                 this.processIncomingMessages(requestJSON);
                 break;
             case 'binary':
@@ -76,7 +76,7 @@ export class RequestProcessor {
                 break;
             case 'invite':
             case 'challenge':
-                console.log(requestJSON.payload.recipientId + '=from=' + requestJSON.payload.senderId);
+                // console.log(requestJSON.payload.recipientId + '=from=' + requestJSON.payload.senderId);
                 if(requestJSON.payload.recipientId == requestJSON.payload.senderId){
                     // can not self invite/challenge
                     return;
@@ -104,12 +104,12 @@ export class RequestProcessor {
                 );
                 break;
             case 'acceptmatchmakingrequest':
-                console.log('requestJSON.recipientId:', requestJSON.payload.recipientId);
+                // console.log('requestJSON.recipientId:', requestJSON.payload.recipientId);
                 const requesterUserObject = this.serverState.users_server_state[requestJSON.payload.recipientId];
                 // console.log('requesterUserObject:', requesterUserObject);
                 if(requesterUserObject.mmrIndex == null){
                     requestJSON.sub = 'mmralreadystarted';
-                    console.log('============mmralreadystarted');
+                    // console.log('============mmralreadystarted');
                     clientBroadcaster.sendMessageToRecipientByUserID(
                         requestJSON.payload.senderId, JSON.stringify(requestJSON)
                     );

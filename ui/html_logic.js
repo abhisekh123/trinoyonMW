@@ -6,7 +6,7 @@ tg.hl = {};
 tg.hl.divFps = document.getElementById("fps");
 
 tg.hl.addJoysticks = function () {
-    console.log('addJoysticks');
+    // console.log('addJoysticks');
     tg.video.leftJoystickAngle = 0;
     tg.video.rightJoystickAngle = 0;
     let xAddPos = 0;
@@ -73,12 +73,12 @@ tg.hl.addJoysticks = function () {
             leftPuck.floatTop = yAddPos * -1;
             leftPuck.left = leftPuck.floatLeft;
             leftPuck.top = leftPuck.floatTop;
-            console.log('leftThumbContainer: xAddRot:' + xAddRot + " yAddRot:" + (yAddRot * -1));
+            // console.log('leftThumbContainer: xAddRot:' + xAddRot + " yAddRot:" + (yAddRot * -1));
             var relativeX = coordinates.x - (leftThumbContainer._currentMeasure.width * .5) - sideJoystickOffset;;
             
             var relativeZ = tg.pv.advancedTexture._canvas.height - coordinates.y - (leftThumbContainer._currentMeasure.height * .5) + bottomJoystickOffset;
             var angle = Math.atan2(relativeZ, relativeX);
-            console.log('left angle:' + angle + ' , ' + relativeX + ' , ' + relativeZ);
+            // console.log('left angle:' + angle + ' , ' + relativeX + ' , ' + relativeZ);
             tg.video.leftJoystickAngle = Math.atan2(relativeZ, relativeX);
         }
     });
@@ -150,7 +150,7 @@ tg.hl.addJoysticks = function () {
             
             var relativeZ = tg.pv.advancedTexture._canvas.height - coordinates.y - (rightThumbContainer._currentMeasure.height * .5) + bottomJoystickOffset;
             var angle = Math.atan2(relativeZ, -relativeX);
-            console.log('right angle:' + angle + ' , ' + relativeX + ' , ' + relativeZ);
+            // console.log('right angle:' + angle + ' , ' + relativeX + ' , ' + relativeZ);
             tg.video.rightJoystickAngle = Math.atan2(relativeZ, -relativeX);
         }
     });
@@ -191,7 +191,7 @@ tg.hl.makeThumbArea = function (name, thickness, color, background, curves) {
 
 
 $('#button-result-exit').click(function () {
-    console.log('clicked button-result-exit');
+    // console.log('clicked button-result-exit');
     $('#game-result-container').hide();
     tg.engine.dispose();
     tg.initVideo();
@@ -199,12 +199,12 @@ $('#button-result-exit').click(function () {
 });
 
 $('#button-home-start').click(function () {
-    console.log('clicked button-home-start');
+    // console.log('clicked button-home-start');
     tg.network.requestGameAdmit();
 });
 
 $('#button-show-controls').click(function () {
-    console.log('clicked button-show-controls');
+    // console.log('clicked button-show-controls');
     tg.pn.showControls();
 });
 
@@ -218,19 +218,19 @@ tg.hl.gameStartCountDownTickHandler = function () {
 
 tg.hl.countDownHandler_idle = function () {
     // do nothing
-    console.log('countDownHandler_idle');
+    // console.log('countDownHandler_idle');
 };
 
 tg.hl.updateFooterIconImageForPlayerTeamBots = function () {
     const selfBots = tg.bot.userPlayerConfig.botObjectList;
-    console.log('start updateFooterIconImageForPlayerTeamBots:', selfBots);
+    // console.log('start updateFooterIconImageForPlayerTeamBots:', selfBots);
     tg.bot.userBotIdMap = {};
     // tg.itemConfigs
     for (let j = 0; j < selfBots.length; j++) {
         let botConfig = selfBots[j];
-        console.log('botConfig.type', botConfig.type);
+        // console.log('botConfig.type', botConfig.type);
         const iconSource = tg.itemConfigs.items[botConfig.type].iconurl;
-        console.log('iconSource->', iconSource);
+        // console.log('iconSource->', iconSource);
         $('#footer-image_' + j).attr('src', iconSource);
         // return;
         tg.bot.userBotIdMap['envelop_' + botConfig.id] = j;
@@ -262,7 +262,7 @@ tg.hl.selectBotButtonClick = function (botIndex) {
 };
 
 tg.hl.selectSelfBot = function (botIndex, lookAtBot) {  
-    console.log('selectSelfBot:', botIndex);
+    // console.log('selectSelfBot:', botIndex);
     // alert('selectSelfBot');
     const botId = tg.bot.userPlayerConfig.botObjectList[botIndex].id;
     
@@ -386,7 +386,7 @@ tg.hl.clearAllFooterButtonSelection = function(){
 }
 
 tg.hl.clearSelfBotSelection = function () {
-    console.log('clearSelfBotSelection');
+    // console.log('clearSelfBotSelection');
 
     // tg.am.chosenMarker.parent = null;
 
