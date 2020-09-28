@@ -104,10 +104,19 @@ export class RequestProcessor {
                 );
                 break;
             case 'acceptmatchmakingrequest':
-                if(this.serverState.admitPlayerToMatchmakingRoom(requestJSON, requestJSON.payload.mmrIndex, requestJSON.payload.team) == false){
+                console.log('requestJSON.recipientId:', requestJSON.payload.recipientId);
+                const requesterUserObject = this.serverState.users_server_state[requestJSON.payload.recipientId];
+                // console.log('requesterUserObject:', requesterUserObject);
+                if(requesterUserObject.mmrIndex == null){
+                    requestJSON.sub = 'mmralreadystarted';
+                    console.log('============mmralreadystarted');
+                    clientBroadcaster.sendMessageToRecipientByUserID(
+                        requestJSON.payload.senderId, JSON.stringify(requestJSON)
+                    );
+                } else if(this.serverState.admitPlayerToMatchmakingRoom(requestJSON, requestJSON.payload.mmrIndex, requestJSON.payload.team) == false){
                     requestJSON.sub = 'mmrfull';
                     clientBroadcaster.sendMessageToRecipientByUserID(
-                        requestJSON.payload.sederId, JSON.stringify(requestJSON)
+                        requestJSON.payload.senderId, JSON.stringify(requestJSON)
                     );
                 }
                 break;

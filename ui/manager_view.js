@@ -98,4 +98,5 @@ tg.view.processMMRAdmit = function (updateParam) {
     $('#team-player-container-parent').show();
     $('#matchmaking-footer-container').show();
     $('#gameplay-footer-container').hide();
+    $('#button-home-ready').attr("disabled", false);
 }

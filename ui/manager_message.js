@@ -120,6 +120,7 @@ tg.message.readyMMR = function(){
         senderId: tg.self.userConfig.id,
     };
     tg.network.sendMatchmakingInstruction('mmrready', sendPacket);
+    $('#button-home-ready').attr("disabled", true);
 }
 
 tg.message.leaveMMR = function(){
@@ -211,6 +212,9 @@ tg.message.consumeMessage = function (messageParam) {
             break;
         case 'mmrfull':
             tg.notification.showNotification(messageParam.sub, "Could not join. Team is already at full capacity.", messageParam);
+            break;
+        case 'mmralreadystarted':
+            tg.notification.showNotification(messageParam.sub, "Could not join. Match is already started.", messageParam);
             break;
         case 'mmrupdate':
             tg.view.processMMRUpdate(messageParam);

@@ -23,6 +23,7 @@ tg.notification.showNotification = function(type, message, payload){
         case 'rejectmatchmakingrequest':
         case 'mmrfull':
         case 'request_game_admit_nack':
+        case 'mmralreadystarted':
             $('#notification-modal-controls-acknowledgement').show();
             $('#notification-modal-controls-choice').hide();
         default:

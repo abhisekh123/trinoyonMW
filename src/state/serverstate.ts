@@ -13,10 +13,10 @@ module.exports = {
 
     users_db_state: {},
     users_server_state: {},
-    users_worket_state: {},
+    // users_worket_state: {},
 
     user_matchMaking_rooms: [],
-    user_game_rooms: [],
+    // user_game_rooms: [],
     user_id_list: [],
     serverTime: 0,
     mmrLifeSpan: 99 * 1000, // 99 seconds
@@ -65,6 +65,7 @@ module.exports = {
         }
 
         let areAllPlayersReady = true;
+        let totalPlayerCount = 0;
 
         for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
             // check team 1
@@ -79,6 +80,7 @@ module.exports = {
                 if(mmrParam.players_1[i].isMMRReady == false){
                     areAllPlayersReady = false;
                 }
+                ++totalPlayerCount;
             } else {
                 mmrConfig.players_1[i] = null;
             }
@@ -94,12 +96,16 @@ module.exports = {
                 if(mmrParam.players_2[i].isMMRReady == false){
                     areAllPlayersReady = false;
                 }
+                ++totalPlayerCount;
             } else {
                 mmrConfig.players_2[i] = null;
             }
         }
 
         // console.log(mmrConfig);
+        if(totalPlayerCount < 2){
+            areAllPlayersReady = false;
+        }
 
         mmrConfig.areAllPlayersReady = areAllPlayersReady;
         return mmrConfig;
@@ -279,8 +285,6 @@ module.exports = {
             return;
         }
         const requesterMatchmakingRoom = this.user_matchMaking_rooms[joineeUserObject.mmrIndex];
-
-        
         
         for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
             // check team 1
@@ -320,9 +324,11 @@ module.exports = {
         // matchRoom.owner = null;
         for(var i = 0; i < environmentState.maxPlayerPerTeam; ++i){
             if(matchRoom.players_1[i] != null){
+                matchRoom.players_1[i].mmrIndex = null;
                 this.notifyPlayerMatchmakingRoomExpel(matchRoom.players_1[i].id);
             }
             if(matchRoom.players_2[i] != null){
+                matchRoom.players_2[i].mmrIndex = null;
                 this.notifyPlayerMatchmakingRoomExpel(matchRoom.players_2[i].id);
             }
             matchRoom.players_1[i] = null;
