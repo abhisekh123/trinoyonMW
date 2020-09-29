@@ -23,14 +23,15 @@ module.exports = {
     },
 
     getUserObject: async function (profile: any) {
-        const user = await dbManager.findUser(profile.id);
-        if (user) {
-            // console.log('known user');
-            return user;
-        } else {
+        // const user = await dbManager.findUser(profile.id);
+        const user = this.serverState.users_db_state[profile.id];
+        if (user == undefined || user == null) {
             // console.log('creating new user');
             const newUser = await dbManager.createNewUser(profile);
             return newUser;
+        } else {
+            // console.log('known user');
+            return user;
         }
     },
 
@@ -63,6 +64,7 @@ module.exports = {
     connectUser: function(userId: string, ws: WebSocket){
         this.serverState.users_server_state[userId].ws = ws;
         this.serverState.users_server_state[userId].isOnline = true;
+        this.serverState.users_db_state[userId].lastLogin = this.serverState.serverTime;
     },
 
     isUserOnline: function(userId: string){

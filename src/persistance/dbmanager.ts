@@ -40,6 +40,26 @@ module.exports = {
             // var result = await this.db.users.update({ id: allUsers[i].id }, { $set: { userId: allUsers[i].userId } }, { multi: true });
             // console.log(i + '::completed update', result);
         }
+        await this.introduceNewField();
+    },
+
+    introduceNewField: async function() {
+        console.log('introduce new user fields:', this.serverState.user_id_list.length);
+        for(var i = 0; i < this.serverState.user_id_list.length; ++i){
+            var userId = this.serverState.user_id_list[i];
+            console.log('updating record for user:', userId);
+            var currentUser = this.serverState.users_db_state[userId];
+            currentUser.gold = 0;
+            currentUser.trophy = i;
+            currentUser.totalwin = 0;
+            currentUser.totalloss = 0;
+            currentUser.weeklywin = 0;
+            currentUser.weeklyloss = 0;
+
+            const updateResult = await this.db.users.update({ id: currentUser.id }, currentUser);
+            console.log('updateResult:', updateResult);
+            console.log('i>' + i);
+        }
     },
 
     getEmptyUserServerState: function(){
@@ -64,6 +84,10 @@ module.exports = {
             isOnline: true,
             gold: 0,
             trophy: 0,
+            totalwin: 0,
+            totalloss: 0,
+            weeklywin: 0,
+            weeklyloss: 0,
             firstName: profile._json.first_name,
             lastName: profile._json.last_name,
             email: profile._json.email,

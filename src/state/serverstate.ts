@@ -54,7 +54,12 @@ module.exports = {
                 // ownerTeam: null,
             }
         }
-        this.updateMMRIntervalHandle = setInterval(this.sendMMRUpdateToPlayers.bind(this), 2000);
+        this.updateMMRIntervalHandle = setInterval(this.serverStateDaemon.bind(this), 2000);
+    },
+
+    serverStateDaemon: function(){
+        this.serverTime = utilityFunctions.getCurrentTime();
+        this.sendMMRUpdateToPlayers();
     },
 
     getMMRConfig: function(mmrParam: any){
@@ -112,7 +117,7 @@ module.exports = {
     },
 
     sendMMRUpdateToPlayers: function(){
-        this.serverTime = utilityFunctions.getCurrentTime();
+        
         for(var i = 0; i < environmentState.maxMatchMakingRoomCount; ++i){
             const mmr = this.user_matchMaking_rooms[i];
 
