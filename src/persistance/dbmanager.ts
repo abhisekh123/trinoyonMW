@@ -40,7 +40,7 @@ module.exports = {
             // var result = await this.db.users.update({ id: allUsers[i].id }, { $set: { userId: allUsers[i].userId } }, { multi: true });
             // console.log(i + '::completed update', result);
         }
-        await this.introduceNewField();
+        // await this.introduceNewField();
     },
 
     introduceNewField: async function() {
