@@ -459,6 +459,14 @@ canvas {
     width: 100px; */
 }
 
+.show-leaderboard {
+    position: fixed;
+    top: 10;
+    left: 15%;
+    /* height: 32px;
+    width: 100px; */
+}
+
 .hidejoystick {
     display: none;
     position: fixed;

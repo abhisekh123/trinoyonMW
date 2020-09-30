@@ -65,6 +65,7 @@ module.exports = {
         this.serverState.users_server_state[userId].ws = ws;
         this.serverState.users_server_state[userId].isOnline = true;
         this.serverState.users_db_state[userId].lastLogin = this.serverState.serverTime;
+        dbManager.updateUser(userId);
     },
 
     isUserOnline: function(userId: string){

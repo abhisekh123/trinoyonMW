@@ -30,6 +30,7 @@ tg.pn.showControls = function() {
     );
 };
 
+
 tg.pn.showMatchStartingLoader = function(){
     // console.log('showMatchStartingLoader. current page:', tg.pn.currentPage);
     switch (tg.pn.currentPage) {

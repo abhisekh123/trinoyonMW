@@ -109,8 +109,9 @@ module.exports = {
         return searchResult;
     },
 
-    updateUser: function () {
-
+    updateUser: function (userId: string) {
+        var currentUser = this.serverState.users_db_state[userId];
+        const updateResult = this.db.users.update({ id: currentUser.id }, currentUser);
     },
     deleteUser: function () {
 

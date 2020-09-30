@@ -208,6 +208,16 @@ $('#button-show-controls').click(function () {
     tg.pn.showControls();
 });
 
+$('#button-show-leaderboard').click(function () {
+    // console.log('clicked button-show-controls');
+    $('.leaderboard-modal').show();
+});
+
+$('#button-hide-leaderboard').click(function () {
+    // console.log('clicked button-show-controls');
+    $('.leaderboard-modal').hide();
+});
+
 tg.hl.setLoaderHeaderText = function (textParam) {
     $('#load-indicator-header').html(textParam);
 };
