@@ -69,6 +69,24 @@ export class RequestProcessor {
         }
     };
 
+    validateMMRInviteRequest(requestJSON: any){
+        if(requestJSON.payload.recipientId == requestJSON.payload.senderId){
+            return false;
+        }
+        const senderUserObject = this.serverState.users_server_state[requestJSON.payload.senderId];
+        const recipientUserObject = this.serverState.users_server_state[requestJSON.payload.recipientId];
+
+        if(senderUserObject == undefined || senderUserObject == null || recipientUserObject == undefined || recipientUserObject == null){
+            return false;
+        }
+
+        if(senderUserObject.mmrIndex == recipientUserObject.mmrIndex){ // both players already in the same mmr
+            return false;
+        }
+
+        return true;
+    };
+
     processIncomingMessages(requestJSON: any){
         switch (requestJSON.sub) {
             case 'text':
@@ -77,7 +95,7 @@ export class RequestProcessor {
             case 'invite':
             case 'challenge':
                 // console.log(requestJSON.payload.recipientId + '=from=' + requestJSON.payload.senderId);
-                if(requestJSON.payload.recipientId == requestJSON.payload.senderId){
+                if(this.validateMMRInviteRequest(requestJSON) == false){
                     // can not self invite/challenge
                     return;
                 }

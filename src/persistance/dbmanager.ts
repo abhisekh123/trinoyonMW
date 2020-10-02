@@ -16,10 +16,24 @@ module.exports = {
     init: async function (serverState: any) {
         this.serverState = serverState;
         // console.log('---serverstate:', serverState);
+        this.db.serverstate = new datastore({
+            filename: '../data_trinoyonMW/serverstate.db',
+            autoload: true
+        });
         this.db.users = new datastore({
             filename: '../data_trinoyonMW/users.db',
             autoload: true
         });
+
+        // process server state
+        // process server state
+        const serverStates = await this.db.serverstate.find({}, function (err: any, docs: any) {});
+        for(var i = 0; i < serverStates.length; ++i){
+            this.serverState.persistant_server_state[serverStates[i].uniquename] = serverStates[i];
+            this.serverState.serverstate_id_list.push(serverStates[i].uniquename);
+        }
+
+        // process users
         const allUsers = await this.db.users.find({}, function (err: any, docs: any) {});
         for(var i = 0; i < allUsers.length; ++i){
             // console.log('==>allUsers[i].id:', allUsers[i].id);
@@ -41,6 +55,8 @@ module.exports = {
             // console.log(i + '::completed update', result);
         }
         // await this.introduceNewField();
+
+        await this.insertTestData();
     },
 
     introduceNewField: async function() {
@@ -109,32 +125,19 @@ module.exports = {
         return searchResult;
     },
 
+    updateServerState: function(uniquename: string) {
+        const serverStateItem = this.serverState.persistant_server_state[uniquename];
+        const updateResult = this.db.users.update({ uniquename: serverStateItem.uniquename }, serverStateItem);
+    },
+
     updateUser: function (userId: string) {
-        var currentUser = this.serverState.users_db_state[userId];
+        const currentUser = this.serverState.users_db_state[userId];
         const updateResult = this.db.users.update({ id: currentUser.id }, currentUser);
     },
     deleteUser: function () {
 
     },
 
-    insertTestData: async function () {
-        var testData = [
-            { "id": "681734469306879", "joiniing": 1588184333509, "lastLogin": 1588184333509, "isOnline": true, "gold": 0, "firstName": "Sukanya", "lastName": "Biswas", "_id": "B9tfRLyTrc431dOW" },
-            { "id": "1190500853", "joiniing": 1581803155426, "lastLogin": 1581803155426, "isOnline": true, "gold": 0, "firstName": "Abhisekh", "lastName": "Biswas", "email": "avi.priceless@gmail.com", "_id": "CXSXRzAYEj3S3yuk" },
-            { "id": "100000472612598", "joiniing": 1588746445397, "lastLogin": 1588746445397, "isOnline": true, "gold": 0, "firstName": "Rahul", "lastName": "Banerjee", "_id": "dqzQRwuFCCiU4aC4" },
-            { "id": "10210327194683735", "joiniing": 1594790501574, "lastLogin": 1594790501574, "isOnline": true, "gold": 0, "firstName": "গৌরব", "lastName": "ভট্টাচার্য্য", "email": "gourabb003@gmail.com", "_id": "apBqA62qHGKW6im0" }
-        ];
-        for (var i = 0; i < testData.length; ++i) {
-            this.createNewUser({
-                id: testData[i].id,
-                _json: {
-                    first_name: testData[i].firstName,
-                    last_name: testData[i].lastName,
-                    email: ''
-                }
-            });
-        }
-    },
 
     testmethod: async function () {
         // var userId = '10210327194683735';
@@ -142,5 +145,39 @@ module.exports = {
         // console.log(searchResult);
         // db.find({}, function (err, docs) {
         // });
-    }
+    },
+
+
+    insertTestData: async function () {
+
+        // data entry for this.db.serverstate.weeklytopplayers
+        const now = utilityFunctions.getCurrentTime();
+        const weeklytopplayers = {
+            name: 'weeklytopplayers',
+            lastUpdate: now,
+            isActive: true,
+            topPlayers: [],
+        };
+
+        await this.db.serverstate.insert(weeklytopplayers);
+        
+
+        // test data entry for user
+        // var testData = [
+        //     { "id": "681734469306879", "joiniing": 1588184333509, "lastLogin": 1588184333509, "isOnline": true, "gold": 0, "firstName": "Sukanya", "lastName": "Biswas", "_id": "B9tfRLyTrc431dOW" },
+        //     { "id": "1190500853", "joiniing": 1581803155426, "lastLogin": 1581803155426, "isOnline": true, "gold": 0, "firstName": "Abhisekh", "lastName": "Biswas", "email": "avi.priceless@gmail.com", "_id": "CXSXRzAYEj3S3yuk" },
+        //     { "id": "100000472612598", "joiniing": 1588746445397, "lastLogin": 1588746445397, "isOnline": true, "gold": 0, "firstName": "Rahul", "lastName": "Banerjee", "_id": "dqzQRwuFCCiU4aC4" },
+        //     { "id": "10210327194683735", "joiniing": 1594790501574, "lastLogin": 1594790501574, "isOnline": true, "gold": 0, "firstName": "গৌরব", "lastName": "ভট্টাচার্য্য", "email": "gourabb003@gmail.com", "_id": "apBqA62qHGKW6im0" }
+        // ];
+        // for (var i = 0; i < testData.length; ++i) {
+        //     this.createNewUser({
+        //         id: testData[i].id,
+        //         _json: {
+        //             first_name: testData[i].firstName,
+        //             last_name: testData[i].lastName,
+        //             email: ''
+        //         }
+        //     });
+        // }
+    },
 }

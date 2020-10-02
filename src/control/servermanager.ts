@@ -11,6 +11,14 @@ const environmentState = require('../state/environmentstate');
 module.exports = {
     initiateServerShutDownRoutine: function() {
         serverState.state = 'shuttingdown'
+    },
+
+    updateWeeklyTopPlayers: function() {
+        console.log('updateWeeklyTopPlayers');
+        let weeklyTopPlayers = serverState.persistant_server_state['weeklytopplayers'];
+        if(weeklyTopPlayers == null || weeklyTopPlayers == undefined){
+
+        }
     }
 };
 

@@ -77,6 +77,15 @@ app.use(sessionParser);
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+// app.get("/topler", function (req, res) {
+//     var respJSON: any = {
+//         status: 'fail',
+//         // data: '123'
+//     };
+//     console.log(req.query);
+// });
+
 // new session handshake protocol. tells the client what to do next.
 // if an existing session is detected, then it is purged.
 app.get("/ox", function (req, res) {
@@ -227,6 +236,13 @@ app.get('/howrwi', function (req, res) {
     var etaseta = req.query.etaseta;
     if (etaseta == 'chonch0l') {
         res.send(serverState.getServerState());
+    } else if (etaseta == 'borda') {
+        serverManager.updateWeeklyTopPlayers();
+        var respJSON: any = {
+            status: 'fail',
+            data: 'borda'
+        };
+        res.send(respJSON);
     } else {
         res.send('Cannot GET /howrwi');
     }

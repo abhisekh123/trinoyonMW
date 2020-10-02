@@ -13,11 +13,14 @@ module.exports = {
 
     users_db_state: {},
     users_server_state: {},
+
+    persistant_server_state: {},
     // users_worket_state: {},
 
     user_matchMaking_rooms: [],
     // user_game_rooms: [],
     user_id_list: [],
+    serverstate_id_list: [],
     serverTime: 0,
     mmrLifeSpan: 99 * 1000, // 99 seconds
 
@@ -54,10 +57,10 @@ module.exports = {
                 // ownerTeam: null,
             }
         }
-        this.updateMMRIntervalHandle = setInterval(this.serverStateDaemon.bind(this), 2000);
+        this.updateMMRIntervalHandle = setInterval(this.wakeServerStateDaemon.bind(this), 2000);
     },
 
-    serverStateDaemon: function(){
+    wakeServerStateDaemon: function(){
         this.serverTime = utilityFunctions.getCurrentTime();
         this.sendMMRUpdateToPlayers();
     },
