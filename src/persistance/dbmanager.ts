@@ -56,7 +56,7 @@ module.exports = {
         }
         // await this.introduceNewField();
 
-        await this.insertTestData();
+        // await this.insertTestData();
     },
 
     introduceNewField: async function() {
