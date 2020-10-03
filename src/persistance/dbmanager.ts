@@ -56,7 +56,7 @@ module.exports = {
         }
         // await this.introduceNewField();
 
-        // await this.insertTestData();
+        await this.insertTestData();
     },
 
     introduceNewField: async function() {
@@ -71,6 +71,19 @@ module.exports = {
             currentUser.totalloss = 0;
             currentUser.weeklywin = 0;
             currentUser.weeklyloss = 0;
+
+
+            currentUser.tdeath = 0;
+            currentUser.wdeath = 0;
+            currentUser.tkill = 0;
+            currentUser.wkill = 0;
+            currentUser.tdestroy = 0;
+            currentUser.wdestroy = 0;
+
+            currentUser.tdamage = 0;
+            currentUser.wdamage = 0;
+            currentUser.tattack = 0;
+            currentUser.wattack = 0;
 
             const updateResult = await this.db.users.update({ id: currentUser.id }, currentUser);
             console.log('updateResult:', updateResult);
@@ -113,6 +126,12 @@ module.exports = {
         var userCreated = await this.db.users.findOne({id: profile.id});
         this.serverState.users_db_state[profile.id] = userCreated;
         this.serverState.users_server_state[profile.id] = this.getEmptyUserServerState();
+        this.serverState.users_server_state[profile.id].id = profile.id;
+        this.serverState.users_server_state[profile.id].isMMRReady = false;
+        this.serverState.users_server_state[profile.id].firstName = user.firstName;
+        this.serverState.users_server_state[profile.id].lastName = user.lastName;
+        this.serverState.users_server_state[profile.id].ws = null;
+        this.serverState.users_server_state[profile.id].isOnline = true;
         this.serverState.user_id_list.push(profile.id);
 
         return user;

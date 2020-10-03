@@ -237,11 +237,12 @@ app.get('/howrwi', function (req, res) {
     if (etaseta == 'chonch0l') {
         res.send(serverState.getServerState());
     } else if (etaseta == 'borda') {
-        serverManager.updateWeeklyTopPlayers();
+        const response = serverManager.updateWeeklyTopPlayers();
         var respJSON: any = {
             status: 'fail',
-            data: 'borda'
+            data: response
         };
+
         res.send(respJSON);
     } else {
         res.send('Cannot GET /howrwi');
@@ -278,6 +279,7 @@ export class DemoServer {
         // console.log(serverState);
         userManager.init(workerManager, serverState);
         requestProcessor.init(serverState);
+        serverManager.init(serverState);
         // console.log('starting worker');
         workerManager.startWorker();
 
