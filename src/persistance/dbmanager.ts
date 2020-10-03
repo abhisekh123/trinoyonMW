@@ -56,7 +56,7 @@ module.exports = {
         }
         // await this.introduceNewField();
 
-        await this.insertTestData();
+        // await this.insertTestData();
     },
 
     introduceNewField: async function() {
@@ -151,15 +151,15 @@ module.exports = {
     insertTestData: async function () {
 
         // data entry for this.db.serverstate.weeklytopplayers
-        const now = utilityFunctions.getCurrentTime();
-        const weeklytopplayers = {
-            name: 'weeklytopplayers',
-            lastUpdate: now,
-            isActive: true,
-            topPlayers: [],
-        };
+        // const now = utilityFunctions.getCurrentTime();
+        // const weeklytopplayers = {
+        //     name: 'weeklytopplayers',
+        //     lastUpdate: now,
+        //     isActive: true,
+        //     topPlayers: [],
+        // };
 
-        await this.db.serverstate.insert(weeklytopplayers);
+        // await this.db.serverstate.insert(weeklytopplayers);
         
 
         // test data entry for user
