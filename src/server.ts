@@ -130,7 +130,8 @@ app.get("/ox", function (req, res) {
             respJSON.data = {
                 u: URL,
                 k: wsKey,
-                userConfig: userConfig
+                userConfig: userConfig,
+                persistant_server_state: serverState.persistant_server_state
             };
             respJSON.status = 'ok';
             serverState.users_server_state[userIdDecimal].wsKey = wsKey;

@@ -38,7 +38,7 @@ function initSystem() {
     $.get('/ox', {
         type: 'p'
     }, function (data, textStatus, jqXHR) {
-        // console.log('ox response', data);
+        console.log('ox response', data);
         tg.self.updateUserConfig(data.data.userConfig);
         tg.connectToParent(data.data.u, data.data.k);
     });

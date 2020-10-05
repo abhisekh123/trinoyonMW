@@ -9,8 +9,10 @@ const environmentState = require('../state/environmentstate');
 
 module.exports = {
     serverState: null,
-    init: function(serverState: any) {
+    dbManager: null,
+    init: function(serverState: any, dbManager: any) {
         this.serverState = serverState;
+        this.dbManager = dbManager;
     },
 
     initiateServerShutDownRoutine: function() {
@@ -35,8 +37,9 @@ module.exports = {
         // };
         weeklyTopPlayers.lastUpdate = this.serverState.serverTime;
         weeklyTopPlayers.isActive = true;
-        weeklyTopPlayers.topPlayers = [];
+        weeklyTopPlayers.topPlayers = this.searchTopPlayers(3, 'weeklytopplayers');
 
+        this.dbManager.updateServerState('weeklytopplayers');
 
         return weeklyTopPlayers;
     },
@@ -45,9 +48,10 @@ module.exports = {
         const chosenPlayers = [];
         // let currentIndex = 0;
 
-        chosenPlayers[0] = this.serverState.users_db_state[this.serverState.user_id_list[0]];
+        const comparisonCriteria = this.getComparisonCriteriaList(playerSearchType);
 
         for(var i = 0; i < count; ++i){
+            chosenPlayers[i] = this.serverState.users_db_state[this.serverState.user_id_list[0]];
             for(var j = 0; j < this.serverState.user_id_list.length; ++j){
                 const currentPlayer = this.serverState.users_db_state[this.serverState.user_id_list[j]];
                 let isCurrentPlayerAlreadyChosen = false;
@@ -62,15 +66,45 @@ module.exports = {
                     continue;
                 }
 
-                if(this.isCurrentPlayerBetterThanTheCosenOne(playerSearchType, chosenPlayers[i], currentPlayer) == true){
+                if(this.isCurrentPlayerBetterThanTheCosenOne(playerSearchType, chosenPlayers[i], currentPlayer, comparisonCriteria) == true){
                     chosenPlayers[i] = currentPlayer;
                 }
             }
         }
     },
 
-    isCurrentPlayerBetterThanTheCosenOne: function(playerSearchType: string, chosenPlayer: any, currentPlayer: any) {
+    ratePlayerBasedOnCriteria: function(player: any, criteria: string) {
+        switch (criteria) {
+            case 'wvictory':
+                return player.weeklywin;
+                break;
+            case 'wkill':
+                return player.wkill;
+                break;
+            case 'wdamage':
+                return player.wdamage;
+                break;
+        
+            default:
+                break;
+        }
+    },
 
+    isCurrentPlayerBetterThanTheCosenOne: function(chosenPlayer: any, currentPlayer: any, comparisonCriteria: any) {
+        for(var i = 0; i < comparisonCriteria.length; ++i){
+            var choosenPlayerRating = this.ratePlayerBasedOnCriteria(chosenPlayer, comparisonCriteria[i]);
+            var currentPlayerRating = this.ratePlayerBasedOnCriteria(currentPlayer, comparisonCriteria[i]);
+            if(choosenPlayerRating == currentPlayerRating){
+                // draw. check for next criteria
+            } else {
+                if(choosenPlayerRating < currentPlayerRating){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
     },
 
     getTopPlayersSelectiveInformation: function(chosenPlayerIds: any, playerSearchType: string) {
@@ -81,9 +115,9 @@ module.exports = {
         switch (playerSearchType) {
             case 'weeklytopplayers':
                 return [
-                    'victory',
-                    'kill',
-                    'damage',
+                    'wvictory',
+                    'wkill',
+                    'wdamage',
                 ]
                 break;
         

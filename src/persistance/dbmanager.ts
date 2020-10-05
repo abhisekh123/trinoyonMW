@@ -29,8 +29,8 @@ module.exports = {
         // process server state
         const serverStates = await this.db.serverstate.find({}, function (err: any, docs: any) {});
         for(var i = 0; i < serverStates.length; ++i){
-            this.serverState.persistant_server_state[serverStates[i].uniquename] = serverStates[i];
-            this.serverState.serverstate_id_list.push(serverStates[i].uniquename);
+            this.serverState.persistant_server_state[serverStates[i].name] = serverStates[i];
+            this.serverState.serverstate_id_list.push(serverStates[i].name);
         }
 
         // process users
@@ -54,7 +54,7 @@ module.exports = {
             // var result = await this.db.users.update({ id: allUsers[i].id }, { $set: { userId: allUsers[i].userId } }, { multi: true });
             // console.log(i + '::completed update', result);
         }
-        // await this.introduceNewField();
+        await this.introduceNewField();
 
         // await this.insertTestData();
     },
@@ -66,7 +66,7 @@ module.exports = {
             console.log('updating record for user:', userId);
             var currentUser = this.serverState.users_db_state[userId];
             currentUser.gold = 0;
-            currentUser.trophy = i;
+            currentUser.trophy = 0;
             currentUser.totalwin = 0;
             currentUser.totalloss = 0;
             currentUser.weeklywin = 0;
@@ -117,6 +117,20 @@ module.exports = {
             totalloss: 0,
             weeklywin: 0,
             weeklyloss: 0,
+
+
+            tdeath: 0,
+            wdeath: 0,
+            tkill: 0,
+            wkill: 0,
+            tdestroy: 0,
+            wdestroy: 0,
+
+            tdamage: 0,
+            wdamage: 0,
+            tattack: 0,
+            wattack: 0,
+            
             firstName: profile._json.first_name,
             lastName: profile._json.last_name,
             email: profile._json.email,
@@ -144,9 +158,10 @@ module.exports = {
         return searchResult;
     },
 
-    updateServerState: function(uniquename: string) {
-        const serverStateItem = this.serverState.persistant_server_state[uniquename];
-        const updateResult = this.db.users.update({ uniquename: serverStateItem.uniquename }, serverStateItem);
+    updateServerState: function(name: string) {
+        const serverStateItem = this.serverState.persistant_server_state[name];
+        const updateResult = this.db.users.update({ name: serverStateItem.name }, serverStateItem);
+        return updateResult;
     },
 
     updateUser: function (userId: string) {

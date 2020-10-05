@@ -52,3 +52,15 @@ set timer and at tick, send update(#) for each mmr, to its players.
 match making room will progress if all players are ready.
 Once the mmr is in progress the playrs can not leave.
 Once the mmr is allocated, there is a countdown of 2 mins to progress. After that all players will be removed and mmr deallocated.
+
+3 October
+add required fields in DB
+rest api to calculate new leaderboard
+logic to calculate leaderboard and reset data
+update db at the end of each match
+send leaderboard data to user on page load
+ui changes to display leaderboard
+
+persistant chat list
+onuser page load, send latest chat list.
+selnd total online user count to user on login.
