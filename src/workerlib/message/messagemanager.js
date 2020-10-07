@@ -33,8 +33,8 @@ module.exports = {
         // payload.playerIDList = [];
         payload.players = this.getGameConfigJSON(gameRoom);
 
-        var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1);
-        var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2);
+        var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1, true);
+        var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2, true);
 
 
 
@@ -57,8 +57,8 @@ module.exports = {
         // console.log('broadcastGameResultToPlayers', JSON.stringify(gameRoom.statistics));
         const payload = {};
         payload.result = gameRoom.statistics;
-        var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1);
-        var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2);
+        var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1, false);
+        var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2, false);
         
         // console.log('sending game update');
         // send config to players in team  1
@@ -79,8 +79,8 @@ module.exports = {
         // payload.playerIDList = [];
         payload.players = this.getGameUpdateJSON(gameRoom);
 
-        var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1);
-        var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2);
+        var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1, true);
+        var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2, true);
         
         // console.log('sending game update');
         // send config to players in team  1
@@ -122,7 +122,7 @@ module.exports = {
     /**
      * GET RECIPIENTS LIST
      */
-    getActualPlayerIDListForGame: function(gameRoom, team){
+    getActualPlayerIDListForGame: function(gameRoom, team, shouldBeOnlineFlag){
         var playerArray = null;
         if(team == 1){
             playerArray = gameRoom.players_1;
@@ -137,10 +137,16 @@ module.exports = {
         // players 1
         for(var i = 0; i < playerArray.length; ++i){
             const player = playerArray[i];
-            if(player.isAIDriven){
-                continue;
+            if(shouldBeOnlineFlag == true){
+                if(player.isAIDriven){
+                    continue;
+                }
+            } else {
+                if(player.userId == null){
+                    continue;
+                }
             }
-
+            
             playerIDList.push({
                 id: player.userId,
                 index: player.index

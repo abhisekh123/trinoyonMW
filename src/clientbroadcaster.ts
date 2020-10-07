@@ -11,6 +11,9 @@ module.exports = {
     sendMessageToRecipientByUserID: function (recipientUserId: string, messageString: string) {
         const userWebSocket = this.serverState.users_server_state[recipientUserId].ws;
         // userWebSocket.send(messageString);
+        if(userWebSocket == null){
+            return;
+        }
         try {
             userWebSocket.send(messageString);
         } catch (error) {
@@ -30,6 +33,9 @@ module.exports = {
             var userId = this.serverState.user_id_list[i];
             if(userManager.isUserOnline(userId)){
                 const userWebSocket = this.serverState.users_server_state[userId].ws;
+                if(userWebSocket == null){
+                    return;
+                }
                 try {
                     userWebSocket.send(messageString);
                 } catch (error) {
