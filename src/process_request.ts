@@ -70,20 +70,30 @@ export class RequestProcessor {
     };
 
     validateMMRInviteRequest(requestJSON: any){
+        console.log(requestJSON);
         if(requestJSON.payload.recipientId == requestJSON.payload.senderId){
+            console.log('send false 1');
             return false;
         }
         const senderUserObject = this.serverState.users_server_state[requestJSON.payload.senderId];
         const recipientUserObject = this.serverState.users_server_state[requestJSON.payload.recipientId];
 
         if(senderUserObject == undefined || senderUserObject == null || recipientUserObject == undefined || recipientUserObject == null){
+            console.log('send false 2');
             return false;
         }
 
-        if(senderUserObject.mmrIndex == recipientUserObject.mmrIndex){ // both players already in the same mmr
-            return false;
-        }
+        console.log('senderUserObject.mmrIndex', senderUserObject.mmrIndex);
+        console.log('recipientUserObject.mmrIndex:', recipientUserObject.mmrIndex);
 
+        if(senderUserObject.mmrIndex != null){
+            if(senderUserObject.mmrIndex == recipientUserObject.mmrIndex){ // both players already in the same mmr
+                console.log('send false 3');
+                return false;
+            }
+        }
+        
+        console.log('send true 1');
         return true;
     };
 
@@ -94,11 +104,12 @@ export class RequestProcessor {
                 break;
             case 'invite':
             case 'challenge':
-                // console.log(requestJSON.payload.recipientId + '=from=' + requestJSON.payload.senderId);
+                console.log(requestJSON.payload.recipientId + '=from=' + requestJSON.payload.senderId);
                 if(this.validateMMRInviteRequest(requestJSON) == false){
                     // can not self invite/challenge
                     return;
                 }
+                console.log(requestJSON);
                 const userObject = this.serverState.allocateNewGameRoomIfNeeded(requestJSON);
                 requestJSON.mmrIndex = userObject.mmrIndex;
                 requestJSON.team = this.setMMRRequestTeam(userObject.team, requestJSON.sub);

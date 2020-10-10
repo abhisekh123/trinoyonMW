@@ -56,6 +56,7 @@ module.exports = {
     broadcastGameResultToPlayers: function(gameRoom){
         // console.log('broadcastGameResultToPlayers', JSON.stringify(gameRoom.statistics));
         const payload = {};
+        console.log(JSON.stringify(gameRoom.statistics));
         payload.result = gameRoom.statistics;
         var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1, false);
         var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2, false);

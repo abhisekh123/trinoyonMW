@@ -19,16 +19,23 @@ tg.message.state = {
 
 
 
-tg.message.messageInputKeyUp = function (element) {
+tg.message.messageInputKeyUp = function (element, event) {
     var textContent = element.value;
     var counterElement = $('.message-text-counter')[0];
-    // console.log(textContent);
+    // console.log('textContent:', event);
+    if (event.key.toString().toLowerCase() === 'enter') {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        tg.message.sendMessage();
+    }
+    
     if (textContent.length > 128) {
         element.value = element.value.substring(0, 128);
         counterElement.value = '128/128';
     } else {
         counterElement.value = textContent.length + '/128';
     }
+
 };
 
 tg.message.testUserIds = [{

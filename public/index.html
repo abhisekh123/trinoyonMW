@@ -883,8 +883,8 @@
     <div class="container-send-message-content">
         <div class="message-input-container">
             <input disabled value="0/128" class="message-text-counter menu-text-tiny">
-            <input type="text" placeholder="message..." class="message-input"
-                onkeyup="tg.message.messageInputKeyUp(this)" maxlength="128">
+            <input type="text" placeholder="message..." class="message-input" id="chat-input"
+                onkeyup="tg.message.messageInputKeyUp(this, event)" maxlength="128">
         </div>
 
         <!-- <a class="tButton expand-drop-down-modal"></a> -->
