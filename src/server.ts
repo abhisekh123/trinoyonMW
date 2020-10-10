@@ -445,6 +445,22 @@ export class DemoServer {
                 // console.log(`Server started on port ${httpsserver.address.toString} :)`);
             });
 
+            // set up plain http server
+            var httpServer = express();
+
+            // set up a route to redirect http to https
+            httpServer.get('*', function(req, res) {  
+                console.log('redirecting http to https');
+                res.redirect('https://' + req.headers.host + req.url);
+
+                // Or, if you don't want to automatically detect the domain name from the request header, you can hard code it:
+                // res.redirect('https://example.com' + req.url);
+            })
+
+            // have it listen on 8080
+            httpServer.listen(80);
+
+
             // Redirect from http port 80 to https
             // http.createServer(function (req, res) {
             //     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
