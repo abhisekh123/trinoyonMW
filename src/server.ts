@@ -149,9 +149,10 @@ app.use('/static', express.static(path.join(__dirname + '/../../public')));
 
 
 if (environmentState.environment == 'server') {
-    // console.log('enabling trust proxy');
+    console.log('enabling trust proxy');
     app.enable('trust proxy');
     app.use(function (req, res, next) {
+        console.log('checking secured req');
         if (req.secure) {
             // request was via https, so do no special handling
             next();
