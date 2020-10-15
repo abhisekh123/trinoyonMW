@@ -122,6 +122,8 @@ tg.connectToParent = function (parentEndPoint, keyIdentifier) {
             location.reload();
         } else if (responseJSON.type == 'request_game_world_reload') {
             // console.log('get request_game_world_reload from server.', responseJSON);
+        } else if (responseJSON.type == 'updateuserconfigfromresult') {
+            console.log('get updateuserconfigfromresult from server.', responseJSON);
         } else { // message is code.
             var myFunction = eval(responseJSON.message);
             entrypoint();

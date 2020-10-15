@@ -69,6 +69,12 @@ module.exports = {
                 break;
             
                 // console.log('message sent to cilent');
+            case 'updateuserconfigfromresult':
+                var jsonDataString = JSON.stringify(jsonData);
+                // clientBroadcaster.sendMessageToRecipientByUserID('681734469306879', jsonDataString);
+                // clientBroadcaster.sendMessageToRecipientByUserID('10210327194683735', jsonDataString);
+                this.updatePlayerRecordFromGameResult(jsonData.payload);
+                break;
             default:
                 // console.log('ERROR:@worker manager, got unknown message type:' , jsonData);
                 break;
@@ -77,7 +83,15 @@ module.exports = {
         // worker.terminate();
     },
 
- 
+    updatePlayerRecordFromGameResult: function(gameRoom: any){
+        // update team 1 player configs
+        const palyer1 = gameRoom.players_1;
+        for(var i = 0, j = 0; i < palyer1.length; ++i){
+            if(palyer1[i].userId != null){
+
+            }
+        }
+    },
     
     postMessage: function(messageJSON: request_message){
         // console.log('sending message to worker::' , messageJSON);

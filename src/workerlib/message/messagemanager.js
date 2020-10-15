@@ -56,6 +56,12 @@ module.exports = {
     broadcastGameResultToPlayers: function(gameRoom){
         // console.log('broadcastGameResultToPlayers', JSON.stringify(gameRoom.statistics));
         const payload = {};
+
+        console.log('updateuserconfigfromresult');
+        console.log(gameRoom);
+        var responseJSON = mainThreadStub.getResponseEmptyPacket('updateuserconfigfromresult', gameRoom);
+        mainThreadStub.postMessage(responseJSON, '');
+
         console.log(JSON.stringify(gameRoom.statistics));
         payload.result = gameRoom.statistics;
         var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1, false);
