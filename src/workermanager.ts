@@ -12,8 +12,15 @@ import {request_message} from './factory/types';
  */
 
 module.exports = {
+    userManager: null,
+
+    init: function(userManager: any) {
+        this.userManager = userManager;
+    },
 
     startWorker: function(){
+        // console.log(this.userManager);
+        // this.userManager.test();
         serverState.workerHandle = new tinyworker(__dirname + '/worker_root.js');
         // this.postMessage('hi worker!');
         serverState.workerHandle.onmessage = this.processMessage;
@@ -28,7 +35,6 @@ module.exports = {
         switch(jsonData.type){
             case 'update': // TODO : send update to main.
             case 'game_config': 
-            
                 // console.log(jsonData.type + '::', jsonData);
                 var playerConfig = jsonData.payload.players;
                 var playerIDList = jsonData.payload.playerIDList;
@@ -73,7 +79,9 @@ module.exports = {
                 var jsonDataString = JSON.stringify(jsonData);
                 // clientBroadcaster.sendMessageToRecipientByUserID('681734469306879', jsonDataString);
                 // clientBroadcaster.sendMessageToRecipientByUserID('10210327194683735', jsonDataString);
-                this.updatePlayerRecordFromGameResult(jsonData.payload);
+                
+                serverState.userManager.updatePlayerRecordFromGameResult(jsonData.payload);
+                
                 break;
             default:
                 // console.log('ERROR:@worker manager, got unknown message type:' , jsonData);
@@ -81,16 +89,6 @@ module.exports = {
         }
         
         // worker.terminate();
-    },
-
-    updatePlayerRecordFromGameResult: function(gameRoom: any){
-        // update team 1 player configs
-        const palyer1 = gameRoom.players_1;
-        for(var i = 0, j = 0; i < palyer1.length; ++i){
-            if(palyer1[i].userId != null){
-
-            }
-        }
     },
     
     postMessage: function(messageJSON: request_message){

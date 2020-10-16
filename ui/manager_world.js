@@ -59,7 +59,7 @@ tg.world.processResult = function (resultObject) {
             var totalBuildingsDestroyed = 0;
 
             for (var i = 0; i < playerResultObject.length; ++i) {
-                totalDamage += playerResultObject[i].totalDamageSinceSpawn;
+                totalDamage += playerResultObject[i].totalDamageSinceGameStart;
                 totalDeath += playerResultObject[i].totalDeath;
                 totalKills += playerResultObject[i].totalBotKill;
                 totalBuildingsDestroyed += playerResultObject[i].totalBuildingDestroy;

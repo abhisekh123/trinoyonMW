@@ -32,10 +32,12 @@ module.exports = {
     // onlinePlayers:{},
     // onlineUsers:{},
     workerManager: null,
+    userManager: null,
     updateMMRIntervalHandle: null,
 
-    init: function(workerManagerParam: any){
+    init: function(workerManagerParam: any, userManager: any){
         this.workerManager = workerManagerParam;
+        this.userManager = userManager;
 
         var players_1: any[] = [];
         var players_2: any[] = [];

@@ -104,12 +104,12 @@ export class RequestProcessor {
                 break;
             case 'invite':
             case 'challenge':
-                console.log(requestJSON.payload.recipientId + '=from=' + requestJSON.payload.senderId);
+                // console.log(requestJSON.payload.recipientId + '=from=' + requestJSON.payload.senderId);
                 if(this.validateMMRInviteRequest(requestJSON) == false){
                     // can not self invite/challenge
                     return;
                 }
-                console.log(requestJSON);
+                // console.log(requestJSON);
                 const userObject = this.serverState.allocateNewGameRoomIfNeeded(requestJSON);
                 requestJSON.mmrIndex = userObject.mmrIndex;
                 requestJSON.team = this.setMMRRequestTeam(userObject.team, requestJSON.sub);

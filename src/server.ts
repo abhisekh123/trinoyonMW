@@ -149,10 +149,10 @@ app.use('/static', express.static(path.join(__dirname + '/../../public')));
 
 
 if (environmentState.environment == 'server') {
-    console.log('enabling trust proxy');
+    // console.log('enabling trust proxy');
     app.enable('trust proxy');
     app.use(function (req, res, next) {
-        console.log('checking secured req');
+        // console.log('checking secured req');
         if (req.secure) {
             // request was via https, so do no special handling
             next();
@@ -277,12 +277,13 @@ export class DemoServer {
 
         // dbManager.insertTestData();
         // dbManager.testmethod();
-        serverState.init(workerManager);
+        serverState.init(workerManager, userManager);
         // console.log(serverState);
         userManager.init(workerManager, serverState);
         requestProcessor.init(serverState);
         serverManager.init(serverState);
         // console.log('starting worker');
+        workerManager.init(userManager);
         workerManager.startWorker();
 
         // console.log('starting init routine.');

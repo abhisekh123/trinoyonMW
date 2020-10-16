@@ -57,12 +57,12 @@ module.exports = {
         // console.log('broadcastGameResultToPlayers', JSON.stringify(gameRoom.statistics));
         const payload = {};
 
-        console.log('updateuserconfigfromresult');
-        console.log(gameRoom);
+        // console.log('updateuserconfigfromresult');
+        // console.log(gameRoom);
         var responseJSON = mainThreadStub.getResponseEmptyPacket('updateuserconfigfromresult', gameRoom);
         mainThreadStub.postMessage(responseJSON, '');
 
-        console.log(JSON.stringify(gameRoom.statistics));
+        // console.log(JSON.stringify(gameRoom.statistics));
         payload.result = gameRoom.statistics;
         var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1, false);
         var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2, false);
