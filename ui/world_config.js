@@ -117,7 +117,7 @@ var worldItems = {
     tooAwayFromLeader: 10,
     closeProximity: 5,
 
-    matchMaxTimeDuration: 1 * 60 * 1000, // 6 minutes
+    matchMaxTimeDuration: 6 * 60 * 1000, // 6 minutes
     
     commonConfig:{
         maxPlayerCount:4, // player count should be a perfect square

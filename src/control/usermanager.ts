@@ -69,7 +69,7 @@ module.exports = {
     },
 
     updatePlayerRecordFromGameResult: function(gameRoom: any){
-        console.log('updatePlayerRecordFromGameResult');
+        // console.log('updatePlayerRecordFromGameResult', gameRoom);
         const winningTeam = gameRoom.winningTeam;
         // update team 1 player configs
         for(let i = 0, j = 0; i < gameRoom.players_1.length; ++i){
@@ -81,7 +81,7 @@ module.exports = {
                 }
 
                 // player performance object
-                const playerPerformanceObject = gameRoom.detailedPerformance[i];
+                const playerPerformanceObject = gameRoom.statistics.detailedPerformance[i];
 
                 let totalDamage = 0;
                 let totalDeath = 0;
