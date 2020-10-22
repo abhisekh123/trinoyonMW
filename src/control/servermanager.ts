@@ -4,15 +4,16 @@
  */
 
 const environmentState = require('../state/environmentstate');
+const dbManager = require('../persistance/dbmanager');
 
 // TODO: On user join : send status (queue status)
 
 module.exports = {
     serverState: null,
-    dbManager: null,
-    init: function(serverState: any, dbManager: any) {
+    // dbManager: null,
+    init: function(serverState: any) {
         this.serverState = serverState;
-        this.dbManager = dbManager;
+        // this.dbManager = dbManager;
     },
 
     initiateServerShutDownRoutine: function() {
@@ -21,12 +22,14 @@ module.exports = {
 
     
 
-    updateWeeklyTopPlayers: function() {
-        console.log('updateWeeklyTopPlayers');
-        const weeklyTopPlayers = this.serverState.persistant_server_state['weeklytopplayers'];
+    updateWeeklyTopPlayers: function(header: string) {
+        // console.log('updateWeeklyTopPlayers');
+        let weeklyTopPlayers = this.serverState.persistant_server_state['weeklytopplayers'];
+        let needToCreateNewRecord = false;
         if(weeklyTopPlayers == null || weeklyTopPlayers == undefined){
             console.error('no record found for top players.');
-            return {};
+            weeklyTopPlayers = {name: 'weeklytopplayers'};
+            needToCreateNewRecord = true;
         }
 
         // const weeklytopplayers = {
@@ -36,10 +39,19 @@ module.exports = {
         //     topPlayers: [],
         // };
         weeklyTopPlayers.lastUpdate = this.serverState.serverTime;
+        weeklyTopPlayers.header = header;
         weeklyTopPlayers.isActive = true;
         weeklyTopPlayers.topPlayers = this.searchTopPlayers(3, 'weeklytopplayers');
 
-        this.dbManager.updateServerState('weeklytopplayers');
+        if(needToCreateNewRecord == true){
+            console.log('create new weeklytopplayers');
+            dbManager.createNewSeverStateItem(weeklyTopPlayers);
+        } else {
+            console.log('update weeklytopplayers');
+            dbManager.updateServerState('weeklytopplayers');
+        }
+        
+        // this.dbManager.resetAllPlayerWeeklyRecord();
 
         return weeklyTopPlayers;
     },
@@ -71,6 +83,21 @@ module.exports = {
                 }
             }
         }
+        const chosenPlayerSummary = [];
+        for(var i = 0; i < chosenPlayers.length; ++i){
+            const summaryObject: any = {};
+            summaryObject.name = chosenPlayers[i].firstName + chosenPlayers[i].lastName;
+            summaryObject.win = chosenPlayers[i].weeklywin;
+            summaryObject.loss = chosenPlayers[i].weeklyloss;
+            summaryObject.death = chosenPlayers[i].wdeath;
+            summaryObject.kill = chosenPlayers[i].wkill;
+            // summaryObject.destroy = chosenPlayers[i].wdestroy;
+            // summaryObject.damage = chosenPlayers[i].wdamage;
+            summaryObject.attack = chosenPlayers[i].wattack;
+
+            chosenPlayerSummary.push(summaryObject);
+        }
+        return chosenPlayerSummary;
     },
 
     ratePlayerBasedOnCriteria: function(player: any, criteria: string) {

@@ -8,6 +8,22 @@ tg.notification.hideNotification = function(){
     $('#notification-modal').hide();
 };
 
+
+tg.notification.updateLeaderBoard = function(persistant_server_state){
+    if(!persistant_server_state || !persistant_server_state.weeklytopplayers || !persistant_server_state.weeklytopplayers.topPlayers){
+        console.log('input doesnot contain top player list');
+        return; 
+    }
+
+    const topPlayerList = persistant_server_state.weeklytopplayers.topPlayers;
+    
+    const leaderBoardHeader = document.getElementById('leaderboard-modal-header');
+    leaderBoardHeader.innerHTML = persistant_server_state.weeklytopplayers.header;
+
+    const tableElement = document.getElementById('leaderboard-table');
+    tg.uu.populateTableWithJSONArray(topPlayerList, tableElement);
+};
+
 tg.notification.showNotification = function(type, message, payload){
     tg.notification.currentState = type;
     tg.notification.payload = payload;

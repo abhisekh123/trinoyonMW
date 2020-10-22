@@ -158,9 +158,38 @@ module.exports = {
         return searchResult;
     },
 
+    resetAllPlayerWeeklyRecord() {
+        for(var i = 0; i < this.serverState.user_id_list.length; ++i){
+            const userDBState = this.serverState.users_db_state[this.serverState.user_id_list[i]];
+            userDBState.weeklywin = 0;
+            userDBState.weeklyloss = 0;
+
+            userDBState.wdeath = 0;
+            userDBState.wkill = 0;
+            userDBState.wdestroy = 0;
+
+            userDBState.wdamage = 0;
+            userDBState.wattack = 0;
+            
+            this.updateUser(this.serverState.user_id_list[i]);
+        }
+    },
+
+    createNewSeverStateItem: async function (stateObject: any) {
+        const now = utilityFunctions.getCurrentTime();
+        const weeklytopplayers = {
+            name: 'weeklytopplayers',
+            lastUpdate: now,
+            isActive: true,
+            topPlayers: [],
+        };
+
+        await this.db.serverstate.insert(stateObject);
+    },
+
     updateServerState: function(name: string) {
         const serverStateItem = this.serverState.persistant_server_state[name];
-        const updateResult = this.db.users.update({ name: serverStateItem.name }, serverStateItem);
+        const updateResult = this.db.serverstate.update({ name: serverStateItem.name }, serverStateItem);
         return updateResult;
     },
 

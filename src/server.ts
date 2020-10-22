@@ -239,7 +239,9 @@ app.get('/howrwi', function (req, res) {
     if (etaseta == 'chonch0l') {
         res.send(serverState.getServerState());
     } else if (etaseta == 'borda') {
-        const response = serverManager.updateWeeklyTopPlayers();
+        var matha = req.query.matha;
+        console.log('matha:', matha);
+        const response = serverManager.updateWeeklyTopPlayers(matha);
         var respJSON: any = {
             status: 'fail',
             data: response
@@ -281,7 +283,7 @@ export class DemoServer {
         // console.log(serverState);
         userManager.init(workerManager, serverState);
         requestProcessor.init(serverState);
-        serverManager.init(serverState);
+        serverManager.init(serverState, );
         // console.log('starting worker');
         workerManager.init(userManager);
         workerManager.startWorker();

@@ -250,7 +250,7 @@ tg.initWorld = function(){
     tg.pn.init();
     tg.message.init();
     tg.refreshUI = tg.newRefreshFunction;
-    
+    tg.notification.updateLeaderBoard(tg.self.persistant_server_state);
     // console.log('tg.rm.pathMap:', tg.rm.pathMap);
 
     // tg.scene.registerAfterRender(function () {
@@ -259,6 +259,8 @@ tg.initWorld = function(){
 
     tg.isGameLive = false;
 };
+
+
 
 function entrypoint() {
     tg.initialiseAngleMatrix();

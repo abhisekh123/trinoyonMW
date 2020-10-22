@@ -19,13 +19,16 @@ tg.updateWorld = function (param) {
 tg.self = {};
 tg.self.userConfig = null;
 
-tg.self.updateUserConfig = function(userConfig){
+tg.self.updateUserConfig = function(userConfig, persistant_server_state){
 
     tg.self.userConfig = userConfig;
     tg.self.userConfig.joinedMMR = false;
+    tg.self.persistant_server_state = persistant_server_state;
+    // tg.self.updateLeaderBoard(tg.self.persistant_server_state);
     // console.log('self userConfig:', tg.self.userConfig);
     $('#hg-player').text(tg.self.userConfig.firstName + ' ' + tg.self.userConfig.lastName);
 };
+
 
 function initSystem() {
     // console.log('trying to connect to server via WS.');
@@ -39,7 +42,7 @@ function initSystem() {
         type: 'p'
     }, function (data, textStatus, jqXHR) {
         console.log('ox response', data);
-        tg.self.updateUserConfig(data.data.userConfig);
+        tg.self.updateUserConfig(data.data.userConfig, data.data.persistant_server_state);
         tg.connectToParent(data.data.u, data.data.k);
     });
     // console.log($('#ad-iframe'));
