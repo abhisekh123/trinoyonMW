@@ -114,45 +114,50 @@ tg.newRefreshFunction = function() {
             tg.am.chosenMarker.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
         }
 
-        if(tg.video.leftJoystickActive){
-            tg.video.cameraPan(tg.video.leftJoystickAngle);
-        }
-        if(tg.video.rightJoystickActive){
-            tg.video.cameraChangeView(tg.video.rightJoystickAngle);
-        }
+        const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
+        const botObject = tg.am.dynamicItems.bots[botId];
+        tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
+        tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
+
+        // if(tg.video.leftJoystickActive){
+        //     tg.video.cameraPan(tg.video.leftJoystickAngle);
+        // }
+        // if(tg.video.rightJoystickActive){
+        //     tg.video.cameraChangeView(tg.video.rightJoystickAngle);
+        // }
         
-        if ((tg.input.keyMap["s"] || tg.input.keyMap["S"])) {
-            tg.video.moveCameraStraight(1);
-        };
+        // if ((tg.input.keyMap["s"] || tg.input.keyMap["S"])) {
+        //     tg.video.moveCameraStraight(1);
+        // };
 
-        if ((tg.input.keyMap["w"] || tg.input.keyMap["W"])) {
-            tg.video.moveCameraStraight(-1);
-        };
+        // if ((tg.input.keyMap["w"] || tg.input.keyMap["W"])) {
+        //     tg.video.moveCameraStraight(-1);
+        // };
 
-        if ((tg.input.keyMap["d"] || tg.input.keyMap["D"])) {
-            tg.video.moveCameraSideway(1);
-        };
-        if ((tg.input.keyMap["a"] || tg.input.keyMap["A"])) {
-            tg.video.moveCameraSideway(-1);
-        };
+        // if ((tg.input.keyMap["d"] || tg.input.keyMap["D"])) {
+        //     tg.video.moveCameraSideway(1);
+        // };
+        // if ((tg.input.keyMap["a"] || tg.input.keyMap["A"])) {
+        //     tg.video.moveCameraSideway(-1);
+        // };
 
-        if ((tg.input.keyMap["q"] || tg.input.keyMap["Q"])) {
-            tg.video.cameraRotate(-1);
-        };
+        // if ((tg.input.keyMap["q"] || tg.input.keyMap["Q"])) {
+        //     tg.video.cameraRotate(-1);
+        // };
 
-        if ((tg.input.keyMap["e"] || tg.input.keyMap["E"])) {
-            tg.video.cameraRotate(1);
-        };
+        // if ((tg.input.keyMap["e"] || tg.input.keyMap["E"])) {
+        //     tg.video.cameraRotate(1);
+        // };
 
-        // go near
-        if ((tg.input.keyMap["r"] || tg.input.keyMap["R"])) {
-            tg.video.cameraZoom(-1);
-        };
+        // // go near
+        // if ((tg.input.keyMap["r"] || tg.input.keyMap["R"])) {
+        //     tg.video.cameraZoom(-1);
+        // };
 
-        // go away
-        if ((tg.input.keyMap["f"] || tg.input.keyMap["F"])) {
-            tg.video.cameraZoom(1);
-        };
+        // // go away
+        // if ((tg.input.keyMap["f"] || tg.input.keyMap["F"])) {
+        //     tg.video.cameraZoom(1);
+        // };
 
         for(var i = 0; i < tg.am.dynamicItems.botsArray.length; ++i){
             // if(tg.am.dynamicItems.botsArray[i].isProjectileActive && tg.am.dynamicItems.botsArray[i].plannedPath != null){
