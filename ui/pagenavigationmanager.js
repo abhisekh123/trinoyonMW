@@ -109,16 +109,13 @@ tg.pn.showMatchPage = function(){
     $("#game-header-menu").show();
     tg.hl.addJoysticks();
     tg.hl.removeJoysticks();
-    // $("#joystick-parent").show();
     tg.pn.currentPage = 'game-play';
     tg.audio.stopAudio(tg.audio.menu);
     tg.audio.playAudio(tg.audio.match);
 
     // tg.sprite.test();
 
-    $("#showjoystick").show();
-    // $("#fullscreenbutton").show();
-    // tg.pv.setModalDimensionPercentage('10%', '90%');
+    // $("#showjoystick").show();
 };
 
 // display home page.
@@ -138,7 +135,7 @@ tg.pn.showHomePage = function(){
     $("#menu-home").show();
     tg.pv.setModalDimensionPercentage('64%', '80%');
     tg.botSelection = {
-        botList: ['swordman', 'swordman', 'swordman', 'swordman'],
+        botList: ['swordman', 'swordman', 'archer', 'archer'],
         hero: 'lion',
     }
     tg.uu.populatePlayerBot($('#menu-home'));

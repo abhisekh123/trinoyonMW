@@ -17,6 +17,7 @@ tg.world.startNewMatch = function (playerConfigArray, playerIndex) {
 
 
 tg.world.processResult = function (resultObject) {
+    console.log('tg.world.processResult', resultObject);
     tg.isGameLive = false;
     tg.updateWorld = tg.world.updateWorldDormant;
 
@@ -180,7 +181,7 @@ tg.world.handleNewMatchStartReadyTrigger = function () {
 
     tg.pn.showMatchPage();
     tg.updateWorld = tg.world.updateWorld;
-
+    tg.hl.selectSelfBot(0, true);
 };
 
 tg.world.handleNewMatchTerminatedTrigger = function () {
@@ -259,6 +260,9 @@ tg.world.updateWorld = function (updateParam) {
     // console.log('tg.world.updateWorld:', updateParam);
     
     if (tg.isGameLive == true) {
+        if(tg.bot.userPlayerConfig.selectedBot == null){// if no bot is selected
+            tg.hl.selectSelfBot(0, true);
+        }
         // console.log('tg.world.updateWorld:', updateParam);
         const itemStateMap = updateParam.playerConfig.itemState;
         const eventsArray = updateParam.playerConfig.eventsArray;

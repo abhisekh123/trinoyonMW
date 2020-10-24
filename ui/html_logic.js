@@ -271,10 +271,10 @@ tg.hl.selectBotButtonClick = function (botIndex) {
     tg.hl.selectSelfBot(botIndex, true);
 };
 
-tg.hl.selectSelfBot = function (botIndex, lookAtBot) {  
+tg.hl.selectSelfBot = function (botIndexParam, lookAtBot) {  
     // console.log('selectSelfBot:', botIndex);
     // alert('selectSelfBot');
-    const botId = tg.bot.userPlayerConfig.botObjectList[botIndex].id;
+    const botId = tg.bot.userPlayerConfig.botObjectList[botIndexParam].id;
     
 
     const botObject = tg.am.dynamicItems.bots[botId];
@@ -306,9 +306,16 @@ tg.hl.selectSelfBot = function (botIndex, lookAtBot) {
 
     tg.hl.clearAllFooterButtonSelection();
 
+    // if(botIndexParam != 0){ // if any bot other than the hero is selects, then set timer to reset selection to hero
+    //     tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
+    //         tg.hl.clearSelfBotSelection();
+    //     }, tg.worldItems.uiConfig.clearSelectionTimerInterval);
+    // }
+
     tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
         tg.hl.clearSelfBotSelection();
     }, tg.worldItems.uiConfig.clearSelectionTimerInterval);
+    
     // tg.bot.userPlayerConfig.team
     // tg.am.dynamicItems.bots[characterID]
     // botObject.id
@@ -410,6 +417,7 @@ tg.hl.clearSelfBotSelection = function () {
     tg.bot.userPlayerConfig.clearSelectionTimer = null;
     tg.hl.clearAllFooterButtonSelection();
     tg.hl.clearRightColumn();
+    tg.hl.selectSelfBot(0, true);
     // tg.bot.userPlayerConfig.team
     // tg.am.dynamicItems.bots[characterID]
     // botObject.id
