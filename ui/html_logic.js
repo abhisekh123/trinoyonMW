@@ -278,7 +278,7 @@ tg.hl.selectSelfBot = function (botIndexParam, lookAtBot) {
     
 
     const botObject = tg.am.dynamicItems.bots[botId];
-    if(botObject.isActive == false){
+    if(!botObject || botObject.isActive == false){
         // bot is inactive, nothing to do
         return;
     }
@@ -302,6 +302,8 @@ tg.hl.selectSelfBot = function (botIndexParam, lookAtBot) {
     }
 
     tg.bot.userPlayerConfig.selectedBot = botObject;
+    tg.cameraArc.lockedTarget = botObject.controlMesh;
+    // tg.cameraArc.target = botObject.controlMesh;
     tg.audio.playItemEventAudio(botObject, 'select');
 
     tg.hl.clearAllFooterButtonSelection();

@@ -37,25 +37,32 @@ tg.initialiseCamera = function () {
     // tg.camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, 
     //     new BABYLON.Vector3(44.5 * tg.playerDimensionBaseUnit, 3 * tg.playerDimensionBaseUnit, 100 * tg.playerDimensionBaseUnit), tg.scene);
 
-    // Parameters: name, position, scene
-    tg.camera = new BABYLON.FollowCamera("Camera", new BABYLON.Vector3(0, 10, -10), tg.scene);
-    // //The goal distance of camera from target
-    tg.camera.radius = 120;
+    tg.cameraArc = new BABYLON.ArcRotateCamera("Camera123", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), tg.scene);
+    tg.cameraOffset = {x: 0, y: 70, z: 100};
+    // tg.camera.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, tg.cameraOffset.z));
+    // tg.camera.setPosition(new BABYLON.Vector3(0, 0, 0));
+    console.log('set camera position.');
+    tg.cameraArc.attachControl(tg.canvas, true);
 
-    // // The goal height of camera above local origin (centre) of target
-    tg.camera.heightOffset = 70;
-    tg.camera.fov = 1.1;
+    // // Parameters: name, position, scene
+    // tg.camera = new BABYLON.FollowCamera("Camera", new BABYLON.Vector3(0, 10, -10), tg.scene);
+    // // //The goal distance of camera from target
+    // tg.camera.radius = 10;
 
-    // // The goal rotation of camera around local origin (centre) of target in x y plane
-    tg.camera.rotationOffset = 0;
+    // // // The goal height of camera above local origin (centre) of target
+    // tg.camera.heightOffset = 10;
+    // tg.camera.fov = 1.3;
 
-    // //Acceleration of camera in moving from current to goal position
-    // tg.camera.cameraAcceleration = 0.002
+    // // // The goal rotation of camera around local origin (centre) of target in x y plane
+    // tg.camera.rotationOffset = 0;
 
-    // //The speed at which acceleration is halted 
-    // tg.camera.maxCameraSpeed = 5
+    // // //Acceleration of camera in moving from current to goal position
+    // tg.camera.cameraAcceleration = 0.002;
 
-    // tg.camera.attachControl(tg.canvas, true);
+    // // //The speed at which acceleration is halted 
+    // tg.camera.maxCameraSpeed = 25;
+
+    // // tg.camera.attachControl(tg.canvas, true);
 
     // tg.camera2 = new BABYLON.ArcRotateCamera("camera2",  3 * Math.PI / 8, 3 * Math.PI / 8, 400, new BABYLON.Vector3(0, 10, -10), tg.scene);
     // tg.camera2.attachControl(tg.canvas, true);
@@ -90,100 +97,100 @@ function entrypoint() {
 tg.video.leftJoystickActive = false;
 tg.video.rightJoystickActive = false;
 
-tg.video.cameraPan = function (angleParam) {
-    // console.log('camera pan:', angleParam);
-    tg.video.moveCameraSideway(Math.cos(angleParam));
-    tg.video.moveCameraStraight(-Math.sin(angleParam));
-};
+// tg.video.cameraPan = function (angleParam) {
+//     // console.log('camera pan:', angleParam);
+//     tg.video.moveCameraSideway(Math.cos(angleParam));
+//     tg.video.moveCameraStraight(-Math.sin(angleParam));
+// };
 
-tg.video.cameraChangeView = function (angleParam) {
-    // console.log('camera view:', angleParam);
-    tg.video.cameraRotate(Math.cos(angleParam));
-    tg.video.cameraZoom(-Math.sin(angleParam));
-};
+// tg.video.cameraChangeView = function (angleParam) {
+//     // console.log('camera view:', angleParam);
+//     tg.video.cameraRotate(Math.cos(angleParam));
+//     tg.video.cameraZoom(-Math.sin(angleParam));
+// };
 
-tg.video.moveCameraSideway = function (factorParam) {
-    factorParam *= tg.video.getFPSFactor();
-    tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.sideX * factorParam;
-    tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.sideZ * factorParam;
+// tg.video.moveCameraSideway = function (factorParam) {
+//     factorParam *= tg.video.getFPSFactor();
+//     tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.sideX * factorParam;
+//     tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.sideZ * factorParam;
 
-    if (tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide) {
-        tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
-    }
-    if (tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide) {
-        tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
-    }
-    if (tg.am.cameraTarget.position.z < 0) {
-        tg.am.cameraTarget.position.z = 0;
-    }
-    if (tg.am.cameraTarget.position.x < 0) {
-        tg.am.cameraTarget.position.x = 0;
-    }
-};
+//     if (tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide) {
+//         tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
+//     }
+//     if (tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide) {
+//         tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
+//     }
+//     if (tg.am.cameraTarget.position.z < 0) {
+//         tg.am.cameraTarget.position.z = 0;
+//     }
+//     if (tg.am.cameraTarget.position.x < 0) {
+//         tg.am.cameraTarget.position.x = 0;
+//     }
+// };
 
-tg.video.moveCameraStraight = function (factorParam) {
-    factorParam *= tg.video.getFPSFactor();
-    tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.forewardX * factorParam;
-    tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.forewardZ * factorParam;
+// tg.video.moveCameraStraight = function (factorParam) {
+//     factorParam *= tg.video.getFPSFactor();
+//     tg.am.cameraTarget.position.x += tg.worldItems.uiConfig.forewardX * factorParam;
+//     tg.am.cameraTarget.position.z += tg.worldItems.uiConfig.forewardZ * factorParam;
 
-    if (tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide) {
-        tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
-    }
-    if (tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide) {
-        tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
-    }
-    if (tg.am.cameraTarget.position.z < 0) {
-        tg.am.cameraTarget.position.z = 0;
-    }
-    if (tg.am.cameraTarget.position.x < 0) {
-        tg.am.cameraTarget.position.x = 0;
-    }
-};
+//     if (tg.am.cameraTarget.position.z > tg.worldItems.calculatedGridSide) {
+//         tg.am.cameraTarget.position.z = tg.worldItems.calculatedGridSide;
+//     }
+//     if (tg.am.cameraTarget.position.x > tg.worldItems.calculatedGridSide) {
+//         tg.am.cameraTarget.position.x = tg.worldItems.calculatedGridSide;
+//     }
+//     if (tg.am.cameraTarget.position.z < 0) {
+//         tg.am.cameraTarget.position.z = 0;
+//     }
+//     if (tg.am.cameraTarget.position.x < 0) {
+//         tg.am.cameraTarget.position.x = 0;
+//     }
+// };
 
-tg.video.cameraRotate = function (factorParam) {
-    factorParam *= tg.video.getFPSFactor();
-    tg.camera.rotationOffset += tg.worldItems.uiConfig.cameraTargetRotationStep * factorParam;
+// tg.video.cameraRotate = function (factorParam) {
+//     factorParam *= tg.video.getFPSFactor();
+//     tg.camera.rotationOffset += tg.worldItems.uiConfig.cameraTargetRotationStep * factorParam;
 
-    if (tg.camera.rotationOffset > 359) {
-        tg.camera.rotationOffset = 0;
-    }
-    if (tg.camera.rotationOffset < 0) {
-        tg.camera.rotationOffset = 359;
-    }
-    // tg.camera2.rotationOffset = tg.camera.rotationOffset;
-    tg.calculateCameraMovementSteps();
-};
+//     if (tg.camera.rotationOffset > 359) {
+//         tg.camera.rotationOffset = 0;
+//     }
+//     if (tg.camera.rotationOffset < 0) {
+//         tg.camera.rotationOffset = 359;
+//     }
+//     // tg.camera2.rotationOffset = tg.camera.rotationOffset;
+//     tg.calculateCameraMovementSteps();
+// };
 
 
-tg.video.cameraZoom = function (factorParam) {
-    factorParam *= tg.video.getFPSFactor();
-    tg.camera.radius += tg.worldItems.uiConfig.cameraRadiusStep * factorParam;
-    tg.camera.heightOffset += tg.worldItems.uiConfig.cameraHeightStep * factorParam;
-    tg.camera.fov += tg.worldItems.uiConfig.cameraFovStep * factorParam;
+// tg.video.cameraZoom = function (factorParam) {
+//     factorParam *= tg.video.getFPSFactor();
+//     tg.camera.radius += tg.worldItems.uiConfig.cameraRadiusStep * factorParam;
+//     tg.camera.heightOffset += tg.worldItems.uiConfig.cameraHeightStep * factorParam;
+//     tg.camera.fov += tg.worldItems.uiConfig.cameraFovStep * factorParam;
 
-    if (tg.camera.radius > tg.worldItems.uiConfig.maxCameraRadius) {
-        tg.camera.radius = tg.worldItems.uiConfig.maxCameraRadius;
-    }
-    if (tg.camera.heightOffset > tg.worldItems.uiConfig.maxCameraHeight) {
-        tg.camera.heightOffset = tg.worldItems.uiConfig.maxCameraHeight;
-    }
-    if (tg.camera.radius < tg.worldItems.uiConfig.minCameraRadius) {
-        tg.camera.radius = tg.worldItems.uiConfig.minCameraRadius;
-    }
-    if (tg.camera.heightOffset < tg.worldItems.uiConfig.minCameraHeight) {
-        tg.camera.heightOffset = tg.worldItems.uiConfig.minCameraHeight;
-    }
-    if (tg.camera.fov > tg.worldItems.uiConfig.maxCameraFov) {
-        tg.camera.fov = tg.worldItems.uiConfig.maxCameraFov;
-    }
-    if (tg.camera.fov < tg.worldItems.uiConfig.minCameraFov) {
-        tg.camera.fov = tg.worldItems.uiConfig.minCameraFov;
-    }
-};
+//     if (tg.camera.radius > tg.worldItems.uiConfig.maxCameraRadius) {
+//         tg.camera.radius = tg.worldItems.uiConfig.maxCameraRadius;
+//     }
+//     if (tg.camera.heightOffset > tg.worldItems.uiConfig.maxCameraHeight) {
+//         tg.camera.heightOffset = tg.worldItems.uiConfig.maxCameraHeight;
+//     }
+//     if (tg.camera.radius < tg.worldItems.uiConfig.minCameraRadius) {
+//         tg.camera.radius = tg.worldItems.uiConfig.minCameraRadius;
+//     }
+//     if (tg.camera.heightOffset < tg.worldItems.uiConfig.minCameraHeight) {
+//         tg.camera.heightOffset = tg.worldItems.uiConfig.minCameraHeight;
+//     }
+//     if (tg.camera.fov > tg.worldItems.uiConfig.maxCameraFov) {
+//         tg.camera.fov = tg.worldItems.uiConfig.maxCameraFov;
+//     }
+//     if (tg.camera.fov < tg.worldItems.uiConfig.minCameraFov) {
+//         tg.camera.fov = tg.worldItems.uiConfig.minCameraFov;
+//     }
+// };
 
-tg.video.getFPSFactor = function(){
-    return (60 / tg.engine.getFps().toFixed()) / 1.5;
-}
+// tg.video.getFPSFactor = function(){
+//     return (60 / tg.engine.getFps().toFixed()) / 1.5;
+// }
 
 // tg.video.makeFullScreen = function () {
 //     if (canvas.webkitRequestFullScreen) {

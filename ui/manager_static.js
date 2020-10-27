@@ -170,25 +170,25 @@ tg.static.loadStaticModel = function (
     
 
     //data reporter
-    var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);
-    outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
-    outputplane.material = new BABYLON.StandardMaterial("outputplanematerial_" + itemID, tg.scene);
+    // var outputplane = BABYLON.Mesh.CreatePlane("outputplane_" + itemID, 25, tg.scene, false);
+    // outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+    // outputplane.material = new BABYLON.StandardMaterial("outputplanematerial_" + itemID, tg.scene);
 
-    var outputplaneTexture = new BABYLON.DynamicTexture("dynamictexture_" + itemID, 512, tg.scene, true);
-    outputplane.material.diffuseTexture = outputplaneTexture;
-    outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-    outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-    outputplane.material.backFaceCulling = false;
+    // var outputplaneTexture = new BABYLON.DynamicTexture("dynamictexture_" + itemID, 512, tg.scene, true);
+    // outputplane.material.diffuseTexture = outputplaneTexture;
+    // outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+    // outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    // outputplane.material.backFaceCulling = false;
 
-    outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
-    // outputplaneTexture.drawText(positionParam.x + ',' + positionParam.z, null, 140, "bold 80px verdana", "white");
+    // outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
+    // // outputplaneTexture.drawText(positionParam.x + ',' + positionParam.z, null, 140, "bold 80px verdana", "white");
 
-    outputplaneTexture.hasAlpha = true;
-    outputplane.position.x = positionParam.x;
-    outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 4 + newMeshes[0].position.y;
-    outputplane.position.z = positionParam.z;
-    // outputplane.parent = parentMesh;
-    // outputplane.freezeWorldMatrix();
+    // outputplaneTexture.hasAlpha = true;
+    // outputplane.position.x = positionParam.x;
+    // outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 4 + newMeshes[0].position.y;
+    // outputplane.position.z = positionParam.z;
+    // // outputplane.parent = parentMesh;
+    // // outputplane.freezeWorldMatrix();
 
 
     var hpBarConfig = tg.ui3d.gethpbar(itemID, hpBarMaterial, hpBarContainerMaterial);
@@ -462,8 +462,13 @@ tg.static.addStaticItems = function () {
     cameraTarget.isPickable = false;
     tg.am.cameraTarget = cameraTarget;
 
-    tg.camera.lockedTarget = tg.am.cameraTarget;
+    // tg.camera.lockedTarget = tg.am.cameraTarget;
     // tg.camera2.lockedTarget = tg.am.ground;
+    // tg.camera.position.x = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
+    // tg.camera.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
+    // tg.camera.position.z = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
+
+    // console.log('tg.camera.position:', tg.cameraArc.position);
 
     // chosenMarker
     var chosenMarker = BABYLON.MeshBuilder.CreateBox("chosenMarker", {

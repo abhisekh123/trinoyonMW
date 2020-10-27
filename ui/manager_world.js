@@ -172,10 +172,14 @@ tg.world.handleNewMatchStartReadyTrigger = function () {
     tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
     tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
     if (tg.bot.userPlayerConfig.team == 1) {
-        tg.camera.rotationOffset = 180;
+        // tg.camera.rotationOffset = 180;
+        tg.cameraOffset.z = -tg.cameraOffset.z;
     } else {
-        tg.camera.rotationOffset = 0;
+        // tg.camera.rotationOffset = 0; 
     }
+
+    tg.cameraArc.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, tg.cameraOffset.z));
+    // tg.cameraArc.setPosition(new BABYLON.Vector3(0, 0, 0));
     
     tg.calculateCameraMovementSteps();
 
@@ -262,6 +266,17 @@ tg.world.updateWorld = function (updateParam) {
     if (tg.isGameLive == true) {
         if(tg.bot.userPlayerConfig.selectedBot == null){// if no bot is selected
             tg.hl.selectSelfBot(0, true);
+        } else {
+            // const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
+            // const botObject = tg.am.dynamicItems.bots[botId];
+            // if(Math.abs(tg.am.cameraTarget.position.x - tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x) > 5
+            //     || Math.abs(tg.am.cameraTarget.position.z - tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z) > 5){
+
+            //     tg.am.cameraTarget.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
+            //     tg.am.cameraTarget.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
+            // }
+            // tg.am.cameraTarget.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
+            // tg.am.cameraTarget.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
         }
         // console.log('tg.world.updateWorld:', updateParam);
         const itemStateMap = updateParam.playerConfig.itemState;

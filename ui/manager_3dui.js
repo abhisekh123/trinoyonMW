@@ -31,6 +31,7 @@ tg.ui3d.gethpbar = function (idParam, hpBarMaterial, healthBarContainerMaterial)
         height: .5,
         subdivisions: 4
     }, tg.scene);
+    healthBar.isPickable = false;
     hpBarConfig.healthBar = healthBar;
 
     var healthBarContainer = BABYLON.MeshBuilder.CreatePlane("hb2", {
@@ -38,6 +39,7 @@ tg.ui3d.gethpbar = function (idParam, hpBarMaterial, healthBarContainerMaterial)
         height: .5,
         subdivisions: 4
     }, tg.scene);
+    healthBarContainer.isPickable = false;
     hpBarConfig.healthBarContainer = healthBarContainer;
     healthBarContainer.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 

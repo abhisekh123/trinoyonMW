@@ -71,43 +71,10 @@ tg.initialiseDistanceMatrix = function() {
 // custom function exevuted in render loop.
 tg.newRefreshFunction = function() {
     tg.currentTime = getCurrentTime ();
-    // tg.hl.divFps.innerHTML = tg.engine.getFps().toFixed() + " fps";
-
-    // if ((tg.input.keyMap["s"] || tg.input.keyMap["S"])) {
-    //     tg.video.moveCameraStraight(1);
-    // };
-
-    // if ((tg.input.keyMap["w"] || tg.input.keyMap["W"])) {
-    //     tg.video.moveCameraStraight(-1);
-    // };
-
-    // if ((tg.input.keyMap["d"] || tg.input.keyMap["D"])) {
-    //     tg.video.moveCameraSideway(1);
-    // };
-    // if ((tg.input.keyMap["a"] || tg.input.keyMap["A"])) {
-    //     tg.video.moveCameraSideway(-1);
-    // };
-
-    // if ((tg.input.keyMap["q"] || tg.input.keyMap["Q"])) {
-    //     tg.video.cameraRotate(-1);
-    // };
-
-    // if ((tg.input.keyMap["e"] || tg.input.keyMap["E"])) {
-    //     tg.video.cameraRotate(1);
-    // };
-
-    // // go near
-    // if ((tg.input.keyMap["r"] || tg.input.keyMap["R"])) {
-    //     tg.video.cameraZoom(-1);
-    // };
-
-    // // go away
-    // if ((tg.input.keyMap["f"] || tg.input.keyMap["F"])) {
-    //     tg.video.cameraZoom(1);
-    // };
     
     if(tg.isGameLive == true){
         // tg.sprite.refresh();
+        // console.log('game running');
 
         if(tg.bot.userPlayerConfig.selectedBot != null){
             tg.am.chosenMarker.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
@@ -116,8 +83,12 @@ tg.newRefreshFunction = function() {
 
         const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
         const botObject = tg.am.dynamicItems.bots[botId];
-        tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
-        tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
+        // tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
+        // tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
+        
+
+        console.log(botObject.controlMesh.position);
+        console.log(tg.cameraArc.position);
 
         // if(tg.video.leftJoystickActive){
         //     tg.video.cameraPan(tg.video.leftJoystickAngle);
@@ -184,14 +155,14 @@ tg.newRefreshFunction = function() {
 };
 
 tg.calculateCameraMovementSteps = function() {
-    var angle = (tg.camera.rotationOffset / 180) * Math.PI;
-    var cosValue = Math.cos(angle);
-    var sinValue = Math.sin(angle);
+    // var angle = (tg.camera.rotationOffset / 180) * Math.PI;
+    // var cosValue = Math.cos(angle);
+    // var sinValue = Math.sin(angle);
 
-    tg.worldItems.uiConfig.sideX = -tg.worldItems.uiConfig.cameraTargetMovementStep * cosValue;
-    tg.worldItems.uiConfig.sideZ = tg.worldItems.uiConfig.cameraTargetMovementStep * sinValue;
-    tg.worldItems.uiConfig.forewardX = tg.worldItems.uiConfig.cameraTargetMovementStep * sinValue;
-    tg.worldItems.uiConfig.forewardZ = tg.worldItems.uiConfig.cameraTargetMovementStep * cosValue;
+    // tg.worldItems.uiConfig.sideX = -tg.worldItems.uiConfig.cameraTargetMovementStep * cosValue;
+    // tg.worldItems.uiConfig.sideZ = tg.worldItems.uiConfig.cameraTargetMovementStep * sinValue;
+    // tg.worldItems.uiConfig.forewardX = tg.worldItems.uiConfig.cameraTargetMovementStep * sinValue;
+    // tg.worldItems.uiConfig.forewardZ = tg.worldItems.uiConfig.cameraTargetMovementStep * cosValue;
 };
 
 tg.updateBotPosition = function(configParam) {
