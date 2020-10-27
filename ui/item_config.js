@@ -29,6 +29,14 @@
                 key: 'rank3',
                 file: 'static/img/botrank3.png',
             },
+            {
+                key: 'teambase',
+                file: 'static/img/teambase.png',
+            },
+            {
+                key: 'selectedbase',
+                file: 'static/img/selectedbase.png',
+            },
         ],
         effectSprites: [
             {
@@ -499,7 +507,7 @@
                 scale:2.5,
                 respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/swordsman_icon.png',
-                headerScale: 0.1,
+                headerScale: 0.14,
                 headerPositionY: 3.5,
                 headerSize: 25,
                 hpBarScale: 1,
@@ -703,7 +711,7 @@
                 scale:0.3,
                 respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/archer_icon.png',
-                headerScale: 0.5,
+                headerScale: 1.5,
                 headerPositionY: 16,
                 headerSize: 25,
                 hpBarScale: 8,

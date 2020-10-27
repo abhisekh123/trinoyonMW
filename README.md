@@ -70,9 +70,13 @@ send total online user count to user on login.
 ##always some bot or other is selected.
 ##timer reset selection to hero
 bots carry player name
-towers remove name
+##towers remove name
 marker for player bots and selected bot
-update default bot selection to 2 archer and 2 swordsman.
+##update default bot selection to 2 archer and 2 swordsman.
+onselection, remove time out. Incase no bot is selected, select hero.
+Update logic for audio
+reduce tower size and tower life bar size.
+balance gameplay
 
 
 

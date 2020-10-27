@@ -184,24 +184,7 @@ tg.bot.processLoadedModel = function (
     botObject.controlMesh.position.z = positionParam.z;
     botObject.controlMesh.addRotation(0, rotationParam, 0);
 
-    if (isSelfBot == true) {
-        var envelopMesh = BABYLON.MeshBuilder.CreateBox('envelop_' + characterID, {
-            height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-            width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-            depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
-        // parentMesh.material = tg.am.material_transparent;
-        envelopMesh.material = tg.am.material_transparent;
-        envelopMesh.position.y = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2) * (1 / characterConfig.scale);
-        envelopMesh.isPickable = true;
-        botObject.envelopMesh = envelopMesh;
-        envelopMesh.scaling = new BABYLON.Vector3(
-            1 / characterConfig.scale,
-            1 / characterConfig.scale,
-            1 / characterConfig.scale
-        );
-        envelopMesh.parent = botObject.controlMesh;
-    }
+    
 
 
     // botObject.currentAnimation = 'goto';
@@ -255,6 +238,38 @@ tg.bot.processLoadedModel = function (
     rankPlane.position = new BABYLON.Vector3(-(characterConfig.headerPositionY / 3), characterConfig.headerPositionY * 1.5, 0);
     rankPlane.parent = botObject.controlMesh;
     botObject.rankPlane = rankPlane;
+
+    
+
+    if (isSelfBot == true) {
+        var envelopMesh = BABYLON.MeshBuilder.CreateBox('envelop_' + characterID, {
+            height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
+        // parentMesh.material = tg.am.material_transparent;
+        envelopMesh.material = tg.am.material_transparent;
+        envelopMesh.position.y = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2) * (1 / characterConfig.scale);
+        envelopMesh.isPickable = true;
+        botObject.envelopMesh = envelopMesh;
+        envelopMesh.scaling = new BABYLON.Vector3(
+            1 / characterConfig.scale,
+            1 / characterConfig.scale,
+            1 / characterConfig.scale
+        );
+        envelopMesh.parent = botObject.controlMesh;
+
+        var basePlane = BABYLON.MeshBuilder.CreatePlane('basePlane' + characterID, options, tg.scene);
+        basePlane.scaling = new BABYLON.Vector3(outputPlaneScale * 3, outputPlaneScale * 3, outputPlaneScale * 3);
+        // basePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        basePlane.material = tg.am.material_plane_teambase;
+        basePlane.rotation.x = Math.PI / 2;
+
+        basePlane.position = new BABYLON.Vector3(0, 1, 0);
+        basePlane.parent = botObject.controlMesh;
+        botObject.basePlane = basePlane;
+    }
+
     // botObject.projectileData = {
     //     path: null,
     //     endTime: 0,
