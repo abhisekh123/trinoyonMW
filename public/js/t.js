@@ -100,7 +100,7 @@ tg.connectToParent = function (parentEndPoint, keyIdentifier) {
             tg.message.consumeMessage(responseJSON);
             // alert('could not join. game is full.');
         } else if (responseJSON.type == 'game_config') {
-            // console.log('processing game_config.', responseJSON);
+            console.log('processing game_config.', responseJSON);
             tg.world.startNewMatch(responseJSON.playerConfig, responseJSON.playerIndex);
             // alert('could not join. game is full.');
         } else if (responseJSON.type == 'result') {

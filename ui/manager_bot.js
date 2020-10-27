@@ -209,8 +209,14 @@ tg.bot.processLoadedModel = function (
     outputplane.material.backFaceCulling = false;
     outputplane.material.freeze();
 
+    const playerIndex = characterID.split("_")[1];
     //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
-    outputplaneTexture.drawText(characterID, null, 140, "bold 80px verdana", "white");
+    if(isSelfBot != true){
+        outputplaneTexture.drawText(playerIndex, null, 140, "bold 80px verdana", "white");
+    } else {
+        outputplaneTexture.drawText('(' + playerIndex + ')' + tg.self.userConfig.firstName, null, 140, "bold 80px verdana", "white");
+    }
+    
 
     outputplaneTexture.hasAlpha = true;
     // outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit * 1.2;

@@ -314,9 +314,9 @@ tg.hl.selectSelfBot = function (botIndexParam, lookAtBot) {
     //     }, tg.worldItems.uiConfig.clearSelectionTimerInterval);
     // }
 
-    tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
-        tg.hl.clearSelfBotSelection();
-    }, tg.worldItems.uiConfig.clearSelectionTimerInterval);
+    // tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
+    //     tg.hl.clearSelfBotSelection();
+    // }, tg.worldItems.uiConfig.clearSelectionTimerInterval);
     
     // tg.bot.userPlayerConfig.team
     // tg.am.dynamicItems.bots[characterID]

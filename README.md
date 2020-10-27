@@ -73,7 +73,7 @@ bots carry player name
 ##towers remove name
 marker for player bots and selected bot
 ##update default bot selection to 2 archer and 2 swordsman.
-onselection, remove time out. Incase no bot is selected, select hero.
+##onselection, remove time out. Incase no bot is selected, select hero.
 Update logic for audio
 reduce tower size and tower life bar size.
 balance gameplay
