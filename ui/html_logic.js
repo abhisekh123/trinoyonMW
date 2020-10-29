@@ -284,7 +284,7 @@ tg.hl.selectSelfBot = function (botIndexParam, lookAtBot) {
     }
 
     // tg.am.chosenMarker.position.x = 0;
-    tg.am.chosenMarker.position.y = 0;
+    // tg.am.chosenMarker.position.y = 0;
     // tg.am.chosenMarker.position.z = 0;
 
     // // tg.am.cameraTarget.position.x = 0;
@@ -410,7 +410,7 @@ tg.hl.clearSelfBotSelection = function () {
     // tg.am.chosenMarker.parent = null;
 
     // tg.am.chosenMarker.position.x = 0;
-    tg.am.chosenMarker.position.y = tg.worldItems.uiConfig.hiddenY;
+    // tg.am.chosenMarker.position.y = tg.worldItems.uiConfig.hiddenY;
     // tg.am.chosenMarker.position.z = 0;
 
     // // tg.am.cameraTarget.position.x = 0;

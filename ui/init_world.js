@@ -76,19 +76,19 @@ tg.newRefreshFunction = function() {
         // tg.sprite.refresh();
         // console.log('game running');
 
-        if(tg.bot.userPlayerConfig.selectedBot != null){
-            tg.am.chosenMarker.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
-            tg.am.chosenMarker.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
-        }
+        // if(tg.bot.userPlayerConfig.selectedBot != null){
+        //     tg.am.chosenMarker.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
+        //     tg.am.chosenMarker.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
+        // }
 
-        const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
-        const botObject = tg.am.dynamicItems.bots[botId];
+        // const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
+        // const botObject = tg.am.dynamicItems.bots[botId];
         // tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
         // tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
         
 
-        console.log(botObject.controlMesh.position);
-        console.log(tg.cameraArc.position);
+        // console.log(botObject.controlMesh.position);
+        // console.log(tg.cameraArc.position);
 
         // if(tg.video.leftJoystickActive){
         //     tg.video.cameraPan(tg.video.leftJoystickAngle);

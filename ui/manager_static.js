@@ -470,21 +470,21 @@ tg.static.addStaticItems = function () {
 
     // console.log('tg.camera.position:', tg.cameraArc.position);
 
-    // chosenMarker
-    var chosenMarker = BABYLON.MeshBuilder.CreateBox("chosenMarker", {
-        height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 4,
-        width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit
-    }, tg.scene);
-    // so that all position are positive and it is easier to map 
-    // ground position from ai grid position.
-    chosenMarker.position.x = 0;
-    chosenMarker.position.y = tg.worldItems.uiConfig.hiddenY;
-    chosenMarker.position.z = 0;
-    chosenMarker.isPickable = false;
-    chosenMarker.material = tg.am.material_semitransparent_chosen;
-    // ground.material = materialGround;
-    tg.am.chosenMarker = chosenMarker;
+    // // chosenMarker
+    // var chosenMarker = BABYLON.MeshBuilder.CreateBox("chosenMarker", {
+    //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit / 4,
+    //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+    //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit
+    // }, tg.scene);
+    // // so that all position are positive and it is easier to map 
+    // // ground position from ai grid position.
+    // chosenMarker.position.x = 0;
+    // chosenMarker.position.y = tg.worldItems.uiConfig.hiddenY;
+    // chosenMarker.position.z = 0;
+    // chosenMarker.isPickable = false;
+    // chosenMarker.material = tg.am.material_semitransparent_chosen;
+    // // ground.material = materialGround;
+    // tg.am.chosenMarker = chosenMarker;
 
     // bottom left (u,v) 0,0
     // top right (u,v) 1,1

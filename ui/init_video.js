@@ -38,11 +38,26 @@ tg.initialiseCamera = function () {
     //     new BABYLON.Vector3(44.5 * tg.playerDimensionBaseUnit, 3 * tg.playerDimensionBaseUnit, 100 * tg.playerDimensionBaseUnit), tg.scene);
 
     tg.cameraArc = new BABYLON.ArcRotateCamera("Camera123", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), tg.scene);
-    tg.cameraOffset = {x: 0, y: 60, z: 150};
+    tg.cameraOffset = {x: 0, y: 130, z: 190};
     tg.cameraArc.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, tg.cameraOffset.z));
     // tg.camera.setPosition(new BABYLON.Vector3(0, 0, 0));
     console.log('set camera position.');
+    // tg.cameraArc.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
     tg.cameraArc.attachControl(tg.canvas, true);
+    tg.cameraArc.fov = 0.6;
+
+    tg.cameraOffset = {x: 0, y: 90, z: 170};
+    tg.cameraArc.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, tg.cameraOffset.z));
+
+    // var distance = 200;	
+    // var aspect = tg.scene.getEngine().getRenderingCanvasClientRect().height / tg.scene.getEngine().getRenderingCanvasClientRect().width; 
+    // tg.cameraArc.orthoLeft = -distance/2;
+    // tg.cameraArc.orthoRight = distance / 2;
+    // tg.cameraArc.orthoBottom = tg.cameraArc.orthoLeft * aspect;
+    // tg.cameraArc.orthoTop = tg.cameraArc.orthoRight * aspect;
+    // tg.cameraArc.panningAxis = new BABYLON.Vector3(1, 1, 0);
+
+    // tg.cameraArc.beta = Math.PI/6;
 
     // // Parameters: name, position, scene
     // tg.camera = new BABYLON.FollowCamera("Camera", new BABYLON.Vector3(0, 10, -10), tg.scene);
