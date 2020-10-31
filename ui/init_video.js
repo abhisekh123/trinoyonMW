@@ -38,8 +38,8 @@ tg.initialiseCamera = function () {
     //     new BABYLON.Vector3(44.5 * tg.playerDimensionBaseUnit, 3 * tg.playerDimensionBaseUnit, 100 * tg.playerDimensionBaseUnit), tg.scene);
 
     tg.cameraArc = new BABYLON.ArcRotateCamera("Camera123", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), tg.scene);
-    tg.cameraOffset = {x: 0, y: 130, z: 190};
-    tg.cameraArc.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, tg.cameraOffset.z));
+    // tg.cameraOffset = {x: 0, y: 130, z: 190};
+    // tg.cameraArc.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, tg.cameraOffset.z));
     // tg.camera.setPosition(new BABYLON.Vector3(0, 0, 0));
     console.log('set camera position.');
     // tg.cameraArc.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
