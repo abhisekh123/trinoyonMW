@@ -302,6 +302,8 @@ tg.hl.selectSelfBot = function (botIndexParam, lookAtBot) {
     }
 
     tg.bot.userPlayerConfig.selectedBot = botObject;
+    tg.cameraArc.radius = 250;
+    tg.cameraArc.beta = 1.2;
     tg.cameraArc.lockedTarget = botObject.controlMesh;
     // tg.cameraArc.target = botObject.controlMesh;
     tg.audio.playItemEventAudio(botObject, 'select');
