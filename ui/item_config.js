@@ -168,33 +168,9 @@
                 levelMap: [
                     {
                         damage: 60,
-                        attack: 2.5,
-                        life: 150,
-                        speed: 4,
-                        ability: [
-                            {},
-                            {
-                                intensity: 1
-                            }
-                        ]
-                    },
-                    {
-                        damage: 120,
-                        attack: 3,
-                        life: 200,
-                        speed: 4.2,
-                        ability: [
-                            {},
-                            {
-                                intensity: 1
-                            }
-                        ]
-                    },
-                    {
-                        damage: 180,
                         attack: 3.5,
-                        life: 250,
-                        speed: 4.4,
+                        life: 400,
+                        speed: 2,
                         ability: [
                             {},
                             {
@@ -203,10 +179,34 @@
                         ]
                     },
                     {
-                        damage: 240,
-                        attack: 4,
-                        life: 300,
-                        speed: 5,
+                        damage: 60,
+                        attack: 4.5,
+                        life: 500,
+                        speed: 2,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
+                    },
+                    {
+                        damage: 60,
+                        attack: 5.5,
+                        life: 650,
+                        speed: 2.5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
+                    },
+                    {
+                        damage: 60,
+                        attack: 7,
+                        life: 700,
+                        speed: 3,
                         ability: [
                             {},
                             {
@@ -348,9 +348,9 @@
                 ],
                 levelMap: [
                     {
-                        damage: 10,
+                        damage: 60,
                         attack: 1,
-                        life: 200,
+                        life: 500,
                         speed: 2,
                         ability: [
                             {},
@@ -360,10 +360,10 @@
                         ]
                     },
                     {
-                        damage: 20,
-                        attack: 1.1,
-                        life: 300,
-                        speed: 2.25,
+                        damage: 60,
+                        attack: 1.5,
+                        life: 600,
+                        speed: 2,
                         ability: [
                             {},
                             {
@@ -372,9 +372,9 @@
                         ]
                     },
                     {
-                        damage: 30,
-                        attack: 1.3,
-                        life: 400,
+                        damage: 60,
+                        attack: 2,
+                        life: 700,
                         speed: 2.5,
                         ability: [
                             {},
@@ -384,10 +384,10 @@
                         ]
                     },
                     {
-                        damage: 40,
-                        attack: 1.5,
-                        life: 500,
-                        speed: 3,
+                        damage: 60,
+                        attack: 2.5,
+                        life: 800,
+                        speed: 3.5,
                         ability: [
                             {},
                             {
@@ -530,9 +530,21 @@
                 ],
                 levelMap: [
                     {
-                        damage: 40,
-                        attack: 2,
+                        damage: 60,
+                        attack: 3,
                         life: 50,
+                        speed: 2.5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
+                    },
+                    {
+                        damage: 60,
+                        attack: 4.5,
+                        life: 70,
                         speed: 3,
                         ability: [
                             {},
@@ -542,34 +554,22 @@
                         ]
                     },
                     {
-                        damage: 80,
-                        attack: 3,
-                        life: 60,
+                        damage: 60,
+                        attack: 5.5,
+                        life: 100,
+                        speed: 3.5,
+                        ability: [
+                            {},
+                            {
+                                intensity: 1
+                            }
+                        ]
+                    },
+                    {
+                        damage: 60,
+                        attack: 6,
+                        life: 120,
                         speed: 4,
-                        ability: [
-                            {},
-                            {
-                                intensity: 1
-                            }
-                        ]
-                    },
-                    {
-                        damage: 120,
-                        attack: 4,
-                        life: 70,
-                        speed: 5,
-                        ability: [
-                            {},
-                            {
-                                intensity: 1
-                            }
-                        ]
-                    },
-                    {
-                        damage: 160,
-                        attack: 5,
-                        life: 80,
-                        speed: 6,
                         ability: [
                             {},
                             {
