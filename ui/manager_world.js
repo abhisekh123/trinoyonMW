@@ -185,6 +185,11 @@ tg.world.handleNewMatchStartReadyTrigger = function () {
 
     tg.pn.showMatchPage();
     tg.updateWorld = tg.world.updateWorld;
+
+    const botIdHero = tg.bot.userPlayerConfig.botObjectList[0].id;
+    const botObjectHero = tg.am.dynamicItems.bots[botIdHero];
+    tg.cameraArc.lockedTarget = botObjectHero.controlMesh;
+
     tg.hl.selectSelfBot(0, true);
 };
 
