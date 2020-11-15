@@ -46,7 +46,7 @@ tg.initialiseCamera = function () {
     tg.cameraArc.attachControl(tg.canvas, true);
     tg.cameraArc.fov = 0.6;
 
-    tg.cameraOffset = {x: 0, y: 90, z: 170};
+    tg.cameraOffset = {x: 170, y: 90, z: 170};
     tg.cameraArc.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, tg.cameraOffset.z));
 
     // var distance = 200;	

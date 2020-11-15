@@ -173,6 +173,7 @@ tg.world.handleNewMatchStartReadyTrigger = function () {
     tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
     if (tg.bot.userPlayerConfig.team == 1) {
         // tg.camera.rotationOffset = 180;
+        tg.cameraOffset.x = -tg.cameraOffset.x;
         tg.cameraOffset.z = -tg.cameraOffset.z;
     } else {
         // tg.camera.rotationOffset = 0; 
@@ -488,8 +489,8 @@ tg.world.testResultRendering = function () {
     // console.log('test result rendering');
 
     tg.world.processResult({
-        "towerCountTeam1": 5,
-        "towerCountTeam2": 5,
+        "towerCountTeam1": 9,
+        "towerCountTeam2": 9,
         "timeRemaining": 0,
         "performance": [{
                 "death": null

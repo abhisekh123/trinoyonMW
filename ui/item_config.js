@@ -76,7 +76,7 @@
                 iconurl: 'static/img/flame_arrow_icon.png',
                 resetInterval: 30000,
                 duration: 5000,
-                targetAttackFactor: 4,
+                targetAttackFactor: 6,
                 description: 'This ability targets single opponent warrior.<br>Once activated, the warrior will shoot fire arrows for the entire active duration, each attack to the target will cause 4 times the current attack damage.<br>It is best that this ability is activated while the warrior is already attacking an enemy. Otherwise the ability might complete the active duration without being able to use the ability on an opponent.',
                 metaData: {
                     type: 'plane',
@@ -114,8 +114,8 @@
                 iconurl: '/static/img/quake.jpeg',
                 resetInterval: 40000,
                 duration: 3000,
-                neighbourAttackFactor: 1.5,
-                targetAttackFactor: 3.5,
+                neighbourAttackFactor: 2.5,
+                targetAttackFactor: 4.5,
                 metaData: {
                     type: 'sprite',
                     file: '/static/img/pulse.png',
@@ -170,7 +170,7 @@
                         damage: 60,
                         attack: 25,
                         life: 400,
-                        speed: 2.5,
+                        speed: 3.5,
                         ability: [
                             {},
                             {
@@ -182,7 +182,7 @@
                         damage: 60,
                         attack: 27,
                         life: 450,
-                        speed: 2.6,
+                        speed: 3.6,
                         ability: [
                             {},
                             {
@@ -194,7 +194,7 @@
                         damage: 60,
                         attack: 29,
                         life: 500,
-                        speed: 2.7,
+                        speed: 3.7,
                         ability: [
                             {},
                             {
@@ -206,7 +206,7 @@
                         damage: 60,
                         attack: 30,
                         life: 530,
-                        speed: 2.8,
+                        speed: 3.8,
                         ability: [
                             {},
                             {
@@ -351,7 +351,7 @@
                         damage: 60,
                         attack: 10,
                         life: 300,
-                        speed: 2,
+                        speed: 3,
                         ability: [
                             {},
                             {
@@ -363,7 +363,7 @@
                         damage: 60,
                         attack: 12,
                         life: 350,
-                        speed: 2.1,
+                        speed: 3.1,
                         ability: [
                             {},
                             {
@@ -375,7 +375,7 @@
                         damage: 60,
                         attack: 14,
                         life: 400,
-                        speed: 2.2,
+                        speed: 3.2,
                         ability: [
                             {},
                             {
@@ -387,7 +387,7 @@
                         damage: 60,
                         attack: 16,
                         life: 450,
-                        speed: 2.3,
+                        speed: 3.3,
                         ability: [
                             {},
                             {
@@ -533,7 +533,7 @@
                         damage: 60,
                         attack: 20,
                         life: 80,
-                        speed: 2,
+                        speed: 3,
                         ability: [
                             {},
                             {
@@ -545,7 +545,7 @@
                         damage: 60,
                         attack: 22,
                         life: 90,
-                        speed: 2.1,
+                        speed: 3.1,
                         ability: [
                             {},
                             {
@@ -557,7 +557,7 @@
                         damage: 60,
                         attack: 24,
                         life: 100,
-                        speed: 2.2,
+                        speed: 3.2,
                         ability: [
                             {},
                             {
@@ -569,7 +569,7 @@
                         damage: 60,
                         attack: 25,
                         life: 105,
-                        speed: 2.3,
+                        speed: 3.3,
                         ability: [
                             {},
                             {
