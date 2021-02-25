@@ -186,7 +186,9 @@ tg.am.createMaterials = function () {
     // groundMaterial.emissiveTexture.uScale = tg.worldItems.gridSide / 8;
     // groundMaterial.emissiveTexture.vScale = tg.worldItems.gridSide / 8;
 
-    groundMaterial.emissiveColor = new BABYLON.Color3(20/256, 20/256, 40/256);
+    groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/layout_grid_23jan2021.PNG", tg.scene);
+
+    // groundMaterial.emissiveColor = new BABYLON.Color3(20/256, 20/256, 40/256);
     // groundMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 0.3);
     // material_sky.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.5);
     // material_sky.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.5);

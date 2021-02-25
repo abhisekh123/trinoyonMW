@@ -1,6 +1,7 @@
 
 /**
  * this is a wrapper function containing higher level wrapper function for pathfinding library.
+ * These functions perform the low level operations which are used by route manager and other modules.
  */
 const PF = require('pathfinding');
 const workerState = require('../state/workerstate');

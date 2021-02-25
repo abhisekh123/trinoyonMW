@@ -1,5 +1,5 @@
 /**
- * this file contains logical function that are used by ai/action
+ * this file contains hi level complex logical function that are used by ai/action
  */
 const pathFindingWrapper = require('./pathfindingwrapper');
 const customRoutingUtility = require('./customroutingutility');

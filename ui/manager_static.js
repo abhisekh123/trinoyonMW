@@ -517,9 +517,9 @@ tg.static.addStaticItems = function () {
     faceUV[5] = new BABYLON.Vector4(0, 0, 1, 1);
 
     var options = {
-        width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit * 0.3,
+        height: tg.worldItems.uiConfig.playerDimensionBaseUnit * 0.3,
+        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit * 0.3,
         faceUV: faceUV
     };
     // tg.am.staticItems = {};
