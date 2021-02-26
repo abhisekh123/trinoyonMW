@@ -231,7 +231,8 @@ tg.static.freezeStaticAssets = function(){
         const staticItem = tg.am.staticItems.buildingsArray[itemIndex];
         for (let meshIndex = 0; meshIndex < staticItem.allMeshes.length; meshIndex++) {
             const meshItem = staticItem.allMeshes[meshIndex];
-            meshItem.unfreezeWorldMatrix();
+            // meshItem.unfreezeWorldMatrix();
+            meshItem.freezeWorldMatrix();
         }
     }
 }
@@ -335,6 +336,8 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
 
     tg.am.totalAssetsToBeLoaded += tg.audio.loadAudioAssets();
     tg.am.totalAssetsToBeLoaded += tg.am.preloadAssets();
+
+    // tg.am.totalAssetsToBeLoaded++; // for ground
     // console.log('total asset to be loaded:' + tg.am.totalAssetsToBeLoaded);
 
     // defence team 1
@@ -342,9 +345,9 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
         const element = tg.worldItems.defenceTop[index];
         tg.static.loadGLTFAssetFileForStaticMeshes(
             'tower_gloom', {
-                x: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+                x: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
                 y: 0,
-                z: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+                z: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             }, {
                 rx: 0,
                 ry: Math.PI,
@@ -362,9 +365,9 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
     tg.static.loadGLTFAssetFileForStaticMeshes(
         // 'shinto_shrine',
         'defense_tower', {
-            x: (tg.worldItems.topBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            x: (tg.worldItems.topBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             y: 0,
-            z: (tg.worldItems.topBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            z: (tg.worldItems.topBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
         }, {
             rx: 0,
             ry: Math.PI,
@@ -382,9 +385,9 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
         const element = tg.worldItems.defenceBottom[index];
         tg.static.loadGLTFAssetFileForStaticMeshes(
             'tower_gloom', {
-                x: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+                x: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
                 y: 0,
-                z: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+                z: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             }, {
                 rx: 0,
                 ry: 0,
@@ -402,9 +405,9 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
     tg.static.loadGLTFAssetFileForStaticMeshes(
         // 'shinto_shrine',
         'defense_tower', {
-            x: (tg.worldItems.bottomBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            x: (tg.worldItems.bottomBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             y: 0,
-            z: (tg.worldItems.bottomBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            z: (tg.worldItems.bottomBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
         }, {
             rx: 0,
             ry: 0,
@@ -532,9 +535,9 @@ tg.static.addStaticItems = function () {
         // }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
         var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, options, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
 
-        box.position.x = (tg.worldItems.obstacles[i][0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+        box.position.x = (tg.worldItems.obstacles[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
         box.position.y = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2.13);
-        box.position.z = (tg.worldItems.obstacles[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+        box.position.z = (tg.worldItems.obstacles[i][0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
         box.isPickable = false;
         box.material = tg.am.boxMaterial;
         box.freezeWorldMatrix();

@@ -40,6 +40,7 @@ module.exports = {
             // allUsers[i].userId = parseInt(allUsers[i].id, 10).toString(32);
             // console.log(allUsers[i].userId);
             // console.log(parseInt(allUsers[i].id, 32).toString(10));
+            delete allUsers[i]._id; // we dont want to change document id
             this.serverState.users_db_state[allUsers[i].id] = allUsers[i];
             this.serverState.users_server_state[allUsers[i].id] = this.getEmptyUserServerState();
             this.serverState.users_server_state[allUsers[i].id].id = allUsers[i].id;
@@ -194,7 +195,9 @@ module.exports = {
     },
 
     updateUser: function (userId: string) {
+
         const currentUser = this.serverState.users_db_state[userId];
+        // console.log(currentUser);
         const updateResult = this.db.users.update({ id: currentUser.id }, currentUser);
     },
     deleteUser: function () {
