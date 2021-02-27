@@ -124,21 +124,21 @@ tg.am.getMaterialsForPlane = function(configParam, idPrefix){
 tg.am.createMaterials = function () {
     // console.log('creating materials');
 
-    // material for crates
-    var boxMaterial = new BABYLON.StandardMaterial("material_box", tg.scene);
+    // // material for crates
+    // var boxMaterial = new BABYLON.StandardMaterial("material_box", tg.scene);
 
-    // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor5.jpg", tg.scene);
-    // boxMaterial.emissiveColor = new BABYLON.Color3(45/256, 62/256, 50/256);
-    boxMaterial.diffuseColor = new BABYLON.Color3(45/256, 62/256, 50/256);
-    // boxMaterial.emissiveColor = new BABYLON.Color3(0.2, 0.3, 0.3);
-    // boxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-    // boxMaterial.specularTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    // boxMaterial.ambientTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
-    // boxMaterial.disableLighting = true;
-    boxMaterial.freeze();
-    tg.am.boxMaterial = boxMaterial;
+    // // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    // // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor5.jpg", tg.scene);
+    // // boxMaterial.emissiveColor = new BABYLON.Color3(45/256, 62/256, 50/256);
+    // boxMaterial.diffuseColor = new BABYLON.Color3(45/256, 62/256, 50/256);
+    // // boxMaterial.emissiveColor = new BABYLON.Color3(0.2, 0.3, 0.3);
+    // // boxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    // // boxMaterial.specularTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    // // boxMaterial.emissiveTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    // // boxMaterial.ambientTexture = new BABYLON.Texture("static/img/cpack01.jpg", tg.scene);
+    // // boxMaterial.disableLighting = true;
+    // boxMaterial.freeze();
+    // tg.am.boxMaterial = boxMaterial;
 
     // material for projectiles
     for(var i = 0; i < tg.itemConfigs.projectiles.length; ++i){
@@ -178,25 +178,25 @@ tg.am.createMaterials = function () {
         );
     }
 
-    // material for ground
-    var groundMaterial = new BABYLON.StandardMaterial("material_ground", tg.scene);
+    // // material for ground
+    // var groundMaterial = new BABYLON.StandardMaterial("material_ground", tg.scene);
 
-    // // groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor6.jpg", tg.scene);
-    // groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/grass.png", tg.scene);
-    // groundMaterial.emissiveTexture.uScale = tg.worldItems.gridSide / 8;
-    // groundMaterial.emissiveTexture.vScale = tg.worldItems.gridSide / 8;
+    // // // groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/stone_floor6.jpg", tg.scene);
+    // // groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/grass.png", tg.scene);
+    // // groundMaterial.emissiveTexture.uScale = tg.worldItems.gridSide / 8;
+    // // groundMaterial.emissiveTexture.vScale = tg.worldItems.gridSide / 8;
 
-    groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/layout_grid_23jan2021.PNG", tg.scene);
+    // groundMaterial.emissiveTexture = new BABYLON.Texture("static/img/layout_grid_23jan2021.PNG", tg.scene);
 
-    // groundMaterial.emissiveColor = new BABYLON.Color3(20/256, 20/256, 40/256);
-    // groundMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 0.3);
-    // material_sky.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.5);
-    // material_sky.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.5);
+    // // groundMaterial.emissiveColor = new BABYLON.Color3(20/256, 20/256, 40/256);
+    // // groundMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 0.3);
+    // // material_sky.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.5);
+    // // material_sky.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.5);
 
-    groundMaterial.disableLighting = true;
-    groundMaterial.freeze();
-    tg.am.groundMaterial = groundMaterial;
-    // tg.am.groundMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 0.3);
+    // groundMaterial.disableLighting = true;
+    // groundMaterial.freeze();
+    // tg.am.groundMaterial = groundMaterial;
+    // // tg.am.groundMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 0.3);
 
     var material_sky = new BABYLON.StandardMaterial('material_sky', tg.scene);
     // material_sky.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.5);

@@ -492,22 +492,22 @@ tg.static.resetStaticItems = function () {
  * create the world. These are the items that are always retained/reused in each game.
  */
 tg.static.addStaticItems = function () {
-    // ground
-    var ground = BABYLON.MeshBuilder.CreateBox("ground", {
-        height: 2,
-        width: tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        depth: tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit
-    }, tg.scene);
-    // so that all position are positive and it is easier to map 
-    // ground position from ai grid position.
-    ground.position.x = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
-    ground.position.y = -1;
-    ground.position.z = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
-    ground.isPickable = true;
-    ground.material = tg.am.groundMaterial;
-    // ground.material = materialGround;
-    tg.am.ground = ground;
-    ground.freezeWorldMatrix();
+    // // ground
+    // var ground = BABYLON.MeshBuilder.CreateBox("ground", {
+    //     height: 2,
+    //     width: tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+    //     depth: tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit
+    // }, tg.scene);
+    // // so that all position are positive and it is easier to map 
+    // // ground position from ai grid position.
+    // ground.position.x = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
+    // ground.position.y = -1;
+    // ground.position.z = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;
+    // ground.isPickable = true;
+    // ground.material = tg.am.groundMaterial;
+    // // ground.material = materialGround;
+    // tg.am.ground = ground;
+    // ground.freezeWorldMatrix();
 
     // cameraTarget
     var cameraTarget = BABYLON.MeshBuilder.CreateBox("cameraTarget", {
@@ -552,87 +552,87 @@ tg.static.addStaticItems = function () {
     // // ground.material = materialGround;
     // tg.am.chosenMarker = chosenMarker;
 
-    // bottom left (u,v) 0,0
-    // top right (u,v) 1,1
-    // (Utop_right, Vbottom_left, Ubottom_left, Vtop_right);
-    // (Ubottom_left, Vtop_right, Utop_right, Vbottom_left);
-    // (Utop_right, Vtop_right, Ubottom_left, Vbottom_left);
-    var faceUV = new Array(6);
-    faceUV[0] = new BABYLON.Vector4(0, 0, 1, 1);
-    faceUV[1] = new BABYLON.Vector4(0, 0, 1, 1);
+    // // bottom left (u,v) 0,0
+    // // top right (u,v) 1,1
+    // // (Utop_right, Vbottom_left, Ubottom_left, Vtop_right);
+    // // (Ubottom_left, Vtop_right, Utop_right, Vbottom_left);
+    // // (Utop_right, Vtop_right, Ubottom_left, Vbottom_left);
+    // var faceUV = new Array(6);
+    // faceUV[0] = new BABYLON.Vector4(0, 0, 1, 1);
+    // faceUV[1] = new BABYLON.Vector4(0, 0, 1, 1);
 
-    // faceUV[2] = new BABYLON.Vector4(1, 1, 1, 1);
-    // faceUV[2] = new BABYLON.Vector4(1, 1, 1, 0);
-    // faceUV[2] = new BABYLON.Vector4(1, 1, 0, 1);
-    // faceUV[2] = new BABYLON.Vector4(1, 1, 0, 0);
-    // faceUV[2] = new BABYLON.Vector4(1, 0, 1, 1);
-    // faceUV[2] = new BABYLON.Vector4(1, 0, 1, 0);
-    // faceUV[2] = new BABYLON.Vector4(1, 0, 0, 1);
-    // faceUV[2] = new BABYLON.Vector4(1, 0, 0, 0);
-    // faceUV[2] = new BABYLON.Vector4(0, 1, 1, 1);
-    // faceUV[2] = new BABYLON.Vector4(0, 1, 1, 0);
-    // faceUV[2] = new BABYLON.Vector4(0, 1, 0, 1);
-    // faceUV[2] = new BABYLON.Vector4(0, 1, 0, 0);
-    faceUV[2] = new BABYLON.Vector4(0, 0, 1, 1);
-    // faceUV[2] = new BABYLON.Vector4(0, 0, 1, 0);
-    // faceUV[2] = new BABYLON.Vector4(0, 0, 0, 1);
-    // faceUV[2] = new BABYLON.Vector4(0, 0, 0, 0);
+    // // faceUV[2] = new BABYLON.Vector4(1, 1, 1, 1);
+    // // faceUV[2] = new BABYLON.Vector4(1, 1, 1, 0);
+    // // faceUV[2] = new BABYLON.Vector4(1, 1, 0, 1);
+    // // faceUV[2] = new BABYLON.Vector4(1, 1, 0, 0);
+    // // faceUV[2] = new BABYLON.Vector4(1, 0, 1, 1);
+    // // faceUV[2] = new BABYLON.Vector4(1, 0, 1, 0);
+    // // faceUV[2] = new BABYLON.Vector4(1, 0, 0, 1);
+    // // faceUV[2] = new BABYLON.Vector4(1, 0, 0, 0);
+    // // faceUV[2] = new BABYLON.Vector4(0, 1, 1, 1);
+    // // faceUV[2] = new BABYLON.Vector4(0, 1, 1, 0);
+    // // faceUV[2] = new BABYLON.Vector4(0, 1, 0, 1);
+    // // faceUV[2] = new BABYLON.Vector4(0, 1, 0, 0);
+    // faceUV[2] = new BABYLON.Vector4(0, 0, 1, 1);
+    // // faceUV[2] = new BABYLON.Vector4(0, 0, 1, 0);
+    // // faceUV[2] = new BABYLON.Vector4(0, 0, 0, 1);
+    // // faceUV[2] = new BABYLON.Vector4(0, 0, 0, 0);
 
-    faceUV[3] = new BABYLON.Vector4(0, 0, 1, 1);
-    faceUV[4] = new BABYLON.Vector4(0, 0, 1, 1);
-    faceUV[5] = new BABYLON.Vector4(0, 0, 1, 1);
+    // faceUV[3] = new BABYLON.Vector4(0, 0, 1, 1);
+    // faceUV[4] = new BABYLON.Vector4(0, 0, 1, 1);
+    // faceUV[5] = new BABYLON.Vector4(0, 0, 1, 1);
 
-    var options = {
-        width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        faceUV: faceUV
-    };
-    // tg.am.staticItems = {};
-    tg.am.staticItems.boxes = []; // return;
-    for (var i = 0; i < tg.worldItems.obstacles.length; ++i) {
-        // var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, {
-        //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
-        // }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
-        var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, options, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
+    // var options = {
+    //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+    //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+    //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+    //     faceUV: faceUV
+    // };
+    // // tg.am.staticItems = {};
+    // tg.am.staticItems.boxes = []; // return;
+    // for (var i = 0; i < tg.worldItems.obstacles.length; ++i) {
+    //     // var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, {
+    //     //     height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+    //     //     width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+    //     //     depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+    //     // }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
+    //     var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, options, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
 
-        box.position.x = (tg.worldItems.obstacles[i][0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
-        box.position.y = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2.13);
-        box.position.z = (tg.worldItems.obstacles[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
-        box.isPickable = false;
-        box.material = tg.am.boxMaterial;
-        box.freezeWorldMatrix();
-        // box.material = groundMaterial;
-        tg.am.staticItems.boxes.push(box);
+    //     box.position.x = (tg.worldItems.obstacles[i][0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+    //     box.position.y = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2.13);
+    //     box.position.z = (tg.worldItems.obstacles[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+    //     box.isPickable = false;
+    //     box.material = tg.am.boxMaterial;
+    //     box.freezeWorldMatrix();
+    //     // box.material = groundMaterial;
+    //     tg.am.staticItems.boxes.push(box);
 
-        // //data reporter
-        // var outputplane = BABYLON.Mesh.CreatePlane("box_" + i, 5, tg.scene, false);
-        // outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
-        // outputplane.material = new BABYLON.StandardMaterial("boxmaterial_" + i, tg.scene);
-        // // outputplane.material = tg.am.material_friend_hpbar;
-        // // outputplane.position = new BABYLON.Vector3(0, 0, 25);
-        // // outputplane.scaling.y = 0.4;
+    //     // //data reporter
+    //     // var outputplane = BABYLON.Mesh.CreatePlane("box_" + i, 5, tg.scene, false);
+    //     // outputplane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+    //     // outputplane.material = new BABYLON.StandardMaterial("boxmaterial_" + i, tg.scene);
+    //     // // outputplane.material = tg.am.material_friend_hpbar;
+    //     // // outputplane.position = new BABYLON.Vector3(0, 0, 25);
+    //     // // outputplane.scaling.y = 0.4;
 
-        // var outputplaneTexture = new BABYLON.DynamicTexture("boxdynamictexture_" + i, 128, tg.scene, true);
-        // outputplane.material.diffuseTexture = outputplaneTexture;
-        // outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
-        // outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
-        // outputplane.material.backFaceCulling = false;
+    //     // var outputplaneTexture = new BABYLON.DynamicTexture("boxdynamictexture_" + i, 128, tg.scene, true);
+    //     // outputplane.material.diffuseTexture = outputplaneTexture;
+    //     // outputplane.material.specularColor = new BABYLON.Color3(0, 0, 0);
+    //     // outputplane.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    //     // outputplane.material.backFaceCulling = false;
 
-        // //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
-        // // outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
-        // // console.log(box.position.x + ',' + box.position.z);
-        // outputplaneTexture.drawText(box.position.x + ',' + box.position.z, 0, 30, "bold 20px verdana", "white");
+    //     // //outputplaneTexture.getContext().clearRect(0, 140, 512, 512);
+    //     // // outputplaneTexture.drawText(itemID, null, 140, "bold 80px verdana", "white");
+    //     // // console.log(box.position.x + ',' + box.position.z);
+    //     // outputplaneTexture.drawText(box.position.x + ',' + box.position.z, 0, 30, "bold 20px verdana", "white");
 
-        // // outputplaneTexture.hasAlpha = true;
-        // outputplane.position.x = box.position.x;
-        // outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2 + box.position.y;
-        // outputplane.position.z = box.position.z;
-        // // console.log('box' + i + ':', box.position);
-        // // console.log('outputplane' + i + ':', outputplane.position);
-    }
+    //     // // outputplaneTexture.hasAlpha = true;
+    //     // outputplane.position.x = box.position.x;
+    //     // outputplane.position.y = tg.worldItems.uiConfig.playerDimensionBaseUnit / 2 + box.position.y;
+    //     // outputplane.position.z = box.position.z;
+    //     // // console.log('box' + i + ':', box.position);
+    //     // // console.log('outputplane' + i + ':', outputplane.position);
+    // }
 
     tg.am.markerMeshes = {};
     // selected box
