@@ -320,6 +320,60 @@ tg.static.loadGLTFAssetFileForStaticMeshes = function (
     );
 }
 
+// static meshes that dont have any property and are never updated
+// like game world
+tg.static.loadWorldAsset = function (
+    folderNameParam,
+    filenameParam,
+    positionParam,
+    rotationParam,
+    scaleParam
+) {
+    BABYLON.SceneLoader.ImportMesh(
+        '',
+        'static/model/' + folderNameParam + '/',
+        filenameParam,
+        tg.scene,
+        function(
+            newMeshes,
+            // positionParam,
+            // rotationParam,
+            // scaleParam,
+            particleSystems,
+            skeletons,
+            animationGroups
+        ){
+            // console.log('inner function', filenameParam);
+            // this.meshes = newMeshes;
+            console.log('processing environment assettty:', folderNameParam + '/' + filenameParam);
+            console.log(positionParam);
+            newMeshes[0].position.x = positionParam.x;
+            newMeshes[0].position.y = positionParam.y;
+            newMeshes[0].position.z = positionParam.z;
+
+            newMeshes[0].scaling = new BABYLON.Vector3(scaleParam, scaleParam, scaleParam);
+            newMeshes[0].addRotation(rotationParam.rx, rotationParam.ry, rotationParam.rz);
+            newMeshes[1].name = 'world-floor';
+            for(var i = 0; i < newMeshes.length; ++i){
+                
+
+                newMeshes[i].freezeWorldMatrix();
+                if(newMeshes[i].material == null || newMeshes[i].material == undefined){
+
+                } else {
+                    newMeshes[i].material.freeze();
+                }
+                
+            }
+
+            
+            
+
+            tg.am.updateNewAssetLoaded(1);
+        }
+    );
+}
+
 /**
  * Load ans preload assets
  * @param {*} actionOnComplete : action to be performed once all assets has been loadded
@@ -337,17 +391,26 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
     tg.am.totalAssetsToBeLoaded += tg.audio.loadAudioAssets();
     tg.am.totalAssetsToBeLoaded += tg.am.preloadAssets();
 
-    // tg.am.totalAssetsToBeLoaded++; // for ground
+    tg.am.totalAssetsToBeLoaded++; // for ground
     // console.log('total asset to be loaded:' + tg.am.totalAssetsToBeLoaded);
+    tg.static.loadWorldAsset(
+        'world',
+        'floor_prod.glb',
+        {
+            x: tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+            y: 0,
+            z: tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
+        }, {rx: 0,ry: 0,rz: 0}, tg.worldItems.uiConfig.playerDimensionBaseUnit
+    )
 
     // defence team 1
     for (let index = 0; index < tg.worldItems.defenceTop.length; index++) {
         const element = tg.worldItems.defenceTop[index];
         tg.static.loadGLTFAssetFileForStaticMeshes(
             'tower_gloom', {
-                x: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+                x: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
                 y: 0,
-                z: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+                z: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             }, {
                 rx: 0,
                 ry: Math.PI,
@@ -365,9 +428,9 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
     tg.static.loadGLTFAssetFileForStaticMeshes(
         // 'shinto_shrine',
         'defense_tower', {
-            x: (tg.worldItems.topBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            x: (tg.worldItems.topBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             y: 0,
-            z: (tg.worldItems.topBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            z: (tg.worldItems.topBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
         }, {
             rx: 0,
             ry: Math.PI,
@@ -385,9 +448,9 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
         const element = tg.worldItems.defenceBottom[index];
         tg.static.loadGLTFAssetFileForStaticMeshes(
             'tower_gloom', {
-                x: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+                x: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
                 y: 0,
-                z: (element[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+                z: (element[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             }, {
                 rx: 0,
                 ry: 0,
@@ -405,9 +468,9 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
     tg.static.loadGLTFAssetFileForStaticMeshes(
         // 'shinto_shrine',
         'defense_tower', {
-            x: (tg.worldItems.bottomBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            x: (tg.worldItems.bottomBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
             y: 0,
-            z: (tg.worldItems.bottomBase[0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
+            z: (tg.worldItems.bottomBase[1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit,
         }, {
             rx: 0,
             ry: 0,
@@ -520,9 +583,9 @@ tg.static.addStaticItems = function () {
     faceUV[5] = new BABYLON.Vector4(0, 0, 1, 1);
 
     var options = {
-        width: tg.worldItems.uiConfig.playerDimensionBaseUnit * 0.3,
-        height: tg.worldItems.uiConfig.playerDimensionBaseUnit * 0.3,
-        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit * 0.3,
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        depth: tg.worldItems.uiConfig.playerDimensionBaseUnit,
         faceUV: faceUV
     };
     // tg.am.staticItems = {};
@@ -535,9 +598,9 @@ tg.static.addStaticItems = function () {
         // }, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
         var box = BABYLON.MeshBuilder.CreateBox("mesh_box" + i, options, tg.scene, false, BABYLON.Mesh.FRONTSIDE);
 
-        box.position.x = (tg.worldItems.obstacles[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+        box.position.x = (tg.worldItems.obstacles[i][0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
         box.position.y = (tg.worldItems.uiConfig.playerDimensionBaseUnit / 2.13);
-        box.position.z = (tg.worldItems.obstacles[i][0] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
+        box.position.z = (tg.worldItems.obstacles[i][1] + 0.5) * tg.worldItems.uiConfig.playerDimensionBaseUnit;
         box.isPickable = false;
         box.material = tg.am.boxMaterial;
         box.freezeWorldMatrix();

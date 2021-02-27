@@ -26,9 +26,9 @@ tg.input.init = function() {
 tg.input.onPointerDownFunction = function (evt, pickResult) {
     // We try to pick an object
     if (pickResult.hit) {
-        // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
+        console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
         // console.log('pickResult.pickedPoint:', pickResult.pickedPoint);
-        if(pickResult.pickedMesh.name == 'ground'){
+        if(pickResult.pickedMesh.name == 'world-floor'){
             if(tg.bot.userPlayerConfig.selectedBot != null){ // bot already selected. test for goto instruction.
                 var gridX = Math.floor(pickResult.pickedPoint.x / tg.worldItems.uiConfig.playerDimensionBaseUnit);
                 var gridZ = Math.floor(pickResult.pickedPoint.z / tg.worldItems.uiConfig.playerDimensionBaseUnit);

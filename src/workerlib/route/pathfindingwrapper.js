@@ -89,11 +89,11 @@ module.exports = {
 
         // obstacles
         for(var i = 0; i < this.worldConfig.obstacles.length; ++i){
-            workerState.grid.setWalkableAt(this.worldConfig.obstacles[i][1], this.worldConfig.obstacles[i][0], false);
+            workerState.grid.setWalkableAt(this.worldConfig.obstacles[i][0], this.worldConfig.obstacles[i][1], false);
         }
 
         // base team 1(top)
-        workerState.grid.setWalkableAt(this.worldConfig.topBase[1], this.worldConfig.topBase[0], false);
+        workerState.grid.setWalkableAt(this.worldConfig.topBase[0], this.worldConfig.topBase[1], false);
         this.worldConfig.topBase.push('base1');
         workerState.buildingMap_1['base1'] = {
             life:this.itemConfig.items.base.life,
@@ -113,9 +113,9 @@ module.exports = {
             mostResentOwnershipClaimingTeam: null,
             intervalToCompleteOwnershipClaim: this.itemConfig.items.base.intervalToCompleteOwnershipClaim,
             position: [
-                this.worldConfig.topBase[1],
+                this.worldConfig.topBase[0],
                 0,
-                this.worldConfig.topBase[0]
+                this.worldConfig.topBase[1]
             ],
             levelMap:this.itemConfig.items.base.levelMap,
             level: 0
@@ -125,7 +125,7 @@ module.exports = {
 
         // defence team 1(top)
         for(var i = 0; i < this.worldConfig.defenceTop.length; ++i){
-            workerState.grid.setWalkableAt(this.worldConfig.defenceTop[i][1], this.worldConfig.defenceTop[i][0], false);
+            workerState.grid.setWalkableAt(this.worldConfig.defenceTop[i][0], this.worldConfig.defenceTop[i][1], false);
             var towerID = 'tower' + towerIndex;
             this.worldConfig.defenceTop[i].push(towerID);
             workerState.buildingMap_1[towerID] = {
@@ -147,9 +147,9 @@ module.exports = {
                 mostResentOwnershipClaimingTeam: null,
                 intervalToCompleteOwnershipClaim: this.itemConfig.items.tower.intervalToCompleteOwnershipClaim,
                 position: [
-                    this.worldConfig.defenceTop[i][1],
+                    this.worldConfig.defenceTop[i][0],
                     0,
-                    this.worldConfig.defenceTop[i][0]
+                    this.worldConfig.defenceTop[i][1]
                 ],
                 levelMap:this.itemConfig.items.tower.levelMap,
                 level: 0
@@ -160,7 +160,7 @@ module.exports = {
 
 
         // base team 2(bottom)
-        workerState.grid.setWalkableAt(this.worldConfig.bottomBase[1], this.worldConfig.bottomBase[0], false);
+        workerState.grid.setWalkableAt(this.worldConfig.bottomBase[0], this.worldConfig.bottomBase[1], false);
         this.worldConfig.bottomBase.push('base2');
         workerState.buildingMap_2['base2'] = {
             life:this.itemConfig.items.base.life,
@@ -180,9 +180,9 @@ module.exports = {
             mostResentOwnershipClaimingTeam: null,
             intervalToCompleteOwnershipClaim: this.itemConfig.items.base.intervalToCompleteOwnershipClaim,
             position: [
-                this.worldConfig.bottomBase[1],
+                this.worldConfig.bottomBase[0],
                 0,
-                this.worldConfig.bottomBase[0]
+                this.worldConfig.bottomBase[1]
             ],
             levelMap:this.itemConfig.items.base.levelMap,
             level: 0
@@ -191,7 +191,7 @@ module.exports = {
 
         // defence team 2(bottom)
         for(var i = 0; i < this.worldConfig.defenceBottom.length; ++i){
-            workerState.grid.setWalkableAt(this.worldConfig.defenceBottom[i][1], this.worldConfig.defenceBottom[i][0], false);
+            workerState.grid.setWalkableAt(this.worldConfig.defenceBottom[i][0], this.worldConfig.defenceBottom[i][1], false);
             var towerID = 'tower' + towerIndex;
             this.worldConfig.defenceBottom[i].push(towerID);
             workerState.buildingMap_2[towerID] = {
@@ -213,9 +213,9 @@ module.exports = {
                 mostResentOwnershipClaimingTeam: null,
                 intervalToCompleteOwnershipClaim: this.itemConfig.items.tower.intervalToCompleteOwnershipClaim,
                 position: [
-                    this.worldConfig.defenceBottom[i][1],
+                    this.worldConfig.defenceBottom[i][0],
                     0,
-                    this.worldConfig.defenceBottom[i][0]
+                    this.worldConfig.defenceBottom[i][1]
                 ],
                 levelMap:this.itemConfig.items.tower.levelMap,
                 level: 0
