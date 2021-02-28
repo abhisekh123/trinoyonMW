@@ -322,7 +322,7 @@
                 range: 2,
                 parentMesh: null,
                 file:'digimon_3d_leomonice_leomon',
-                scale:6,
+                scale:4,
                 respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/lion_icon.png',
                 headerScale: 0.05,
@@ -504,7 +504,7 @@
                 range: 2,
                 parentMesh: null,
                 file:'low_poly_knight_animated',
-                scale:2.5,
+                scale:1.7,
                 respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/swordsman_icon.png',
                 headerScale: 0.14,
@@ -708,7 +708,7 @@
                 parentMesh: null,
                 // file:'low_poly_character_rpg_kit_animation',
                 file: 'bow_trigger_game_character',
-                scale:0.3,
+                scale:0.2,
                 respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/archer_icon.png',
                 headerScale: 1.5,
