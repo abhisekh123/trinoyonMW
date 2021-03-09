@@ -83,7 +83,7 @@ tg.audio.initGameDynamicObjectAudio = function (objectParam, objectConfigParam) 
         },
         // function callback() { setTimeout(function() {tg.music.play();}, 5000)},
         {
-            volume: 1
+            volume: 0.2
         }
     );
 

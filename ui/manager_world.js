@@ -273,16 +273,16 @@ tg.world.updateWorld = function (updateParam) {
         if(tg.bot.userPlayerConfig.selectedBot == null){// if no bot is selected
             tg.hl.selectSelfBot(0, true);
         } else {
-            // const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
-            // const botObject = tg.am.dynamicItems.bots[botId];
-            // if(Math.abs(tg.am.cameraTarget.position.x - tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x) > 5
-            //     || Math.abs(tg.am.cameraTarget.position.z - tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z) > 5){
+            const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
+            const botObject = tg.am.dynamicItems.bots[botId];
+            if(Math.abs(tg.am.cameraTarget.position.x - tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x) > 5
+                || Math.abs(tg.am.cameraTarget.position.z - tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z) > 5){
 
-            //     tg.am.cameraTarget.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
-            //     tg.am.cameraTarget.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
-            // }
-            // tg.am.cameraTarget.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
-            // tg.am.cameraTarget.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
+                tg.am.cameraTarget.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
+                tg.am.cameraTarget.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
+            }
+            tg.am.cameraTarget.position.x = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.x;
+            tg.am.cameraTarget.position.z = tg.bot.userPlayerConfig.selectedBot.controlMesh.position.z;
         }
         // console.log('tg.world.updateWorld:', updateParam);
         const itemStateMap = updateParam.playerConfig.itemState;
