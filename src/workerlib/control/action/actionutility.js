@@ -230,7 +230,7 @@ module.exports = {
         if (objectConfig.ability == undefined || objectConfig.ability == null) { // for buildings.
             return -1;
         }
-        for (var i = 1; i < objectConfig.ability.length; ++i) { // skip first ability as it is retreat.
+        for (var i = 1; i < objectConfig.ability.length; ++i) { // i = 1 to skip first ability as it is retreat.
             if (objectConfig[objectConfig.ability[i].key] == this.worldConfig.constants.ABILITY_ACTIVE) {
                 return i;
             }

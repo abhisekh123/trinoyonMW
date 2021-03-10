@@ -85,7 +85,7 @@ module.exports = {
         }
     },
 
-    isBotAIDriven: function(botConfig, gameRoom){
+    isBotOwningPlayerAIDriven: function(botConfig, gameRoom){
         var playerID = botConfig.player;
         var playerList = null;
         if(botConfig.team == 1){
@@ -103,6 +103,7 @@ module.exports = {
         return true;
     },
 
+    // process AI for bot:: playerConfig.botObjectList[botIndex];
     processAI: function(playerConfig, botIndex, gameRoom, timeSlice){
 
         /**
@@ -135,6 +136,7 @@ module.exports = {
 
         const botConfig = playerConfig.botObjectList[botIndex];
         if(botConfig.isActive == false){
+            // bot is dead. nothing to do.
             return 0;
         }
 
@@ -146,8 +148,8 @@ module.exports = {
         }
 
         // try retreat action
-        
-        if(playerConfig.isAIDriven == true){
+        // if(playerConfig.isAIDriven == true){
+        if(true) { // enable this feature for all bots.
             var offenderLifeRatio = (botConfig.life / botConfig.fullLife);
             if(offenderLifeRatio < this.itemConfig.globalAIConfig.retreatAbilityLifeFraction){
                 if(this.useRetreatAbility(botConfig, gameRoom) == true){ // if successfully used ability
@@ -162,7 +164,7 @@ module.exports = {
         // find closest hostile and calculate distance.
         var distanceBetweenBotAndHostile = this.worldConfig.gridSide + 1;
         var hostileConfig = routeManager.findClosestHostile(botConfig, gameRoom, this.worldConfig.constants.ALL);
-        if(hostileConfig != null){
+        if(hostileConfig != null){ // if there is any hostile in range
             distanceBetweenBotAndHostile = routeManager.getDistanceBetweenPoints(
                 botConfig.position[0],
                 botConfig.position[2],
@@ -179,7 +181,9 @@ module.exports = {
             }
 
             if(hostileConfig.type != 'tower' && hostileConfig.type != 'base'){
-                if(this.isBotAIDriven(hostileConfig, gameRoom)){
+                // if the target of attack is not a static object, use ability.
+                // if(this.isBotOwningPlayerAIDriven(hostileConfig, gameRoom)){
+                if(true) { // applicable for all bots.
                     this.useHPAbility(hostileConfig, gameRoom);
                 }
             }

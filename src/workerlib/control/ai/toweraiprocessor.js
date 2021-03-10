@@ -44,7 +44,7 @@ module.exports = {
             }
 
         } 
-        // else { // orphan towers
+        // else { // orphan towers .... logic for recapturing towers
         //     var team1BotsInRange = false;
         //     var team2BotsInRange = false;
 

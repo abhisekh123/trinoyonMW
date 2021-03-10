@@ -138,7 +138,7 @@ var worldItems = {
     bottomBasePlayerPosition:[[70, 69], [71, 69], [69, 70], [69, 71], [68, 69], [69, 68]],
 
 
-    maxDistanceFromLeader: 7,
+    maxDistanceFromLeader: 5,
     tooAwayFromLeader: 10,
     closeProximity: 5,
 
