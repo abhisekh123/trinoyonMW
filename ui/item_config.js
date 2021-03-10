@@ -67,7 +67,7 @@
         globalAIConfig: {
             retreatAbilityLifeFraction: 0.3,
             hpAbilityLifeFraction: 0.45,
-            
+            lastAttackTimeHealOffset: 6000, // 6 seconds without damage to start healing
         },
         abilityConfig: {
             // iconurl: image to be shown in the ui icon to activate the event.
@@ -170,7 +170,7 @@
                         damage: 60,
                         attack: 25,
                         life: 400,
-                        speed: 3.5,
+                        speed: 1.5,
                         ability: [
                             {},
                             {
@@ -182,7 +182,7 @@
                         damage: 60,
                         attack: 27,
                         life: 450,
-                        speed: 3.6,
+                        speed: 1.6,
                         ability: [
                             {},
                             {
@@ -194,7 +194,7 @@
                         damage: 60,
                         attack: 29,
                         life: 500,
-                        speed: 3.7,
+                        speed: 1.7,
                         ability: [
                             {},
                             {
@@ -206,7 +206,7 @@
                         damage: 60,
                         attack: 30,
                         life: 530,
-                        speed: 3.8,
+                        speed: 1.8,
                         ability: [
                             {},
                             {
@@ -349,9 +349,9 @@
                 levelMap: [
                     {
                         damage: 60,
-                        attack: 10,
+                        attack: 2,
                         life: 300,
-                        speed: 3,
+                        speed: 1,
                         ability: [
                             {},
                             {
@@ -361,9 +361,9 @@
                     },
                     {
                         damage: 60,
-                        attack: 12,
+                        attack: 2,
                         life: 350,
-                        speed: 3.1,
+                        speed: 1.1,
                         ability: [
                             {},
                             {
@@ -373,9 +373,9 @@
                     },
                     {
                         damage: 60,
-                        attack: 14,
+                        attack: 3,
                         life: 400,
-                        speed: 3.2,
+                        speed: 1.2,
                         ability: [
                             {},
                             {
@@ -385,9 +385,9 @@
                     },
                     {
                         damage: 60,
-                        attack: 16,
+                        attack: 3,
                         life: 450,
-                        speed: 3.3,
+                        speed: 1.3,
                         ability: [
                             {},
                             {
@@ -531,9 +531,9 @@
                 levelMap: [
                     {
                         damage: 60,
-                        attack: 20,
+                        attack: 2,
                         life: 80,
-                        speed: 3,
+                        speed: 1,
                         ability: [
                             {},
                             {
@@ -543,9 +543,9 @@
                     },
                     {
                         damage: 60,
-                        attack: 22,
+                        attack: 2,
                         life: 90,
-                        speed: 3.1,
+                        speed: 1.1,
                         ability: [
                             {},
                             {
@@ -555,9 +555,9 @@
                     },
                     {
                         damage: 60,
-                        attack: 24,
+                        attack: 3,
                         life: 100,
-                        speed: 3.2,
+                        speed: 1.2,
                         ability: [
                             {},
                             {
@@ -567,9 +567,9 @@
                     },
                     {
                         damage: 60,
-                        attack: 25,
+                        attack: 3,
                         life: 105,
-                        speed: 3.3,
+                        speed: 1.3,
                         ability: [
                             {},
                             {
@@ -718,12 +718,12 @@
                 hpBarPositionY: 40,
             },
             tower:{
-                life:100,
+                life:500,
                 audioFile: 'static/audio/building.mp3',
                 levelMap: [
                     {
                         damage: 30,
-                        attack: 3,
+                        attack: 10,
                     },
                 ],
                 projectile: {

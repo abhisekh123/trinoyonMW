@@ -407,6 +407,7 @@ module.exports = {
         // botObject.residueTimeslice = 0;
         // botObject.deathTimestamp = 0;
         botObject.activityTimeStamp = 0;
+        botObject.lastDamageRecievedTimeStamp = 0;
         botObject.positionUpdateTimeStamp = 0;
 
         botObject.isActive = true;

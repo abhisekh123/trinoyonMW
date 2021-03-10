@@ -271,6 +271,7 @@ module.exports = {
 
         var attackReceived = this.getDamageReceivedByDefender(defenderConfig, offenderAttack);
         defenderConfig.life -= attackReceived;
+        defenderConfig.lastDamageRecievedTimeStamp = workerState.currentTime;
 
         gameRoom.statistics.performance[offenderConfig.team].damage += offenderAttack;
         // console.log(offenderConfig.id + '--' + offenderConfig.type + '-');

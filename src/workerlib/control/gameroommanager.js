@@ -155,6 +155,15 @@ module.exports = {
                     botConfig.life = botConfig.fullLife;
                 }
             }
+        } else {
+            if((botConfig.lastDamageRecievedTimeStamp + this.itemConfig.globalAIConfig.lastAttackTimeHealOffset) < (workerState.currentTime )) {
+                // console.log(botConfig.id + '=>old hp:' + botConfig.life);
+                botConfig.life += this.worldConfig.baseLocalityHealRatePerMiliSecond * workerState.timeIntervalToSimulateInEachGame * botConfig.fullLife * 0.5;
+                // console.log('new hp:' + botConfig.life);
+                if(botConfig.life > botConfig.fullLife){
+                    botConfig.life = botConfig.fullLife;
+                }
+            }
         }
     },
 

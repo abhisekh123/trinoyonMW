@@ -111,6 +111,7 @@ module.exports = {
             id:'base1',
             ownershipClaimStartTimestamp: 0,
             mostResentOwnershipClaimingTeam: null,
+            lastDamageRecievedTimeStamp: 0,
             intervalToCompleteOwnershipClaim: this.itemConfig.items.base.intervalToCompleteOwnershipClaim,
             position: [
                 this.worldConfig.topBase[0],
@@ -145,6 +146,7 @@ module.exports = {
                 id:towerID,
                 ownershipClaimStartTimestamp: 0,
                 mostResentOwnershipClaimingTeam: null,
+                lastDamageRecievedTimeStamp: 0,
                 intervalToCompleteOwnershipClaim: this.itemConfig.items.tower.intervalToCompleteOwnershipClaim,
                 position: [
                     this.worldConfig.defenceTop[i][0],
@@ -178,6 +180,7 @@ module.exports = {
             id:'base2',
             ownershipClaimStartTimestamp: 0,
             mostResentOwnershipClaimingTeam: null,
+            lastDamageRecievedTimeStamp: 0,
             intervalToCompleteOwnershipClaim: this.itemConfig.items.base.intervalToCompleteOwnershipClaim,
             position: [
                 this.worldConfig.bottomBase[0],
@@ -211,6 +214,7 @@ module.exports = {
                 id:towerID,
                 ownershipClaimStartTimestamp: null,
                 mostResentOwnershipClaimingTeam: null,
+                lastDamageRecievedTimeStamp: 0,
                 intervalToCompleteOwnershipClaim: this.itemConfig.items.tower.intervalToCompleteOwnershipClaim,
                 position: [
                     this.worldConfig.defenceBottom[i][0],
