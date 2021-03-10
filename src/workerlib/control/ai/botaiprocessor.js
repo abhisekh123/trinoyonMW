@@ -176,7 +176,8 @@ module.exports = {
         if(distanceBetweenBotAndHostile <= botConfig.range && botConfig.action == 'ready'){ // if a hostile is found in range
             // console.log('--attack -> hostiles in range:' + hostileConfig.id + ' at position:', hostileConfig.position);
             // actionManager.actionUtility.addActionToBot(botConfig, 'fight', hostileConfig, gameRoom);
-            if(playerConfig.isAIDriven == true){
+            // if(playerConfig.isAIDriven == true){
+            if(true){ // applicable to all bots.
                 this.useAttackAbility(botConfig, gameRoom);
             }
 
