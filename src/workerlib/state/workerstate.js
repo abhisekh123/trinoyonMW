@@ -83,7 +83,7 @@ module.exports = {
         playerConfig.isConnected = false;
     },
 
-    processUserReconnectEvent: function(){
+    processUserReconnectEvent: function(userId){
         var playerConfig = this.userToPlayerMap[userId];
         if(playerConfig == undefined || playerConfig == null){
             // console.log('user not playing. nothng to do for disconnect event');

@@ -34,7 +34,7 @@ module.exports = {
         let jsonData = ev.data;
         switch(jsonData.type){
             case 'update': // TODO : send update to main.
-            case 'game_config': 
+            case 'game_config': // game started or any player started new session
                 // console.log(jsonData.type + '::', jsonData);
                 var playerConfig = jsonData.payload.players;
                 var playerIDList = jsonData.payload.playerIDList;
@@ -46,9 +46,10 @@ module.exports = {
                 for (var i = 0; i < playerIDList.length; ++i){
                     gameConfig.playerIndex = playerIDList[i].index;
                     clientBroadcaster.sendMessageToRecipientByUserID(playerIDList[i].id, JSON.stringify(gameConfig));
+                    serverState.users_server_state[playerIDList[i].id].isPlaying = true;
                 }
                 break;
-            case 'result':
+            case 'result': // game completed
                 var playerConfig = jsonData.payload.result;
                 var playerIDList = jsonData.payload.playerIDList;
                 var gameConfig = {
@@ -59,6 +60,7 @@ module.exports = {
                 for (var i = 0; i < playerIDList.length; ++i){
                     gameConfig.playerIndex = playerIDList[i].index;
                     clientBroadcaster.sendMessageToRecipientByUserID(playerIDList[i].id, JSON.stringify(gameConfig));
+                    serverState.users_server_state[playerIDList[i].id].isPlaying = false;
                 }
                 break;
             case 'request_game_admit_nack': // client has been granted admission to the game.

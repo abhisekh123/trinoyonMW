@@ -87,6 +87,7 @@ tg.am.preloadAssets = function(){
         // DO nothing for now.
         // tg.am.bam.reset();
         console.log('babylon task loader completed task.');
+        tg.self.resumeOngoingMatchIfAny();
 	};
 
     return totalAssetsTobeLoaded;

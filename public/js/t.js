@@ -112,7 +112,7 @@ tg.connectToParent = function (parentEndPoint, keyIdentifier) {
             // console.log('processing request_game_admit_nack.');
             // alert('could not join. game is full. please try after some time.');
             responseJSON.sub = 'request_game_admit_nack'
-            tg.notification.showNotification(messageParam.sub, "All game rooms full. Could not join you.", messageParam);
+            tg.notification.showNotification(responseJSON.sub, "All game rooms full. Could not join you.", responseJSON);
         } else if (responseJSON.type == 'request_game_admit_ack') {
             // console.log('processing request_game_admit_ack.');
             // tg.UIConfig.advancedTexture.removeControl(tg.UIConfig.playButton);
@@ -127,6 +127,10 @@ tg.connectToParent = function (parentEndPoint, keyIdentifier) {
             // console.log('get request_game_world_reload from server.', responseJSON);
         } else if (responseJSON.type == 'updateuserconfigfromresult') {
             console.log('get updateuserconfigfromresult from server.', responseJSON);
+        } else if (responseJSON.type == 'textdialogue') {
+            console.log('get updateuserconfigfromresult from server.', responseJSON);
+            responseJSON.sub = 'textdialogue'
+            tg.notification.showNotification(responseJSON.sub, responseJSON.payload.message, responseJSON);
         } else { // message is code.
             var myFunction = eval(responseJSON.message);
             entrypoint();

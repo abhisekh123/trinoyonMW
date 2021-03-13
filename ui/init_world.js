@@ -232,7 +232,7 @@ tg.initWorld = function(){
     // tg.scene.registerAfterRender(function () {
     //     tg.updateCharacterStateBeforeRender();
     // });
-
+    console.log(tg.self.persistant_server_state);
     tg.isGameLive = false;
 };
 

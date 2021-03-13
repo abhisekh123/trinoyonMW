@@ -7,6 +7,12 @@ tg.network.requestGameAdmit = function() {
     tg.sendMessageToWS(message);
 };
 
+tg.network.requestGameResume = function() {
+    var message = tg.getEmptyMessagePacket('request_game_resume');
+    message.selection = tg.botSelection;
+    tg.sendMessageToWS(message);
+};
+
 
 tg.network.sendMatchmakingInstruction = function(subParam, payload) {
     var message = tg.getEmptyMessagePacket('message');

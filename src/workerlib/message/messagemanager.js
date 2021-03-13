@@ -26,6 +26,31 @@ module.exports = {
 
         mainThreadStub.postMessage(newMessageObject, '');
     },
+
+
+    processGameResumeRequest: function(userId) {
+        var userPlayerObject = workerState.userToPlayerMap[userId];
+
+        if(userPlayerObject == null || userPlayerObject == undefined){
+            console.error('user not found ', userMessageObject);
+            return;
+        }
+
+        var gameRoom = workerState.gameRoomArray[userPlayerObject.gameId];
+
+
+        if(gameRoom != null){ // if found
+            const payload = {};
+            // payload.playerIDList = [];
+            payload.players = this.getGameConfigJSON(gameRoom);
+            payload.playerIDList = [{
+                id: userPlayerObject.userId,
+                index: userPlayerObject.index
+            }];
+            var responseJSON = mainThreadStub.getResponseEmptyPacket('game_config', payload);
+            mainThreadStub.postMessage(responseJSON, '');
+        }
+    },
     
 
     broadcastGameConfigToPlayers: function(gameRoom){
@@ -89,7 +114,7 @@ module.exports = {
         var playerArrayTeam1 = this.getActualPlayerIDListForGame(gameRoom, 1, true);
         var playerArrayTeam2 = this.getActualPlayerIDListForGame(gameRoom, 2, true);
         
-        // console.log('sending game update');
+        // console.log('sending game update:', (playerArrayTeam1.length + playerArrayTeam2.length));
         // send config to players in team  1
         payload.playerIDList = playerArrayTeam1;
         // console.log('sending game update to team 1', payload);
@@ -162,6 +187,7 @@ module.exports = {
 
         return playerIDList;
     },
+
 
     /**
      * GET DATA TO BE SENT
@@ -258,7 +284,18 @@ module.exports = {
                     gameRoomAssetManager.addUserToWaitingList(currentMessage);
                     
                     break;
-                case 'client_reconnect':
+                case 'request_game_resume':
+                    console.log('request game resume', currentMessage);
+                    
+                    if(workerState.userToPlayerMap[currentMessage.userId] == null 
+                        || workerState.userToPlayerMap[currentMessage.userId] == undefined){
+                        // game ended. nothing to do.
+                    } else {
+                        this.processGameResumeRequest(currentMessage.userId);
+                        workerState.processUserReconnectEvent(currentMessage.userId);
+                    }
+                    break;
+                case 'client_reconnect': // redundant
                     var userId = currentMessage.userId;
                     workerState.processUserReconnectEvent(userId);
                     break;

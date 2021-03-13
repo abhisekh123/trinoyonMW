@@ -41,8 +41,23 @@ export class RequestProcessor {
                 break;
             case 'request_game_admit':
                 // console.log('got message with type:request_game_admit userID:', requestJSON.userId);
-                
-                workermanager.postMessage(requestJSON);
+                if(this.serverState.users_server_state[requestJSON.userId].isPlaying){
+                    this.sendMessagePacket('textdialogue', 
+                        JSON.parse(JSON.stringify({message: 'you are already in an active match.'})), 
+                        requestJSON.userId);
+                } else {
+                    workermanager.postMessage(requestJSON);
+                }
+                break;
+            case 'request_game_resume':
+                // console.log('got message with type:request_game_resume userID:', requestJSON.userId);
+                if(this.serverState.users_server_state[requestJSON.userId].isPlaying == false){
+                    this.sendMessagePacket('textdialogue', 
+                        JSON.parse(JSON.stringify({message: 'Game completed.'})), 
+                        requestJSON.userId);
+                } else {
+                    workermanager.postMessage(requestJSON);
+                }
                 break;
             case 'request_game_exit':
             case 'client_disconnected':

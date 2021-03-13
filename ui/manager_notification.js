@@ -40,6 +40,7 @@ tg.notification.showNotification = function(type, message, payload){
         case 'mmrfull':
         case 'request_game_admit_nack':
         case 'mmralreadystarted':
+        case 'textdialogue':
             $('#notification-modal-controls-acknowledgement').show();
             $('#notification-modal-controls-choice').hide();
         default:

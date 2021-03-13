@@ -115,6 +115,7 @@ app.get("/ox", function (req, res) {
         id: serverState.users_db_state[userIdDecimal].id,
         state: serverState.users_server_state[userIdDecimal].state,
         team: serverState.users_server_state[userIdDecimal].team,
+        isPlaying: serverState.users_server_state[userIdDecimal].isPlaying,
     };
 
     switch (req.query.type) {
@@ -136,6 +137,7 @@ app.get("/ox", function (req, res) {
             respJSON.status = 'ok';
             serverState.users_server_state[userIdDecimal].wsKey = wsKey;
 
+            // to ensure there is a single ws connection per user.
             userManager.disconnectUser(userIdDecimal);
             break;
 
