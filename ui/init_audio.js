@@ -92,8 +92,10 @@ tg.audio.initGameDynamicObjectAudio = function (objectParam, objectConfigParam) 
 
 tg.audio.getDistanceFromCameraTarget = function (objectParam) {
     return tg.getDistanceBetweenPoints(
-        getGridPositionFromFloorPosition(tg.am.cameraTarget.position.x),
-        getGridPositionFromFloorPosition(tg.am.cameraTarget.position.z),
+        // getGridPositionFromFloorPosition(tg.am.cameraTarget.position.x),
+        // getGridPositionFromFloorPosition(tg.am.cameraTarget.position.z),
+        getGridPositionFromFloorPosition(tg.am.selectedBotBasePlane.position.x),
+        getGridPositionFromFloorPosition(tg.am.selectedBotBasePlane.position.z),
         getGridPositionFromFloorPosition(objectParam.controlMesh.position.x),
         getGridPositionFromFloorPosition(objectParam.controlMesh.position.z)
     );

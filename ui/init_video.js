@@ -44,7 +44,7 @@ tg.initialiseCamera = function () {
     console.log('set camera position.');
     // tg.cameraArc.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
     tg.cameraArc.attachControl(tg.canvas, true);
-    tg.cameraArc.fov = 0.6;
+    tg.cameraArc.fov = 0.9;
 
     tg.cameraOffset = {x: 170, y: 90, z: 170};
     tg.cameraArc.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, tg.cameraOffset.z));

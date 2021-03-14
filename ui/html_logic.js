@@ -272,7 +272,7 @@ tg.hl.selectBotButtonClick = function (botIndex) {
 };
 
 tg.hl.selectSelfBot = function (botIndexParam, lookAtBot) {  
-    // console.log('selectSelfBot:', botIndex);
+    // console.log('selectSelfBot:', botIndexParam);
     // alert('selectSelfBot');
     const botId = tg.bot.userPlayerConfig.botObjectList[botIndexParam].id;
     
@@ -290,20 +290,21 @@ tg.hl.selectSelfBot = function (botIndexParam, lookAtBot) {
     // // tg.am.cameraTarget.position.x = 0;
     // tg.am.chosenMarker.parent = botObject.controlMesh;
     
-    if (tg.bot.userPlayerConfig.clearSelectionTimer != null || tg.bot.userPlayerConfig.selectedBot != null) {
-        clearTimeout(tg.bot.userPlayerConfig.clearSelectionTimer);
-    }
+    // if (tg.bot.userPlayerConfig.clearSelectionTimer != null || tg.bot.userPlayerConfig.selectedBot != null) {
+    //     clearTimeout(tg.bot.userPlayerConfig.clearSelectionTimer);
+    // }
 
     if(tg.bot.userPlayerConfig.selectedBot != null){// selected already selected bot
-        if(lookAtBot && tg.bot.userPlayerConfig.selectedBot.id == botObject.id){
+        // if(lookAtBot && tg.bot.userPlayerConfig.selectedBot.id == botObject.id){
             tg.am.cameraTarget.position.x = botObject.controlMesh.position.x;
             tg.am.cameraTarget.position.z = botObject.controlMesh.position.z;
-        }    
+            tg.am.selectedBotBasePlane.parent = botObject.controlMesh;
+        // }    
     }
 
     tg.bot.userPlayerConfig.selectedBot = botObject;
-    tg.cameraArc.radius = 250;
-    tg.cameraArc.beta = 1.2;
+    // tg.cameraArc.radius = 250;
+    // tg.cameraArc.beta = 1.2;
     // tg.cameraArc.lockedTarget = botObject.controlMesh;
     // tg.cameraArc.target = botObject.controlMesh;
     tg.audio.playItemEventAudio(botObject, 'select');
@@ -418,7 +419,7 @@ tg.hl.clearSelfBotSelection = function () {
     // // tg.am.cameraTarget.position.x = 0;
 
     tg.bot.userPlayerConfig.selectedBot = null;
-    tg.bot.userPlayerConfig.clearSelectionTimer = null;
+    // tg.bot.userPlayerConfig.clearSelectionTimer = null;
     tg.hl.clearAllFooterButtonSelection();
     tg.hl.clearRightColumn();
     tg.hl.selectSelfBot(0, true);

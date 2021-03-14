@@ -21,8 +21,9 @@ tg.bot.reloadBots = function (playerConfigArray, playerSelfIndex, actionOnComple
         if (i == playerSelfIndex) {
             tg.bot.userPlayerConfig = playerConfigArray[i];
             tg.bot.userPlayerConfig.selectedBot = null;
-            tg.bot.userPlayerConfig.clearSelectionTimer = null;
+            // tg.bot.userPlayerConfig.clearSelectionTimer = null;
             tg.bot.userPlayerConfig.playerSelfIndex = playerSelfIndex;
+            tg.bot.userPlayerConfig.clearSelectionTimer = null;
             tg.hl.updateFooterIconImageForPlayerTeamBots();
 
         }
@@ -47,7 +48,8 @@ tg.bot.loadCharacters = function (
     BABYLON.SceneLoader.ImportMesh(
         '',
         'static/model/' + characterConfig.file + '/',
-        "scene.gltf",
+        // "scene.gltf",
+        "reduced.glb",
         tg.scene,
         // processLoadedModel
         function (newMeshes,
@@ -91,9 +93,11 @@ tg.bot.processLoadedModel = function (
     var hpBarMaterial = null;
     var hpBarContainerMaterial = null;
     var isSelfBot = false;
+    var isEnemyBot = false;
     if (team != tg.bot.userPlayerConfig.team) { // enemy
         hpBarMaterial = tg.am.material_enemy_hpbar;
         hpBarContainerMaterial = tg.am.material_enemy_hpbarcontainer;
+        isEnemyBot = true;
     } else { // fiendly
         if (playerID == tg.bot.userPlayerConfig.id) { // self
             hpBarMaterial = tg.am.material_self_hpbar;
@@ -245,7 +249,24 @@ tg.bot.processLoadedModel = function (
     rankPlane.parent = botObject.controlMesh;
     botObject.rankPlane = rankPlane;
 
-    
+    let basePlaneMaterial = null;
+    if (isSelfBot == true) {
+        basePlaneMaterial = tg.am.material_plane_selfbase;
+    } else if (isEnemyBot == true) {
+        basePlaneMaterial = tg.am.material_plane_enemybase;
+    } else {
+        basePlaneMaterial = tg.am.material_plane_teambase;
+    }
+
+    var basePlane = BABYLON.MeshBuilder.CreatePlane('basePlane' + characterID, options, tg.scene);
+    basePlane.scaling = new BABYLON.Vector3(outputPlaneScale * 6, outputPlaneScale * 6, outputPlaneScale * 6);
+    // basePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    basePlane.material = basePlaneMaterial;
+    basePlane.rotation.x = Math.PI / 2;
+
+    basePlane.position = new BABYLON.Vector3(0, 0.2, 0);
+    basePlane.parent = botObject.controlMesh;
+    botObject.basePlane = basePlane;
 
     if (isSelfBot == true) {
         var envelopMesh = BABYLON.MeshBuilder.CreateBox('envelop_' + characterID, {
@@ -265,15 +286,7 @@ tg.bot.processLoadedModel = function (
         );
         envelopMesh.parent = botObject.controlMesh;
 
-        var basePlane = BABYLON.MeshBuilder.CreatePlane('basePlane' + characterID, options, tg.scene);
-        basePlane.scaling = new BABYLON.Vector3(outputPlaneScale * 3, outputPlaneScale * 3, outputPlaneScale * 3);
-        // basePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-        basePlane.material = tg.am.material_plane_teambase;
-        basePlane.rotation.x = Math.PI / 2;
-
-        basePlane.position = new BABYLON.Vector3(0, 1, 0);
-        basePlane.parent = botObject.controlMesh;
-        botObject.basePlane = basePlane;
+        
     }
 
     // botObject.projectileData = {

@@ -26,7 +26,7 @@ tg.input.init = function() {
 tg.input.onPointerDownFunction = function (evt, pickResult) {
     // We try to pick an object
     if (pickResult.hit) {
-        console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
+        // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
         // console.log('pickResult.pickedPoint:', pickResult.pickedPoint);
         if(pickResult.pickedMesh.name == 'world-floor'){
             if(tg.bot.userPlayerConfig.selectedBot != null){ // bot already selected. test for goto instruction.
@@ -34,6 +34,17 @@ tg.input.onPointerDownFunction = function (evt, pickResult) {
                 var gridZ = Math.floor(pickResult.pickedPoint.z / tg.worldItems.uiConfig.playerDimensionBaseUnit);
     
                 tg.network.sendUserInstruction({x: gridX, z: gridZ});
+                tg.am.targetMarker.position.x = pickResult.pickedPoint.x;
+                tg.am.targetMarker.position.z = pickResult.pickedPoint.z;
+                tg.am.targetMarker.position.y = 2;
+
+                if (tg.bot.userPlayerConfig.clearSelectionTimer != null) {
+                    clearTimeout(tg.bot.userPlayerConfig.clearSelectionTimer);
+                }
+
+                tg.bot.userPlayerConfig.clearSelectionTimer = setTimeout(() => {
+                    tg.input.clearDestinationMarker();
+                }, tg.worldItems.uiConfig.clearDestinationTimerInterval);
             }
         }else{
             var botIndex = tg.bot.userBotIdMap[pickResult.pickedMesh.name];
@@ -43,6 +54,11 @@ tg.input.onPointerDownFunction = function (evt, pickResult) {
             }
         }
     }
+};
+
+tg.input.clearDestinationMarker = function() {
+    tg.bot.userPlayerConfig.clearDestinationTimer = null;
+    tg.am.targetMarker.position.y = tg.worldItems.uiConfig.hiddenY;
 };
 
 tg.input.OnKeyDownFunction = function (evt) {

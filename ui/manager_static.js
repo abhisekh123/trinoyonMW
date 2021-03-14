@@ -528,6 +528,29 @@ tg.static.addStaticItems = function () {
     cameraTarget.isPickable = false;
     tg.am.cameraTarget = cameraTarget;
 
+    // bot rank plane
+    var f = new BABYLON.Vector4(0, 0, 1, 1);
+
+    var options = {
+        sideOrientation: BABYLON.Mesh.DOUBLESIDE, // FRONTSIDE, BACKSIDE, DOUBLESIDE
+        frontUVs: f,
+        backUVs: f,
+        // updatable: false,
+        width: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+        height: tg.worldItems.uiConfig.playerDimensionBaseUnit,
+    }
+    console.log('opt::', options);
+    var outputPlaneScale = 1;
+    var basePlane = BABYLON.MeshBuilder.CreatePlane('selectedbotplane', options, tg.scene);
+    // basePlane.scaling = new BABYLON.Vector3(outputPlaneScale * 6, outputPlaneScale * 6, outputPlaneScale * 6);
+    // basePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    basePlane.material = tg.am.material_plane_selectedbase;
+    basePlane.rotation.x = Math.PI / 2;
+
+    basePlane.position = new BABYLON.Vector3(0, 0.3, 0);
+    basePlane.parent = null;
+    tg.am.selectedBotBasePlane = basePlane;
+
     // tg.camera.lockedTarget = tg.am.cameraTarget;
     // tg.camera2.lockedTarget = tg.am.ground;
     // tg.camera.position.x = tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2;

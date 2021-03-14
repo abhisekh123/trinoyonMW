@@ -34,6 +34,14 @@
                 file: 'static/img/teambase.png',
             },
             {
+                key: 'selfbase',
+                file: 'static/img/selfbase.png',
+            },
+            {
+                key: 'enemybase',
+                file: 'static/img/enemybase.png',
+            },
+            {
                 key: 'selectedbase',
                 file: 'static/img/selectedbase.png',
             },
@@ -219,7 +227,7 @@
                     idleAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 0,
+                        index: 7,
 
                         // audio configurations
                         offset: 1,
@@ -229,7 +237,7 @@
                     runAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 5,
+                        index: 8,
 
                         // audio configurations
                         offset: 1,
@@ -239,7 +247,7 @@
                     dieAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 6,
+                        index: 3,
 
                         // audio configurations
                         offset: 2,
@@ -259,7 +267,7 @@
                     attackAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 8,
+                        index: 0,
 
                         // audio configurations
                         offset: 3,
@@ -322,17 +330,17 @@
                 range: 2,
                 parentMesh: null,
                 file:'digimon_3d_leomonice_leomon',
-                scale:4,
+                scale:1,
                 respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/lion_icon.png',
-                headerScale: 0.05,
+                headerScale: 1,
                 headerPositionY: 1.8,
-                headerSize: 25,
-                hpBarScale: 0.5,
-                hpBarPositionY: 2.5,
+                headerSize: 5,
+                hpBarScale: 1,
+                hpBarPositionY: 10,
             },
             swordman:{
-                bannedMeshes:[6],
+                bannedMeshes:[],
                 audioFile: 'static/audio/swordman.mp3',
                 ability: [
                     {
@@ -400,7 +408,7 @@
                     idleAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 4,
+                        index: 3,
 
                         // audio configurations
                         offset: 1,
@@ -410,7 +418,7 @@
                     runAnimation:{
                         speed:6,
                         type: 'flat',
-                        index: 1,
+                        index: 4,
 
                         // audio configurations
                         offset: 1,
@@ -420,7 +428,7 @@
                     dieAnimation:{
                         speed:1,
                         type: 'flat',
-                        index: 3,
+                        index: 1,
 
                         // audio configurations
                         offset: 2,
@@ -504,14 +512,14 @@
                 range: 2,
                 parentMesh: null,
                 file:'low_poly_knight_animated',
-                scale:1.7,
+                scale:1,
                 respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/swordsman_icon.png',
-                headerScale: 0.14,
+                headerScale: 1,
                 headerPositionY: 3.5,
-                headerSize: 25,
+                headerSize: 5,
                 hpBarScale: 1,
-                hpBarPositionY: 5,
+                hpBarPositionY: 10,
             },
             archer:{
                 bannedMeshes:[],
@@ -708,14 +716,14 @@
                 parentMesh: null,
                 // file:'low_poly_character_rpg_kit_animation',
                 file: 'bow_trigger_game_character',
-                scale:0.2,
+                scale:1,
                 respawnTime: 15000, // 3 seconds
                 iconurl: 'static/img/archer_icon.png',
-                headerScale: 1.5,
-                headerPositionY: 16,
-                headerSize: 25,
-                hpBarScale: 8,
-                hpBarPositionY: 40,
+                headerScale: 1,
+                headerPositionY: 3,
+                headerSize: 5,
+                hpBarScale: 1,
+                hpBarPositionY: 10,
             },
             tower:{
                 life:500,
