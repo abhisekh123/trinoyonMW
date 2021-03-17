@@ -44,10 +44,16 @@ tg.initialiseCamera = function () {
     console.log('set camera position.');
     // tg.cameraArc.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
     tg.cameraArc.attachControl(tg.canvas, true);
-    tg.cameraArc.fov = 0.9;
+    tg.cameraArc.fov = 0.7;
+
+    tg.cameraArc.lowerRadiusLimit = 120;
+    tg.cameraArc.upperRadiusLimit = 260;
+    tg.cameraArc.upperBetaLimit = Math.PI * 50 / 180;
+    tg.cameraArc.lowerBetaLimit = Math.PI * 35 / 180;
 
     tg.cameraOffset = {x: 170, y: 90, z: 170};
-    tg.cameraArc.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, tg.cameraOffset.z));
+    // tg.cameraArc.setPosition(new BABYLON.Vector3(tg.cameraOffset.x, tg.cameraOffset.y, -tg.cameraOffset.z));
+    tg.cameraArc.setPosition(new BABYLON.Vector3(400, tg.cameraOffset.y, 400));
 
     // var distance = 200;	
     // var aspect = tg.scene.getEngine().getRenderingCanvasClientRect().height / tg.scene.getEngine().getRenderingCanvasClientRect().width; 

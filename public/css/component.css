@@ -222,8 +222,8 @@
 
 
     position: absolute;
-    top: 1%;
-    right: 1%;
+    top: 15%;
+    left: 1%;
     width: 25%;
     height: 16%;
     z-index: var(--zindex-popup);

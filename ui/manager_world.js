@@ -155,16 +155,30 @@ tg.world.updateBuildingTeamMarker = function () {
     // console.log('updateBuildingTeamMarker');
     for (var i = 0; i < tg.am.staticItems.buildingsArray.length; ++i) {
         var buildingConfig = tg.am.staticItems.buildingsArray[i];
-        tg.static.updateBuildingTeam(buildingConfig, buildingConfig.team);
+        tg.static.updateBuildingTeam(buildingConfig, tg.bot.userPlayerConfig.team);
     }
 
 };
+
+tg.world.initMiniMap = function() {
+    tg.mapCanvas = document.getElementById("tc_map");
+    tg.mapCanvas.width = window.innerWidth * 0.1;
+    tg.mapCanvas.height = window.innerWidth * 0.1;
+    tg.mapCanvasContext = tg.mapCanvas.getContext('2d');
+
+    tg.self.map.botDimention = Math.max(Math.abs(tg.mapCanvas.width / 89), 1);
+    tg.self.map.buildingDimention = Math.max(Math.abs(tg.mapCanvas.width / 44), 2);
+
+    tg.self.map.mapPositionFactor = tg.mapCanvas.width / (tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit);
+}
 
 // method that triggers when all the assets for the current match has been loaded.
 tg.world.handleNewMatchStartReadyTrigger = function () {
     // console.log('all assets loaded');
     // tg.sprite.test();
     tg.isGameLive = true;
+
+    tg.world.initMiniMap();
 
     // Initialise camera settings.
     const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
@@ -268,6 +282,14 @@ tg.world.processAttackEvent = function (sourceConfig, destinationConfig, eventsA
 
 tg.world.updateWorld = function (updateParam) {
     // console.log('tg.world.updateWorld:', updateParam);
+    // console.log('tg.cameraArc.beta:', tg.cameraArc.beta);
+    // console.log('tg.cameraArc.alpha:', tg.cameraArc.alpha);
+    let degree = (tg.cameraArc.alpha / Math.PI) * 180;
+    tg.cameraArc.alpha = tg.cameraArc.alpha % (Math.PI * 2);
+    degree = degree % 360;
+    // console.log('degfree:', degree);
+    tg.mapCanvas.style.transform = "rotate(" + degree + "deg)";
+    tg.self.refreshMap();
     
     if (tg.isGameLive == true) {
         if(tg.bot.userPlayerConfig.selectedBot == null){// if no bot is selected
@@ -304,6 +326,7 @@ tg.world.updateWorld = function (updateParam) {
                 // }
 
                 buildingConfig.life = updateItemConfig.life;
+                buildingConfig.team = updateItemConfig.team;
                 tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, ((100 * buildingConfig.life) / buildingConfig.fullLife));
                 continue;
             }

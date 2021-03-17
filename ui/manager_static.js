@@ -237,9 +237,9 @@ tg.static.freezeStaticAssets = function(){
     }
 }
 
-
+// complete formatilty to allocate buildingConfig to new team(team = player.team).
 tg.static.updateBuildingTeam = function (buildingConfig, team) {
-    buildingConfig.team = team;
+    
     tg.ui3d.updatehpbarForNewTeam(buildingConfig.hpBarConfig, team);
     if (team == 0) {
         tg.ui3d.updateHPBarPercentage(buildingConfig.hpBarConfig, 0);
@@ -267,7 +267,7 @@ tg.static.updateBuildingTeam = function (buildingConfig, team) {
             buildingConfig.explosionData.delay
         );
     } else {
-        if (team != tg.bot.userPlayerConfig.team) { // enemy
+        if (buildingConfig.team != tg.bot.userPlayerConfig.team) { // enemy
             buildingConfig.markerMeshTeamEnemy.position.y = 0;
             buildingConfig.markerMeshTeamNeutral.position.y = tg.worldItems.uiConfig.hiddenY;
             buildingConfig.markerMeshTeamFriendly.position.y = tg.worldItems.uiConfig.hiddenY;
@@ -279,6 +279,7 @@ tg.static.updateBuildingTeam = function (buildingConfig, team) {
         tg.audio.playItemEventAudio(buildingConfig, 'capture');
         
     }
+    // buildingConfig.team = team;
 };
 
 

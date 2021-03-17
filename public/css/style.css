@@ -72,6 +72,15 @@ canvas {
     touch-action: none;
 }
 
+#tc_map {
+    position: absolute;
+    right: 10%;
+    top: 10%;
+    /* width: 12%;
+    height: 12%; */
+    background: url("flr_map.png") no-repeat scroll center center / 100% auto rgb(230, 230, 230);
+}
+
 .parent-body {
     cursor: url(linked-knife.png), auto;
     /* cursor:url(http://www.javascriptkit.com/dhtmltutors/cursor-hand.gif), auto; */

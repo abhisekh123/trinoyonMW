@@ -5,19 +5,31 @@ var exampleSocket;
 var tg = {};
 tg.socket = null;
 
+tg.self = {};
+tg.self.userConfig = null;
+
+tg.self.map = {};
+
 function resizeCanvas() {
     var canvas = document.getElementById('tc');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    tg.mapCanvas = document.getElementById("tc_map");
+    tg.mapCanvasContext = tg.mapCanvas.getContext('2d');
+    tg.mapCanvas.width = window.innerWidth * 0.1;
+    tg.mapCanvas.height = window.innerWidth * 0.1;
+    tg.mapCanvasContext = tg.mapCanvas.getContext('2d');
+    tg.self.map.botDimention = Math.max(Math.abs(tg.mapCanvas.width / 89), 1);
+    tg.self.map.buildingDimention = Math.max(Math.abs(tg.mapCanvas.width / 44), 2);
 
+    tg.self.map.mapPositionFactor = tg.mapCanvas.width / (89 * 10);
 };
+
 
 tg.updateWorld = function (param) {
 
 };
 
-tg.self = {};
-tg.self.userConfig = null;
 
 tg.self.updateUserConfig = function(userConfig, persistant_server_state){
 
@@ -93,6 +105,9 @@ tg.connectToParent = function (parentEndPoint, keyIdentifier) {
         const responseJSON = JSON.parse(event.data);
         if (responseJSON.type == 'update') { // message is game update
             // console.log('processing update.', responseJSON);
+            // if(tg.isGameLive == true){
+
+            // }
             tg.updateWorld(responseJSON);
         } else if (responseJSON.type == 'message') {
             // console.log('processing message.', responseJSON);
