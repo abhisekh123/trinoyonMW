@@ -31,7 +31,7 @@ tg.self.refreshMap = function() {
             // friendly building
             // tg.mapCanvasContext.beginPath();
             // tg.mapCanvasContext.rect(20, 20, 150, 100);
-            tg.mapCanvasContext.fillStyle = "#373eb0";
+            tg.mapCanvasContext.fillStyle = "#3eff15";
             // tg.mapCanvasContext.fill();
         } else {
             // ennemy buildings
@@ -42,7 +42,7 @@ tg.self.refreshMap = function() {
         }
 
         tg.mapCanvasContext.beginPath();
-        tg.mapCanvasContext.rect(miniMapPositionX, miniMapPositionZ, tg.self.map.buildingDimention, tg.self.map.buildingDimention);
+        tg.mapCanvasContext.rect(miniMapPositionZ, miniMapPositionX, tg.self.map.buildingDimention, tg.self.map.buildingDimention);
         // tg.mapCanvasContext.fillStyle = "blue";
         tg.mapCanvasContext.fill();
     }
@@ -58,7 +58,7 @@ tg.self.refreshMap = function() {
             // friendly building
             // tg.mapCanvasContext.beginPath();
             // tg.mapCanvasContext.rect(20, 20, 150, 100);
-            tg.mapCanvasContext.fillStyle = "#999999";
+            tg.mapCanvasContext.fillStyle = "#88aa88";
             // tg.mapCanvasContext.fill();
         } else {
             // ennemy buildings
@@ -71,12 +71,12 @@ tg.self.refreshMap = function() {
         var botIndex = tg.bot.userBotIdMap[botObject.id];
             // console.log('pickResult.pickedMesh.name:', pickResult.pickedMesh.name);
         if (botIndex != null && botIndex != undefined) {
-            tg.mapCanvasContext.fillStyle = "#15f4ee";
+            tg.mapCanvasContext.fillStyle = "#10e4de";
         }
 
         tg.mapCanvasContext.beginPath();
-        // ctx.arc(100, 75, 50, 0, 2 * Math.PI); (x,y,radius,startAngle,endAngle)
-        tg.mapCanvasContext.arc(miniMapPositionX, miniMapPositionZ, tg.self.map.botDimention, 0, circleRadian);
+        // ctx.arc(100, 75, 50, 0, 2 * Math.PI); (Z,x,radius,startAngle,endAngle)
+        tg.mapCanvasContext.arc(miniMapPositionZ, miniMapPositionX, tg.self.map.botDimention, 0, circleRadian);
         // tg.mapCanvasContext.fillStyle = "blue";
         tg.mapCanvasContext.fill();
     }

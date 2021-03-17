@@ -160,17 +160,17 @@ tg.world.updateBuildingTeamMarker = function () {
 
 };
 
-tg.world.initMiniMap = function() {
-    tg.mapCanvas = document.getElementById("tc_map");
-    tg.mapCanvas.width = window.innerWidth * 0.1;
-    tg.mapCanvas.height = window.innerWidth * 0.1;
-    tg.mapCanvasContext = tg.mapCanvas.getContext('2d');
+// tg.world.initMiniMap = function() {
+//     tg.mapCanvas = document.getElementById("tc_map");
+//     tg.mapCanvas.width = window.innerWidth * 0.15;
+//     tg.mapCanvas.height = window.innerWidth * 0.15;
+//     tg.mapCanvasContext = tg.mapCanvas.getContext('2d');
 
-    tg.self.map.botDimention = Math.max(Math.abs(tg.mapCanvas.width / 89), 1);
-    tg.self.map.buildingDimention = Math.max(Math.abs(tg.mapCanvas.width / 44), 2);
+//     tg.self.map.botDimention = Math.max(Math.abs(tg.mapCanvas.width / 89), 1);
+//     tg.self.map.buildingDimention = Math.max(Math.abs(tg.mapCanvas.width / 44), 4);
 
-    tg.self.map.mapPositionFactor = tg.mapCanvas.width / (tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit);
-}
+//     tg.self.map.mapPositionFactor = tg.mapCanvas.width / (tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit);
+// }
 
 // method that triggers when all the assets for the current match has been loaded.
 tg.world.handleNewMatchStartReadyTrigger = function () {
@@ -178,7 +178,7 @@ tg.world.handleNewMatchStartReadyTrigger = function () {
     // tg.sprite.test();
     tg.isGameLive = true;
 
-    tg.world.initMiniMap();
+    // tg.world.initMiniMap();
 
     // Initialise camera settings.
     const botId = tg.bot.userPlayerConfig.botObjectList[0].id;
