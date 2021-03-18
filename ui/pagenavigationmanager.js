@@ -102,7 +102,7 @@ tg.pn.showMatchPage = function(){
     // tg.stopClock();
     // tg.hl.setLoaderHeaderText('Prepare To Fight!');
     $("#footerrow").show();
-    $("#rightcolumn").show();
+    // $("#rightcolumn").show();
 
     // tg.joystickL.add();
     // tg.joystickR.add();

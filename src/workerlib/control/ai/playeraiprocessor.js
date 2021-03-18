@@ -39,10 +39,22 @@ module.exports = {
             if(nearestTarget == null){
                 
                 // return;
-                var randomPosition = {
-                    x: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
-                    z: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
-                };
+                // var randomPosition = {
+                //     x: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
+                //     z: utilityFunctions.getRandomInt(0, this.worldConfig.gridSide),
+                // };
+                var randomPosition = {};
+                const randomResult = utilityFunctions.getRandomInt(0, 100);
+                if(40 > randomResult) { 
+                    randomPosition.x = 75;
+                    randomPosition.z = 14;
+                } else if (60 < randomResult){
+                    randomPosition.x = 44;
+                    randomPosition.z = 44;
+                } else { // 40 <= randomResult <= 60
+                    randomPosition.x = 14;
+                    randomPosition.z = 75;
+                }
                 // var nearestPosition = routeManager.findNearestWalkablePositionInNeighbourhood(randomPosition, gameRoom, this.worldConfig.maxRange);
                 // console.log('@playerAI, nearestTarget is null for player:' + playerConfigParam.id + ' random position:', randomPosition);
                 // if(nearestPosition != null){
