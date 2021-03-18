@@ -64,7 +64,7 @@ tg.self.refreshMap = function() {
             // ennemy buildings
             // tg.mapCanvasContext.beginPath();
             // tg.mapCanvasContext.rect(20, 20, 150, 100);
-            tg.mapCanvasContext.fillStyle = "red";
+            tg.mapCanvasContext.fillStyle = "#ff5349";
             // tg.mapCanvasContext.fill();
         }
 

@@ -245,10 +245,17 @@ tg.hl.updateFooterIconImageForPlayerTeamBots = function () {
         // return;
         tg.bot.userBotIdMap['envelop_' + botConfig.id] = j;
         tg.bot.userBotIdMap[botConfig.id] = j;
+
+        const botAbilityList = tg.itemConfigs.items[botConfig.type].ability;
+        // when match starts, initialise each bot button with their respective ability icons.
+        for(let k = 0; k < botAbilityList.length; k++){
+            $('#footer-image-ability-' + k + '_' + j).attr('src', tg.itemConfigs.abilityConfig[botAbilityList[k].action].iconurl);
+        }
     }
 };
 
 tg.hl.updateBotButtonLife = function (botIndex, botObject) {
+    // console.log('tg.hl.updateBotButtonLife', botIndex);
     var lifePercentage = ((100 * botObject.life) / botObject.fullLife);
     if(lifePercentage < 0){
         lifePercentage = 0;

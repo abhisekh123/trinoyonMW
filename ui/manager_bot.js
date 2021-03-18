@@ -434,7 +434,7 @@ tg.bot.addMetaDataToBot = function (botObject, characterConfig, characterID, pos
 
 };
 
-tg.bot.changeLevel = function (botConfig, level) {
+tg.bot.changeLevel = function (botConfig, level, isUserBot, botIndex) {
     // console.log(level + '->change level event:', botConfig);
     botConfig.level = level;
     var botLevelMap = botConfig.levelMap[level];
@@ -459,6 +459,11 @@ tg.bot.changeLevel = function (botConfig, level) {
             break;
         default:
             console.error('ERROR: Unknown level:' + level + ' for bot:' + botConfig.id);
+            level = 0;
             break;
+    }
+
+    if(isUserBot == true){
+        $('#footer-image-rank_' + botIndex).attr('src', 'static/img/botrank' + level + '.png');
     }
 };
