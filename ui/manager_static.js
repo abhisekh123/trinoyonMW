@@ -396,7 +396,7 @@ tg.static.loadStaticAssets = function (actionOnComplete) {
     // console.log('total asset to be loaded:' + tg.am.totalAssetsToBeLoaded);
     tg.static.loadWorldAsset(
         'world',
-        'floor_prod.glb',
+        'floor_prod_original.glb',
         {
             x: tg.worldItems.gridSide * tg.worldItems.uiConfig.playerDimensionBaseUnit / 2,
             y: 0,

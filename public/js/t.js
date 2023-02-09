@@ -15,9 +15,9 @@ function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     tg.mapCanvas = document.getElementById("tc_map");
-    tg.mapCanvasContext = tg.mapCanvas.getContext('2d');
-    tg.mapCanvas.width = window.innerWidth * 0.20;
-    tg.mapCanvas.height = window.innerWidth * 0.20;
+    // tg.mapCanvasContext = tg.mapCanvas.getContext('2d');
+    tg.mapCanvas.width = window.innerWidth * 0.1;
+    tg.mapCanvas.height = window.innerWidth * 0.1;
     tg.mapCanvasContext = tg.mapCanvas.getContext('2d');
     tg.self.map.botDimention = Math.max(Math.abs(tg.mapCanvas.width / 89), 1);
     tg.self.map.buildingDimention = Math.max(Math.abs(tg.mapCanvas.width / 44), 7);

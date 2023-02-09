@@ -92,6 +92,7 @@ tg.pn.showMatchPage = function(){
             // tg.pv.advancedTexture.removeControl(tg.pv.loadingText);
             $("#load-indicator").hide();
             tg.pv.hideModal();
+            $('.message-nav-bar').hide();
             break;
     
         default:
